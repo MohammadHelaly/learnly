@@ -50,7 +50,7 @@ const PopularCoursesPreview = () => {
 		<Box
 			sx={{
 				py: 10,
-				px: window.innerWidth > 600 ? 10 : 1,
+				px: window.innerWidth > 600 ? 10 : 0,
 				background: "rgb(245, 245, 245)",
 			}}>
 			<Container maxWidth="lg">

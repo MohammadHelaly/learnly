@@ -104,7 +104,7 @@ const CourseReviews = (props: CourseReviewsProps) => {
 	return (
 		<Box
 			sx={{
-				px: window.innerWidth > 600 ? 0 : 3,
+				px: window.innerWidth > 600 ? 0 : 2,
 			}}>
 			<Typography
 				variant="h4"

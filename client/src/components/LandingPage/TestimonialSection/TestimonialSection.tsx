@@ -11,7 +11,7 @@ const TestimonialSection = () => {
 		<Box
 			sx={{
 				py: 10,
-				px: window.innerWidth < 600 ? 1 : 10,
+				px: window.innerWidth < 600 ? 0 : 10,
 				background: "rgb(245, 245, 245)",
 			}}>
 			<Typography
