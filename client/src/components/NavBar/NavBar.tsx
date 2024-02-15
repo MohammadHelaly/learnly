@@ -18,6 +18,7 @@ import { ButtonGroup, Stack } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import ApiInstance from "../../api/ApiInstance";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 const pages = ["Catalog", "Careers", "About"];
 const settings = ["Dashboard", "Account"];
@@ -33,8 +34,11 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 const NavBar = () => {
 	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+	const [isDrawerOpen,SetIsDrawerOpen]= useState(false)
+	const [isDrawerOpen2,SetIsDrawerOpen2]= useState(false)
 	const [scrolled, setScrolled] = useState(false);
 	const currentPath = useLocation().pathname;
+	
 
 	const handleScroll = () => {
 		if (window.scrollY > 25) {
@@ -52,7 +56,6 @@ const NavBar = () => {
 	}, []);
 
 	const authContext = useContext(AuthContext);
-
 	const logoutHandler = () => {
 		ApiInstance.get("/users/logout")
 			.then((response) => {
@@ -100,6 +103,7 @@ const NavBar = () => {
 	}, [anchorElUser, anchorElNav]);
 
 	return (
+		
 		<AppBar
 			position="fixed"
 			sx={{
@@ -144,34 +148,15 @@ const NavBar = () => {
 							flexGrow: 1,
 							display: { xs: "flex", md: "none" },
 						}}>
-						<IconButton
-							size="large"
-							aria-label="account of current user"
-							aria-controls="menu-appbar"
-							aria-haspopup="true"
-							onClick={handleOpenNavMenu}
-							color="inherit"
-							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
-							<MenuIcon />
-						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "left",
-							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
-							sx={{
-								display: { xs: "block", md: "none" },
-							}}>
-							{pages.map((page) => (
+						<IconButton size="large" edge="start" color="inherit" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={() => SetIsDrawerOpen(true)}  sx={{ color: scrolled ? "#000000" : "#ffffff" }}> 
+									<MenuIcon/>
+								</IconButton>
+								<SwipeableDrawer anchor='left' open={isDrawerOpen} onOpen={() => SetIsDrawerOpen(true)} onClose={() => SetIsDrawerOpen(false)}>
+									<Box p={2} width='250px' textAlign='center' role='presentation'>
+											<Typography variant="h6" component="div" paddingBottom={3}>
+												L e a r n l y
+											</Typography>
+											{pages.map((page) => (
 								<StyledNavLink
 									to={`/${
 										page === "Catalog"
@@ -187,7 +172,10 @@ const NavBar = () => {
 									</MenuItem>
 								</StyledNavLink>
 							))}
-						</Menu>
+
+									</Box>
+									
+								</SwipeableDrawer>
 					</Box>
 					<Typography
 						variant="h5"
@@ -232,7 +220,7 @@ const NavBar = () => {
 							</StyledNavLink>
 						))}
 					</Box>
-					{authContext.isLoggedIn ? (
+					{!authContext.isLoggedIn ? (
 						<Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
 							<ButtonGroup>
 								<Button
@@ -267,7 +255,8 @@ const NavBar = () => {
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Open settings">
 									<IconButton
-										onClick={handleOpenUserMenu}
+										//onClick={handleOpenUserMenu}
+										onClick={() => SetIsDrawerOpen2(true)}
 										sx={{ p: 0 }}>
 										<Avatar
 											alt={authContext.user?.name}
@@ -278,22 +267,12 @@ const NavBar = () => {
 										/>
 									</IconButton>
 								</Tooltip>
-								<Menu
-									sx={{ mt: "45px" }}
-									id="menu-appbar"
-									anchorEl={anchorElUser}
-									anchorOrigin={{
-										vertical: "top",
-										horizontal: "right",
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: "top",
-										horizontal: "right",
-									}}
-									open={Boolean(anchorElUser)}
-									onClose={handleCloseUserMenu}>
-									{settings.map((setting) => (
+								<SwipeableDrawer id="menu-appbar" anchor='right' open={isDrawerOpen2} onOpen={() => SetIsDrawerOpen2(true)} onClose={() => SetIsDrawerOpen2(false)}>
+									<Box p={2} width='250px' textAlign='center' role='presentation'>
+											<Typography variant="h6" component="div" paddingBottom={3}>
+												Settings
+											</Typography>
+											{settings.map((setting) => (
 										<StyledNavLink
 											to={`/${setting.toLowerCase()}`}>
 											<MenuItem
@@ -318,7 +297,11 @@ const NavBar = () => {
 											</Typography>
 										</MenuItem>
 									</StyledNavLink>
-								</Menu>
+
+									</Box>
+									
+								</SwipeableDrawer>
+								
 							</Box>
 						</Stack>
 					) : (
