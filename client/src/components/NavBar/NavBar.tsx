@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
@@ -20,8 +19,8 @@ import { styled } from "@mui/material/styles";
 import ApiInstance from "../../api/ApiInstance";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
-const pages = ["Catalog", "Careers", "About"];
-const settings = ["Dashboard", "Account"];
+const leftDrawerPages = ["Catalog", "Careers", "About"];
+const rightDrawerPages = ["Dashboard", "Account"];
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	color: "inherit",
@@ -32,13 +31,12 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 }));
 
 const NavBar = () => {
-	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-	const [isDrawerOpen,SetIsDrawerOpen]= useState(false)
-	const [isDrawerOpen2,SetIsDrawerOpen2]= useState(false)
+	const [isLeftDrawerOpen, setIsLeftDrawerOpen] = useState(false);
+	const [isRightDrawerOpen, setIsRightDrawerOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
+
 	const currentPath = useLocation().pathname;
-	
+	const authContext = useContext(AuthContext);
 
 	const handleScroll = () => {
 		if (window.scrollY > 25) {
@@ -55,7 +53,22 @@ const NavBar = () => {
 		};
 	}, []);
 
-	const authContext = useContext(AuthContext);
+	const handleOpenRightDrawer = () => {
+		setIsRightDrawerOpen(true);
+	};
+
+	const handleCloseRightDrawer = () => {
+		setIsRightDrawerOpen(false);
+	};
+
+	const handleOpenLeftDrawer = () => {
+		setIsLeftDrawerOpen(true);
+	};
+
+	const handleCloseLeftDrawer = () => {
+		setIsLeftDrawerOpen(false);
+	};
+
 	const logoutHandler = () => {
 		ApiInstance.get("/users/logout")
 			.then((response) => {
@@ -66,49 +79,11 @@ const NavBar = () => {
 			});
 	};
 
-	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElNav(event.currentTarget);
-	};
-	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElUser(event.currentTarget);
-	};
-
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
-	};
-
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
-
-	useEffect(() => {
-		// Add an event listener to prevent scrolling on the body when the menu is open
-		const handleBodyScroll = (event: any) => {
-			// look into type of event
-			if (Boolean(anchorElUser) || Boolean(anchorElNav)) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
-		};
-
-		document.body.style.overflow = "auto"; // Ensure the body allows scrolling by default
-
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("touchmove", handleBodyScroll);
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("touchmove", handleBodyScroll);
-		};
-	}, [anchorElUser, anchorElNav]);
-
 	return (
-		
 		<AppBar
 			position="fixed"
 			sx={{
 				backgroundColor: scrolled ? "#ffffff" : "transparent",
-				// backgroundColor: scrolled ? "#000000" : "transparent",
 				boxShadow:
 					scrolled && !currentPath.includes("/courses")
 						? "auto"
@@ -122,9 +97,6 @@ const NavBar = () => {
 			}}>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					{/* <AdbIcon
-						sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-					/> */}
 					<Typography
 						variant="h6"
 						noWrap
@@ -132,7 +104,6 @@ const NavBar = () => {
 							mr: 2,
 							display: { xs: "none", md: "flex" },
 							fontFamily: "Outfit, Roboto, sans-serif",
-							fontWeight: 700,
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
@@ -148,34 +119,65 @@ const NavBar = () => {
 							flexGrow: 1,
 							display: { xs: "flex", md: "none" },
 						}}>
-						<IconButton size="large" edge="start" color="inherit" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={() => SetIsDrawerOpen(true)}  sx={{ color: scrolled ? "#000000" : "#ffffff" }}> 
-									<MenuIcon/>
-								</IconButton>
-								<SwipeableDrawer anchor='left' open={isDrawerOpen} onOpen={() => SetIsDrawerOpen(true)} onClose={() => SetIsDrawerOpen(false)}>
-									<Box p={2} width='250px' textAlign='center' role='presentation'>
-											<Typography variant="h6" component="div" paddingBottom={3}>
-												L e a r n l y
+						<IconButton
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-label="account of current user"
+							aria-controls="menu-appbar"
+							aria-haspopup="true"
+							onClick={handleOpenLeftDrawer}
+							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
+							<MenuIcon />
+						</IconButton>
+						<SwipeableDrawer
+							anchor="left"
+							open={isLeftDrawerOpen}
+							onOpen={handleOpenLeftDrawer}
+							onClose={handleCloseLeftDrawer}>
+							<Box
+								p={2}
+								width="250px"
+								textAlign="center"
+								role="presentation">
+								<Typography
+									variant="h6"
+									noWrap
+									sx={{
+										textAlign: "left",
+										fontFamily:
+											"Outfit, Roboto, sans-serif",
+										letterSpacing: ".3rem",
+										color: "#000000",
+										textDecoration: "none",
+										paddingBottom: 2,
+									}}>
+									<StyledNavLink
+										to="/"
+										sx={{
+											color: "inherit",
+										}}>
+										Learnly
+									</StyledNavLink>
+								</Typography>
+								{leftDrawerPages.map((page) => (
+									<StyledNavLink
+										to={`/${
+											page === "Catalog"
+												? "courses"
+												: page.toLowerCase()
+										}`}>
+										<MenuItem
+											key={page}
+											onClick={handleCloseLeftDrawer}>
+											<Typography textAlign="center">
+												{page}
 											</Typography>
-											{pages.map((page) => (
-								<StyledNavLink
-									to={`/${
-										page === "Catalog"
-											? "courses"
-											: page.toLowerCase()
-									}`}>
-									<MenuItem
-										key={page}
-										onClick={handleCloseNavMenu}>
-										<Typography textAlign="center">
-											{page}
-										</Typography>
-									</MenuItem>
-								</StyledNavLink>
-							))}
-
-									</Box>
-									
-								</SwipeableDrawer>
+										</MenuItem>
+									</StyledNavLink>
+								))}
+							</Box>
+						</SwipeableDrawer>
 					</Box>
 					<Typography
 						variant="h5"
@@ -185,7 +187,6 @@ const NavBar = () => {
 							display: { xs: "flex", md: "none" },
 							flexGrow: 1,
 							fontFamily: "Outfit, Roboto, sans-serif",
-							fontWeight: 700,
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
@@ -201,7 +202,7 @@ const NavBar = () => {
 							flexGrow: 1,
 							display: { xs: "none", md: "flex" },
 						}}>
-						{pages.map((page) => (
+						{leftDrawerPages.map((page) => (
 							<StyledNavLink
 								key={page}
 								to={`/${
@@ -210,7 +211,7 @@ const NavBar = () => {
 										: page.toLowerCase()
 								}`}>
 								<Button
-									onClick={handleCloseNavMenu}
+									onClick={handleCloseLeftDrawer}
 									color="inherit"
 									sx={{
 										color: scrolled ? "#000000" : "#ffffff",
@@ -220,7 +221,7 @@ const NavBar = () => {
 							</StyledNavLink>
 						))}
 					</Box>
-					{!authContext.isLoggedIn ? (
+					{authContext.isLoggedIn ? (
 						<Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
 							<ButtonGroup>
 								<Button
@@ -253,10 +254,9 @@ const NavBar = () => {
 								</Button>
 							</ButtonGroup>
 							<Box sx={{ flexGrow: 0 }}>
-								<Tooltip title="Open settings">
+								<Tooltip title="Open User Menu">
 									<IconButton
-										//onClick={handleOpenUserMenu}
-										onClick={() => SetIsDrawerOpen2(true)}
+										onClick={handleOpenRightDrawer}
 										sx={{ p: 0 }}>
 										<Avatar
 											alt={authContext.user?.name}
@@ -267,41 +267,62 @@ const NavBar = () => {
 										/>
 									</IconButton>
 								</Tooltip>
-								<SwipeableDrawer id="menu-appbar" anchor='right' open={isDrawerOpen2} onOpen={() => SetIsDrawerOpen2(true)} onClose={() => SetIsDrawerOpen2(false)}>
-									<Box p={2} width='250px' textAlign='center' role='presentation'>
-											<Typography variant="h6" component="div" paddingBottom={3}>
-												Settings
-											</Typography>
-											{settings.map((setting) => (
-										<StyledNavLink
-											to={`/${setting.toLowerCase()}`}>
+								<SwipeableDrawer
+									id="menu-appbar"
+									anchor="right"
+									open={isRightDrawerOpen}
+									onOpen={handleOpenRightDrawer}
+									onClose={handleCloseRightDrawer}>
+									<Box
+										p={2}
+										width="250px"
+										textAlign="center"
+										role="presentation">
+										<Typography
+											variant="h6"
+											noWrap
+											sx={{
+												textAlign: "left",
+												fontSize: "1.5rem",
+												fontWeight: "500",
+												fontFamily:
+													"Outfit, Roboto, sans-serif",
+												letterSpacing: ".3rem",
+												color: "#000000",
+												textDecoration: "none",
+												paddingBottom: 2,
+											}}>
+											Your Account
+										</Typography>
+										{rightDrawerPages.map((page) => (
+											<StyledNavLink
+												to={`/${page.toLowerCase()}`}>
+												<MenuItem
+													key={page}
+													onClick={
+														handleCloseRightDrawer
+													}>
+													<Typography textAlign="center">
+														{page}
+													</Typography>
+												</MenuItem>
+											</StyledNavLink>
+										))}
+										<StyledNavLink to="/">
 											<MenuItem
-												key={setting}
-												onClick={handleCloseUserMenu}>
+												key={"Logout"}
+												onClick={logoutHandler}
+												sx={{
+													color: "red",
+													fontWeight: 700,
+												}}>
 												<Typography textAlign="center">
-													{setting}
+													Logout
 												</Typography>
 											</MenuItem>
 										</StyledNavLink>
-									))}
-									<StyledNavLink to="/">
-										<MenuItem
-											key={"Logout"}
-											onClick={logoutHandler}
-											sx={{
-												color: "red",
-												fontWeight: 700,
-											}}>
-											<Typography textAlign="center">
-												Logout
-											</Typography>
-										</MenuItem>
-									</StyledNavLink>
-
 									</Box>
-									
 								</SwipeableDrawer>
-								
 							</Box>
 						</Stack>
 					) : (
