@@ -148,14 +148,30 @@ const NavBar = () => {
 							flexGrow: 1,
 							display: { xs: "flex", md: "none" },
 						}}>
-						<IconButton size="large" edge="start" color="inherit" aria-label="logo" onClick={() => SetIsDrawerOpen(true)}>
+						<IconButton size="large" edge="start" color="inherit" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={() => SetIsDrawerOpen(true)}  sx={{ color: scrolled ? "#000000" : "#ffffff" }}> 
 									<MenuIcon/>
 								</IconButton>
 								<SwipeableDrawer anchor='left' open={isDrawerOpen} onOpen={() => SetIsDrawerOpen(true)} onClose={() => SetIsDrawerOpen(false)}>
 									<Box p={2} width='250px' textAlign='center' role='presentation'>
-											<Typography variant="h6" component="div">
+											<Typography variant="h6" component="div" paddingBottom={3}>
 												L e a r n l y
 											</Typography>
+											{pages.map((page) => (
+								<StyledNavLink
+									to={`/${
+										page === "Catalog"
+											? "courses"
+											: page.toLowerCase()
+									}`}>
+									<MenuItem
+										key={page}
+										onClick={handleCloseNavMenu}>
+										<Typography textAlign="center">
+											{page}
+										</Typography>
+									</MenuItem>
+								</StyledNavLink>
+							))}
 
 									</Box>
 									
@@ -251,11 +267,36 @@ const NavBar = () => {
 										/>
 									</IconButton>
 								</Tooltip>
-								<SwipeableDrawer anchor='right' open={isDrawerOpen2} onOpen={() => SetIsDrawerOpen2(true)} onClose={() => SetIsDrawerOpen2(false)}>
+								<SwipeableDrawer id="menu-appbar" anchor='right' open={isDrawerOpen2} onOpen={() => SetIsDrawerOpen2(true)} onClose={() => SetIsDrawerOpen2(false)}>
 									<Box p={2} width='250px' textAlign='center' role='presentation'>
-											<Typography variant="h6" component="div">
+											<Typography variant="h6" component="div" paddingBottom={3}>
 												Settings
 											</Typography>
+											{settings.map((setting) => (
+										<StyledNavLink
+											to={`/${setting.toLowerCase()}`}>
+											<MenuItem
+												key={setting}
+												onClick={handleCloseUserMenu}>
+												<Typography textAlign="center">
+													{setting}
+												</Typography>
+											</MenuItem>
+										</StyledNavLink>
+									))}
+									<StyledNavLink to="/">
+										<MenuItem
+											key={"Logout"}
+											onClick={logoutHandler}
+											sx={{
+												color: "red",
+												fontWeight: 700,
+											}}>
+											<Typography textAlign="center">
+												Logout
+											</Typography>
+										</MenuItem>
+									</StyledNavLink>
 
 									</Box>
 									
