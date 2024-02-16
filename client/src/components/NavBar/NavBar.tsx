@@ -142,6 +142,7 @@ const NavBar = () => {
 								role="presentation">
 								<Typography
 									variant="h6"
+									onClick={handleCloseLeftDrawer}
 									noWrap
 									sx={{
 										textAlign: "left",

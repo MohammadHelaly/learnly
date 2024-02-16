@@ -29,7 +29,7 @@ const HomeSection = () => {
 					sx={{
 						opacity: "0",
 						transition: "all 1.75s ease",
-						transitionDelay: "1s",
+						transitionDelay: "0.5s",
 					}}>
 					Learn. Teach. Grow.
 				</Typography>
@@ -41,7 +41,7 @@ const HomeSection = () => {
 					sx={{
 						opacity: "0",
 						transition: "all 1.75s ease",
-						transitionDelay: "1.5s",
+						transitionDelay: "1s",
 					}}
 					paragraph>
 					Learnly allows you to learn and teach anywhere, anytime.
