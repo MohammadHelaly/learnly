@@ -45,8 +45,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 			justifyContent="center"
 			alignItems="center"
 			sx={{
-				width: "100%",
-				maxWidth: "100%",
+				width: "100vw",
 				position: "fixed",
 				backgroundColor: "white",
 				opacity: scrolled ? 1 : 0,
@@ -93,7 +92,8 @@ const CourseBanner = (props: CourseBannerProps) => {
 						size="large"
 						disableElevation
 						sx={{
-							width: window.innerWidth > 600 ? "20%" : "60%",
+							minWidth: window.innerWidth > 600 ? 250 : 145,
+
 							height: 50,
 							// fontSize:
 							// 	window.innerWidth > 600 ? "1rem" : "0.65rem",

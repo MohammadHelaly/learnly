@@ -150,7 +150,7 @@ const CourseReviews = (props: CourseReviewsProps) => {
 						mt: 5,
 					}}>
 					<Typography variant="h6" textAlign="center">
-						See More Courses
+						See More Reviews
 					</Typography>
 					<ArrowForwardIcon />
 				</StyledNavLink>
