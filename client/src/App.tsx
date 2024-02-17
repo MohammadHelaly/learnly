@@ -1,6 +1,7 @@
 import "./App.css";
 import { useContext, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { Box, ThemeProvider, createTheme } from "@mui/material";
 import api from "./api";
@@ -21,25 +22,30 @@ import AboutPage from "./pages/AboutPage";
 function App() {
 	const authContext = useContext(AuthContext);
 
+	const {
+		data: receivedUser,
+		refetch,
+		isError,
+		isLoading, // TODO: Look into using React Query to manage loading and error states
+	} = useQuery({
+		queryKey: ["authenticateMe"],
+		queryFn: async () => await api.get("/users/authenticateMe"),
+		select: (response) => response.data.data.user,
+		enabled: false,
+	});
+
 	useEffect(() => {
-		const storedUser = localStorage.getItem("user");
+		const storedUser = localStorage.getItem("user"); // TODO: Look into using sessionStorage instead of localStorage + using React Query to manage loading state
 
 		if (storedUser) {
 			const parsedUser = JSON.parse(storedUser);
 			authContext.login(parsedUser);
-		} else {
-			api.get("/users/authenticateMe")
-				.then((response) => {
-					const receivedUser = response.data.data.user;
-					if (receivedUser !== null) {
-						authContext.login(receivedUser);
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+			return;
 		}
-	}, []);
+
+		refetch();
+		if (receivedUser) authContext.login(receivedUser);
+	}, [receivedUser, refetch]);
 
 	const theme = createTheme({
 		palette: {
@@ -47,7 +53,6 @@ function App() {
 				// main: "#ff0067",
 				// main: "#ff71e1",
 				main: "#9c27b0",
-				// main: "rgb(255, 0, 0)",
 			},
 			secondary: {
 				main: "#00f3b6",
@@ -126,11 +131,6 @@ function App() {
 						/>
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
-						{/* <Route
-							path="/contact"
-							element={<LandingPage />}
-							exact
-						/> */}
 						<Route path="/help" element={<LandingPage />} />
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />

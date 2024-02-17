@@ -12,7 +12,7 @@ const AuthProvider = (props: AuthProviderProps) => {
 	const loginHandler = (parsedUser: User) => {
 		setIsLoggedIn(true);
 		setUser(parsedUser);
-		localStorage.setItem("user", JSON.stringify(user));
+		localStorage.setItem("user", JSON.stringify(parsedUser));
 	};
 
 	const logoutHandler = () => {
