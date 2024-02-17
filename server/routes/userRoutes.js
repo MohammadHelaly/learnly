@@ -10,7 +10,7 @@ router.post("/login", authController.login);
 
 router.get("/logout", authController.logout);
 
-router.get("authenticateMe", authController.isLoggedIn);
+router.get("/authenticateMe", authController.isLoggedIn);
 
 router.post("/forgotPassword", authController.forgotPassword);
 

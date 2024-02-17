@@ -4,18 +4,24 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "./store/AuthProvider";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
+
 root.render(
 	<React.StrictMode>
-		<AuthProvider>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</AuthProvider>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</AuthProvider>
+		</QueryClientProvider>
 	</React.StrictMode>
 );
 
