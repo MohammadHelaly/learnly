@@ -16,8 +16,8 @@ const HomeSection = () => {
 		<Box
 			sx={{
 				bgcolor: "rgba(0, 0, 0, 0)",
-				pt: 30,
-				pb: 20,
+				pt: 25,
+				pb: 25,
 				minWidth: "100vw !important",
 			}}>
 			<Container maxWidth="sm">
