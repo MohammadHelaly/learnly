@@ -1,23 +1,29 @@
 import { useState, useContext, useEffect } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import FavoriteBorderOutlined from "@mui/icons-material/FavoriteBorderOutlined";
+import {
+	AppBar,
+	Box,
+	Toolbar,
+	Typography,
+	IconButton,
+	Container,
+	Avatar,
+	Button,
+	Tooltip,
+	MenuItem,
+	SwipeableDrawer,
+	ButtonGroup,
+	Stack,
+} from "@mui/material";
+import {
+	Menu as MenuIcon,
+	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
+	FavoriteBorderOutlined,
+} from "@mui/icons-material";
 import AuthContext from "../../store/auth-context";
-import { ButtonGroup, Stack } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
+import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 const leftDrawerPages = ["Catalog", "Careers", "About"];
 const rightDrawerPages = ["Dashboard", "Account"];
@@ -37,6 +43,13 @@ const NavBar = () => {
 
 	const currentPath = useLocation().pathname;
 	const authContext = useContext(AuthContext);
+
+	// TODO: Look into using React Query to manage loading and error states
+	const { refetch, isError, isLoading } = useQuery({
+		queryKey: ["logout"],
+		queryFn: async () => await api.get("/users/logout"),
+		enabled: false,
+	});
 
 	const handleScroll = () => {
 		if (window.scrollY > 25) {
@@ -70,13 +83,8 @@ const NavBar = () => {
 	};
 
 	const logoutHandler = () => {
-		api.get("/users/logout")
-			.then((response) => {
-				authContext.logout();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		refetch();
+		authContext.logout();
 	};
 
 	return (
