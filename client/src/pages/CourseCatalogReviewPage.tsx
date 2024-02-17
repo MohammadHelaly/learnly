@@ -118,7 +118,6 @@ const CourseCatalogReviewPage = () => {
 					justifyContent: "flex-start",
 					py: 3,
 					mt: window.innerWidth > 600 ? 8 : 7,
-					px: window.innerWidth > 600 ? 13 : 2,
 					backgroundColor: "white",
 				}}>
 				<Container maxWidth="lg">
@@ -144,22 +143,24 @@ const CourseCatalogReviewPage = () => {
 						{ratingsQuantity}
 						{" ratings)"}
 					</Typography>
-					<Stack direction="column" alignItems="center">
-						{reviews.map((reviewItem) => {
-							const { id, rating, review, user, createdAt } =
-								reviewItem;
-							return (
-								<ReviewCard
-									key={id}
-									review={review}
-									rating={rating}
-									user={user}
-									createdAt={createdAt}
-									loading={loading}
-								/>
-							);
-						})}
-					</Stack>
+					<Container maxWidth="lg">
+						<Stack direction="column" alignItems="center">
+							{reviews.map((reviewItem) => {
+								const { id, rating, review, user, createdAt } =
+									reviewItem;
+								return (
+									<ReviewCard
+										key={id}
+										review={review}
+										rating={rating}
+										user={user}
+										createdAt={createdAt}
+										loading={loading}
+									/>
+								);
+							})}
+						</Stack>
+					</Container>
 				</Container>
 				<Pagination
 					count={10}
