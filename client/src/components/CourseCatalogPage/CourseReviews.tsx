@@ -1,5 +1,5 @@
 import { Card, Container, Stack, Typography, Box } from "@mui/material";
-import ApiInstance from "../../api/ApiInstance";
+import api from "../../api";
 import { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import StarRateIcon from "@mui/icons-material/StarRate";

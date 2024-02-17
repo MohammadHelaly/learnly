@@ -1,6 +1,6 @@
 import { Box, Pagination, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import ApiInstance from "../../api/ApiInstance";
+import api from "../../api";
 import SearchBar from "./SearchBar";
 import Courses from "./Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
@@ -27,7 +27,7 @@ const CatalogSection = () => {
 	useEffect(() => {
 		setError(false);
 		setLoading(true);
-		ApiInstance.get("/courses", {
+		api.get("/courses", {
 			params: {
 				page,
 				limit,

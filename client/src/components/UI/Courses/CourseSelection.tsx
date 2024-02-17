@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, Container } from "@mui/material";
 import { useEffect, useState } from "react";
-import ApiInstance from "../../../api/ApiInstance";
+import api from "../../../api";
 import useAnimate from "../../../hooks/use-animate";
 import CourseCard from "./CourseCard";
 import { NavLink } from "react-router-dom";
@@ -47,7 +47,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 	useEffect(() => {
 		setError(false);
 		setLoading(true);
-		ApiInstance.get(url, {
+		api.get(url, {
 			params: {
 				sort: "-ratingsQuantity",
 				limit: 3,

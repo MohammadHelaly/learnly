@@ -16,7 +16,7 @@ import AuthContext from "../../store/auth-context";
 import { ButtonGroup, Stack } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import ApiInstance from "../../api/ApiInstance";
+import api from "../../api";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 const leftDrawerPages = ["Catalog", "Careers", "About"];
@@ -70,7 +70,7 @@ const NavBar = () => {
 	};
 
 	const logoutHandler = () => {
-		ApiInstance.get("/users/logout")
+		api.get("/users/logout")
 			.then((response) => {
 				authContext.logout();
 			})

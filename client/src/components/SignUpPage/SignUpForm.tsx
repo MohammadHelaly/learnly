@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import ApiInstance from "../../api/ApiInstance";
+import api from "../../api";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 
@@ -55,7 +55,7 @@ const SignUpForm = () => {
 		formData.append("password", data.password);
 		formData.append("passwordConfirm", data.passwordConfirm);
 
-		ApiInstance.post("/users/signup", formData)
+		api.post("/users/signup", formData)
 			.then((response) => {
 				console.log(response);
 				authContext.login(response.data.data.user);

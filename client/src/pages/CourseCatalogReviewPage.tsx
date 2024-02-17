@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
-import ApiInstance from "../api/ApiInstance";
+import api from "../api";
 import { Box, Container, Pagination, Stack, Typography } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
 import CourseBanner from "../components/UI/Courses/CourseBanner";
@@ -85,7 +85,7 @@ const CourseCatalogReviewPage = () => {
 	useEffect(() => {
 		setError(false);
 		setLoading(true);
-		ApiInstance.get(`/courses/${courseId}/reviews`, {
+		api.get(`/courses/${courseId}/reviews`, {
 			params: {
 				page,
 				limit,

@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Box, ThemeProvider, createTheme } from "@mui/material";
-import ApiInstance from "./api/ApiInstance";
+import api from "./api";
 import AuthContext from "./store/auth-context";
 import ScrollToTop from "./pages/ScrollToTop";
 import Background from "./components/Background/Background";
@@ -28,7 +28,7 @@ function App() {
 			const parsedUser = JSON.parse(storedUser);
 			authContext.login(parsedUser);
 		} else {
-			ApiInstance.get("/users/authenticateMe")
+			api.get("/users/authenticateMe")
 				.then((response) => {
 					const receivedUser = response.data.data.user;
 					if (receivedUser !== null) {
