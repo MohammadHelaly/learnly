@@ -10,7 +10,6 @@ const InformationSection = () => {
 		<>
 			<Box
 				sx={{
-					// px: window.innerWidth > 600 ? 20 : 2,
 					color: "white",
 					overflowX: "hidden",
 				}}>

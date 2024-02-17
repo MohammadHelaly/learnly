@@ -10,11 +10,11 @@ import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CoursePrerequisitesAndSkills from "../components/CourseCatalogPage/CoursePrerequisitesAndSkills";
 import CourseDescription from "../components/CourseCatalogPage/CourseDescription";
 import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
-import SimilarCourses from "../components/CourseCatalogPage/Similar Courses";
 import CourseContents from "../components/CourseCatalogPage/CourseContents";
 import CourseInstructors from "../components/CourseCatalogPage/CourseInstructors";
 import CourseInformation from "../components/CourseCatalogPage/CourseInformation";
 import CourseCategories from "../components/CourseCatalogPage/CourseCategories";
+import CourseSelection from "../components/UI/Courses/CourseSelection";
 
 const CourseCatalogPage = () => {
 	const { courseId } = useParams();
@@ -41,6 +41,7 @@ const CourseCatalogPage = () => {
 		ratingsQuantity,
 		instructors,
 		image,
+		reviews,
 		paid,
 	} = course as Course;
 
@@ -86,7 +87,6 @@ const CourseCatalogPage = () => {
 					alignItems: "left",
 					justifyContent: "flex-start",
 					py: 3,
-					px: window.innerWidth > 600 ? 13 : 0,
 					backgroundColor: "white",
 				}}>
 				<Container maxWidth="lg">
@@ -111,11 +111,20 @@ const CourseCatalogPage = () => {
 					/>
 					<CourseReviews
 						courseId={courseId as string}
+						reviews={reviews as Review[]}
 						ratingsAverage={ratingsAverage}
 						ratingsQuantity={ratingsQuantity}
 						loading={loading}
 					/>
-					<SimilarCourses categories={categories} />
+					<CourseSelection
+						heading="See Some Similar Courses"
+						headingAlignment="left"
+						headingAnimated={false}
+						variant="white"
+						query={{
+							url: "/courses",
+						}}
+					/>
 				</Container>
 			</Box>
 			<Footer />

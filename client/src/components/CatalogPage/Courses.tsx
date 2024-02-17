@@ -1,5 +1,5 @@
-import { Box } from "@mui/system";
-import CourseCard from "./CourseCard";
+import { Grid } from "@mui/material";
+import CourseCard from "../UI/Courses/CourseCard";
 
 interface CoursesProps {
 	loading: boolean;
@@ -30,21 +30,14 @@ const Courses = (props: CoursesProps) => {
 	const { courses, loading } = props;
 
 	return (
-		<Box
+		<Grid
 			maxWidth="lg"
+			container
+			justifyContent="center"
+			alignContent="center"
+			gap={2}
 			sx={{
-				minHeight: window.innerHeight < 1500 ? "70vh" : "65vh",
-
-				display: "flex",
-				flexDirection: "row",
-				flexWrap: "wrap",
-				alignItems: "center",
-				justifyContent: "center",
-				pb: 3,
-				pt: 8,
-				px: window.innerWidth > 600 ? 8 : 7,
-				mt: window.innerWidth > 600 ? 8 : 7,
-				backgroundColor: "white",
+				mt: 14,
 			}}>
 			{courses?.map((course, index) => {
 				const {
@@ -81,7 +74,7 @@ const Courses = (props: CoursesProps) => {
 					/>
 				);
 			})}
-		</Box>
+		</Grid>
 	);
 };
 

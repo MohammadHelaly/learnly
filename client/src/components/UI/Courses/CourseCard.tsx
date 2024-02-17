@@ -62,9 +62,8 @@ const CourseCard = (props: CourseCardProps) => {
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: 350,
-				width: 350,
-				margin: 1,
+				height: 360,
+				width: 360,
 				opacity: !currentPath.includes("/courses") ? 0 : 1,
 				transition: `all 0.75s ease-in-out ${delay}s`,
 				transform: !currentPath.includes("/courses")

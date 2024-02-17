@@ -1,16 +1,24 @@
 import HomeSection from "../components/LandingPage/HomeSection";
+import CourseSelection from "../components/UI/Courses/CourseSelection";
 import InformationSection from "../components/LandingPage/InformationSection";
-import AnimatedPage from "./AnimatedPage";
-import PopularCoursesPreview from "../components/LandingPage/PopularCoursesPreview";
-import CallToAction from "../components/Miscellaneous/CallToAction";
+import CallToAction from "../components/UI/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";
 import Footer from "../components/Footer/Footer";
+import AnimatedPage from "./AnimatedPage";
 
 const LandingPage = () => {
 	return (
 		<AnimatedPage>
 			<HomeSection />
-			<PopularCoursesPreview />
+			<CourseSelection
+				heading="Check Out our Most Popular Courses"
+				headingAlignment="center"
+				headingAnimated={true}
+				variant="grey"
+				query={{
+					url: "/courses",
+				}}
+			/>
 			<InformationSection />
 			<TestimonialSection />
 			<CallToAction

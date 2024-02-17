@@ -2,7 +2,7 @@ import { Box, Pagination, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import ApiInstance from "../../api/ApiInstance";
 import SearchBar from "./SearchBar";
-import Courses from "./Courses/Courses";
+import Courses from "./Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
 
 interface Search {
@@ -49,8 +49,7 @@ const CatalogSection = () => {
 	return (
 		<Box
 			sx={{
-				minHeight: window.innerHeight < 1500 ? "70vh" : "65vh",
-				px: 0,
+				minHeight: "75vh",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
@@ -98,7 +97,7 @@ const CatalogSection = () => {
 				}}
 				variant="outlined"
 				sx={{
-					mt: 5,
+					mt: 8,
 					mb: 10,
 				}}
 			/>

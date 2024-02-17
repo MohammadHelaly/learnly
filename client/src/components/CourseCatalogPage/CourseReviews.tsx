@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 
 interface CourseReviewsProps {
 	courseId: string | number;
+	reviews: Review[];
 	ratingsAverage: number;
 	ratingsQuantity: number;
 	loading: boolean;
@@ -25,81 +26,65 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 }));
 
 const CourseReviews = (props: CourseReviewsProps) => {
-	const { courseId, ratingsAverage, ratingsQuantity, loading } = props;
-	const [reviews, setReviews] = useState<Review[]>([
-		{
-			id: 1,
-			rating: 4,
-			review: "This course was really good. But I think it could be better.But I think it could be better.But I think it could be better.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 2,
-			rating: 5,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 3,
-			rating: 3,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 4,
-			rating: 2,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 5,
-			rating: 1,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-	]);
-	// const [error, setError] = useState(false);
-	// const [loading, setLoading] = useState(false);
-
-	// useEffect(() => {
-	// 	ApiInstance.get(`/courses/${course.id}/reviews`)
-	// 		.then((response) => {
-	// 			console.log(response.data);
-	// 			// setCourse(response.data.data.course);
-	// 			setReviews(response.data.data.reviews);
-	// 			setLoading(false);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 			setError(true);
-	// 			setLoading(false);
-	// 		});
-	// }, [props.courseId]);
+	const { courseId, reviews, ratingsAverage, ratingsQuantity, loading } =
+		props;
+	// const [reviews, setReviews] = useState<Review[]>([
+	// 	{
+	// 		id: 1,
+	// 		rating: 4,
+	// 		review: "This course was really good. But I think it could be better.But I think it could be better.But I think it could be better.",
+	// 		user: {
+	// 			id: 1,
+	// 			name: "John Doe",
+	// 			photo: "https://i.pravatar.cc/300",
+	// 		},
+	// 		createdAt: "2021-10-10",
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		rating: 5,
+	// 		review: "This course was really good.",
+	// 		user: {
+	// 			id: 1,
+	// 			name: "John Doe",
+	// 			photo: "https://i.pravatar.cc/300",
+	// 		},
+	// 		createdAt: "2021-10-10",
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		rating: 3,
+	// 		review: "This course was really good.",
+	// 		user: {
+	// 			id: 1,
+	// 			name: "John Doe",
+	// 			photo: "https://i.pravatar.cc/300",
+	// 		},
+	// 		createdAt: "2021-10-10",
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		rating: 2,
+	// 		review: "This course was really good.",
+	// 		user: {
+	// 			id: 1,
+	// 			name: "John Doe",
+	// 			photo: "https://i.pravatar.cc/300",
+	// 		},
+	// 		createdAt: "2021-10-10",
+	// 	},
+	// 	{
+	// 		id: 5,
+	// 		rating: 1,
+	// 		review: "This course was really good.",
+	// 		user: {
+	// 			id: 1,
+	// 			name: "John Doe",
+	// 			photo: "https://i.pravatar.cc/300",
+	// 		},
+	// 		createdAt: "2021-10-10",
+	// 	},
+	// ]);
 
 	return (
 		<Box

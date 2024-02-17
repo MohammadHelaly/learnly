@@ -1,7 +1,7 @@
 import CareersSection from "../components/CareersPage/CareersSection";
 import CareersInformationSection from "../components/CareersPage/CareersInformationSection";
 import AnimatedPage from "./AnimatedPage";
-import CallToAction from "../components/Miscellaneous/CallToAction";
+import CallToAction from "../components/UI/CallToAction";
 import Footer from "../components/Footer/Footer";
 
 const CareersPage = () => {

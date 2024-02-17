@@ -39,6 +39,7 @@ interface Course {
 	price: number;
 	ratingsAverage: number;
 	ratingsQuantity: number;
+	reviews?: Review[];
 	categories: string[];
 	duration: number;
 	difficulty: "Beginner" | "Intermediate" | "Advanced";
