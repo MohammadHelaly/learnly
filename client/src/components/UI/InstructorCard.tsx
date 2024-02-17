@@ -41,9 +41,8 @@ const InstructorCard = (props: InstructorCardProps) => {
 	return (
 		<Card
 			sx={{
-				minWidth: "90%",
-				p: 4,
-				// backgroundColor: "#f5f5f5",
+				width: "100%",
+				p: 2,
 				borderRadius: 0,
 				boxShadow: "none",
 				borderBottom: "1px solid #dddddd",
@@ -124,7 +123,6 @@ const InstructorCard = (props: InstructorCardProps) => {
 							</Typography>
 						</Stack>
 					)}
-
 					<Typography variant="body2" color="text.secondary">
 						{loading ? (
 							<Skeleton

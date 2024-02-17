@@ -16,12 +16,14 @@ const CoursePrerequisitesAndSkills = (
 	return (
 		<Stack
 			direction={window.innerWidth > 600 ? "row" : "column"}
-			// spacing={1}
-			alignItems="flex-start">
+			spacing={4}
+			alignItems="flex-start"
+			justifyContent="space-between">
 			<Container
 				maxWidth="sm"
-				// sx={{ borderRight: "1px solid #dddddd" }}
-			>
+				sx={{
+					px: "0px !important",
+				}}>
 				<Typography
 					variant="h4"
 					sx={{
@@ -50,7 +52,6 @@ const CoursePrerequisitesAndSkills = (
 							alignItems="center"
 							color="text.secondary">
 							<ChecklistIcon />
-
 							<Typography
 								variant="body1"
 								color="text.secondary"
@@ -100,7 +101,11 @@ const CoursePrerequisitesAndSkills = (
 					)}
 				</Box>
 			</Container>
-			<Container maxWidth="sm">
+			<Container
+				maxWidth="sm"
+				sx={{
+					px: "0px !important",
+				}}>
 				<Typography
 					variant="h4"
 					sx={{
@@ -135,7 +140,6 @@ const CoursePrerequisitesAndSkills = (
 									animation="wave"
 									sx={{
 										width: "80%",
-										// height: "100%",
 									}}
 								/>
 							) : (

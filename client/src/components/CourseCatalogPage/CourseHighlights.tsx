@@ -1,4 +1,4 @@
-import { Card, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import AppShortcutIcon from "@mui/icons-material/AppShortcut";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";

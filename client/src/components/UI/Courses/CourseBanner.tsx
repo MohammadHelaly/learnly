@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Button,
-	Card,
 	Container,
-	ImageList,
-	Rating,
 	Stack,
 	Typography,
 	Skeleton,
@@ -13,14 +10,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "#9c27b0",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
 
 interface CourseBannerProps {
 	name: string;
@@ -52,10 +41,12 @@ const CourseBanner = (props: CourseBannerProps) => {
 
 	return (
 		<Box
-			// direction="row"
-			// justifyContent="space-between"
+			display="flex"
+			justifyContent="center"
+			alignItems="center"
 			sx={{
 				width: "100%",
+				maxWidth: "100%",
 				position: "fixed",
 				backgroundColor: "white",
 				opacity: scrolled ? 1 : 0,
@@ -63,10 +54,6 @@ const CourseBanner = (props: CourseBannerProps) => {
 				boxShadow: scrolled
 					? "0px 0px 10px 0px rgba(0,0,0,0.75)"
 					: "none",
-				textAlign: "left",
-
-				// mt: 8,
-				px: window.innerWidth > 600 ? 3 : 0,
 				py: window.innerWidth > 600 ? 3 : 1,
 				zIndex: scrolled ? 2 : -2,
 				transform: scrolled ? "none" : "translateY(-100%)",
@@ -75,13 +62,15 @@ const CourseBanner = (props: CourseBannerProps) => {
 				<Stack
 					direction="row"
 					justifyContent="space-between"
-					alignItems="center">
+					alignContent="center"
+					alignItems="center"
+					spacing={2}>
 					<Stack
 						direction="column"
 						alignItems="left"
 						justifyContent="left">
 						<Typography
-							variant={window.innerWidth > 600 ? "h5" : "h6"}
+							variant={window.innerWidth > 600 ? "h5" : "body1"}
 							sx={{
 								fontWeight: 500,
 							}}>
@@ -104,25 +93,19 @@ const CourseBanner = (props: CourseBannerProps) => {
 						size="large"
 						disableElevation
 						sx={{
-							// mb: 3,
-							width: window.innerWidth > 600 ? "20%" : "80%",
+							width: window.innerWidth > 600 ? "20%" : "60%",
 							height: 50,
-							fontSize: "1rem",
+							// fontSize:
+							// 	window.innerWidth > 600 ? "1rem" : "0.65rem",
 							backgroundColor: "#00f3b6",
-							// backgroundColor: "#9c27b0",
-							left: window.innerWidth > 600 ? "-3%" : "auto",
 							color: "black",
-							// border: "1px solid #00f3b6",
 							"&:hover": {
 								backgroundColor: "#9c27b0",
 								color: "white",
-								// backgroundColor: "transparent",
-								// color: "#9c27b0",
-								// border: "1px solid #9c27b0",
 							},
 						}}
 						endIcon={<ArrowForward />}>
-						Enroll now - ${price}
+						Enroll now
 					</Button>
 				</Stack>
 			</Container>

@@ -25,9 +25,8 @@ const ReviewCard = (props: ReviewCardProps) => {
 	return (
 		<Card
 			sx={{
-				minWidth: "90%",
-				p: 4,
-				// backgroundColor: "#f5f5f5",
+				width: "100%",
+				p: 2,
 				boxShadow: "none",
 				borderBottom: "1px solid #dddddd",
 				borderRadius: 0,
@@ -53,21 +52,21 @@ const ReviewCard = (props: ReviewCardProps) => {
 				)}
 				<Typography variant="h6">
 					{loading ? (
-						<Skeleton variant="text" animation="wave" width={80} />
+						<Skeleton variant="text" animation="wave" width={70} />
 					) : (
 						name
 					)}
 				</Typography>
 				<Typography variant="body2" color="text.secondary">
 					{loading ? (
-						<Skeleton variant="text" animation="wave" width={80} />
+						<Skeleton variant="text" animation="wave" width={70} />
 					) : (
 						new Date(createdAt).toLocaleDateString()
 					)}
 				</Typography>
 			</Stack>
 			{loading ? (
-				<Skeleton variant="text" animation="wave" width={80} />
+				<Skeleton variant="text" animation="wave" width={70} />
 			) : (
 				<Rating
 					name="read-only"

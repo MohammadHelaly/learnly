@@ -5,8 +5,8 @@ import Footer from "../components/Footer/Footer";
 import ApiInstance from "../api/ApiInstance";
 import { Box, Container, Pagination, Stack, Typography } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
-import CourseBanner from "../components/CourseCatalogPage/CourseBanner";
-import ReviewCard from "../components/CourseCatalogPage/ReviewCard";
+import CourseBanner from "../components/UI/Courses/CourseBanner";
+import ReviewCard from "../components/UI/ReviewCard";
 import StarRateIcon from "@mui/icons-material/StarRate";
 
 const CourseCatalogReviewPage = () => {

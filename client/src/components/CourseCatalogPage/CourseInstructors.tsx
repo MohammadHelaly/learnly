@@ -1,5 +1,5 @@
-import { Typography, Skeleton, Stack, Box } from "@mui/material";
-import InstructorCard from "./InstructorCard";
+import { Typography, Skeleton, Stack, Box, Container } from "@mui/material";
+import InstructorCard from "../UI/InstructorCard";
 
 interface CourseInstructorsProps {
 	instructors: {
@@ -18,10 +18,7 @@ const CourseInstructors = (props: CourseInstructorsProps) => {
 	const { instructors, loading } = props;
 
 	return (
-		<Box
-			sx={{
-				px: window.innerWidth > 600 ? 0 : 3,
-			}}>
+		<>
 			<Typography
 				variant="h4"
 				sx={{
@@ -30,12 +27,17 @@ const CourseInstructors = (props: CourseInstructorsProps) => {
 				}}>
 				Who Will Teach You{" "}
 			</Typography>
-			<Stack direction="column" spacing={2} alignItems="center">
-				{instructors?.map((instructor) => (
-					<InstructorCard instructor={instructor} loading={loading} />
-				))}
-			</Stack>
-		</Box>
+			<Container maxWidth="lg">
+				<Stack direction="column" gap={2} alignItems="center">
+					{instructors?.map((instructor) => (
+						<InstructorCard
+							instructor={instructor}
+							loading={loading}
+						/>
+					))}
+				</Stack>
+			</Container>
+		</>
 	);
 };
 

@@ -5,7 +5,7 @@ import Footer from "../components/Footer/Footer";
 import ApiInstance from "../api/ApiInstance";
 import { Box, Container, Typography } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
-import CourseBanner from "../components/CourseCatalogPage/CourseBanner";
+import CourseBanner from "../components/UI/Courses/CourseBanner";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CoursePrerequisitesAndSkills from "../components/CourseCatalogPage/CoursePrerequisitesAndSkills";
 import CourseDescription from "../components/CourseCatalogPage/CourseDescription";
