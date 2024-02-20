@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 
 interface CourseBannerProps {
+	courseId: string | number;
 	name: string;
 	price: number;
 	isLoading: boolean;
@@ -19,7 +20,7 @@ interface CourseBannerProps {
 }
 
 const CourseBanner = (props: CourseBannerProps) => {
-	const { name, price, isLoading, isError } = props;
+	const { courseId, name, price, isLoading, isError } = props;
 
 	const [scrolled, setScrolled] = useState(false);
 
@@ -41,6 +42,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 	}, [scrolled]);
 
 	return (
+		// isError ? null :
 		<Box
 			display="flex"
 			justifyContent="center"
@@ -69,21 +71,24 @@ const CourseBanner = (props: CourseBannerProps) => {
 						direction="column"
 						alignItems="left"
 						justifyContent="left">
-						<Typography
-							variant={window.innerWidth > 600 ? "h5" : "body1"}
-							sx={{
-								fontWeight: 500,
-							}}>
-							{isLoading ? (
-								<Skeleton
-									animation="wave"
-									variant="text"
-									width="100%"
-								/>
-							) : (
-								name
-							)}
-						</Typography>
+						{isLoading ? (
+							<Skeleton
+								animation="wave"
+								variant="text"
+								width="100%"
+								height={28}
+							/>
+						) : (
+							<Typography
+								variant={
+									window.innerWidth > 600 ? "h5" : "body1"
+								}
+								sx={{
+									fontWeight: 500,
+								}}>
+								{name}
+							</Typography>
+						)}
 						<Typography variant="body2">
 							Enroll now and get full lifetime access!
 						</Typography>

@@ -6,153 +6,115 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import dummyCourseSectionsData from "../../assets/data/dummyCourseSectionsData";
 import SectionHeader from "../UI/SectionHeader";
+import SectionWrapper from "../UI/SectionWrapper";
+import SkeletonCourseContents from "../UI/Courses/SkeletonCourseContents";
+import ErrorWarning from "../UI/ErrorWarning";
 
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
-	section?: Section[];
+	sections?: Section[];
 }
 
 const CourseContents = (props: CourseContentsProps) => {
-	const {
-		// sections,
-		isLoading,
-		isError,
-	} = props;
+	const { sections: selectedSections, isLoading, isError } = props;
 
-	const sections = dummyCourseSectionsData;
+	const sections = selectedSections ?? dummyCourseSectionsData;
 
 	return (
-		<Box sx={{ mt: 5 }}>
-			<SectionHeader
-				heading="Course Contents"
-				headingAlignment="left"
-				headingAnimated={false}
-			/>
-			{sections?.map((section: Section, index: number) => {
-				const { id, title, description, modules, duration } = section;
-				return (
-					<Accordion
-						key={id}
-						disableGutters={true}
-						sx={{
-							boxShadow: "none !important",
-							border: `1px solid #dddddd`,
-							borderBottom:
-								index === sections.length - 1
-									? `1px solid #dddddd`
-									: "none", // Add bottom border for the last one
-						}}>
-						<AccordionSummary
-							key={id + "summary"}
-							expandIcon={<ExpandMoreIcon />}
-							aria-controls="panel1a-content"
-							id="panel1a-header"
-							sx={{
-								backgroundColor: "#f5f5f5",
-
-								width: "100%",
-								flexDirection: "row-reverse",
-							}}>
-							<Stack
-								direction="row"
-								spacing={1}
-								alignItems="center"
-								justifyContent="space-between"
-								width="100%"
+		<SectionWrapper>
+			<SectionHeader heading="Course Contents" headingAlignment="left" />
+			{
+				// isError ? (
+				// 	<ErrorWarning />
+				// ) :
+				isLoading ? (
+					<SkeletonCourseContents />
+				) : (
+					sections?.map((section: Section, index: number) => {
+						const { id, title, description, modules, duration } =
+							section;
+						return (
+							<Accordion
+								key={id}
+								disableGutters={true}
 								sx={{
-									ml: 1,
+									boxShadow: "none !important",
+									border: `1px solid #dddddd`,
+									borderBottom:
+										index === sections.length - 1
+											? `1px solid #dddddd`
+											: "none", // Add bottom border for the last one
 								}}>
-								<Typography
-									variant="h5"
+								<AccordionSummary
+									key={id + "summary"}
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls="panel1a-content"
+									id="panel1a-header"
 									sx={{
-										fontWeight: "400",
+										backgroundColor: "#f5f5f5",
+										width: "100%",
+										flexDirection: "row-reverse",
 									}}>
-									{isLoading ? (
-										<Skeleton
-											animation="wave"
-											variant="text"
-											height={48}
-											width={200}
-										/>
-									) : (
-										title
-									)}
-								</Typography>
-								<Typography
-									variant="body1"
-									color="text.secondary"
-									sx={{
-										fontWeight: "400",
-									}}>
-									{isLoading ? (
-										<Skeleton
-											animation="wave"
-											variant="text"
-											height={48}
-											width={200}
-										/>
-									) : (
-										`${modules.length} Modules • ${duration} Hours`
-									)}
-								</Typography>
-							</Stack>
-						</AccordionSummary>
-						<AccordionDetails
-							key={id + "details"}
-							sx={{
-								borderTop: "1px solid #dddddd",
-							}}>
-							<Typography variant="h6" color="text.secondary">
-								{isLoading ? (
-									<>
-										<Skeleton
-											animation="wave"
-											variant="text"
-											// height={48}
-											width={400}
-										/>
-										<Skeleton
-											animation="wave"
-											variant="text"
-											// height={48}
-											width={300}
-										/>
-									</>
-								) : (
-									description
-								)}
-							</Typography>
-						</AccordionDetails>
-						{modules.map((module: Module) => {
-							const { title } = module;
-							return (
-								<AccordionDetails key={title}>
 									<Stack
 										direction="row"
 										spacing={1}
-										alignItems="center">
-										<PlayCircleIcon fontSize="small" />
-										<Typography variant="body1">
-											{isLoading ? (
-												<Skeleton
-													animation="wave"
-													variant="text"
-													// height={48}
-													width={300}
-												/>
-											) : (
-												title
-											)}
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+										sx={{
+											ml: 1,
+										}}>
+										<Typography
+											variant="h5"
+											sx={{
+												fontWeight: "400",
+											}}>
+											{title}
+										</Typography>
+										<Typography
+											variant="body1"
+											color="text.secondary"
+											sx={{
+												fontWeight: "400",
+											}}>
+											{`${modules.length} Modules • ${duration} Hours`}
 										</Typography>
 									</Stack>
+								</AccordionSummary>
+								<AccordionDetails
+									key={id + "details"}
+									sx={{
+										borderTop: "1px solid #dddddd",
+									}}>
+									<Typography
+										variant="h6"
+										color="text.secondary">
+										{description}
+									</Typography>
 								</AccordionDetails>
-							);
-						})}
-					</Accordion>
-				);
-			})}
-		</Box>
+								{modules.map((module: Module) => {
+									const { title } = module;
+									return (
+										<AccordionDetails key={title}>
+											<Stack
+												direction="row"
+												spacing={1}
+												alignItems="center">
+												<PlayCircleIcon fontSize="small" />
+												<Typography variant="body1">
+													{title}
+												</Typography>
+											</Stack>
+										</AccordionDetails>
+									);
+								})}
+							</Accordion>
+						);
+					})
+				)
+			}
+		</SectionWrapper>
 	);
 };
 

@@ -19,8 +19,8 @@ import {
 	Stack,
 } from "@mui/material";
 import {
-	Menu as MenuIcon,
-	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
+	Menu,
+	ShoppingCartOutlined,
 	FavoriteBorderOutlined,
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -151,7 +151,7 @@ const NavBar = () => {
 							aria-haspopup="true"
 							onClick={handleOpenLeftDrawer}
 							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
-							<MenuIcon />
+							<Menu />
 						</IconButton>
 						<SwipeableDrawer
 							anchor="left"
@@ -274,7 +274,7 @@ const NavBar = () => {
 											color: "#ffffff",
 										},
 									}}>
-									<ShoppingCartOutlinedIcon />
+									<ShoppingCartOutlined />
 								</Button>
 							</ButtonGroup>
 							<Box sx={{ flexGrow: 0 }}>

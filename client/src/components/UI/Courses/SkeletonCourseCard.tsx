@@ -1,33 +1,14 @@
 import { Card, Box, Skeleton } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import useAnimate from "../../../hooks/use-animate";
 
-interface SkeletonCourseCardProps {
-	index: number;
-}
-
-const SkeletonCourseCard = (props: SkeletonCourseCardProps) => {
-	const { index } = props;
-
-	const elementRef = useAnimate("animate", false);
-
-	const currentPath = useLocation().pathname;
-
-	const delay = 0.2 + ((index % 3) + 1) * 0.2;
-
+const SkeletonCourseCard = () => {
 	return (
 		<Card
-			ref={elementRef}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
 				height: 360,
 				width: 360,
-				opacity: !currentPath.includes("/courses") ? 0 : 1,
-				transition: `all 0.75s ease-in-out ${delay}s`,
-				transform: !currentPath.includes("/courses")
-					? "translateY(50%)"
-					: "none",
+				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
 				borderBottom: "1px solid #dddddd",

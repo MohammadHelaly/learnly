@@ -37,8 +37,7 @@ const CourseDescription = (props: CourseDescriptionProps) => {
 						variant="body1"
 						color="text.secondary"
 						sx={{
-							textAlign:
-								window.innerWidth > 600 ? "left" : "center",
+							textAlign: "left",
 							my: 5,
 						}}>
 						{description}

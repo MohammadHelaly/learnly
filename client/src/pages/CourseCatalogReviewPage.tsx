@@ -64,6 +64,7 @@ const CourseCatalogReviewPage = () => {
 	return (
 		<AnimatedPage>
 			<CourseBanner
+				courseId={courseId as string}
 				name={name}
 				price={price}
 				isLoading={isLoadingCourse}

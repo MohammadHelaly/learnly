@@ -82,9 +82,7 @@ const SignUpForm = () => {
 			sx={{
 				width: "100%",
 				maxWidth: "500px",
-				// display: "flex",
-				// flexDirection: "column",
-				p: 3,
+				p: 2,
 				my: 6,
 				backgroundColor: "#ffffff",
 				borderRadius: "10px",

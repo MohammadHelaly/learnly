@@ -56,12 +56,14 @@ const CourseCatalogPage = () => {
 	return (
 		<AnimatedPage>
 			<CourseBanner
+				courseId={courseId as string}
 				name={name}
 				price={price}
 				isLoading={isLoading}
 				isError={isError}
 			/>
 			<CourseInformation
+				courseId={courseId as string}
 				name={name}
 				price={price}
 				summary={summary}

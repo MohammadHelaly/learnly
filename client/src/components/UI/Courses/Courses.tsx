@@ -1,6 +1,7 @@
 import { Grid, SxProps } from "@mui/material";
 import CourseCard from "./CourseCard";
 import SkeletonCourseCard from "./SkeletonCourseCard";
+import AnimatedCard from "../AnimatedCard";
 import ErrorWarning from "../ErrorWarning";
 
 interface CoursesProps {
@@ -45,51 +46,55 @@ const Courses = (props: CoursesProps) => {
 			sx={sx}>
 			{
 				// isError ? (
-				// <ErrorWarning />
+				// 	<ErrorWarning />
 				// ) :
-				isLoading
-					? Array(maxLength)
-							.fill(null)
-							.map((_, index) => (
-								<SkeletonCourseCard key={index} index={index} />
-							))
-					: courses?.map((course, index) => {
-							const {
-								id,
-								name,
-								price,
-								summary,
-								duration,
-								difficulty,
-								ratingsAverage,
-								ratingsQuantity,
-								instructors,
-								image,
-								paid,
-							} = course;
+				Array(maxLength)
+					.fill(null)
+					.map((_, index) => {
+						const course = courses[index];
 
-							const animated = cardsAnimated && !!course; //TODO: Fix this , may use isLoading or use a CardWrapper component
+						const {
+							id,
+							name,
+							price,
+							summary,
+							duration,
+							difficulty,
+							ratingsAverage,
+							ratingsQuantity,
+							instructors,
+							image,
+							paid,
+						} = course;
 
-							return (
-								<CourseCard
-									key={id}
-									index={index}
-									animated={animated}
-									id={id}
-									name={name}
-									image={image}
-									summary={summary}
-									description={summary}
-									duration={duration}
-									difficulty={difficulty}
-									instructors={instructors}
-									paid={paid}
-									price={price}
-									ratingsAverage={ratingsAverage}
-									ratingsQuantity={ratingsQuantity}
-								/>
-							);
-					  })
+						return (
+							<AnimatedCard
+								key={index}
+								index={index}
+								animated={cardsAnimated}>
+								{isLoading ? (
+									<SkeletonCourseCard key={index} />
+								) : (
+									courses && (
+										<CourseCard
+											key={id}
+											id={id}
+											name={name}
+											image={image}
+											summary={summary}
+											duration={duration}
+											difficulty={difficulty}
+											instructors={instructors}
+											paid={paid}
+											price={price}
+											ratingsAverage={ratingsAverage}
+											ratingsQuantity={ratingsQuantity}
+										/>
+									)
+								)}
+							</AnimatedCard>
+						);
+					})
 			}
 		</Grid>
 	);

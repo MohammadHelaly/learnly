@@ -1,16 +1,12 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
-import useAnimate from "../../../hooks/use-animate";
 
 interface CourseCardProps {
-	index: number;
-	animated?: boolean;
 	id: number | string;
 	name: string;
 	image: string;
 	summary: string;
-	description: string;
 	instructors: {
 		id: number | string;
 		name: string;
@@ -35,8 +31,6 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 
 const CourseCard = (props: CourseCardProps) => {
 	const {
-		index,
-		animated,
 		id,
 		name,
 		image,
@@ -49,21 +43,14 @@ const CourseCard = (props: CourseCardProps) => {
 		duration,
 	} = props;
 
-	const elementRef = useAnimate("animate", false);
-
-	const delay = 0.2 + ((index % 3) + 1) * 0.2;
-
 	return (
 		<Card
-			ref={animated ? elementRef : null}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
 				height: 360,
 				width: 360,
-				opacity: animated ? 0 : 1,
-				transition: `all 0.75s ease-in-out ${delay}s`,
-				transform: animated ? "translateY(50%)" : "none",
+				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
 				borderBottom: "1px solid #dddddd",
@@ -96,7 +83,6 @@ const CourseCard = (props: CourseCardProps) => {
 						}}>
 						{name.length > 30 ? name.slice(0, 30) + "..." : name}
 					</Typography>
-
 					<Typography
 						variant="body1"
 						color="text.secondary"
