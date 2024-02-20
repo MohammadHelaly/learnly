@@ -5,11 +5,12 @@ import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 
 interface CourseHighlightsProps {
 	duration: number;
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const CourseHighlights = (props: CourseHighlightsProps) => {
-	const { duration, loading } = props;
+	const { duration, isLoading, isError } = props;
 
 	return (
 		<Stack

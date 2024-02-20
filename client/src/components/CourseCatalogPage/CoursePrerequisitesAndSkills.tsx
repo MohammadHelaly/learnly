@@ -5,13 +5,14 @@ import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 interface CoursePrerequisitesAndSkillsProps {
 	prerequisites: string[];
 	skills: string[];
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const CoursePrerequisitesAndSkills = (
 	props: CoursePrerequisitesAndSkillsProps
 ) => {
-	const { prerequisites, skills, loading } = props;
+	const { prerequisites, skills, isLoading, isError } = props;
 
 	return (
 		<Stack
@@ -66,14 +67,15 @@ const CoursePrerequisitesAndSkills = (
 							</Typography>
 						</Stack>
 					) : (
-						prerequisites?.map((prerequisite) => (
+						prerequisites?.map((prerequisite, index) => (
 							<Stack
+								key={index + "prerequisite"}
 								direction="row"
 								spacing={1}
 								alignItems="center"
 								color="text.secondary">
 								<ChecklistIcon />
-								{loading ? (
+								{isLoading ? (
 									<Skeleton
 										variant="text"
 										animation="wave"
@@ -127,14 +129,15 @@ const CoursePrerequisitesAndSkills = (
 								? "repeat(6,minmax(50px, 1fr))"
 								: "repeat(12,minmax(50px, 1fr))",
 					}}>
-					{skills?.map((skill) => (
+					{skills?.map((skill, index) => (
 						<Stack
+							key={index + "skill"}
 							direction="row"
 							spacing={1}
 							alignItems="center"
 							color="text.secondary">
 							<ChecklistRtlIcon />
-							{loading ? (
+							{isLoading ? (
 								<Skeleton
 									variant="text"
 									animation="wave"

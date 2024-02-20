@@ -2,11 +2,12 @@ import { Card, Stack, Typography, Skeleton } from "@mui/material";
 
 interface CourseCategoriesProps {
 	categories: string[];
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const CourseCategories = (props: CourseCategoriesProps) => {
-	const { categories, loading } = props;
+	const { categories, isLoading, isError } = props;
 
 	return (
 		<Stack
@@ -42,7 +43,7 @@ const CourseCategories = (props: CourseCategoriesProps) => {
 						sx={{
 							mt: 0.5,
 						}}>
-						{loading ? (
+						{isLoading ? (
 							<Skeleton
 								animation="wave"
 								variant="text"

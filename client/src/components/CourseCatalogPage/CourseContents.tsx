@@ -1,77 +1,39 @@
-import { Typography, Skeleton, Stack } from "@mui/material";
+import { Typography, Skeleton, Stack, Box } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import dummyCourseSectionsData from "../../assets/data/dummyCourseSectionsData";
+import SectionHeader from "../UI/SectionHeader";
 
 interface CourseContentsProps {
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
+	section?: Section[];
 }
 
 const CourseContents = (props: CourseContentsProps) => {
 	const {
 		// sections,
-		loading,
+		isLoading,
+		isError,
 	} = props;
-	const sections: Section[] = [
-		{
-			title: "Section 1",
-			description: "This is section 1",
-			modules: [
-				{ title: "Module 1" },
-				{ title: "Module 2" },
-				{ title: "Module 3" },
-			],
-			duration: 2,
-		},
-		{
-			title: "Section 2",
-			description: "This is section 2",
-			modules: [
-				{ title: "Module 1" },
-				{ title: "Module 2" },
-				{ title: "Module 3" },
-			],
-			duration: 2,
-		},
-		{
-			title: "Section 3",
-			description: "This is section 3",
-			modules: [
-				{ title: "Module 1" },
-				{ title: "Module 2" },
-				{ title: "Module 3" },
-			],
-			duration: 2,
-		},
-		{
-			title: "Section 4",
-			description: "This is section 4",
-			modules: [
-				{ title: "Module 1" },
-				{ title: "Module 2" },
-				{ title: "Module 3" },
-			],
-			duration: 2,
-		},
-	];
+
+	const sections = dummyCourseSectionsData;
 
 	return (
-		<>
-			<Typography
-				variant="h4"
-				sx={{
-					textAlign: window.innerWidth > 600 ? "left" : "center",
-					my: 5,
-				}}>
-				Course Contents{" "}
-			</Typography>
+		<Box sx={{ mt: 5 }}>
+			<SectionHeader
+				heading="Course Contents"
+				headingAlignment="left"
+				headingAnimated={false}
+			/>
 			{sections?.map((section: Section, index: number) => {
-				const { title, description, modules, duration } = section;
+				const { id, title, description, modules, duration } = section;
 				return (
 					<Accordion
-						key={title}
+						key={id}
 						disableGutters={true}
 						sx={{
 							boxShadow: "none !important",
@@ -82,6 +44,7 @@ const CourseContents = (props: CourseContentsProps) => {
 									: "none", // Add bottom border for the last one
 						}}>
 						<AccordionSummary
+							key={id + "summary"}
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
 							id="panel1a-header"
@@ -105,7 +68,7 @@ const CourseContents = (props: CourseContentsProps) => {
 									sx={{
 										fontWeight: "400",
 									}}>
-									{loading ? (
+									{isLoading ? (
 										<Skeleton
 											animation="wave"
 											variant="text"
@@ -122,7 +85,7 @@ const CourseContents = (props: CourseContentsProps) => {
 									sx={{
 										fontWeight: "400",
 									}}>
-									{loading ? (
+									{isLoading ? (
 										<Skeleton
 											animation="wave"
 											variant="text"
@@ -136,11 +99,12 @@ const CourseContents = (props: CourseContentsProps) => {
 							</Stack>
 						</AccordionSummary>
 						<AccordionDetails
+							key={id + "details"}
 							sx={{
 								borderTop: "1px solid #dddddd",
 							}}>
 							<Typography variant="h6" color="text.secondary">
-								{loading ? (
+								{isLoading ? (
 									<>
 										<Skeleton
 											animation="wave"
@@ -163,14 +127,14 @@ const CourseContents = (props: CourseContentsProps) => {
 						{modules.map((module: Module) => {
 							const { title } = module;
 							return (
-								<AccordionDetails>
+								<AccordionDetails key={title}>
 									<Stack
 										direction="row"
 										spacing={1}
 										alignItems="center">
 										<PlayCircleIcon fontSize="small" />
 										<Typography variant="body1">
-											{loading ? (
+											{isLoading ? (
 												<Skeleton
 													animation="wave"
 													variant="text"
@@ -188,7 +152,7 @@ const CourseContents = (props: CourseContentsProps) => {
 					</Accordion>
 				);
 			})}
-		</>
+		</Box>
 	);
 };
 

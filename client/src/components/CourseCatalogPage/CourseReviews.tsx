@@ -1,104 +1,52 @@
-import { Card, Container, Stack, Typography, Box } from "@mui/material";
+import { Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import { useEffect, useState } from "react";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import ReviewCard from "../UI/ReviewCard";
-import { NavLink } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import Reviews from "../UI/Reviews/Reviews";
+import BottomTextLink from "../UI/BottomTextLink";
+import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
+import SectionHeader from "../UI/SectionHeader";
+import SectionWrapper from "../UI/SectionWrapper";
 
 interface CourseReviewsProps {
 	courseId: string | number;
 	reviews: Review[];
 	ratingsAverage: number;
 	ratingsQuantity: number;
-	loading: boolean;
+	isLoading?: boolean;
+	isError?: boolean;
 }
 
-const StyledNavLink = styled(NavLink)((theme) => ({
-	display: "flex",
-	flexDirection: "row",
-	alignItems: "center",
-	justifyContent: "center",
-	color: " #9c27b0",
-	transition: "all 1s ease",
-	textDecoration: "none",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
-
 const CourseReviews = (props: CourseReviewsProps) => {
-	const { courseId, reviews, ratingsAverage, ratingsQuantity, loading } =
-		props;
-	const dummyReviews = [
-		{
-			id: 1,
-			rating: 4,
-			review: "This course was really good. But I think it could be better.But I think it could be better.But I think it could be better.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 2,
-			rating: 5,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 3,
-			rating: 3,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 4,
-			rating: 2,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 5,
-			rating: 1,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-	];
+	const { courseId, ratingsAverage, ratingsQuantity } = props;
+
+	const dummyReviews = dummyCourseReviewsData.slice(0, 3);
+
+	const {
+		data, //: courseReviews,
+		isLoading: isLoading,
+		isError: isError,
+	} = useQuery({
+		queryKey: ["courseReviews", { courseId }],
+		queryFn: async () =>
+			await api.get(`/courses/${courseId}/reviews`, {
+				params: {
+					limit: 3,
+					fields: "name,price,ratingsAverage,ratingsQuantity",
+				},
+			}),
+		select: (response) => response.data.data.reviews,
+	});
+
+	const courseReviews = data ?? dummyReviews;
 
 	return (
-		<>
-			<Typography
-				variant="h4"
-				sx={{
-					textAlign: window.innerWidth > 600 ? "left" : "center",
-					my: 5,
-				}}>
-				What people are saying about this course
-			</Typography>
+		<SectionWrapper>
+			<SectionHeader
+				heading="What People Are Saying About This Course"
+				headingAlignment="left"
+				headingAnimated={false}
+			/>
 			<Typography
 				variant="h5"
 				color="text.secondary"
@@ -111,51 +59,17 @@ const CourseReviews = (props: CourseReviewsProps) => {
 				{ratingsQuantity}
 				{" ratings)"}
 			</Typography>
-			<Container maxWidth="lg">
-				<Stack direction="column" gap={2} alignItems="center">
-					{/* {reviews &&
-					reviews.slice(0, 4).map((reviewItem) => {
-						const { id, rating, review, user, createdAt } =
-							reviewItem;
-						return (
-							<ReviewCard
-								key={id}
-								review={review}
-								user={user}
-								createdAt={createdAt}
-								rating={rating}
-								loading={loading}
-							/>
-						);
-					})} */}
-					{dummyReviews &&
-						dummyReviews.slice(0, 4).map((reviewItem) => {
-							const { id, rating, review, user, createdAt } =
-								reviewItem;
-							return (
-								<ReviewCard
-									key={id}
-									review={review}
-									user={user}
-									createdAt={createdAt}
-									rating={rating}
-									loading={loading}
-								/>
-							);
-						})}
-				</Stack>
-				<StyledNavLink
-					to={`/courses/${courseId}/reviews`}
-					sx={{
-						mt: 5,
-					}}>
-					<Typography variant="h6" textAlign="center">
-						See More Reviews
-					</Typography>
-					<ArrowForwardIcon />
-				</StyledNavLink>
-			</Container>
-		</>
+			<Reviews
+				reviews={courseReviews}
+				isLoading={isLoading}
+				isError={isError}
+				maxLength={3}
+			/>
+			<BottomTextLink
+				to={`/courses/${courseId}/reviews`}
+				text="See More Reviews"
+			/>
+		</SectionWrapper>
 	);
 };
 

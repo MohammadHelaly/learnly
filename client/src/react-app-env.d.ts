@@ -34,6 +34,7 @@ interface Course {
 		ratingsQuantity: number;
 		students: number;
 		bio?: string;
+		courses: (number | string)[];
 	}[];
 	paid: boolean;
 	price: number;
@@ -48,6 +49,7 @@ interface Course {
 }
 
 interface Section {
+	id: number | string;
 	title: string;
 	description: string;
 	modules: Module[];

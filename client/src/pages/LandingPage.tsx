@@ -14,6 +14,7 @@ const LandingPage = () => {
 				heading="Check Out our Most Popular Courses"
 				headingAlignment="center"
 				headingAnimated={true}
+				cardsAnimated={true}
 				variant="grey"
 				query={{
 					url: "/courses",

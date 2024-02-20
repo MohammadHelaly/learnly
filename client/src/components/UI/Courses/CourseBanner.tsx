@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Box,
 	Button,
@@ -14,11 +14,12 @@ import ArrowForward from "@mui/icons-material/ArrowForward";
 interface CourseBannerProps {
 	name: string;
 	price: number;
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const CourseBanner = (props: CourseBannerProps) => {
-	const { name, price, loading } = props;
+	const { name, price, isLoading, isError } = props;
 
 	const [scrolled, setScrolled] = useState(false);
 
@@ -73,7 +74,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 							sx={{
 								fontWeight: 500,
 							}}>
-							{loading ? (
+							{isLoading ? (
 								<Skeleton
 									animation="wave"
 									variant="text"

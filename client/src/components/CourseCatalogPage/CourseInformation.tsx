@@ -33,7 +33,8 @@ interface CourseInformationProps {
 	image: string;
 	paid: boolean;
 	price: number;
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const StyledNavLink = styled(NavLink)((theme) => ({
@@ -56,7 +57,8 @@ const CourseInformation = (props: CourseInformationProps) => {
 		image,
 		paid,
 		price,
-		loading,
+		isLoading,
+		isError,
 	} = props;
 
 	return (
@@ -88,7 +90,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 								// color: "#9c27b0",
 								mb: 2,
 							}}>
-							{loading ? (
+							{isLoading ? (
 								<>
 									<Skeleton
 										animation="wave"
@@ -117,7 +119,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 								// color: "#9c27b0",
 								my: 2,
 							}}>
-							{loading ? (
+							{isLoading ? (
 								<>
 									<Skeleton animation="wave" variant="text" />
 									<Skeleton animation="wave" variant="text" />
@@ -169,7 +171,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 											ml: 1,
 											// color: "#9c27b0",
 										}}>
-										{loading ? (
+										{isLoading ? (
 											<Skeleton
 												animation="wave"
 												width="80px"
@@ -210,7 +212,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 											ml: 1,
 											// color: "#9c27b0",
 										}}>
-										{loading ? (
+										{isLoading ? (
 											<Skeleton
 												animation="wave"
 												width="80px"
@@ -232,7 +234,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 							justifyContent={
 								window.innerWidth > 600 ? "left" : "center"
 							}>
-							{loading ? (
+							{isLoading ? (
 								<Skeleton animation="wave" width="40%" />
 							) : (
 								<>
@@ -270,7 +272,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 								// color: "#9c27b0",
 								my: 2,
 							}}>
-							{loading ? (
+							{isLoading ? (
 								<Skeleton
 									animation="wave"
 									variant="text"
@@ -300,7 +302,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 										// color: "#9c27b0",
 										my: 2,
 									}}>
-									{loading ? (
+									{isLoading ? (
 										<Skeleton
 											animation="wave"
 											variant="text"
@@ -353,7 +355,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 							// justifyContent: "flex-start",
 							pb: window.innerWidth > 600 ? 0 : 3,
 						}}>
-						{window.innerWidth < 600 && loading && (
+						{window.innerWidth < 600 && isLoading && (
 							<Skeleton
 								animation="wave"
 								variant="rectangular"
@@ -368,7 +370,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 								}}
 							/>
 						)}{" "}
-						{!loading && window.innerWidth < 600 && (
+						{!isLoading && window.innerWidth < 600 && (
 							<img
 								src={image}
 								alt={name}
@@ -385,7 +387,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 						)}
 						{window.innerWidth > 600 && (
 							<Stack direction="column" width="100%">
-								{loading ? (
+								{isLoading ? (
 									<Skeleton
 										animation="wave"
 										variant="rectangular"
@@ -440,7 +442,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 											// color: "#9c27b0",
 											my: 2,
 										}}>
-										{loading ? (
+										{isLoading ? (
 											<Skeleton
 												animation="wave"
 												variant="text"

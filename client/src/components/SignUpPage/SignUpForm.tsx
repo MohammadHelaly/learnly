@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import api from "../../api";
 import { useContext } from "react";
@@ -48,6 +49,22 @@ const SignUpForm = () => {
 		resolver: zodResolver(schema),
 	});
 
+	const queryClient = useQueryClient();
+
+	const { mutate, isError, isPending } = useMutation({
+		mutationFn: (formData: FormData) => {
+			return api.post("/users/signup", formData);
+		},
+		onSuccess: (response) => {
+			authContext.login(response.data.data.user);
+			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] }); //TODO: Check if this is necessary
+			navigate("/dashboard");
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
 	const onSubmit = (data: SignUpSchemaType) => {
 		const formData = new FormData();
 		formData.append("name", data.name);
@@ -55,15 +72,7 @@ const SignUpForm = () => {
 		formData.append("password", data.password);
 		formData.append("passwordConfirm", data.passwordConfirm);
 
-		api.post("/users/signup", formData)
-			.then((response) => {
-				console.log(response);
-				authContext.login(response.data.data.user);
-				navigate("/dashboard");
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		mutate(formData);
 	};
 
 	return (
@@ -104,6 +113,11 @@ const SignUpForm = () => {
 				<br />
 				Learnly is for everyone, everywhere.
 			</Typography>
+			{isError && (
+				<Typography variant="body1" color="error" sx={{ mt: 2 }}>
+					Something went wrong. Please try again.
+				</Typography>
+			)}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				noValidate
@@ -116,6 +130,7 @@ const SignUpForm = () => {
 							required
 							label="Name"
 							variant="outlined"
+							disabled={isPending}
 							sx={{ width: "100%", mt: 4, mb: 2 }}
 							helperText={
 								errors.name && (
@@ -136,6 +151,7 @@ const SignUpForm = () => {
 							required
 							label="Email"
 							variant="outlined"
+							disabled={isPending}
 							sx={{ width: "100%", mb: 2 }}
 							helperText={
 								errors.email && (
@@ -156,6 +172,7 @@ const SignUpForm = () => {
 							required
 							type="password"
 							label="Password"
+							disabled={isPending}
 							variant="outlined"
 							sx={{ width: "100%", mb: 2 }}
 							helperText={
@@ -171,6 +188,7 @@ const SignUpForm = () => {
 				/>
 				<Controller
 					name="passwordConfirm"
+					disabled={isPending}
 					control={control}
 					render={({ field }) => (
 						<TextField
