@@ -98,17 +98,17 @@ const CourseCard = (props: CourseCardProps) => {
 					</Typography>
 
 					<Typography
-						variant="body1"
-						color="text.secondary"
-						sx={{
+							variant="body1"
+							color="text.secondary"
+							sx={{
 							fontWeight: 400,
-
 							width: "100%",
-						}}>
-						{instructors[0].name.length > 30
-							? `${instructors[0].name.slice(0, 30)}...`
-							: instructors[0].name}
+							}}>
+							{instructors[0]?.name.length > 30
+							? `${instructors[0]?.name.slice(0, 30)}...`
+							: instructors[0]?.name}
 					</Typography>
+					
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"

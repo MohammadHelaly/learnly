@@ -34,7 +34,7 @@ interface CoursesProps {
 
 const Courses = (props: CoursesProps) => {
 	const { courses, maxLength, isLoading, isError, cardsAnimated, sx } = props;
-
+	console.log("Courses.tsx", courses);
 	return (
 		<Grid
 			maxWidth="lg"

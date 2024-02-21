@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 
 interface SearchBarProps {
 	setSearchHandler: (search: string) => void;
+	Typing: (value: string) => void;
 }
 
 const SearchBar = (props: SearchBarProps) => {
-	const { setSearchHandler } = props;
+	const { setSearchHandler,Typing } = props;
 	const [scrolled, setScrolled] = useState(false);
 	const [search, setSearch] = useState("");
 
@@ -86,6 +87,7 @@ const SearchBar = (props: SearchBarProps) => {
 					value={search}
 					onChange={(event) => {
 						setSearch(event.target.value);
+						Typing(event.target.value);
 					}}
 				/>
 				<Button
