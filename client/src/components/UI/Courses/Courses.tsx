@@ -51,7 +51,18 @@ const Courses = (props: CoursesProps) => {
 				Array(maxLength)
 					.fill(null)
 					.map((_, index) => {
-						const course = courses[index];
+						if (isLoading) {
+							return (
+								<AnimatedCard
+									key={index}
+									index={index}
+									animated={cardsAnimated}>
+									<SkeletonCourseCard key={index} />
+								</AnimatedCard>
+							);
+						}
+						if (index >= courses.length) return;
+						const course = courses?.[index];
 
 						const {
 							id,
@@ -68,31 +79,29 @@ const Courses = (props: CoursesProps) => {
 						} = course;
 
 						return (
-							<AnimatedCard
-								key={index}
-								index={index}
-								animated={cardsAnimated}>
-								{isLoading ? (
-									<SkeletonCourseCard key={index} />
-								) : (
-									courses && (
-										<CourseCard
-											key={id}
-											id={id}
-											name={name}
-											image={image}
-											summary={summary}
-											duration={duration}
-											difficulty={difficulty}
-											instructors={instructors}
-											paid={paid}
-											price={price}
-											ratingsAverage={ratingsAverage}
-											ratingsQuantity={ratingsQuantity}
-										/>
-									)
-								)}
-							</AnimatedCard>
+							course && (
+								<AnimatedCard
+									key={index}
+									index={index}
+									animated={cardsAnimated}>
+									
+									<CourseCard
+										key={id}
+										id={id}
+										name={name}
+										image={image}
+										summary={summary}
+										duration={duration}
+										difficulty={difficulty}
+										instructors={instructors}
+										paid={paid}
+										price={price}
+										ratingsAverage={ratingsAverage}
+										ratingsQuantity={ratingsQuantity}
+									/>
+									
+								</AnimatedCard>
+							)
 						);
 					})
 			}
