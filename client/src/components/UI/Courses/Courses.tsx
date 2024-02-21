@@ -61,7 +61,9 @@ const Courses = (props: CoursesProps) => {
 								</AnimatedCard>
 							);
 						}
+
 						if (index >= courses.length) return;
+
 						const course = courses?.[index];
 
 						const {
@@ -84,7 +86,6 @@ const Courses = (props: CoursesProps) => {
 									key={index}
 									index={index}
 									animated={cardsAnimated}>
-									
 									<CourseCard
 										key={id}
 										id={id}
@@ -99,7 +100,6 @@ const Courses = (props: CoursesProps) => {
 										ratingsAverage={ratingsAverage}
 										ratingsQuantity={ratingsQuantity}
 									/>
-									
 								</AnimatedCard>
 							)
 						);
