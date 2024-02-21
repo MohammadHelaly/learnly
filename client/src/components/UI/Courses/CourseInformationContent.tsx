@@ -162,9 +162,9 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 									window.innerWidth > 600 ? "left" : "center",
 							}}>
 							{"Taught by"}
-							<StyledNavLink to={`/users/${instructors[0].id}`}>
+							<StyledNavLink to={`/users/${instructors[0]?.id}`}>
 								{" "}
-								{instructors[0].name}
+								{instructors[0]?.name}
 							</StyledNavLink>
 						</Typography>
 					</Stack>

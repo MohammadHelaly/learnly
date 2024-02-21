@@ -33,7 +33,7 @@ const Instructors = (props: InstructorsProps) => {
 								.map((_, index) => (
 									<SkeletonInstructorCard key={index} />
 								))
-						: instructors.map((instructor, index) => (
+						: instructors?.map((instructor, index) => (
 								<InstructorCard
 									key={index}
 									instructor={instructor}

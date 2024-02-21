@@ -28,52 +28,34 @@ const CourseCatalogPage = () => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["course", { courseId }],
+		queryKey: ["courses", { courseId }],
 		queryFn: async () => await api.get(`/courses/${courseId}`),
-		select: (response) => response.data.data.course,
+		select: (response) => response.data.data.data,
 	});
 
 	const course = data ?? dummyCourse;
-
-	const {
-		name,
-		price,
-		categories,
-		prerequisites,
-		skills,
-		description,
-		summary,
-		duration,
-		difficulty,
-		ratingsAverage,
-		ratingsQuantity,
-		instructors,
-		image,
-		reviews,
-		paid,
-	} = course;
 
 	return (
 		<AnimatedPage>
 			<CourseBanner
 				courseId={courseId as string}
-				name={name}
-				price={price}
+				name={course?.name}
+				price={course?.price}
 				isLoading={isLoading}
 				isError={isError}
 			/>
 			<CourseInformation
 				courseId={courseId as string}
-				name={name}
-				price={price}
-				summary={summary}
-				duration={duration}
-				difficulty={difficulty}
-				ratingsAverage={ratingsAverage}
-				ratingsQuantity={ratingsQuantity}
-				instructors={instructors}
-				image={image}
-				paid={paid as boolean}
+				name={course?.name}
+				price={course?.price}
+				summary={course?.summary}
+				duration={course?.duration}
+				difficulty={course?.difficulty}
+				ratingsAverage={course?.ratingsAverage}
+				ratingsQuantity={course?.ratingsQuantity}
+				instructors={course?.instructors}
+				image={course?.imageCover}
+				paid={course?.paid as boolean}
 				isLoading={isLoading}
 				isError={isError}
 			/>
@@ -91,37 +73,37 @@ const CourseCatalogPage = () => {
 				}}>
 				<Container maxWidth="lg">
 					<CourseHighlights
-						duration={duration}
+						duration={course?.duration}
 						isLoading={isLoading}
 						isError={isError}
 					/>
 					<CourseCategories
-						categories={categories}
+						categories={course?.categories}
 						isLoading={isLoading}
 						isError={isError}
 					/>
 					<CoursePrerequisitesAndSkills
-						prerequisites={prerequisites}
-						skills={skills}
+						prerequisites={course?.prerequisites}
+						skills={course?.skills}
 						isLoading={isLoading}
 						isError={isError}
 					/>
 					<CourseContents isLoading={isLoading} isError={isError} />
 					<CourseDescription
-						description={description}
+						description={course?.description}
 						isLoading={isLoading}
 						isError={isError}
 					/>
 					<CourseInstructors
-						instructors={instructors}
+						instructors={course?.instructors}
 						isLoading={isLoading}
 						isError={isError}
 					/>
 					<CourseReviews
 						courseId={courseId as string}
-						reviews={reviews as Review[]}
-						ratingsAverage={ratingsAverage}
-						ratingsQuantity={ratingsQuantity}
+						reviews={course?.reviews as Review[]}
+						ratingsAverage={course?.ratingsAverage}
+						ratingsQuantity={course?.ratingsQuantity}
 					/>
 					<CourseSelection
 						heading="See Some Similar Courses"

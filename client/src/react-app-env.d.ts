@@ -23,7 +23,7 @@ interface Review {
 interface Course {
 	id: number | string;
 	name: string;
-	image: string;
+	imageCover: string;
 	summary: string;
 	description: string;
 	instructors: {

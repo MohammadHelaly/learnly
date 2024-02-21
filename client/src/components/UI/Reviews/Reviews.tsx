@@ -2,6 +2,7 @@ import { Container, Stack, SxProps } from "@mui/material";
 import ReviewCard from "./ReviewCard";
 import SkeletonReviewCard from "./SkeletonReviewCard";
 import ErrorWarning from "../ErrorWarning";
+import NothingFoundMessage from "../NothingFoundMessage";
 
 interface ReviewsProps {
 	isError: boolean;
@@ -31,25 +32,29 @@ const Reviews = (props: ReviewsProps) => {
 					// isError ? (
 					// 	<ErrorWarning />
 					// ) :
-					isLoading
-						? Array(maxLength)
-								.fill(null)
-								.map((_, index) => (
-									<SkeletonReviewCard key={index} />
-								))
-						: reviews.map((reviewItem) => {
-								const { id, rating, review, user, createdAt } =
-									reviewItem;
-								return (
-									<ReviewCard
-										key={id}
-										review={review}
-										rating={rating}
-										user={user}
-										createdAt={createdAt}
-									/>
-								);
-						  })
+					reviews?.length === 0 ? (
+						<NothingFoundMessage />
+					) : isLoading ? (
+						Array(maxLength)
+							.fill(null)
+							.map((_, index) => (
+								<SkeletonReviewCard key={index} />
+							))
+					) : (
+						reviews?.map((reviewItem) => {
+							const { id, rating, review, user, createdAt } =
+								reviewItem;
+							return (
+								<ReviewCard
+									key={id}
+									review={review}
+									rating={rating}
+									user={user}
+									createdAt={createdAt}
+								/>
+							);
+						})
+					)
 				}
 			</Stack>
 		</Container>

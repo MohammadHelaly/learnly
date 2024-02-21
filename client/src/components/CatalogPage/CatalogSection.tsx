@@ -63,6 +63,8 @@ const CatalogSection = () => {
 
 	const courses = data ?? dummyCoursesData.slice(0, 9);
 
+	const pagesCount = Math.ceil((courses?.length ?? 1) / 9);
+
 	return (
 		<Box
 			sx={{
@@ -85,7 +87,7 @@ const CatalogSection = () => {
 				}}
 			/>
 			<Pagination
-				count={10}
+				count={pagesCount}
 				page={page}
 				onChange={pageChangeHandler}
 				variant="outlined"

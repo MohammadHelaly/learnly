@@ -26,11 +26,15 @@ exports.getOne = (Model, populateOptions) =>
 	catchAsync(async (req, res, next) => {
 		let query = Model.findById(req.params.id);
 		if (populateOptions) query = query.populate(populateOptions);
-		const document = await query;
+
+		const features = new APIFeatures(query, req.query).limitFields();
+		const document = await features.query;
+
 		if (!document)
 			return next(
 				new AppError.default("No document found with that ID", 404)
 			);
+
 		res.status(200).json({
 			status: "success",
 			data: { data: document },

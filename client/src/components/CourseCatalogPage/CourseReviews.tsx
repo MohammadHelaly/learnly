@@ -35,7 +35,7 @@ const CourseReviews = (props: CourseReviewsProps) => {
 					fields: "name,price,ratingsAverage,ratingsQuantity",
 				},
 			}),
-		select: (response) => response.data.data.reviews,
+		select: (response) => response.data.data.data,
 	});
 
 	const courseReviews = data ?? dummyReviews;

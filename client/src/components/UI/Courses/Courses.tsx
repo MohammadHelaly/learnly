@@ -3,6 +3,7 @@ import CourseCard from "./CourseCard";
 import SkeletonCourseCard from "./SkeletonCourseCard";
 import AnimatedCard from "../AnimatedCard";
 import ErrorWarning from "../ErrorWarning";
+import NothingFoundMessage from "../NothingFoundMessage";
 
 interface CoursesProps {
 	isLoading: boolean;
@@ -28,7 +29,7 @@ interface CoursesProps {
 			students: number;
 			bio?: string;
 		}[];
-		image: string;
+		imageCover: string;
 		paid: boolean;
 	}[];
 }
@@ -48,62 +49,66 @@ const Courses = (props: CoursesProps) => {
 				// isError ? (
 				// 	<ErrorWarning />
 				// ) :
-				Array(maxLength)
-					.fill(null)
-					.map((_, index) => {
-						if (isLoading) {
+				courses?.length === 0 ? (
+					<NothingFoundMessage />
+				) : (
+					Array(maxLength)
+						.fill(null)
+						.map((_, index) => {
+							if (isLoading) {
+								return (
+									<AnimatedCard
+										key={index}
+										index={index}
+										animated={cardsAnimated}>
+										<SkeletonCourseCard key={index} />
+									</AnimatedCard>
+								);
+							}
+
+							if (index >= courses.length) return;
+
+							const course = courses?.[index];
+
+							const {
+								id,
+								name,
+								price,
+								summary,
+								duration,
+								difficulty,
+								ratingsAverage,
+								ratingsQuantity,
+								instructors,
+								imageCover,
+								paid,
+							} = course;
+
 							return (
-								<AnimatedCard
-									key={index}
-									index={index}
-									animated={cardsAnimated}>
-									<SkeletonCourseCard key={index} />
-								</AnimatedCard>
+								course && (
+									<AnimatedCard
+										key={index}
+										index={index}
+										animated={cardsAnimated}>
+										<CourseCard
+											key={id}
+											id={id}
+											name={name}
+											image={imageCover}
+											summary={summary}
+											duration={duration}
+											difficulty={difficulty}
+											instructors={instructors}
+											paid={paid}
+											price={price}
+											ratingsAverage={ratingsAverage}
+											ratingsQuantity={ratingsQuantity}
+										/>
+									</AnimatedCard>
+								)
 							);
-						}
-
-						if (index >= courses.length) return;
-
-						const course = courses?.[index];
-
-						const {
-							id,
-							name,
-							price,
-							summary,
-							duration,
-							difficulty,
-							ratingsAverage,
-							ratingsQuantity,
-							instructors,
-							image,
-							paid,
-						} = course;
-
-						return (
-							course && (
-								<AnimatedCard
-									key={index}
-									index={index}
-									animated={cardsAnimated}>
-									<CourseCard
-										key={id}
-										id={id}
-										name={name}
-										image={image}
-										summary={summary}
-										duration={duration}
-										difficulty={difficulty}
-										instructors={instructors}
-										paid={paid}
-										price={price}
-										ratingsAverage={ratingsAverage}
-										ratingsQuantity={ratingsQuantity}
-									/>
-								</AnimatedCard>
-							)
-						);
-					})
+						})
+				)
 			}
 		</Grid>
 	);

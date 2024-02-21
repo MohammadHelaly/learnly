@@ -22,22 +22,22 @@ const CourseCatalogReviewPage = () => {
 	};
 
 	const {
-		data: course,
+		data, //: course,
 		isLoading: isLoadingCourse,
 		isError: isErrorCourse,
 	} = useQuery({
-		queryKey: ["course", { courseId }],
+		queryKey: ["courses", { courseId }],
 		queryFn: async () =>
 			await api.get(`/courses/${courseId}`, {
 				params: {
 					fields: "name,price,ratingsAverage,ratingsQuantity",
 				},
 			}),
-		select: (response) => response.data.data.course,
+		select: (response) => response.data.data.data,
 	});
 
 	const {
-		data, //: courseReviews,
+		data: reviews, //: courseReviews,
 		isLoading: isLoadingReviews,
 		isError: isErrorReviews,
 	} = useQuery({
@@ -49,24 +49,26 @@ const CourseCatalogReviewPage = () => {
 					limit: 9,
 				},
 			}),
-		select: (response) => response.data.data.reviews,
+		select: (response) => response.data.data.data,
 	});
 
-	const courseReviews = data ?? dummyReviews;
+	const courseReviews = reviews ?? dummyReviews;
 
 	const dummyCourse = dummyCoursesData.find(
 		(course) => course.id === parseInt(courseId as string)
 		// (course) => course.id === (courseId ? parseInt(courseId))
 	);
-	const { name, price, ratingsAverage, ratingsQuantity } =
-		dummyCourse as Course;
+
+	const course = data ?? dummyCourse;
+
+	const pagesCount = Math.ceil((courseReviews?.length ?? 1) / 9);
 
 	return (
 		<AnimatedPage>
 			<CourseBanner
 				courseId={courseId as string}
-				name={name}
-				price={price}
+				name={course?.name}
+				price={course?.price}
 				isLoading={isLoadingCourse}
 				isError={isErrorCourse}
 			/>
@@ -91,7 +93,7 @@ const CourseCatalogReviewPage = () => {
 								window.innerWidth > 600 ? "left" : "center",
 							my: 5,
 						}}>
-						{name}
+						{course?.name}
 					</Typography>
 					<Typography
 						variant="h5"
@@ -102,8 +104,8 @@ const CourseCatalogReviewPage = () => {
 							my: 5,
 						}}>
 						<StarRateIcon fontSize="medium" />
-						{ratingsAverage} out of 5 stars{" ("}
-						{ratingsQuantity}
+						{course?.ratingsAverage} out of 5 stars{" ("}
+						{course?.ratingsQuantity}
 						{" ratings)"}
 					</Typography>
 					<Reviews
@@ -114,7 +116,7 @@ const CourseCatalogReviewPage = () => {
 					/>
 				</Container>
 				<Pagination
-					count={10}
+					count={pagesCount}
 					page={page}
 					onChange={pageChangeHandler}
 					variant="outlined"

@@ -25,9 +25,9 @@ const courseSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "A course must have a difficulty"],
 			enum: {
-				values: ["beginner", "intermediate", "advanced"],
+				values: ["Beginner", "Antermediate", "Advanced"],
 				message:
-					"Difficulty is either: beginner, intermediate, or advanced",
+					"Difficulty is either: Beginner, Intermediate, or Advanced",
 			},
 		},
 		categories: {

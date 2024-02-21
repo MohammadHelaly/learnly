@@ -78,7 +78,7 @@ const CourseContents = (props: CourseContentsProps) => {
 											sx={{
 												fontWeight: "400",
 											}}>
-											{`${modules.length} Modules • ${duration} Hours`}
+											{`${modules?.length} Modules • ${duration} Hours`}
 										</Typography>
 									</Stack>
 								</AccordionSummary>
@@ -93,7 +93,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										{description}
 									</Typography>
 								</AccordionDetails>
-								{modules.map((module: Module) => {
+								{modules?.map((module: Module) => {
 									const { title } = module;
 									return (
 										<AccordionDetails key={title}>

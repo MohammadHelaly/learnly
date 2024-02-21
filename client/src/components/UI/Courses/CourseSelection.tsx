@@ -37,7 +37,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["selectedCourses", { ...config?.params }], // TODO: Look into this
+		queryKey: ["courses", { ...config?.params }], // TODO: Look into this
 		queryFn: async () =>
 			await api.get(url, {
 				params: {
@@ -46,7 +46,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 					...config?.params,
 				},
 			}),
-		select: (response) => response.data.data.courses,
+		select: (response) => response.data.data.data,
 	});
 
 	const selectedCourses = data ?? dummyCourses;
