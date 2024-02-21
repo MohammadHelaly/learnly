@@ -1,5 +1,6 @@
-import { Typography, Skeleton, Stack, Box, Container } from "@mui/material";
-import InstructorCard from "../UI/InstructorCard";
+import Instructors from "../UI/Instructors/Instructors";
+import SectionHeader from "../UI/SectionHeader";
+import SectionWrapper from "../UI/SectionWrapper";
 
 interface CourseInstructorsProps {
 	instructors: {
@@ -10,34 +11,28 @@ interface CourseInstructorsProps {
 		ratingsQuantity: number;
 		students: number;
 		bio?: string;
+		courses: (number | string)[];
 	}[];
-	loading: boolean;
+	isLoading: boolean;
+	isError: boolean;
 }
 
 const CourseInstructors = (props: CourseInstructorsProps) => {
-	const { instructors, loading } = props;
+	const { instructors, isLoading, isError } = props;
 
 	return (
-		<>
-			<Typography
-				variant="h4"
-				sx={{
-					textAlign: window.innerWidth > 600 ? "left" : "center",
-					my: 5,
-				}}>
-				Who Will Teach You{" "}
-			</Typography>
-			<Container maxWidth="lg">
-				<Stack direction="column" gap={2} alignItems="center">
-					{instructors?.map((instructor) => (
-						<InstructorCard
-							instructor={instructor}
-							loading={loading}
-						/>
-					))}
-				</Stack>
-			</Container>
-		</>
+		<SectionWrapper>
+			<SectionHeader
+				heading="Who Will Be Teaching You"
+				headingAlignment="left"
+				headingAnimated={false}
+			/>
+			<Instructors
+				instructors={instructors}
+				isLoading={isLoading}
+				isError={isError}
+			/>
+		</SectionWrapper>
 	);
 };
 

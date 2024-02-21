@@ -1,8 +1,9 @@
-import { Box, Pagination, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, ChangeEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
+import { Box, Pagination } from "@mui/material";
 import SearchBar from "./SearchBar";
-import Courses from "./Courses";
+import Courses from "../UI/Courses/Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
 
 interface Search {
@@ -18,33 +19,49 @@ const CatalogSection = () => {
 		category: undefined,
 		difficulty: undefined,
 	});
-	const [courses, setCourses] = useState<Course[]>([]);
-	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(false);
 
-	const limit = 9;
-
-	useEffect(() => {
-		setError(false);
-		setLoading(true);
-		api.get("/courses", {
-			params: {
-				page,
-				limit,
-				sort,
-				...search,
-			},
-		})
-			.then((response) => {
-				setCourses(response.data.data.courses);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log(error);
-				setLoading(false);
-				// setError(true);
+	const searchChangeHandler = (value: string) => {
+		if (value === "") {
+			setSearch((previousValue) => {
+				return {
+					...previousValue,
+					name: undefined,
+				};
 			});
-	}, [page, search, sort]);
+		} else {
+			setSearch((previousValue) => {
+				return {
+					...previousValue,
+					name: value,
+				};
+			});
+		}
+		setPage(1);
+	};
+
+	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
+		setPage(value);
+	};
+
+	const {
+		data, //: courses,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["courses", { page, sort, search }],
+		queryFn: async () =>
+			await api.get("/courses", {
+				params: {
+					page,
+					limit: 9,
+					sort,
+					...search,
+				},
+			}),
+		select: (response) => response.data.data.courses,
+	});
+
+	const courses = data ?? dummyCoursesData.slice(0, 9);
 
 	return (
 		<Box
@@ -57,44 +74,20 @@ const CatalogSection = () => {
 				backgroundColor: "white",
 				mt: window.innerWidth > 600 ? 8 : 7,
 			}}>
-			<SearchBar
-				setSearchHandler={(value: string) => {
-					if (value === "") {
-						setSearch((previousValue) => {
-							return {
-								...previousValue,
-								name: undefined,
-							};
-						});
-					} else {
-						setSearch((previousValue) => {
-							return {
-								...previousValue,
-								name: value,
-							};
-						});
-					}
-					setPage(1);
+			<SearchBar setSearchHandler={searchChangeHandler} />
+			<Courses
+				courses={courses}
+				isLoading={isLoading}
+				isError={isError}
+				maxLength={9}
+				sx={{
+					mt: 14,
 				}}
 			/>
-			{error ? (
-				<Typography
-					variant="h4"
-					color="error"
-					sx={{
-						mt: 20,
-					}}>
-					Something went wrong...
-				</Typography>
-			) : (
-				<Courses courses={dummyCoursesData} loading={loading} />
-			)}
 			<Pagination
 				count={10}
 				page={page}
-				onChange={(event, value) => {
-					setPage(value);
-				}}
+				onChange={pageChangeHandler}
 				variant="outlined"
 				sx={{
 					mt: 8,

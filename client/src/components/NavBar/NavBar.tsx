@@ -1,4 +1,8 @@
 import { useState, useContext, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import AuthContext from "../../store/auth-context";
+import api from "../../api";
 import {
 	AppBar,
 	Box,
@@ -15,15 +19,11 @@ import {
 	Stack,
 } from "@mui/material";
 import {
-	Menu as MenuIcon,
-	ShoppingCartOutlined as ShoppingCartOutlinedIcon,
+	Menu,
+	ShoppingCartOutlined,
 	FavoriteBorderOutlined,
 } from "@mui/icons-material";
-import AuthContext from "../../store/auth-context";
-import { NavLink, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { useQuery } from "@tanstack/react-query";
-import api from "../../api";
 
 const leftDrawerPages = ["Catalog", "Careers", "About"];
 const rightDrawerPages = ["Dashboard", "Account"];
@@ -44,11 +44,19 @@ const NavBar = () => {
 	const currentPath = useLocation().pathname;
 	const authContext = useContext(AuthContext);
 
+	const queryClient = useQueryClient();
+
 	// TODO: Look into using React Query to manage loading and error states
-	const { refetch, isError, isLoading } = useQuery({
+	const {
+		data: logoutResponse,
+		refetch,
+		isError,
+		isLoading,
+	} = useQuery({
 		queryKey: ["logout"],
 		queryFn: async () => await api.get("/users/logout"),
 		enabled: false,
+		select: (response) => response.data.status,
 	});
 
 	const handleScroll = () => {
@@ -84,8 +92,15 @@ const NavBar = () => {
 
 	const logoutHandler = () => {
 		refetch();
-		authContext.logout();
+
+		if (logoutResponse === "success") {
+			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] });
+			authContext.logout();
+			handleCloseRightDrawer();
+		}
 	};
+
+	isError && alert("An error occurred. Please try again.");
 
 	return (
 		<AppBar
@@ -136,7 +151,7 @@ const NavBar = () => {
 							aria-haspopup="true"
 							onClick={handleOpenLeftDrawer}
 							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
-							<MenuIcon />
+							<Menu />
 						</IconButton>
 						<SwipeableDrawer
 							anchor="left"
@@ -259,7 +274,7 @@ const NavBar = () => {
 											color: "#ffffff",
 										},
 									}}>
-									<ShoppingCartOutlinedIcon />
+									<ShoppingCartOutlined />
 								</Button>
 							</ButtonGroup>
 							<Box sx={{ flexGrow: 0 }}>

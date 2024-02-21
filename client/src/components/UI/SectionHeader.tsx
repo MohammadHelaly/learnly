@@ -1,38 +1,29 @@
-import styles from "./SectionHeader.module.css";
+import { Typography } from "@mui/material";
 import useAnimate from "../../hooks/use-animate";
 
 interface SectionHeaderProps {
-	titleText: string;
-	subtitleText: string;
-	textTheme: "light" | "dark";
+	heading: string;
+	headingAlignment: "left" | "center";
+	headingAnimated?: boolean;
 }
 
 const SectionHeader = (props: SectionHeaderProps) => {
-	const titleRef = useAnimate(styles["animate"], false);
-	const subtitleRef = useAnimate(styles["animate"], false);
-	const { titleText, subtitleText, textTheme } = props;
+	const { heading, headingAlignment, headingAnimated } = props;
+
+	const elementRef = useAnimate("animate", false);
 
 	return (
-		<div className={styles["header-container"]}>
-			<h2
-				ref={titleRef}
-				className={
-					textTheme === "light"
-						? `${styles["light-title-text"]} display-6`
-						: `${styles["dark-title-text"]} display-6`
-				}>
-				{titleText}
-			</h2>
-			<p
-				ref={subtitleRef}
-				className={
-					textTheme === "light"
-						? `${styles["light-subtitle-text"]} lead`
-						: `${styles["dark-subtitle-text"]} lead`
-				}>
-				{subtitleText}
-			</p>
-		</div>
+		<Typography
+			ref={headingAnimated ? elementRef : undefined}
+			variant="h4"
+			textAlign={window.innerWidth > 600 ? headingAlignment : "center"}
+			sx={{
+				mb: 5,
+				opacity: headingAnimated ? 0 : 1,
+				transition: "all 1s ease-in-out",
+			}}>
+			{heading}
+		</Typography>
 	);
 };
 

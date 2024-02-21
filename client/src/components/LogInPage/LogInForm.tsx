@@ -1,12 +1,13 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { useContext } from "react";
+import AuthContext from "../../store/auth-context";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
-import { useContext } from "react";
-import AuthContext from "../../store/auth-context";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
@@ -27,6 +28,7 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 
 const LogInForm = () => {
 	const authContext = useContext(AuthContext);
+
 	const navigate = useNavigate();
 
 	const {
@@ -38,19 +40,28 @@ const LogInForm = () => {
 		resolver: zodResolver(schema),
 	});
 
+	const queryClient = useQueryClient();
+
+	const { mutate, isError, isPending } = useMutation({
+		mutationFn: (formData: FormData) => {
+			return api.post("/users/login", formData);
+		},
+		onSuccess: (response) => {
+			authContext.login(response.data.data.user);
+			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] }); //TODO: Check if this is necessary
+			navigate("/dashboard");
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
 	const onSubmit = (data: LogInSchemaType) => {
 		const formData = new FormData();
 		formData.append("email", data.email);
 		formData.append("password", data.password);
 
-		api.post("/users/login", formData)
-			.then((response) => {
-				authContext.login(response.data.data.user);
-				navigate("/dashboard");
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		mutate(formData);
 	};
 
 	return (
@@ -60,10 +71,9 @@ const LogInForm = () => {
 			sx={{
 				width: "100%",
 				maxWidth: "500px",
-				// display: "flex",
-				// flexDirection: "column",
-				p: 3,
-				mb: 3,
+				transition: "all 0.4s ease-in-out",
+				p: 2,
+				mb: 2,
 				backgroundColor: "#ffffff",
 				borderRadius: "10px",
 				boxShadow: "0 0 0px rgba(0,0,0,0.5)",
@@ -91,6 +101,11 @@ const LogInForm = () => {
 				<br />
 				Learn and teach anywhere, anytime.
 			</Typography>
+			{isError && (
+				<Typography variant="body1" color="error" sx={{ mt: 2 }}>
+					Incorrect email or password. Please try again.
+				</Typography>
+			)}
 			<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
 				<Controller
 					name="email"
@@ -102,6 +117,7 @@ const LogInForm = () => {
 							label="Email"
 							type="email"
 							variant="outlined"
+							disabled={isPending}
 							sx={{ width: "100%", mt: 4, mb: 2 }}
 							helperText={
 								errors.email && (
@@ -123,6 +139,7 @@ const LogInForm = () => {
 							id="password"
 							type="password"
 							label="Password"
+							disabled={isPending}
 							variant="outlined"
 							sx={{ width: "100%", mb: 4 }}
 							helperText={
@@ -162,6 +179,7 @@ const LogInForm = () => {
 					color="primary"
 					size="large"
 					disableElevation
+					disabled={isPending}
 					sx={{ width: "100%", mt: 2 }}>
 					Log in
 				</Button>

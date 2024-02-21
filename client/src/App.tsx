@@ -1,10 +1,9 @@
-import "./App.css";
 import { useContext, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import api from "./api";
 import { AnimatePresence } from "framer-motion";
 import { Box, ThemeProvider, createTheme } from "@mui/material";
-import api from "./api";
 import AuthContext from "./store/auth-context";
 import ScrollToTop from "./pages/ScrollToTop";
 import Background from "./components/Background/Background";
@@ -18,6 +17,7 @@ import CourseCatalogPage from "./pages/CourseCatalogPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
+import "./App.css";
 
 function App() {
 	const authContext = useContext(AuthContext);

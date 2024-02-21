@@ -1,113 +1,76 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
-import api from "../api";
-import { Box, Container, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Container, Pagination, Typography } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
 import CourseBanner from "../components/UI/Courses/CourseBanner";
-import ReviewCard from "../components/UI/ReviewCard";
 import StarRateIcon from "@mui/icons-material/StarRate";
+import Reviews from "../components/UI/Reviews/Reviews";
+import dummyCourseReviewsData from "../assets/data/dummyCourseReviewsData";
 
 const CourseCatalogReviewPage = () => {
 	const { courseId } = useParams();
-	// const [course, setCourse] = useState(null);
-	// const [similarCourses, setSimilarCourses] = useState(null);
-	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
-	const [reviews, setReviews] = useState([
-		{
-			id: 1,
-			rating: 4,
-			review: "This course was really good. But I think it could be better.But I think it could be better.But I think it could be better.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 2,
-			rating: 5,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 3,
-			rating: 3,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 4,
-			rating: 2,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-		{
-			id: 5,
-			rating: 1,
-			review: "This course was really good.",
-			user: {
-				id: 1,
-				name: "John Doe",
-				photo: "https://i.pravatar.cc/300",
-			},
-			createdAt: "2021-10-10",
-		},
-	]);
 
-	const limit = 9;
+	const dummyReviews = dummyCourseReviewsData.slice(0, 9);
 
-	const course = dummyCoursesData.find(
+	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
+		setPage(value);
+	};
+
+	const {
+		data: course,
+		isLoading: isLoadingCourse,
+		isError: isErrorCourse,
+	} = useQuery({
+		queryKey: ["course", { courseId }],
+		queryFn: async () =>
+			await api.get(`/courses/${courseId}`, {
+				params: {
+					fields: "name,price,ratingsAverage,ratingsQuantity",
+				},
+			}),
+		select: (response) => response.data.data.course,
+	});
+
+	const {
+		data, //: courseReviews,
+		isLoading: isLoadingReviews,
+		isError: isErrorReviews,
+	} = useQuery({
+		queryKey: ["courseReviews", { courseId, page }],
+		queryFn: async () =>
+			await api.get(`/courses/${courseId}/reviews`, {
+				params: {
+					page,
+					limit: 9,
+				},
+			}),
+		select: (response) => response.data.data.reviews,
+	});
+
+	const courseReviews = data ?? dummyReviews;
+
+	const dummyCourse = dummyCoursesData.find(
 		(course) => course.id === parseInt(courseId as string)
 		// (course) => course.id === (courseId ? parseInt(courseId))
 	);
-	const { name, price, ratingsAverage, ratingsQuantity } = course as Course;
-
-	useEffect(() => {
-		setError(false);
-		setLoading(true);
-		api.get(`/courses/${courseId}/reviews`, {
-			params: {
-				page,
-				limit,
-			},
-		})
-			.then((response) => {
-				console.log(response.data);
-				// setCourse(response.data.data.course);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log(error);
-				setError(true);
-				setLoading(false);
-			});
-	}, [courseId, page]);
+	const { name, price, ratingsAverage, ratingsQuantity } =
+		dummyCourse as Course;
 
 	return (
 		<AnimatedPage>
-			<CourseBanner name={name} price={price} loading={loading} />
+			<CourseBanner
+				courseId={courseId as string}
+				name={name}
+				price={price}
+				isLoading={isLoadingCourse}
+				isError={isErrorCourse}
+			/>
 			<Box
-				// maxWidth="lg"
 				sx={{
 					minHeight: window.innerWidth > 3000 ? "60vh" : "auto",
 					maxWidth: "100vw",
@@ -128,7 +91,7 @@ const CourseCatalogReviewPage = () => {
 								window.innerWidth > 600 ? "left" : "center",
 							my: 5,
 						}}>
-						{course?.name}
+						{name}
 					</Typography>
 					<Typography
 						variant="h5"
@@ -143,31 +106,17 @@ const CourseCatalogReviewPage = () => {
 						{ratingsQuantity}
 						{" ratings)"}
 					</Typography>
-					<Container maxWidth="lg">
-						<Stack direction="column" alignItems="center">
-							{reviews.map((reviewItem) => {
-								const { id, rating, review, user, createdAt } =
-									reviewItem;
-								return (
-									<ReviewCard
-										key={id}
-										review={review}
-										rating={rating}
-										user={user}
-										createdAt={createdAt}
-										loading={loading}
-									/>
-								);
-							})}
-						</Stack>
-					</Container>
+					<Reviews
+						reviews={courseReviews}
+						isError={isErrorReviews}
+						isLoading={isLoadingReviews}
+						maxLength={9}
+					/>
 				</Container>
 				<Pagination
 					count={10}
 					page={page}
-					onChange={(event, value) => {
-						setPage(value);
-					}}
+					onChange={pageChangeHandler}
 					variant="outlined"
 					sx={{
 						my: 10,

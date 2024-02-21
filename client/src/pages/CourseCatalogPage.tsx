@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import AnimatedPage from "./AnimatedPage";
-import Footer from "../components/Footer/Footer";
-import api from "../api";
-import { Box, Container, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { Box, Container } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
 import CourseBanner from "../components/UI/Courses/CourseBanner";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
@@ -15,17 +12,28 @@ import CourseInstructors from "../components/CourseCatalogPage/CourseInstructors
 import CourseInformation from "../components/CourseCatalogPage/CourseInformation";
 import CourseCategories from "../components/CourseCatalogPage/CourseCategories";
 import CourseSelection from "../components/UI/Courses/CourseSelection";
+import AnimatedPage from "./AnimatedPage";
+import Footer from "../components/Footer/Footer";
+import api from "../api";
 
 const CourseCatalogPage = () => {
 	const { courseId } = useParams();
-	// const [course, setCourse] = useState(null);
-	// const [similarCourses, setSimilarCourses] = useState(null);
-	const [error, setError] = useState(false);
-	const [loading, setLoading] = useState(false);
 
-	const course = dummyCoursesData.find(
+	const dummyCourse = dummyCoursesData.find(
 		(course) => course.id === parseInt(courseId as string)
 	);
+
+	const {
+		data, //: course,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["course", { courseId }],
+		queryFn: async () => await api.get(`/courses/${courseId}`),
+		select: (response) => response.data.data.course,
+	});
+
+	const course = data ?? dummyCourse;
 
 	const {
 		name,
@@ -43,28 +51,19 @@ const CourseCatalogPage = () => {
 		image,
 		reviews,
 		paid,
-	} = course as Course;
-
-	useEffect(() => {
-		setError(false);
-		setLoading(true);
-		api.get(`/courses/${courseId}`)
-			.then((response) => {
-				console.log(response.data);
-				// setCourse(response.data.data.course);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log(error);
-				setError(true);
-				setLoading(false);
-			});
-	}, [courseId]);
+	} = course;
 
 	return (
 		<AnimatedPage>
-			<CourseBanner name={name} price={price} loading={loading} />
+			<CourseBanner
+				courseId={courseId as string}
+				name={name}
+				price={price}
+				isLoading={isLoading}
+				isError={isError}
+			/>
 			<CourseInformation
+				courseId={courseId as string}
 				name={name}
 				price={price}
 				summary={summary}
@@ -75,7 +74,8 @@ const CourseCatalogPage = () => {
 				instructors={instructors}
 				image={image}
 				paid={paid as boolean}
-				loading={loading}
+				isLoading={isLoading}
+				isError={isError}
 			/>
 			<Box
 				sx={{
@@ -90,31 +90,38 @@ const CourseCatalogPage = () => {
 					backgroundColor: "white",
 				}}>
 				<Container maxWidth="lg">
-					<CourseHighlights duration={duration} loading={loading} />
+					<CourseHighlights
+						duration={duration}
+						isLoading={isLoading}
+						isError={isError}
+					/>
 					<CourseCategories
 						categories={categories}
-						loading={loading}
+						isLoading={isLoading}
+						isError={isError}
 					/>
 					<CoursePrerequisitesAndSkills
 						prerequisites={prerequisites}
 						skills={skills}
-						loading={loading}
+						isLoading={isLoading}
+						isError={isError}
 					/>
-					<CourseContents loading={loading} />
+					<CourseContents isLoading={isLoading} isError={isError} />
 					<CourseDescription
 						description={description}
-						loading={loading}
+						isLoading={isLoading}
+						isError={isError}
 					/>
 					<CourseInstructors
 						instructors={instructors}
-						loading={loading}
+						isLoading={isLoading}
+						isError={isError}
 					/>
 					<CourseReviews
 						courseId={courseId as string}
 						reviews={reviews as Review[]}
 						ratingsAverage={ratingsAverage}
 						ratingsQuantity={ratingsQuantity}
-						loading={loading}
 					/>
 					<CourseSelection
 						heading="See Some Similar Courses"
