@@ -58,7 +58,7 @@ const CatalogSection = () => {
 					...search,
 				},
 			}),
-		select: (response) => response.data.data.courses,
+		select: (response) => response.data.data.data,
 	});
 
 	const courses = data ?? dummyCoursesData.slice(0, 9);
