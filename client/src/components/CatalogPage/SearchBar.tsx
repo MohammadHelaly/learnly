@@ -12,6 +12,17 @@ const SearchBar = (props: SearchBarProps) => {
 	const [scrolled, setScrolled] = useState(false);
 	const [search, setSearch] = useState("");
 
+	const handleSetSearch = () => {
+		setSearchHandler(search);
+	};
+
+	const searchChangeHandler = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setSearchHandler(event.target.value); // Comment this line in case we don't want to update the search state in real time
+		setSearch(event.target.value);
+	};
+
 	useEffect(() => {
 		window.addEventListener("scroll", () => {
 			setScrolled(window.scrollY > 25);
@@ -69,9 +80,7 @@ const SearchBar = (props: SearchBarProps) => {
 										borderBottomLeftRadius: 0,
 										left: 8,
 									}}
-									onClick={() => {
-										setSearchHandler(search);
-									}}>
+									onClick={handleSetSearch}>
 									<SearchOutlinedIcon
 										sx={{
 											color: "#9c27b0",
@@ -84,9 +93,7 @@ const SearchBar = (props: SearchBarProps) => {
 					}}
 					variant="outlined"
 					value={search}
-					onChange={(event) => {
-						setSearch(event.target.value);
-					}}
+					onChange={searchChangeHandler}
 				/>
 				<Button
 					variant="outlined"

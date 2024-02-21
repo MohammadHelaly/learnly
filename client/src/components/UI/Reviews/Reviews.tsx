@@ -32,7 +32,7 @@ const Reviews = (props: ReviewsProps) => {
 					// isError ? (
 					// 	<ErrorWarning />
 					// ) :
-					reviews?.length === 0 ? (
+					reviews?.length === 0 || !reviews ? (
 						<NothingFoundMessage />
 					) : isLoading ? (
 						Array(maxLength)

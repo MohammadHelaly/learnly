@@ -49,7 +49,7 @@ const Courses = (props: CoursesProps) => {
 				// isError ? (
 				// 	<ErrorWarning />
 				// ) :
-				courses?.length === 0 ? (
+				courses?.length === 0 || !courses ? (
 					<NothingFoundMessage />
 				) : (
 					Array(maxLength)

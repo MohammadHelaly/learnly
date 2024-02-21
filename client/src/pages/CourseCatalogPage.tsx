@@ -112,6 +112,12 @@ const CourseCatalogPage = () => {
 						variant="white"
 						query={{
 							url: "/courses",
+							config: {
+								params: {
+									categories: course?.categories, // TODO: Fix this, need to search for multiple values in the categories array
+									id: { $ne: courseId },
+								},
+							},
 						}}
 					/>
 				</Container>

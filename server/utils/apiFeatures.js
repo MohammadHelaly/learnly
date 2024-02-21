@@ -9,6 +9,11 @@ class APIFeatures {
 		const excludedFields = ["page", "sort", "limit", "fields"];
 		excludedFields.forEach((el) => delete queryObj[el]);
 
+		// Partial match for name field
+		if (queryObj.name) {
+			queryObj.name = { $regex: queryObj.name, $options: "i" }; // Case-insensitive partial matching
+		}
+
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(
 			/\b(gte|gt|lte|lt)\b/g,

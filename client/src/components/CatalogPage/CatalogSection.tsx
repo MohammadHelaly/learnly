@@ -16,6 +16,7 @@ const CatalogSection = () => {
 	const [page, setPage] = useState(1);
 	const [sort, setSort] = useState(undefined);
 	const [search, setSearch] = useState<Search>({
+		name: undefined,
 		category: undefined,
 		difficulty: undefined,
 	});
@@ -37,6 +38,7 @@ const CatalogSection = () => {
 			});
 		}
 		setPage(1);
+		refetch();
 	};
 
 	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
@@ -47,6 +49,7 @@ const CatalogSection = () => {
 		data, //: courses,
 		isLoading,
 		isError,
+		refetch,
 	} = useQuery({
 		queryKey: ["courses", { page, sort, search }],
 		queryFn: async () =>
