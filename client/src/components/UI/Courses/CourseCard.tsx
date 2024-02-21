@@ -30,7 +30,6 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 }));
 
 const CourseCard = (props: CourseCardProps) => {
-
 	const {
 		id,
 		name,
@@ -91,9 +90,12 @@ const CourseCard = (props: CourseCardProps) => {
 							fontWeight: 400,
 							width: "100%",
 						}}>
-						{instructors && instructors.length > 0 && instructors[0].name.length > 30
+						{instructors &&
+						instructors.length > 0 &&
+						instructors[0].name.length > 30
 							? `${instructors[0].name.slice(0, 30)}...`
-							: instructors?.[0]?.name ?? "Instructor Name Unavailable"}
+							: instructors?.[0]?.name ??
+							  "[Instructor Name Unavailable]"}
 					</Typography>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
