@@ -11,7 +11,7 @@ const LandingPage = () => {
 		<AnimatedPage>
 			<HomeSection />
 			<CourseSelection
-				heading="Check Out our Most Popular Courses"
+				heading="Check Out Our Most Popular Courses"
 				headingAlignment="center"
 				headingAnimated={true}
 				cardsAnimated={true}

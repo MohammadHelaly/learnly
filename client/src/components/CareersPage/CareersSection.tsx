@@ -40,7 +40,7 @@ const CareersSection = () => {
 							opacity: 0,
 							transition: "all 1s ease-in-out 0.2s",
 						}}>
-						Join our mission today!
+						Join Our Mission Today!
 					</Typography>
 					<Typography
 						ref={line1Ref}

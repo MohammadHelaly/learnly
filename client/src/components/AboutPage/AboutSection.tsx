@@ -46,7 +46,7 @@ const AboutSection = () => {
 							opacity: 0,
 							transition: "all 1s ease-in-out 0.2s",
 						}}>
-						Learn about Learnly!
+						Learn About Learnly!
 					</Typography>
 					<Typography
 						ref={line1Ref}
