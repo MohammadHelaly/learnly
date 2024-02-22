@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import StarRateIcon from "@mui/icons-material/StarRate";
@@ -47,18 +46,18 @@ const CourseReviews = (props: CourseReviewsProps) => {
 				headingAlignment="left"
 				headingAnimated={false}
 			/>
-			<Typography
-				variant="h5"
-				color="text.secondary"
-				sx={{
-					textAlign: window.innerWidth > 600 ? "left" : "center",
-					my: 5,
-				}}>
-				<StarRateIcon fontSize="medium" />
-				{ratingsAverage} out of 5 stars{" ("}
-				{ratingsQuantity}
-				{" ratings)"}
-			</Typography>
+			<SectionHeader
+				heading={
+					<>
+						<StarRateIcon fontSize="medium" />
+						{ratingsAverage} out of 5 stars {" ("}
+						{ratingsQuantity} {" ratings)"}
+					</>
+				}
+				headingAlignment="left"
+				headingAnimated={false}
+				isSubHeading
+			/>
 			<Reviews
 				reviews={courseReviews}
 				isLoading={isLoading}

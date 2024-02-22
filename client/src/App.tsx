@@ -17,6 +17,7 @@ import CourseCatalogPage from "./pages/CourseCatalogPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
+import DashboardPage from "./pages/DashboardPage";
 import "./App.css";
 
 function App() {
@@ -110,7 +111,7 @@ function App() {
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
-						<Route path="/dashboard" element={<LandingPage />} />
+						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
 							path="/dashboard/:courseId"
 							element={<LandingPage />}

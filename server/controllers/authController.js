@@ -53,12 +53,21 @@ exports.signup = catchAsync(async (req, res, next) => {
 		passwordConfirm: passwordConfirm,
 	});
 
-	// 3) Send welcome email
-	const url = `${req.protocol}://${req.get("host")}/me`;
-	await new Email(user, url).sendWelcome();
-
-	// 4) Create and send token
+	// 3) Create and send token
 	createSendToken(user, 201, req, res);
+
+	// 4) Send welcome email
+	try {
+		const url = `http://localhost:3000/catalog`; // const url = process.env.FRONTEND_URL //	const url = `${req.protocol}://${req.get("host")}/me`;  // const url = `${process.env.PROTOCOL}://${process.env.HOST}/me`;
+		await new Email(user, url).sendWelcome();
+	} catch (err) {
+		return next(
+			new AppError(
+				"There was an error sending the email. Try again later!",
+				500
+			)
+		);
+	}
 });
 
 exports.login = catchAsync(async (req, res, next) => {
