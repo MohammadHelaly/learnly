@@ -114,8 +114,8 @@ const CourseCatalogPage = () => {
 							url: "/courses",
 							config: {
 								params: {
-									categories: course?.categories, // TODO: Fix this, need to search for multiple values in the categories array
-									id: { $ne: courseId },
+									categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
+									_id: { ne: courseId },
 								},
 							},
 						}}

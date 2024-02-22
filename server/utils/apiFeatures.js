@@ -16,9 +16,10 @@ class APIFeatures {
 
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(
-			/\b(gte|gt|lte|lt)\b/g,
+			/\b(gte|gt|lte|lt|ne|in)\b/g, // Add more MongoDB operators here as needed
 			(match) => `$${match}`
 		);
+		console.log(queryStr);
 		this.query = this.query.find(JSON.parse(queryStr));
 		return this;
 	}
