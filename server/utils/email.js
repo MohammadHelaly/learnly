@@ -4,12 +4,6 @@ const htmlToText = require("html-to-text");
 const postmarkTransport = require("nodemailer-postmark-transport");
 
 module.exports = class Email {
-<<<<<<< Updated upstream
-  constructor(user) {
-    this.to = user.email;
-    this.firstName = user.name.split(" ")[0];
-    this.from = process.env.EMAIL_FROM;
-=======
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(" ")[0];
@@ -19,16 +13,11 @@ module.exports = class Email {
     } else {
       this.from = `Learnly.io <${process.env.EMAIL_FROM}>`;
     }
->>>>>>> Stashed changes
   }
 
   newTransport() {
     if (process.env.NODE_ENV === "production") {
-<<<<<<< Updated upstream
       // Sendgrid
-=======
-      // postmark
->>>>>>> Stashed changes
       return nodemailer.createTransport(
         postmarkTransport({
           auth: {
@@ -38,15 +27,6 @@ module.exports = class Email {
       );
     }
 
-<<<<<<< Updated upstream
-    return nodemailer.createTransport(
-      postmarkTransport({
-        auth: {
-          apiKey: process.env.POSTMARK_APIKEY,
-        },
-      })
-    );
-=======
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
@@ -55,18 +35,13 @@ module.exports = class Email {
         pass: process.env.EMAIL_PASSWORD,
       },
     });
->>>>>>> Stashed changes
   }
 
   async send(template, subject) {
     //1) Render HTML based on a pug template
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
-<<<<<<< Updated upstream
-      //url: this.url,
-=======
       url: this.url,
->>>>>>> Stashed changes
       subject,
     });
 
