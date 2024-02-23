@@ -2,18 +2,31 @@ import { Button, InputAdornment, Stack, TextField, Box } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import { useState, useEffect } from "react";
+import {Filter} from "./Filter";
 
 interface SearchBarProps {
 	setSearchHandler: (search: string) => void;
 }
 
-const SearchBar = (props: SearchBarProps) => {
+
+
+interface FiltersAppliedProps {
+	filterValue: string; // Adjust according to the actual data structure
+  }
+  
+  
+  const SearchBar = (props: SearchBarProps) => {
+	const [showComp, setShowComp] = useState(false);
 	const { setSearchHandler } = props;
 	const [scrolled, setScrolled] = useState(false);
 	const [search, setSearch] = useState("");
 
 	const handleSetSearch = () => {
 		setSearchHandler(search);
+	};
+	
+	const FiltersApplied = (props: FiltersAppliedProps) => {
+		setShowComp(false);
 	};
 
 	const searchChangeHandler = (
@@ -99,16 +112,19 @@ const SearchBar = (props: SearchBarProps) => {
 					variant="outlined"
 					size="medium"
 					endIcon={<TuneOutlinedIcon />}
+					onClick={() => setShowComp(!showComp)} // Toggle showComp state on click
 					sx={{
-						backgroundColor: "white",
-						"&:hover": {
-							backgroundColor: "#9c27b0",
-							color: "white",
-						},
-					}}>
+					backgroundColor: "white",
+					"&:hover": {
+						backgroundColor: "#9c27b0",
+						color: "white",
+					},
+					}}
+				>
 					Filters
 				</Button>
 			</Stack>
+			{showComp && <Filter	SendFilters={FiltersApplied} />}
 		</Box>
 	);
 };
