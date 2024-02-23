@@ -62,12 +62,13 @@ export const  Filter: React.FC<FilterProps> = ({ SendFilters }) =>{
                 </TextField>      
 
                 <TextField
-                    sx={{ marginLeft: '30px' }}
+                    sx={{ marginLeft: '30px',width: 240}}
                     value={price}
                     id="outlined-basic"
                     label="Max. Price"
                     variant="outlined"
                     type='number'
+                    
                     onChange={(e) => setPrice(e.target.value)}
                     InputProps={{
                         startAdornment: (
@@ -78,7 +79,7 @@ export const  Filter: React.FC<FilterProps> = ({ SendFilters }) =>{
             <TextField sx={{marginTop:'25px'}} type='number' value={minHours} id="outlined-basic" label="Minimum Hours" variant="outlined" onChange={(e)=>setMinHours(e.target.value)} />
             <TextField sx={{marginTop:'25px',marginLeft:'30px'}} type='number' value={maxHours}  id="outlined-basic" label="Maximum Hours" variant="outlined" onChange={(e)=>setMaxHours(e.target.value)} />
 
-            <Typography sx={{marginTop:'10px',fontSize:'30px'}}  component="legend">Rating</Typography>
+            <Typography sx={{marginTop:'10px',fontSize:'30px'}}  component="legend">Minimum Rating</Typography>
             <Rating
                 name="customized-empty"
                 defaultValue={0}
