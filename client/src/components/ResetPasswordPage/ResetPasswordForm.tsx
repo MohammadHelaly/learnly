@@ -1,6 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -12,10 +11,6 @@ import FormContainer from "../UI/FormContainer";
 
 const schema = z
 	.object({
-		name: z
-			.string()
-			.max(40, { message: "A username must be 40 characters or less." }),
-		email: z.string().email({ message: "Please enter a valid email." }),
 		password: z.string().min(8, {
 			message: "Passwords must be at least 8 characters long.",
 		}),
@@ -26,17 +21,10 @@ const schema = z
 		message: "Passwords do not match",
 	});
 
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "#9c27b0",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
+type ResetPasswordSchemaType = z.infer<typeof schema>;
 
-type SignUpSchemaType = z.infer<typeof schema>;
-
-const SignUpForm = () => {
+const ResetPasswordForm = () => {
+	const { passwordResetToken } = useParams();
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 
@@ -44,7 +32,7 @@ const SignUpForm = () => {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<SignUpSchemaType>({
+	} = useForm<ResetPasswordSchemaType>({
 		mode: "onTouched",
 		resolver: zodResolver(schema),
 	});
@@ -53,22 +41,23 @@ const SignUpForm = () => {
 
 	const { mutate, isError, isPending } = useMutation({
 		mutationFn: (formData: FormData) => {
-			return api.post("/users/signup", formData);
+			return api.patch(
+				`/users/resetPassword/${passwordResetToken}`,
+				formData
+			);
 		},
 		onSuccess: (response) => {
 			authContext.login(response.data.data.user);
 			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] }); //TODO: Check if this is necessary
-			navigate("/catalog");
+			navigate("/dashboard");
 		},
 		onError: (error) => {
 			console.error(error);
 		},
 	});
 
-	const onSubmit = (data: SignUpSchemaType) => {
+	const onSubmit = (data: ResetPasswordSchemaType) => {
 		const formData = new FormData();
-		formData.append("name", data.name);
-		formData.append("email", data.email);
 		formData.append("password", data.password);
 		formData.append("passwordConfirm", data.passwordConfirm);
 
@@ -78,26 +67,17 @@ const SignUpForm = () => {
 	return (
 		<FormContainer>
 			<Typography variant="h4" color="common.black">
-				Create your account
-			</Typography>
-			<Typography
-				variant="body1"
-				color="common.black"
-				sx={{
-					mb: 4,
-				}}>
-				Already have an account?{" "}
-				<StyledNavLink to="/log-in">Log in</StyledNavLink>
+				Reset Your Password
 			</Typography>
 			<Typography
 				variant="body1"
 				color="text.secondary"
 				sx={{
 					fontWeight: 300,
+					mt: 2,
+					mb: 4,
 				}}>
-				Join a community of lifelong learners who share your passion.
-				<br />
-				Learnly is for everyone, everywhere.
+				Choose a new password for your account.
 			</Typography>
 			{isError && (
 				<Typography variant="body1" color="error" sx={{ mt: 2 }}>
@@ -108,48 +88,6 @@ const SignUpForm = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				noValidate
 				autoComplete="off">
-				<Controller
-					name="name"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							required
-							label="Name"
-							variant="outlined"
-							disabled={isPending}
-							sx={{ width: "100%", mt: 4, mb: 2 }}
-							helperText={
-								errors.name && (
-									<Typography variant="body2" color="error">
-										{errors.name.message}
-									</Typography>
-								)
-							}
-							{...field}
-						/>
-					)}
-				/>
-				<Controller
-					name="email"
-					control={control}
-					render={({ field }) => (
-						<TextField
-							required
-							label="Email"
-							variant="outlined"
-							disabled={isPending}
-							sx={{ width: "100%", mb: 2 }}
-							helperText={
-								errors.email && (
-									<Typography variant="body2" color="error">
-										{errors.email.message}
-									</Typography>
-								)
-							}
-							{...field}
-						/>
-					)}
-				/>
 				<Controller
 					name="password"
 					control={control}
@@ -194,17 +132,6 @@ const SignUpForm = () => {
 						/>
 					)}
 				/>
-				<Typography
-					variant="body2"
-					color="common.black"
-					sx={{
-						fontSize: "0.75rem",
-					}}>
-					By clicking "Sign up", you agree to Learnly's{" "}
-					<StyledNavLink to="/legal">
-						Terms of Service and Privacy Policy
-					</StyledNavLink>
-				</Typography>
 				<Button
 					type="submit"
 					variant="contained"
@@ -212,11 +139,11 @@ const SignUpForm = () => {
 					size="large"
 					disableElevation
 					sx={{ width: "100%", mt: 2 }}>
-					Sign up
+					Reset Password
 				</Button>
 			</form>
 		</FormContainer>
 	);
 };
 
-export default SignUpForm;
+export default ResetPasswordForm;

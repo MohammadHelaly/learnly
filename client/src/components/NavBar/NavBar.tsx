@@ -191,9 +191,9 @@ const NavBar = () => {
 											page === "Catalog"
 												? "courses"
 												: page.toLowerCase()
-										}`}>
-										<MenuItem
-											onClick={handleCloseLeftDrawer}>
+										}`}
+										onClick={handleCloseLeftDrawer}>
+										<MenuItem>
 											<Typography textAlign="center">
 												{page}
 											</Typography>
@@ -321,20 +321,22 @@ const NavBar = () => {
 										{rightDrawerPages.map((page) => (
 											<StyledNavLink
 												key={page}
-												to={`/${page.toLowerCase()}`}>
-												<MenuItem
-													onClick={
-														handleCloseRightDrawer
-													}>
+												to={`/${page.toLowerCase()}`}
+												onClick={
+													handleCloseRightDrawer
+												}>
+												<MenuItem>
 													<Typography textAlign="center">
 														{page}
 													</Typography>
 												</MenuItem>
 											</StyledNavLink>
 										))}
-										<StyledNavLink key={"Logout"} to="/">
+										<StyledNavLink
+											key={"Logout"}
+											to="/"
+											onClick={logoutHandler}>
 											<MenuItem
-												onClick={logoutHandler}
 												sx={{
 													color: "red",
 													fontWeight: 700,

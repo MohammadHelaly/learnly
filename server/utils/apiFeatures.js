@@ -19,7 +19,7 @@ class APIFeatures {
 			/\b(gte|gt|lte|lt|ne|in)\b/g, // Add more MongoDB operators here as needed
 			(match) => `$${match}`
 		);
-		console.log(queryStr);
+
 		this.query = this.query.find(JSON.parse(queryStr));
 		return this;
 	}

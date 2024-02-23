@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import NavigationGuard from "../components/Navigation/NavigationGuard";
-import Box from "@mui/material/Box";
+import { Box, Tab } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import { Container } from "@mui/material";
@@ -7,55 +9,85 @@ import SectionHeader from "../components/UI/SectionHeader";
 import SectionWrapper from "../components/UI/SectionWrapper";
 import CourseSelection from "../components/UI/Courses/CourseSelection";
 import Courses from "../components/UI/Courses/Courses";
+import PageWrapper from "../components/UI/PageWrapper";
 
 const DashboardPage = () => {
+	const [value, setValue] = useState("0");
+
+	const handleChange = (
+		event: React.SyntheticEvent<Element, Event>,
+		newValue: string
+	) => {
+		setValue(newValue);
+	};
+
 	return (
 		// <NavigationGuard>
 		<AnimatedPage>
-			<Box
-				sx={{
-					minHeight: "75vh",
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					justifyContent: "space-between",
-					backgroundColor: "white",
-					mt: window.innerWidth > 600 ? 8 : 7,
-				}}>
+			<PageWrapper>
 				<Container maxWidth="lg">
 					<SectionWrapper>
 						<SectionHeader
 							heading="Where You Left Off"
 							headingAlignment="left"
-							variant="h3"
-							sx={{
-								pb: 1,
-								borderBottom: "1px solid #e0e0e0",
-							}}
+							variant="h4"
 						/>
-						<CourseSelection
-							heading="Your Teaching"
-							headingAlignment="left"
-							headingAnimated={false}
-							cardsAnimated={false}
-							variant="white"
-							query={{
-								url: "/courses",
-							}}
-						/>
-						<CourseSelection
-							heading="Your Learning"
-							headingAlignment="left"
-							headingAnimated={false}
-							cardsAnimated={false}
-							variant="white"
-							query={{
-								url: "/courses",
-							}}
-						/>
+						<TabContext value={value}>
+							<Box
+								sx={{
+									borderBottom: 1,
+									borderColor: "divider",
+								}}>
+								<TabList
+									onChange={handleChange}
+									aria-label="Dashboard Tabs"
+									centered={window.innerWidth < 600}>
+									<Tab
+										label="Your Learning"
+										value="0"
+										sx={{
+											fontSize: "1.2rem",
+											fontWeight: 400,
+										}}
+									/>
+									<Tab
+										label="Your Teaching"
+										value="1"
+										sx={{
+											fontSize: "1.2rem",
+											fontWeight: 400,
+										}}
+									/>
+								</TabList>
+							</Box>
+							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
+								{/* <CourseSelection
+									heading="Your Teaching"
+									headingAlignment="left"
+									headingAnimated={false}
+									cardsAnimated={false}
+									variant="white"
+									query={{
+										url: "/courses",
+									}}
+								/> */}
+							</TabPanel>
+							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
+								{/* <CourseSelection
+									heading="Your Learning"
+									headingAlignment="left"
+									headingAnimated={false}
+									cardsAnimated={false}
+									variant="white"
+									query={{
+										url: "/courses",
+									}}
+								/> */}
+							</TabPanel>
+						</TabContext>
 					</SectionWrapper>
 				</Container>
-			</Box>
+			</PageWrapper>
 			<Footer />
 		</AnimatedPage>
 		// </NavigationGuard>

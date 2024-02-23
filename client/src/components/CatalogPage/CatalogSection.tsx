@@ -1,10 +1,11 @@
 import { useState, ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import { Box, Pagination } from "@mui/material";
+import { Pagination } from "@mui/material";
 import SearchBar from "./SearchBar";
 import Courses from "../UI/Courses/Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
+import PageWrapper from "../UI/PageWrapper";
 
 interface Search {
 	name?: string;
@@ -69,16 +70,7 @@ const CatalogSection = () => {
 	const pagesCount = Math.ceil((courses?.length ?? 1) / 9);
 
 	return (
-		<Box
-			sx={{
-				minHeight: "75vh",
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "space-between",
-				backgroundColor: "white",
-				mt: window.innerWidth > 600 ? 8 : 7,
-			}}>
+		<PageWrapper>
 			<SearchBar setSearchHandler={searchChangeHandler} />
 			<Courses
 				courses={courses}
@@ -99,7 +91,7 @@ const CatalogSection = () => {
 					mb: 10,
 				}}
 			/>
-		</Box>
+		</PageWrapper>
 	);
 };
 
