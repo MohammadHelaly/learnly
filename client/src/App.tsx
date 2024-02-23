@@ -12,6 +12,8 @@ import NavBar from "./components/NavBar/NavBar";
 import LandingPage from "./pages/LandingPage";
 import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CatalogPage from "./pages/CatalogPage";
 import CourseCatalogPage from "./pages/CourseCatalogPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
@@ -111,6 +113,14 @@ function App() {
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
+						<Route
+							path="/forgot-password"
+							element={<ForgotPasswordPage />}
+						/>
+						<Route // Not reacheable from the app, only from the email link
+							path="/reset-password/:passwordResetToken"
+							element={<ResetPasswordPage />}
+						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
 							path="/dashboard/:courseId"

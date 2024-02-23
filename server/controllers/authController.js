@@ -237,9 +237,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	await user.save({ validateBeforeSave: false });
 
 	// 3) Send it to user's email
-	const resetURL = `${req.protocol}://${req.get(
-		"host"
-	)}/api/v1/users/resetPassword/${resetToken}`;
+	// const resetURL = `${req.protocol}://${req.get(
+	// 	"host"
+	// )}/api/v1/users/resetPassword/${resetToken}`;
+	const resetURL = `${req.protocol}://localhost:3000/reset-password/${resetToken}`;
 
 	try {
 		await new Email(user, resetURL).sendPasswordReset();

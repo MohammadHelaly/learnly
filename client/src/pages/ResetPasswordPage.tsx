@@ -1,15 +1,15 @@
 import NavigationGuard from "../components/Navigation/NavigationGuard";
 import AnimatedPage from "./AnimatedPage";
-import LogInForm from "../components/LogInPage/LogInForm";
+import ResetPasswordForm from "../components/ResetPasswordPage/ResetPasswordForm";
 import Footer from "../components/Footer/Footer";
 import PageWrapper from "../components/UI/PageWrapper";
 
-const LogInPage = () => {
+const ResetPasswordPage = () => {
 	return (
 		<NavigationGuard guardWhileSignedIn>
 			<AnimatedPage>
 				<PageWrapper centered>
-					<LogInForm />
+					<ResetPasswordForm />
 				</PageWrapper>
 				<Footer />
 			</AnimatedPage>
@@ -17,4 +17,4 @@ const LogInPage = () => {
 	);
 };
 
-export default LogInPage;
+export default ResetPasswordPage;

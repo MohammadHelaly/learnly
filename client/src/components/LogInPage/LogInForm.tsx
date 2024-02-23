@@ -6,8 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import FormContainer from "../UI/FormContainer";
 
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
@@ -65,19 +66,7 @@ const LogInForm = () => {
 	};
 
 	return (
-		<Grid
-			container
-			direction="column"
-			sx={{
-				width: "100%",
-				maxWidth: "500px",
-				transition: "all 0.4s ease-in-out",
-				p: 2,
-				mb: 2,
-				backgroundColor: "#ffffff",
-				borderRadius: "10px",
-				boxShadow: "0 0 0px rgba(0,0,0,0.5)",
-			}}>
+		<FormContainer>
 			<Typography variant="h4" color="common.black">
 				Log in to Learnly
 			</Typography>
@@ -92,10 +81,9 @@ const LogInForm = () => {
 			</Typography>
 			<Typography
 				variant="body1"
-				// color="common.black"
+				color="text.secondary"
 				sx={{
 					fontWeight: 300,
-					color: "#666666",
 				}}>
 				Develop your skills and share your knowledge with others.
 				<br />
@@ -184,7 +172,7 @@ const LogInForm = () => {
 					Log in
 				</Button>
 			</form>
-		</Grid>
+		</FormContainer>
 	);
 };
 
