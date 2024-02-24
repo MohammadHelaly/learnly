@@ -1,4 +1,4 @@
-import { Card, Box } from "@mui/material";
+import { Card } from "@mui/material";
 import useAnimate from "../../hooks/use-animate";
 
 interface CourseCardProps {
