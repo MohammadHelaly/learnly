@@ -58,7 +58,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 	// 4) Send welcome email
 	try {
-		const url = `http://localhost:3000/catalog`; // const url = process.env.FRONTEND_URL //	const url = `${req.protocol}://${req.get("host")}/me`;  // const url = `${process.env.PROTOCOL}://${process.env.HOST}/me`;
+		const url = `http://localhost:3000/dashboard`; // const url = process.env.FRONTEND_URL //	const url = `${req.protocol}://${req.get("host")}/me`;  // const url = `${process.env.PROTOCOL}://${process.env.HOST}/me`;
 		await new Email(user, url).sendWelcome();
 	} catch (err) {
 		return next(
@@ -240,10 +240,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 	// const resetURL = `${req.protocol}://${req.get(
 	// 	"host"
 	// )}/api/v1/users/resetPassword/${resetToken}`;
-	const resetURL = `${req.protocol}://localhost:3000/reset-password/${resetToken}`;
+	const resetUrl = `${req.protocol}://localhost:3000/reset-password/${resetToken}`;
 
 	try {
-		await new Email(user, resetURL).sendPasswordReset();
+		await new Email(user, resetUrl).sendPasswordReset();
 
 		res.status(200).json({
 			status: "success",
