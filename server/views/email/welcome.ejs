@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <%- include('./styles'); %>
+    <title><%= subject %></title>
+  </head>
+  <body>
+    <table
+      class="body"
+      role="presentation"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+    >
+      <tbody>
+        <tr>
+          <td></td>
+          <td class="container">
+            <div class="content">
+              <!-- START CENTERED WHITE CONTAINER -->
+              <table class="main" role="presentation">
+                <!-- START MAIN AREA -->
+                <tbody>
+                  <tr>
+                    <td class="wrapper">
+                      <table
+                        role="presentation"
+                        border="0"
+                        cellpadding="0"
+                        cellspacing="0"
+                      >
+                        <tbody>
+                          <tr>
+                            <td>
+                              <h1 class="h1">Learnly</h1>
+                              <!-- CONTENT -->
+                              <p>Dear <%= firstName %>,</p>
+                              <p>
+                                Welcome to Learnly! Whether you're here to teach
+                                as an instructor or learn as a student, we're
+                                happy to have you.
+                              </p>
+                              <p>
+                                Our platform is all about making the learning
+                                experience enjoyable and accessible.
+                              </p>
+                              <p>
+                                Instructors, you can create engaging courses to
+                                share your knowledge with our community.
+                                Students, explore a variety of courses, connect
+                                with peers, and enhance your skills at your own
+                                pace.
+                              </p>
+                              <p>
+                                Cheers to the learning adventures ahead for both
+                                instructors and students!
+                              </p>
+                              <p>The Learnly Team</p>
+                              <table
+                                class="btn btn-primary"
+                                role="presentation"
+                                border="0"
+                                cellpadding="0"
+                                cellspacing="0"
+                              >
+                                <tbody>
+                                  <tr>
+                                    <td align="left">
+                                      <table
+                                        role="presentation"
+                                        border="0"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                      >
+                                        <tbody>
+                                          <tr>
+                                            <td>
+                                              <a
+                                                href="<%= url %>"
+                                                target="_blank"
+                                                >Go to dashboard</a
+                                              >
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- END MAIN AREA -->
+              </table>
+              <!-- END CENTERED WHITE CONTAINER -->
+
+              <!-- START FOOTER -->
+              <div class="footer">
+                <table
+                  role="presentation"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td class="content-block">
+                        <span class="apple-link">Learnly.</span><br />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- END FOOTER -->
+            </div>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Additional footer or closing tags if required -->
+  </body>
+</html>
