@@ -84,8 +84,6 @@ const Filters = (props: FiltersProps) => {
 	};
 
 	const handleSetSearch = () => {
-		console.log(typeof pricing, pricing);
-		console.log(pricing === "paid");
 		setSearchHandler({
 			sort: sort || undefined,
 			categories: { in: categoryArray } || undefined,
