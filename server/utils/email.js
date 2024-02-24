@@ -38,7 +38,7 @@ module.exports = class Email {
 	}
 
 	async send(template, subject) {
-		//1) Render HTML based on a pug template
+		//1) Render HTML based on an ejs template
 		const html = await ejs.renderFile(
 			`${__dirname}/../views/email/${template}.ejs`,
 			{
