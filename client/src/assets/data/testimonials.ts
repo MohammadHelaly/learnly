@@ -1,4 +1,4 @@
-const testimonialData: Testimonial[] = [
+const testimonials: Testimonial[] = [
 	{
 		author: "Ahmed, business analyst.",
 		photo: "https://i.ibb.co/9vZQ4q5/ahmed.png",
@@ -16,4 +16,4 @@ const testimonialData: Testimonial[] = [
 	},
 ];
 
-export default testimonialData;
+export default testimonials;

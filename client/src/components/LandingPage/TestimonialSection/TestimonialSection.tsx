@@ -1,5 +1,5 @@
 import { Box, Typography, Grid, Container } from "@mui/material";
-import testimonialData from "../../../assets/data/testimonialData";
+import testimonials from "../../../assets/data/testimonials";
 import useAnimate from "../../../hooks/use-animate";
 import TestimonialCard from "./TestimonialCard";
 
@@ -27,7 +27,7 @@ const TestimonialSection = () => {
 					Why Learnly?
 				</Typography>
 				<Grid container justifyContent="center" gap={2}>
-					{testimonialData.map((testimonial, index) => {
+					{testimonials.map((testimonial, index) => {
 						return (
 							<TestimonialCard
 								key={index}

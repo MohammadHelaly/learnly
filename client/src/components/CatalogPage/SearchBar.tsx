@@ -1,40 +1,30 @@
 import { Button, InputAdornment, Stack, TextField, Box } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import { useState, useEffect } from "react";
-import {Filter} from "./Filter";
+import Filters from "./Filters";
 
 interface SearchBarProps {
-	setSearchHandler: (search: string) => void;
+	setSearchHandler: (search: Partial<Search>) => void;
 }
 
-
-
-interface FiltersAppliedProps {
-	filterValue: string; // Adjust according to the actual data structure
-  }
-  
-  
-  const SearchBar = (props: SearchBarProps) => {
-	const [showComp, setShowComp] = useState(false);
+const SearchBar = (props: SearchBarProps) => {
 	const { setSearchHandler } = props;
 	const [scrolled, setScrolled] = useState(false);
-	const [search, setSearch] = useState("");
-
-	const handleSetSearch = () => {
-		setSearchHandler(search);
-	};
-	
-	const FiltersApplied = (props: FiltersAppliedProps) => {
-		setShowComp(false);
-	};
+	const [searchTerm, setSearchTerm] = useState("");
 
 	const searchChangeHandler = (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-		setSearchHandler(event.target.value); // Comment this line in case we don't want to update the search state in real time
-		setSearch(event.target.value);
+		setSearchTerm(event.target.value);
 	};
+
+	const handleSetSearch = () => {
+		setSearchHandler({ name: searchTerm || undefined });
+	};
+
+	useEffect(() => {
+		handleSetSearch();
+	}, [searchTerm]);
 
 	useEffect(() => {
 		window.addEventListener("scroll", () => {
@@ -105,26 +95,11 @@ interface FiltersAppliedProps {
 						),
 					}}
 					variant="outlined"
-					value={search}
+					value={searchTerm}
 					onChange={searchChangeHandler}
 				/>
-				<Button
-					variant="outlined"
-					size="medium"
-					endIcon={<TuneOutlinedIcon />}
-					onClick={() => setShowComp(!showComp)} // Toggle showComp state on click
-					sx={{
-					backgroundColor: "white",
-					"&:hover": {
-						backgroundColor: "#9c27b0",
-						color: "white",
-					},
-					}}
-				>
-					Filters
-				</Button>
+				<Filters setSearchHandler={setSearchHandler} />
 			</Stack>
-			{showComp && <Filter	SendFilters={FiltersApplied} />}
 		</Box>
 	);
 };

@@ -66,3 +66,11 @@ interface Testimonial {
 	photo: string;
 	author: string;
 }
+
+interface Search {
+	name?: string;
+	categories?: { in: string[] };
+	difficulty?: string;
+	paid?: boolean;
+	sort?: string;
+}

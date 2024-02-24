@@ -7,39 +7,26 @@ import Courses from "../UI/Courses/Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
 import PageWrapper from "../UI/PageWrapper";
 
-interface Search {
-	name?: string;
-	category?: string;
-	difficulty?: string;
-}
-
 const CatalogSection = () => {
 	const [page, setPage] = useState(1);
-	const [sort, setSort] = useState(undefined);
 	const [search, setSearch] = useState<Search>({
 		name: undefined,
-		category: undefined,
+		sort: undefined,
+		paid: undefined,
+		categories: undefined,
 		difficulty: undefined,
 	});
 
-	const searchChangeHandler = (value: string) => {
-		if (value === "") {
-			setSearch((previousValue) => {
-				return {
-					...previousValue,
-					name: undefined,
-				};
-			});
-		} else {
-			setSearch((previousValue) => {
-				return {
-					...previousValue,
-					name: value,
-				};
-			});
-		}
+	const searchChangeHandler = (updatedSearch: Partial<Search>) => {
+		setSearch((previousValue) => {
+			return {
+				...previousValue,
+				...updatedSearch,
+			};
+		});
 		setPage(1);
 		refetch();
+		console.log(search);
 	};
 
 	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
@@ -52,13 +39,12 @@ const CatalogSection = () => {
 		isError,
 		refetch,
 	} = useQuery({
-		queryKey: ["courses", { page, sort, search }],
+		queryKey: ["courses", { page, ...search }],
 		queryFn: async () =>
 			await api.get("/courses", {
 				params: {
 					page,
 					limit: 9,
-					sort,
 					...search,
 				},
 			}),

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import AuthContext from "../../store/auth-context";
 import api from "../../api";
@@ -42,6 +42,7 @@ const NavBar = () => {
 	const [scrolled, setScrolled] = useState(false);
 
 	const currentPath = useLocation().pathname;
+	const navigate = useNavigate();
 	const authContext = useContext(AuthContext);
 
 	const queryClient = useQueryClient();
@@ -97,6 +98,7 @@ const NavBar = () => {
 			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] });
 			authContext.logout();
 			handleCloseRightDrawer();
+			navigate("/");
 		}
 	};
 

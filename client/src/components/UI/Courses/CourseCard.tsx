@@ -81,7 +81,9 @@ const CourseCard = (props: CourseCardProps) => {
 							fontWeight: 500,
 							width: "100%",
 						}}>
-						{name.length > 30 ? name.slice(0, 30) + "..." : name}
+						{name?.length > 30
+							? name?.slice(0, 30) + "..."
+							: name ?? "[Course Name Unavailable]"}
 					</Typography>
 					<Typography
 						variant="body1"
@@ -91,9 +93,9 @@ const CourseCard = (props: CourseCardProps) => {
 							width: "100%",
 						}}>
 						{instructors &&
-						instructors.length > 0 &&
-						instructors[0].name.length > 30
-							? `${instructors[0].name.slice(0, 30)}...`
+						instructors?.length > 0 &&
+						instructors[0]?.name.length > 30
+							? `${instructors[0]?.name.slice(0, 30)}...`
 							: instructors?.[0]?.name ??
 							  "[Instructor Name Unavailable]"}
 					</Typography>
