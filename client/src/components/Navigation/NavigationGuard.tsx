@@ -17,7 +17,7 @@ const NavigationGuard = (props: NavigationGuardProps) => {
 			navigate("/dashboard");
 		}
 		if (!authContext.isLoggedIn && !guardWhileSignedIn) {
-			navigate("/login");
+			navigate("/log-in");
 		}
 	}, [authContext, navigate, guardWhileSignedIn]);
 

@@ -17,7 +17,8 @@ api.interceptors.response.use(
 		if (
 			error.response.status === 401 &&
 			error.response.config &&
-			!error.response.config.__isRetryRequest
+			!error.response.config.__isRetryRequest &&
+			error.response.config.url !== "/users/login" // TODO: Check if this is the correct way to handle this + Look into adding more routes to this condition
 		) {
 			localStorage.removeItem("user");
 			window.location.href = "/log-in";

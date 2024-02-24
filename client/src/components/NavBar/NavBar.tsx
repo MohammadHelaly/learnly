@@ -95,10 +95,10 @@ const NavBar = () => {
 		refetch();
 
 		if (logoutResponse === "success") {
-			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] });
-			authContext.logout();
-			handleCloseRightDrawer();
 			navigate("/");
+			authContext.logout();
+			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] });
+			handleCloseRightDrawer();
 		}
 	};
 
@@ -334,20 +334,17 @@ const NavBar = () => {
 												</MenuItem>
 											</StyledNavLink>
 										))}
-										<StyledNavLink
+										<MenuItem
 											key={"Logout"}
-											to="/"
-											onClick={logoutHandler}>
-											<MenuItem
-												sx={{
-													color: "red",
-													fontWeight: 700,
-												}}>
-												<Typography textAlign="center">
-													Logout
-												</Typography>
-											</MenuItem>
-										</StyledNavLink>
+											onClick={logoutHandler}
+											sx={{
+												color: "red",
+												fontWeight: 700,
+											}}>
+											<Typography textAlign="center">
+												Logout
+											</Typography>
+										</MenuItem>
 									</Box>
 								</SwipeableDrawer>
 							</Box>
