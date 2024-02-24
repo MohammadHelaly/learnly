@@ -28,6 +28,7 @@ const Filters = (props: FiltersProps) => {
 	const { setSearchHandler } = props;
 
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [hasFilters, setHasFilters] = useState(false); // Used to determine if the user has applied filters
 	const [sort, setSort] = useState("");
 	const [categoryArray, setCategoryArray] = useState<string[]>([]);
 	const [pricing, setPricing] = useState("");
@@ -79,6 +80,7 @@ const Filters = (props: FiltersProps) => {
 			paid: undefined,
 			difficulty: undefined,
 		});
+		setHasFilters(false);
 	};
 
 	const handleSetSearch = () => {
@@ -95,6 +97,9 @@ const Filters = (props: FiltersProps) => {
 					: undefined,
 			difficulty: difficulty || undefined,
 		});
+		setHasFilters(
+			!!sort || !!categoryArray.length || !!pricing || !!difficulty
+		);
 	};
 
 	useEffect(() => {
@@ -109,8 +114,9 @@ const Filters = (props: FiltersProps) => {
 				endIcon={<TuneOutlinedIcon />}
 				onClick={handleDrawerOpen}
 				sx={{
-					backgroundColor: isDrawerOpen ? "#9c27b0" : "white",
-					color: isDrawerOpen ? "white" : "#9c27b0",
+					backgroundColor:
+						isDrawerOpen || hasFilters ? "#9c27b0" : "white",
+					color: isDrawerOpen || hasFilters ? "white" : "#9c27b0",
 					"&:hover": {
 						backgroundColor: "#9c27b0",
 						color: "white",

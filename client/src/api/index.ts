@@ -9,4 +9,21 @@ const api = axios.create({
 	},
 });
 
+api.interceptors.response.use(
+	(response) => {
+		return response;
+	},
+	(error) => {
+		if (
+			error.response.status === 401 &&
+			error.response.config &&
+			!error.response.config.__isRetryRequest
+		) {
+			localStorage.removeItem("user");
+			window.location.href = "/log-in";
+		}
+		return Promise.reject(error);
+	}
+);
+
 export default api;
