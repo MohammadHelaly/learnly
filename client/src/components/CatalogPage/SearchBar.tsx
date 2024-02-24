@@ -86,7 +86,7 @@ const SearchBar = (props: SearchBarProps) => {
 									onClick={handleSetSearch}>
 									<SearchOutlinedIcon
 										sx={{
-											color: "#9c27b0",
+											color: "primary.main",
 											borderRadius: 3,
 										}}
 									/>

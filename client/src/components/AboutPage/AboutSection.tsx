@@ -71,17 +71,17 @@ const AboutSection = () => {
 						sx={{
 							// height: "100%",
 							opacity: 0,
-							color: "#000000",
-							backgroundColor: "#00f3b6",
-							border: "solid #00f3b6",
-							borderWidth: 1,
+							color: "black",
+							backgroundColor: "secondary.main",
+							border: 1,
+							borderColor: "secondary.main",
 							transition:
 								"opacity 0.5s ease-in-out .2s, background-color 0.2s ease-in-out 0s",
 							"&:hover": {
-								backgroundColor: "rgba(0, 0, 0, 0)",
-								border: "solid #00f3b6",
-								borderWidth: 1,
-								color: "#00f3b6",
+								backgroundColor: "transparent",
+								border: 1,
+								borderColor: "secondary.main",
+								color: "secondary.main",
 							},
 						}}>
 						Get in Touch with Us

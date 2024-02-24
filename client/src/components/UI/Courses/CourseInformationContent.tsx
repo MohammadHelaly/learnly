@@ -24,7 +24,7 @@ interface CourseInformationContentProps {
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	textDecoration: "none",
-	color: "#9c27b0",
+	color: "primary.main",
 	"&:hover": {
 		textDecoration: "underline",
 	},
@@ -133,7 +133,7 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 								readOnly
 								precision={0.25}
 								size="large"
-								sx={{ color: "#00f3b6" }}
+								sx={{ color: "secondary.main" }}
 							/>
 							<Typography
 								variant="h6"

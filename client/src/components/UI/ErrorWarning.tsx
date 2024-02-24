@@ -4,7 +4,7 @@ const ErrorWarning = () => {
 	return (
 		<Typography
 			variant="h4"
-			color="error"
+			color="error.main"
 			sx={{
 				my: 20,
 				textAlign: "center",

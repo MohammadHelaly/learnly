@@ -20,7 +20,8 @@ const CategoryTitle = (props: CategoryTitleProps) => {
 				height: "15px",
 				fontSize: "1rem",
 				backgroundColor: "white",
-				border: "1px solid #00f3b6",
+				border: 1,
+				borderColor: "secondary.main",
 				borderRadius: 10,
 			}}>
 			{children}

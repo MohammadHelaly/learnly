@@ -115,10 +115,11 @@ const Filters = (props: FiltersProps) => {
 				onClick={handleDrawerOpen}
 				sx={{
 					backgroundColor:
-						isDrawerOpen || hasFilters ? "#9c27b0" : "white",
-					color: isDrawerOpen || hasFilters ? "white" : "#9c27b0",
+						isDrawerOpen || hasFilters ? "primary.main" : "white",
+					color:
+						isDrawerOpen || hasFilters ? "white" : "primary.main",
 					"&:hover": {
-						backgroundColor: "#9c27b0",
+						backgroundColor: "primary.main",
 						color: "white",
 					},
 				}}>

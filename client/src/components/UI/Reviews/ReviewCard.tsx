@@ -43,7 +43,7 @@ const ReviewCard = (props: ReviewCardProps) => {
 				precision={0.25}
 				sx={{
 					mb: 2,
-					color: "#00f3b6",
+					color: "secondary.main",
 				}}
 			/>
 			<Typography

@@ -61,14 +61,14 @@ const HomeSection = () => {
 							sx={{
 								height: "100%",
 								color: "#000000",
-								backgroundColor: "#00f3b6",
-								border: "solid #00f3b6",
-								borderWidth: 1,
+								backgroundColor: "secondary.main",
+								border: 1,
+								borderColor: "secondary.main",
 								"&:hover": {
 									backgroundColor: "rgba(0, 0, 0, 0)",
-									border: "solid #00f3b6",
-									borderWidth: 1,
-									color: "#00f3b6",
+									border: 1,
+									borderColor: "secondary.main",
+									color: "secondary.main",
 								},
 							}}>
 							Start Learning
@@ -82,13 +82,13 @@ const HomeSection = () => {
 							disableElevation
 							sx={{
 								height: "100%",
-								color: "#00f3b6",
-								border: "solid #00f3b6",
-								borderWidth: 1,
+								color: "secondary.main",
+								border: 1,
+								borderColor: "secondary.main",
 								"&:hover": {
-									border: "solid #00f3b6",
-									backgroundColor: "#00f3b6",
-									borderWidth: 1,
+									border: 1,
+									borderColor: "secondary.main",
+									backgroundColor: "secondary.main",
 									color: "#000000",
 								},
 							}}>

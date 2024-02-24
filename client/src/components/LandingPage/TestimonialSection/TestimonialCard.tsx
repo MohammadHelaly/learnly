@@ -54,7 +54,7 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 						width: 30,
 						height: 30,
 						p: 0,
-						backgroundColor: "#9c27b0",
+						backgroundColor: "primary.main",
 					}}
 				/>
 				<Typography

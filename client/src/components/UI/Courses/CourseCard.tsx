@@ -107,7 +107,7 @@ const CourseCard = (props: CourseCardProps) => {
 							precision={0.25}
 							size="small"
 							sx={{
-								color: "#00f3b6",
+								color: "secondary.main",
 								// color: "black",
 							}}
 						/>

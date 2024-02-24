@@ -103,10 +103,10 @@ const CourseBanner = (props: CourseBannerProps) => {
 							height: 50,
 							// fontSize:
 							// 	window.innerWidth > 600 ? "1rem" : "0.65rem",
-							backgroundColor: "#00f3b6",
+							backgroundColor: "secondary.main",
 							color: "black",
 							"&:hover": {
-								backgroundColor: "#9c27b0",
+								backgroundColor: "primary.main",
 								color: "white",
 							},
 						}}

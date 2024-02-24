@@ -1,6 +1,6 @@
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
-import { Box, Button, Typography, Container, styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import useAnimate from "../../hooks/use-animate";
 import { NavLink } from "react-router-dom";
@@ -79,17 +79,17 @@ const CallToAction = (props: CallToActionProps) => {
 						sx={{
 							// height: "100%",
 							opacity: 0,
-							color: "#000000",
-							backgroundColor: "#00f3b6",
-							border: "solid #00f3b6",
-							borderWidth: 1,
+							color: "black",
+							backgroundColor: "secondary.main",
+							border: 1,
+							borderColor: "secondary.main",
 							transition:
 								"opacity 0.5s ease-in-out .2s, background-color 0.2s ease-in-out 0s",
 							"&:hover": {
 								backgroundColor: "rgba(0, 0, 0, 0)",
-								border: "solid #00f3b6",
-								borderWidth: 1,
-								color: "#00f3b6",
+								border: 1,
+								borderColor: "secondary.main",
+								color: "secondary.main",
 							},
 						}}>
 						{props.callToAction}

@@ -256,9 +256,11 @@ const NavBar = () => {
 									size="small"
 									disableElevation
 									sx={{
-										color: scrolled ? "#9c27b0" : "white",
+										color: scrolled
+											? "primary.main"
+											: "white",
 										"&:hover": {
-											backgroundColor: "#9c27b0",
+											backgroundColor: "primary.main",
 											color: "#ffffff",
 										},
 									}}>
@@ -270,9 +272,11 @@ const NavBar = () => {
 									size="small"
 									disableElevation
 									sx={{
-										color: scrolled ? "#9c27b0" : "white",
+										color: scrolled
+											? "primary.main"
+											: "white",
 										"&:hover": {
-											backgroundColor: "#9c27b0",
+											backgroundColor: "primary.main",
 											color: "#ffffff",
 										},
 									}}>
@@ -288,7 +292,7 @@ const NavBar = () => {
 											alt={authContext.user?.name}
 											src={authContext.user?.photo}
 											sx={{
-												backgroundColor: "#9c27b0",
+												backgroundColor: "primary.main",
 											}}
 										/>
 									</IconButton>
@@ -358,14 +362,14 @@ const NavBar = () => {
 									size="small"
 									disableElevation
 									sx={{
-										color: "#9c27b0",
-										border: "solid #9c27b0",
-										borderWidth: 1,
+										color: "primary.main",
+										border: 1,
+										borderColor: "primary.main",
 										height: "100%",
 										"&:hover": {
-											backgroundColor: "#9c27b0",
-											border: "solid #9c27b0",
-											borderWidth: 1,
+											backgroundColor: "primary.main",
+											border: 1,
+											borderColor: "primary.main",
 											color: "#ffffff",
 										},
 									}}>
@@ -380,14 +384,14 @@ const NavBar = () => {
 									disableElevation
 									sx={{
 										color: "#ffffff",
-										border: "solid #9c27b0",
-										borderWidth: 1,
+										border: 1,
+										borderColor: "primary.main",
 										height: "100%",
 										"&:hover": {
-											backgroundColor: "rgba(0, 0, 0, 0)",
-											border: "solid #9c27b0",
-											borderWidth: 1,
-											color: "#9c27b0",
+											backgroundColor: "transparent",
+											border: 1,
+											borderColor: "primary.main",
+											color: "primary.main",
 										},
 									}}>
 									Sign up

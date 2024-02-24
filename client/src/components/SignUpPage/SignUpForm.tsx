@@ -28,7 +28,7 @@ const schema = z
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	textDecoration: "none",
-	color: "#9c27b0",
+	color: "primary.main",
 	"&:hover": {
 		textDecoration: "underline",
 	},

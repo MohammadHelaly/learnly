@@ -84,7 +84,7 @@ const InstructorCard = (props: InstructorCardProps) => {
 							readOnly
 							sx={{
 								mb: 2,
-								color: "#00f3b6",
+								color: "secondary.main",
 							}}
 						/>
 						<Typography variant="body2" color="text.secondary">

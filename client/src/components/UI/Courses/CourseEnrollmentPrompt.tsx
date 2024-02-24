@@ -52,13 +52,13 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 					width: window.innerWidth > 600 ? "45%" : "100%",
 					height: 50,
 					fontSize: "1rem",
-					backgroundColor: "#00f3b6",
+					backgroundColor: "secondary.main",
 					// backgroundColor: "#9c27b0",
 
 					color: "black",
 					// border: "1px solid #00f3b6",
 					"&:hover": {
-						backgroundColor: "#9c27b0",
+						backgroundColor: "primary.main",
 						color: "white",
 						// backgroundColor: "transparent",
 						// color: "#9c27b0",

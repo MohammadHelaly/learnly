@@ -18,7 +18,7 @@ const FormContainer = (props: FormContainerProps) => {
 				transition: "all 0.4s ease-in-out",
 				p: 2,
 				my: modal ? 0 : 6,
-				backgroundColor: "#ffffff",
+				backgroundColor: "white",
 				borderRadius: "10px",
 				boxShadow: "0 0 0px rgba(0,0,0,0.5)",
 			}}>
