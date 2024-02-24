@@ -26,7 +26,6 @@ const CatalogSection = () => {
 		});
 		setPage(1);
 		refetch();
-		console.log(search);
 	};
 
 	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
