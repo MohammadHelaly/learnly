@@ -43,7 +43,9 @@ const Footer = () => {
 							textDecoration: "none",
 						},
 					}}>
-					<Typography variant="h4" sx={{ marginBottom: 6 }}>
+					<Typography
+						variant="h4"
+						sx={{ marginBottom: 6, letterSpacing: "0.1rem" }}>
 						Learnly
 					</Typography>
 				</StyledNavLink>

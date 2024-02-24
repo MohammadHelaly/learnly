@@ -129,7 +129,7 @@ const NavBar = () => {
 							mr: 2,
 							display: { xs: "none", md: "flex" },
 							fontFamily: "Outfit, Roboto, sans-serif",
-							letterSpacing: ".3rem",
+							letterSpacing: ".1rem",
 							color: "inherit",
 							textDecoration: "none",
 						}}>
@@ -173,7 +173,7 @@ const NavBar = () => {
 										textAlign: "left",
 										fontFamily:
 											"Outfit, Roboto, sans-serif",
-										letterSpacing: ".3rem",
+										letterSpacing: ".1rem",
 										color: "#000000",
 										textDecoration: "none",
 										paddingBottom: 2,
@@ -213,7 +213,7 @@ const NavBar = () => {
 							display: { xs: "flex", md: "none" },
 							flexGrow: 1,
 							fontFamily: "Outfit, Roboto, sans-serif",
-							letterSpacing: ".3rem",
+							letterSpacing: ".1rem",
 							color: "inherit",
 							textDecoration: "none",
 						}}>
@@ -314,10 +314,10 @@ const NavBar = () => {
 											sx={{
 												textAlign: "left",
 												fontSize: "1.5rem",
-												fontWeight: "500",
+												fontWeight: "400",
 												fontFamily:
 													"Outfit, Roboto, sans-serif",
-												letterSpacing: ".3rem",
+												letterSpacing: ".1rem",
 												color: "#000000",
 												textDecoration: "none",
 												paddingBottom: 2,
