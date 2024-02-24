@@ -3,6 +3,7 @@
   * {
     font-family: "Outfit";
   }
+
   body {
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
@@ -27,45 +28,58 @@ BODY & CONTAINER
 ------------------------------------- */
 
   body {
-    background-color: #f4f5f6;
+    /* background-image: url(test.jpg); */
+    background-color: #f6f6f6;
     margin: 0;
     padding: 0;
   }
 
   .body {
-    background-color: #f4f5f6;
+    /* background-image: url("test.jpg"); */
+    background-color: #f6f6f6;
     width: 100%;
+    height: 100%;
   }
 
   .container {
     margin: 0 auto !important;
     max-width: 600px;
     padding: 0;
-    padding-top: 24px;
+    padding-top: 70px;
+    padding-left: 40px;
     width: 600px;
   }
 
+  .h1 {
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    border-bottom: 5px grey;
+  }
   .content {
+    padding-top: 20px;
     box-sizing: border-box;
     display: block;
     margin: 0 auto;
     max-width: 600px;
-    padding: 0;
   }
   /* -------------------------------------
 HEADER, FOOTER, MAIN
 ------------------------------------- */
 
   .main {
-    background: #ffffff;
-    border: 1px solid #eaebed;
+    background-color: #ffffff;
     border-radius: 16px;
     width: 100%;
+    height: 100%;
   }
 
   .wrapper {
-    box-sizing: border-box;
-    padding: 24px;
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-right: 30px;
+    padding-bottom: 25px;
   }
 
   .footer {
@@ -103,6 +117,7 @@ BUTTONS
 ------------------------------------- */
 
   .btn {
+    padding-top: 15px;
     box-sizing: border-box;
     min-width: 100% !important;
     width: 100%;
@@ -117,17 +132,15 @@ BUTTONS
   }
 
   .btn table td {
-    background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
   }
 
   .btn a {
-    background-color: #ffffff;
-    border: solid 2px #0867ec;
+    background-color: #9c27b0;
+    border: groove 2px #9c27b0;
     border-radius: 4px;
     box-sizing: border-box;
-    color: #0867ec;
     cursor: pointer;
     display: inline-block;
     font-size: 16px;
@@ -139,22 +152,19 @@ BUTTONS
   }
 
   .btn-primary table td {
-    background-color: #00f3b6;
   }
 
   .btn-primary a {
-    background-color: #9c27b0;
-    border-color: #9c27b0;
-    color: white;
+    color: #ffffff;
     transition: all 0.4s ease;
   }
 
   @media all {
     .btn-primary table td:hover {
-      background-color: #ec0867 !important;
+      background-color: transparent !important;
     }
     .btn-primary a:hover {
-      background-color: white !important;
+      background-color: transparent !important;
       border-color: #9c27b0 !important;
       color: #9c27b0;
     }

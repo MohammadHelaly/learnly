@@ -1,8 +1,8 @@
 const nodemailer = require("nodemailer");
 const postmarkTransport = require("nodemailer-postmark-transport");
 const htmlToText = require("html-to-text");
-const pug = require("pug");
 const ejs = require("ejs");
+
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
