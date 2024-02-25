@@ -27,16 +27,11 @@ const TestimonialSection = () => {
 					Why Learnly?
 				</Typography>
 				<Grid container justifyContent="center" gap={2}>
-					{testimonials.map((testimonial, index) => {
-						return (
-							<Grid item key={index}>
-								<TestimonialCard
-									index={index}
-									testimonial={testimonial}
-								/>
-							</Grid>
-						);
-					})}
+					{testimonials.map((testimonial, index) => (
+						<Grid item key={index}>
+							<TestimonialCard index={index} {...testimonial} />
+						</Grid>
+					))}
 				</Grid>
 				<Typography
 					ref={paragraphRef}

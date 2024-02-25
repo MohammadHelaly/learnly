@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import { Container, Pagination } from "@mui/material";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
-import CourseBanner from "../UI/Courses/CourseBanner";
+import CourseBanner from "../UI/Courses/Catalog/CourseBanner";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Reviews from "../UI/Reviews/Reviews";
 import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
@@ -110,7 +110,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 					onChange={pageChangeHandler}
 					variant="outlined"
 					sx={{
-						my: 10,
+						my: 8,
 					}}
 				/>
 			</PageWrapper>

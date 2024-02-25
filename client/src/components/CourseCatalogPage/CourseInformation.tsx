@@ -1,8 +1,8 @@
 import { Container, Stack } from "@mui/material";
 import ErrorWarning from "../UI/ErrorWarning";
 import SectionWrapper from "../UI/SectionWrapper";
-import CourseEnrollmentPrompt from "../UI/Courses/CourseEnrollmentPrompt";
-import CourseImage from "../UI/Courses/CourseImage";
+import CourseEnrollmentPrompt from "./CourseEnrollmentPrompt";
+import CourseImage from "../UI/Courses/Catalog/CourseImage";
 import CourseInformationContent from "./CourseInformationContent";
 
 interface CourseInformationProps {

@@ -3,16 +3,14 @@ import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
 interface InstructorCardProps {
-	instructor: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-		courses: (number | string)[];
-	};
+	id: number | string;
+	name: string;
+	photo?: string;
+	ratingsAverage: number;
+	ratingsQuantity: number;
+	students: number;
+	bio?: string;
+	courses: (number | string)[];
 }
 
 const StyledNavLink = styled(NavLink)((theme) => ({
@@ -26,7 +24,6 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 }));
 
 const InstructorCard = (props: InstructorCardProps) => {
-	const { instructor } = props;
 	const {
 		id,
 		name,
@@ -36,7 +33,7 @@ const InstructorCard = (props: InstructorCardProps) => {
 		ratingsAverage,
 		ratingsQuantity,
 		students,
-	} = instructor;
+	} = props;
 
 	return (
 		<Card

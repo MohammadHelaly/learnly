@@ -7,9 +7,9 @@ import Footer from "../components/Footer/Footer";
 import { Container } from "@mui/material";
 import SectionHeader from "../components/UI/SectionHeader";
 import SectionWrapper from "../components/UI/SectionWrapper";
-import CourseSelection from "../components/UI/Courses/CourseSelection";
-import Courses from "../components/UI/Courses/Courses";
 import PageWrapper from "../components/UI/PageWrapper";
+import StudentDashboard from "../components/DashboardPage/StudentDashboard";
+import InstructorDashboard from "../components/DashboardPage/InstructorDashboard";
 
 const DashboardPage = () => {
 	const [value, setValue] = useState("0");
@@ -61,28 +61,10 @@ const DashboardPage = () => {
 								</TabList>
 							</Box>
 							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								{/* <CourseSelection
-									heading="Your Teaching"
-									headingAlignment="left"
-									headingAnimated={false}
-									cardsAnimated={false}
-									variant="white"
-									query={{
-										url: "/courses",
-									}}
-								/> */}
+								<StudentDashboard />
 							</TabPanel>
 							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								{/* <CourseSelection
-									heading="Your Learning"
-									headingAlignment="left"
-									headingAnimated={false}
-									cardsAnimated={false}
-									variant="white"
-									query={{
-										url: "/courses",
-									}}
-								/> */}
+								<InstructorDashboard />
 							</TabPanel>
 						</TabContext>
 					</SectionWrapper>

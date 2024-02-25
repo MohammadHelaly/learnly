@@ -6,6 +6,9 @@ interface User {
 	email: string;
 	bio?: string;
 	photo?: string;
+	role: "user" | "instructor" | "admin";
+	coursesEnrolled: (number | string)[];
+	coursesCreated: (number | string)[];
 }
 
 interface Review {

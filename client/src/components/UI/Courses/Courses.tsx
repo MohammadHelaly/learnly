@@ -1,11 +1,16 @@
 import { Grid, SxProps } from "@mui/material";
-import CourseCard from "./CourseCard";
-import SkeletonCourseCard from "./SkeletonCourseCard";
+import CourseCard from "./Catalog/CourseCard";
+import SkeletonCourseCard from "./Catalog/SkeletonCourseCard";
 import AnimatedCard from "../AnimatedCard";
+import SkeletonInstructorDashboardCourseCard from "./Dashboard/SkeletonInstructorDashboardCourseCard";
+import SkeletonStudentDashboardCourseCard from "./Dashboard/SkeletonStudentDashboardCourseCard";
+import InstructorDashboardCourseCard from "./Dashboard/InstructorDashboardCourseCard";
+import StudentDashboardCourseCard from "./Dashboard/StudentDashboardCourseCard";
 import ErrorWarning from "../ErrorWarning";
 import NothingFoundMessage from "../NothingFoundMessage";
 
 interface CoursesProps {
+	variant?: "studentDashboard" | "instructorDashboard";
 	isLoading: boolean;
 	isError: boolean;
 	maxLength: number;
@@ -35,7 +40,15 @@ interface CoursesProps {
 }
 
 const Courses = (props: CoursesProps) => {
-	const { courses, maxLength, isLoading, isError, cardsAnimated, sx } = props;
+	const {
+		courses,
+		maxLength,
+		isLoading,
+		isError,
+		variant,
+		cardsAnimated,
+		sx,
+	} = props;
 
 	return (
 		<Grid
@@ -50,18 +63,32 @@ const Courses = (props: CoursesProps) => {
 				// 	<ErrorWarning />
 				// ) :
 				courses?.length === 0 || !courses ? (
-					<NothingFoundMessage />
+					<NothingFoundMessage variant={variant} />
 				) : (
 					Array(maxLength)
 						.fill(null)
 						.map((_, index) => {
 							if (isLoading) {
 								return (
-									<Grid item key={index}>
+									<Grid
+										item
+										key={index}
+										xs={
+											variant === "instructorDashboard"
+												? 12
+												: "auto"
+										}>
 										<AnimatedCard
 											index={index}
 											animated={cardsAnimated}>
-											<SkeletonCourseCard />
+											{variant === "studentDashboard" ? (
+												<SkeletonStudentDashboardCourseCard />
+											) : variant ===
+											  "instructorDashboard" ? (
+												<SkeletonInstructorDashboardCourseCard />
+											) : (
+												<SkeletonCourseCard />
+											)}
 										</AnimatedCard>
 									</Grid>
 								);
@@ -71,41 +98,31 @@ const Courses = (props: CoursesProps) => {
 
 							const course = courses?.[index];
 
-							const {
-								id,
-								name,
-								price,
-								summary,
-								duration,
-								difficulty,
-								ratingsAverage,
-								ratingsQuantity,
-								instructors,
-								imageCover,
-								paid,
-							} = course;
-
 							return (
 								course && (
-									<Grid item key={index}>
+									<Grid
+										item
+										key={index}
+										xs={
+											variant === "instructorDashboard"
+												? 12
+												: "auto"
+										}>
 										<AnimatedCard
 											index={index}
 											animated={cardsAnimated}>
-											<CourseCard
-												id={id}
-												name={name}
-												image={imageCover}
-												summary={summary}
-												duration={duration}
-												difficulty={difficulty}
-												instructors={instructors}
-												paid={paid}
-												price={price}
-												ratingsAverage={ratingsAverage}
-												ratingsQuantity={
-													ratingsQuantity
-												}
-											/>
+											{variant === "studentDashboard" ? (
+												<StudentDashboardCourseCard
+													{...course}
+												/>
+											) : variant ===
+											  "instructorDashboard" ? (
+												<InstructorDashboardCourseCard
+													{...course}
+												/>
+											) : (
+												<CourseCard {...course} />
+											)}
 										</AnimatedCard>
 									</Grid>
 								)

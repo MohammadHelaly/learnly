@@ -34,10 +34,7 @@ const Instructors = (props: InstructorsProps) => {
 									<SkeletonInstructorCard key={index} />
 								))
 						: instructors?.map((instructor, index) => (
-								<InstructorCard
-									key={index}
-									instructor={instructor}
-								/>
+								<InstructorCard key={index} {...instructor} />
 						  ))
 				}
 			</Stack>

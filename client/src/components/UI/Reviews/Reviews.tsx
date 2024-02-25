@@ -17,7 +17,7 @@ const Reviews = (props: ReviewsProps) => {
 
 	return (
 		<Container maxWidth="lg">
-			<Stack direction="column" alignItems="center">
+			<Stack direction="column" alignItems="center" sx={{ ...sx }}>
 				{
 					// isError ? (
 					// 	<ErrorWarning />
@@ -31,19 +31,9 @@ const Reviews = (props: ReviewsProps) => {
 								<SkeletonReviewCard key={index} />
 							))
 					) : (
-						reviews?.map((reviewItem) => {
-							const { id, rating, review, user, createdAt } =
-								reviewItem;
-							return (
-								<ReviewCard
-									key={id}
-									review={review}
-									rating={rating}
-									user={user}
-									createdAt={createdAt}
-								/>
-							);
-						})
+						reviews?.map((reviewItem) => (
+							<ReviewCard {...reviewItem} />
+						))
 					)
 				}
 			</Stack>

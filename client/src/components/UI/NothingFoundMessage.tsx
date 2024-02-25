@@ -1,16 +1,68 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { NavLink } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import SectionWrapper from "./SectionWrapper";
 
-const NothingFoundMessage = () => {
+interface NothingFoundMessageProps {
+	variant?: "studentDashboard" | "instructorDashboard";
+}
+
+const StyledNavLink = styled(NavLink)((theme) => ({
+	color: "inherit",
+	textDecoration: "none",
+}));
+
+const NothingFoundMessage = (props: NothingFoundMessageProps) => {
+	const { variant } = props;
+
 	return (
-		<Typography
-			variant="h4"
-			color="text.secondary"
+		<SectionWrapper
 			sx={{
-				my: 20,
+				my: 10,
 				textAlign: "center",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				gap: 4,
 			}}>
-			Found nothing to show...
-		</Typography>
+			{variant === "studentDashboard" ? (
+				<>
+					<Typography variant="h4" color="text.secondary">
+						You aren't enrolled in any courses yet. Explore our
+						catalog and find something you like!
+					</Typography>
+					<StyledNavLink to="/courses">
+						<Button
+							variant="contained"
+							color="primary"
+							size="large"
+							disableElevation>
+							Explore Courses
+						</Button>
+					</StyledNavLink>
+				</>
+			) : variant === "instructorDashboard" ? (
+				<>
+					<Typography variant="h4" color="text.secondary">
+						You haven't created any courses yet. Get started by
+						creating a new course!
+					</Typography>
+					<StyledNavLink to="/courses">
+						<Button
+							variant="contained"
+							color="primary"
+							size="large"
+							disableElevation>
+							Create a Course
+						</Button>
+					</StyledNavLink>
+				</>
+			) : (
+				<Typography variant="h4" color="text.secondary">
+					Found nothing to show...
+				</Typography>
+			)}
+		</SectionWrapper>
 	);
 };
 

@@ -74,8 +74,7 @@ const CatalogSection = () => {
 				onChange={pageChangeHandler}
 				variant="outlined"
 				sx={{
-					mt: 8,
-					mb: 10,
+					my: 8,
 				}}
 			/>
 		</PageWrapper>

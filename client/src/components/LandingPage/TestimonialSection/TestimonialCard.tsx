@@ -3,13 +3,14 @@ import useAnimate from "../../../hooks/use-animate";
 
 interface TestimonialCardProps {
 	index: number;
-	testimonial: Testimonial;
+	quote: string;
+	photo?: string;
+	author: string;
 }
 
 const TestimonialCard = (props: TestimonialCardProps) => {
 	const elementRef = useAnimate("animate", false);
-	const { index, testimonial } = props;
-	const { quote, photo, author } = testimonial;
+	const { index, quote, photo, author } = props;
 
 	const delay = 0.5 + index * 0.2;
 

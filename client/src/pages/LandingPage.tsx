@@ -1,5 +1,5 @@
 import HomeSection from "../components/LandingPage/HomeSection";
-import CourseSelection from "../components/UI/Courses/CourseSelection";
+import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
 import InformationSection from "../components/LandingPage/InformationSection";
 import CallToAction from "../components/UI/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";

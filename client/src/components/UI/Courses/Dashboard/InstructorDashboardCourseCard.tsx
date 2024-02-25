@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 interface CourseCardProps {
 	id: number | string;
 	name: string;
-	image: string;
+	imageCover: string;
 	summary: string;
 	instructors: {
 		id: number | string;
@@ -29,11 +29,11 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 	color: "inherit",
 }));
 
-const CourseCard = (props: CourseCardProps) => {
+const InstructorDashboardCourseCard = (props: CourseCardProps) => {
 	const {
 		id,
 		name,
-		image,
+		imageCover,
 		instructors,
 		price,
 		paid,
@@ -44,23 +44,25 @@ const CourseCard = (props: CourseCardProps) => {
 	} = props;
 
 	return (
-		<Card
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				height: 356,
-				width: window.innerWidth > 380 ? 356 : 328,
-				transition: `all 0.6s ease-in-out`,
-				borderRadius: 0,
-				backgroundColor: "transparent",
-				borderBottom: "1px solid #dddddd",
-				boxShadow: "none",
-				p: 0,
-			}}>
-			<StyledNavLink to={`/courses/${id}`}>
-				<Box sx={{ height: 200, width: "100%" }}>
+		<StyledNavLink to={`/courses/${id}`}>
+			<Card
+				sx={{
+					display: "flex",
+					flexDirection: window.innerWidth > 600 ? "row" : "column",
+					gap: 2,
+					// height: 356,
+					width: "100%",
+					transition: `all 0.6s ease-in-out`,
+					borderRadius: 0,
+					backgroundColor: "transparent",
+					borderBottom: "1px solid #dddddd",
+					boxShadow: "none",
+					px: 0,
+					py: 1,
+				}}>
+				<Box sx={{ height: 200, width: 356 }}>
 					<img
-						src={image}
+						src={imageCover}
 						alt="course"
 						style={{
 							objectFit: "cover",
@@ -73,7 +75,6 @@ const CourseCard = (props: CourseCardProps) => {
 				<Box
 					sx={{
 						transition: "all 0.5s ease",
-						py: 1,
 					}}>
 					<Typography
 						variant="h6"
@@ -82,7 +83,7 @@ const CourseCard = (props: CourseCardProps) => {
 							fontWeight: 500,
 							width: "100%",
 						}}>
-						{name?.length > 30
+						{name?.length > 30 && window.innerWidth < 600
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
 					</Typography>
@@ -149,9 +150,9 @@ const CourseCard = (props: CourseCardProps) => {
 						{" Level"}
 					</Typography>
 				</Box>
-			</StyledNavLink>
-		</Card>
+			</Card>
+		</StyledNavLink>
 	);
 };
 
-export default CourseCard;
+export default InstructorDashboardCourseCard;
