@@ -19,7 +19,7 @@ const StyledList = styled("ul")((theme) => ({
 	paddingLeft: 0,
 	"& li": {
 		marginBottom: 16,
-		marginLeft: 16,
+		marginLeft: window.innerWidth > 600 ? 24 : 16,
 	},
 }));
 

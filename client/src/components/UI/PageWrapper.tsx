@@ -1,13 +1,14 @@
-import { Box } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 
 interface PageWrapperProps {
 	children: React.ReactNode;
 	centered?: boolean;
 	modal?: boolean;
+	sx?: SxProps;
 }
 
 const PageWrapper = (props: PageWrapperProps) => {
-	const { children, centered, modal } = props;
+	const { children, centered, modal, sx } = props;
 
 	return (
 		<Box
@@ -20,6 +21,7 @@ const PageWrapper = (props: PageWrapperProps) => {
 				pb: modal ? 0 : 5,
 				mt: modal ? 0 : window.innerWidth > 600 ? 8 : 7,
 				backgroundColor: "white",
+				...sx,
 			}}>
 			{children}
 		</Box>

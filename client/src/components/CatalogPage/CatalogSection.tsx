@@ -57,7 +57,7 @@ const CatalogSection = () => {
 	return (
 		<PageWrapper>
 			<SearchBar setSearchHandler={searchChangeHandler} />
-			<Container maxWidth="lg" sx={{ px: "0 !important" }}>
+			<Container maxWidth="lg">
 				<Courses
 					courses={courses}
 					isLoading={isLoading}

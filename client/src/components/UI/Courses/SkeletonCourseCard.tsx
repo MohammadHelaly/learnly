@@ -6,8 +6,8 @@ const SkeletonCourseCard = () => {
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: 360,
-				width: 360,
+				height: 356,
+				width: window.innerWidth > 380 ? 356 : 328,
 				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
@@ -20,7 +20,6 @@ const SkeletonCourseCard = () => {
 				animation="wave"
 				sx={{
 					height: 200,
-					width: "100%",
 					borderRadius: "12px",
 				}}
 			/>

@@ -12,6 +12,7 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 	const { quote, photo, author } = testimonial;
 
 	const delay = 0.5 + index * 0.2;
+
 	return (
 		<Card
 			ref={elementRef}
@@ -20,8 +21,7 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 				flexDirection: "column",
 				alignItems: "left",
 				justifyContent: "space-between",
-				py: 4,
-				px: 4,
+				p: 4,
 				background: "white",
 				height: 200,
 				boxShadow: "none",
@@ -34,7 +34,7 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 				"&:hover": {
 					borderRadius: 1,
 				},
-				width: 294,
+				width: window.innerWidth > 380 ? 290 : 262,
 			}}>
 			<Typography
 				variant="h6"

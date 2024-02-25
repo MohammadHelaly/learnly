@@ -9,17 +9,7 @@ interface ReviewsProps {
 	isLoading: boolean;
 	maxLength: number;
 	sx?: SxProps;
-	reviews: {
-		id: number | string;
-		rating: number;
-		review: string;
-		user: {
-			id: number | string;
-			name: string;
-			photo: string;
-		};
-		createdAt: string | Date;
-	}[];
+	reviews: Review[];
 }
 
 const Reviews = (props: ReviewsProps) => {

@@ -29,11 +29,12 @@ const TestimonialSection = () => {
 				<Grid container justifyContent="center" gap={2}>
 					{testimonials.map((testimonial, index) => {
 						return (
-							<TestimonialCard
-								key={index}
-								index={index}
-								testimonial={testimonial}
-							/>
+							<Grid item key={index}>
+								<TestimonialCard
+									index={index}
+									testimonial={testimonial}
+								/>
+							</Grid>
 						);
 					})}
 				</Grid>

@@ -15,6 +15,7 @@ import CourseSelection from "../components/UI/Courses/CourseSelection";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import api from "../api";
+import PageWrapper from "../components/UI/PageWrapper";
 
 const CourseCatalogPage = () => {
 	const { courseId } = useParams();
@@ -59,18 +60,7 @@ const CourseCatalogPage = () => {
 				isLoading={isLoading}
 				isError={isError}
 			/>
-			<Box
-				sx={{
-					minHeight: window.innerWidth > 3000 ? "60vh" : "auto",
-					maxWidth: "100vw",
-					display: "flex",
-					flexDirection: "column",
-					flexWrap: "wrap",
-					alignItems: "left",
-					justifyContent: "flex-start",
-					py: 3,
-					backgroundColor: "white",
-				}}>
+			<PageWrapper sx={{ mt: 0, pb: 0 }}>
 				<Container maxWidth="lg">
 					<CourseHighlights
 						duration={course?.duration}
@@ -94,7 +84,6 @@ const CourseCatalogPage = () => {
 						isLoading={isLoading}
 						isError={isError}
 					/>
-
 					<CourseInstructors
 						instructors={course?.instructors}
 						isLoading={isLoading}
@@ -122,7 +111,7 @@ const CourseCatalogPage = () => {
 						},
 					}}
 				/>
-			</Box>
+			</PageWrapper>
 			<Footer />
 		</AnimatedPage>
 	);

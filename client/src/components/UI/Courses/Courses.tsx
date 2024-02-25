@@ -57,12 +57,13 @@ const Courses = (props: CoursesProps) => {
 						.map((_, index) => {
 							if (isLoading) {
 								return (
-									<AnimatedCard
-										key={index}
-										index={index}
-										animated={cardsAnimated}>
-										<SkeletonCourseCard key={index} />
-									</AnimatedCard>
+									<Grid item key={index}>
+										<AnimatedCard
+											index={index}
+											animated={cardsAnimated}>
+											<SkeletonCourseCard />
+										</AnimatedCard>
+									</Grid>
 								);
 							}
 
@@ -86,25 +87,27 @@ const Courses = (props: CoursesProps) => {
 
 							return (
 								course && (
-									<AnimatedCard
-										key={index}
-										index={index}
-										animated={cardsAnimated}>
-										<CourseCard
-											key={id}
-											id={id}
-											name={name}
-											image={imageCover}
-											summary={summary}
-											duration={duration}
-											difficulty={difficulty}
-											instructors={instructors}
-											paid={paid}
-											price={price}
-											ratingsAverage={ratingsAverage}
-											ratingsQuantity={ratingsQuantity}
-										/>
-									</AnimatedCard>
+									<Grid item key={index}>
+										<AnimatedCard
+											index={index}
+											animated={cardsAnimated}>
+											<CourseCard
+												id={id}
+												name={name}
+												image={imageCover}
+												summary={summary}
+												duration={duration}
+												difficulty={difficulty}
+												instructors={instructors}
+												paid={paid}
+												price={price}
+												ratingsAverage={ratingsAverage}
+												ratingsQuantity={
+													ratingsQuantity
+												}
+											/>
+										</AnimatedCard>
+									</Grid>
 								)
 							);
 						})

@@ -10,6 +10,7 @@ const SectionWrapper = (props: SectionWrapperProps) => {
 	return (
 		<Box
 			sx={{
+				width: "100%",
 				mt: 5,
 				...sx,
 			}}>

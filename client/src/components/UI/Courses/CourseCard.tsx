@@ -48,8 +48,8 @@ const CourseCard = (props: CourseCardProps) => {
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: 360,
-				width: 360,
+				height: 356,
+				width: window.innerWidth > 380 ? 356 : 328,
 				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
@@ -63,6 +63,7 @@ const CourseCard = (props: CourseCardProps) => {
 						src={image}
 						alt="course"
 						style={{
+							objectFit: "cover",
 							height: "100%",
 							width: "100%",
 							borderRadius: 12,
