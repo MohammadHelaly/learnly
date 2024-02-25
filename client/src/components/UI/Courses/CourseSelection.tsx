@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AxiosRequestConfig } from "axios";
+import { Container } from "@mui/material";
 import api from "../../../api";
 import Courses from "./Courses";
 import SectionHeader from "../SectionHeader";
@@ -62,19 +63,21 @@ const CourseSelection = (props: CourseSelectionProps) => {
 				alignItems:
 					window.innerWidth > 600 ? headingAlignment : "center",
 			}}>
-			<SectionHeader
-				heading={heading}
-				headingAlignment={headingAlignment}
-				headingAnimated={headingAnimated}
-			/>
-			<Courses
-				courses={selectedCourses}
-				isLoading={isLoading}
-				isError={isError}
-				cardsAnimated={cardsAnimated}
-				maxLength={3}
-			/>
-			<BottomTextLink to="/courses" text="See More Courses" />
+			<Container maxWidth="lg">
+				<SectionHeader
+					heading={heading}
+					headingAlignment={headingAlignment}
+					headingAnimated={headingAnimated}
+				/>
+				<Courses
+					courses={selectedCourses}
+					isLoading={isLoading}
+					isError={isError}
+					cardsAnimated={cardsAnimated}
+					maxLength={3}
+				/>
+				<BottomTextLink to="/courses" text="See More Courses" />
+			</Container>
 		</SectionWrapper>
 	);
 };

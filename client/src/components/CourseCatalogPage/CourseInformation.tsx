@@ -3,7 +3,7 @@ import ErrorWarning from "../UI/ErrorWarning";
 import SectionWrapper from "../UI/SectionWrapper";
 import CourseEnrollmentPrompt from "../UI/Courses/CourseEnrollmentPrompt";
 import CourseImage from "../UI/Courses/CourseImage";
-import CourseInformationContent from "../UI/Courses/CourseInformationContent";
+import CourseInformationContent from "./CourseInformationContent";
 
 interface CourseInformationProps {
 	courseId: string | number;

@@ -4,11 +4,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import dummyCourseSectionsData from "../../assets/data/dummyCourseSectionsData";
-import SectionHeader from "../UI/SectionHeader";
-import SectionWrapper from "../UI/SectionWrapper";
-import SkeletonCourseContents from "../UI/Courses/SkeletonCourseContents";
-import ErrorWarning from "../UI/ErrorWarning";
+import dummyCourseSectionsData from "../../../assets/data/dummyCourseSectionsData";
+import SectionHeader from "../SectionHeader";
+import SectionWrapper from "../SectionWrapper";
+import SkeletonCourseContents from "./SkeletonCourseContents";
+import ErrorWarning from "../ErrorWarning";
 
 interface CourseContentsProps {
 	isLoading: boolean;
@@ -40,11 +40,13 @@ const CourseContents = (props: CourseContentsProps) => {
 								disableGutters={true}
 								sx={{
 									boxShadow: "none !important",
-									border: `1px solid #dddddd`,
+									overflow: "hidden",
+									border: 1,
 									borderBottom:
 										index === sections.length - 1
-											? `1px solid #dddddd`
+											? 1
 											: "none", // Add bottom border for the last one
+									borderColor: "divider",
 								}}>
 								<AccordionSummary
 									key={id + "summary"}
@@ -85,7 +87,8 @@ const CourseContents = (props: CourseContentsProps) => {
 								<AccordionDetails
 									key={id + "details"}
 									sx={{
-										borderTop: "1px solid #dddddd",
+										borderTop: 1,
+										borderColor: "divider",
 									}}>
 									<Typography
 										variant="h6"

@@ -24,7 +24,7 @@ interface CourseInformationContentProps {
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	textDecoration: "none",
-	color: "primary.main",
+	color: theme.theme.palette.primary.main,
 	"&:hover": {
 		textDecoration: "underline",
 	},

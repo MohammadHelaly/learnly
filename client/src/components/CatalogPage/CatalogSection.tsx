@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import { Pagination } from "@mui/material";
+import { Pagination, Container } from "@mui/material";
 import SearchBar from "./SearchBar";
 import Courses from "../UI/Courses/Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
@@ -57,15 +57,17 @@ const CatalogSection = () => {
 	return (
 		<PageWrapper>
 			<SearchBar setSearchHandler={searchChangeHandler} />
-			<Courses
-				courses={courses}
-				isLoading={isLoading}
-				isError={isError}
-				maxLength={9}
-				sx={{
-					mt: 14,
-				}}
-			/>
+			<Container maxWidth="lg" sx={{ px: "0 !important" }}>
+				<Courses
+					courses={courses}
+					isLoading={isLoading}
+					isError={isError}
+					maxLength={9}
+					sx={{
+						mt: 14,
+					}}
+				/>
+			</Container>
 			<Pagination
 				count={pagesCount}
 				page={page}

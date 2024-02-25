@@ -13,7 +13,7 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 	flexDirection: "row",
 	alignItems: "center",
 	justifyContent: "center",
-	color: "primary.main",
+	color: theme.theme.palette.primary.main,
 	transition: "all 1s ease",
 	textDecoration: "none",
 	"&:hover": {

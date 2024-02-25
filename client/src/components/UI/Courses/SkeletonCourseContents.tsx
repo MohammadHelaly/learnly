@@ -14,9 +14,10 @@ const SkeletonCourseContents = () => {
 						disableGutters={true}
 						sx={{
 							boxShadow: "none !important",
-							border: `1px solid #dddddd`,
-							borderBottom:
-								index === 4 ? `1px solid #dddddd` : "none", // Add bottom border for the last one
+							overflow: "hidden",
+							border: 1,
+							borderBottom: index === 4 ? 1 : "none", // Add bottom border for the last one
+							borderColor: "divider",
 						}}>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}

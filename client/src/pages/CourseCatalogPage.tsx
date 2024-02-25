@@ -7,7 +7,7 @@ import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CoursePrerequisitesAndSkills from "../components/CourseCatalogPage/CoursePrerequisitesAndSkills";
 import CourseDescription from "../components/CourseCatalogPage/CourseDescription";
 import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
-import CourseContents from "../components/CourseCatalogPage/CourseContents";
+import CourseContents from "../components/UI/Courses/CourseContents";
 import CourseInstructors from "../components/CourseCatalogPage/CourseInstructors";
 import CourseInformation from "../components/CourseCatalogPage/CourseInformation";
 import CourseCategories from "../components/CourseCatalogPage/CourseCategories";
@@ -94,6 +94,7 @@ const CourseCatalogPage = () => {
 						isLoading={isLoading}
 						isError={isError}
 					/>
+
 					<CourseInstructors
 						instructors={course?.instructors}
 						isLoading={isLoading}
@@ -105,22 +106,22 @@ const CourseCatalogPage = () => {
 						ratingsAverage={course?.ratingsAverage}
 						ratingsQuantity={course?.ratingsQuantity}
 					/>
-					<CourseSelection
-						heading="See Some Similar Courses"
-						headingAlignment="left"
-						headingAnimated={false}
-						variant="white"
-						query={{
-							url: "/courses",
-							config: {
-								params: {
-									categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
-									_id: { ne: courseId },
-								},
-							},
-						}}
-					/>
 				</Container>
+				<CourseSelection
+					heading="See Some Similar Courses"
+					headingAlignment="left"
+					headingAnimated={false}
+					variant="white"
+					query={{
+						url: "/courses",
+						config: {
+							params: {
+								categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
+								_id: { ne: courseId },
+							},
+						},
+					}}
+				/>
 			</Box>
 			<Footer />
 		</AnimatedPage>

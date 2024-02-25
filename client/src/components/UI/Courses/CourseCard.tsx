@@ -65,7 +65,7 @@ const CourseCard = (props: CourseCardProps) => {
 						style={{
 							height: "100%",
 							width: "100%",
-							borderRadius: "12px",
+							borderRadius: 12,
 						}}
 					/>
 				</Box>
