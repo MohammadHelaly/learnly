@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
 import CourseBanner from "../components/UI/Courses/Catalog/CourseBanner";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";

@@ -1,5 +1,3 @@
-import AuthContext from "../../store/auth-context";
-import { useContext } from "react";
 import { Box, Button, Typography, styled } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import useAnimate from "../../hooks/use-animate";
@@ -18,11 +16,11 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 }));
 
 const CallToAction = (props: CallToActionProps) => {
+	const { question, answer, callToAction, redirectTo } = props;
+
 	const line1Ref = useAnimate("animate", false);
 	const line2Ref = useAnimate("animate", false);
 	const buttonRef = useAnimate("animate", false);
-
-	const authContext = useContext(AuthContext);
 
 	return (
 		<Box
@@ -51,7 +49,7 @@ const CallToAction = (props: CallToActionProps) => {
 						opacity: 0,
 						transition: "all 1s ease-in-out",
 					}}>
-					{props.question}
+					{question}
 				</Typography>
 				<Typography
 					ref={line2Ref}
@@ -63,12 +61,9 @@ const CallToAction = (props: CallToActionProps) => {
 						opacity: 0,
 						transition: "all 1s ease-in-out 0.2s",
 					}}>
-					{props.answer}
+					{answer}
 				</Typography>
-				<StyledNavLink
-					to={
-						!authContext.isLoggedIn ? "/sign-up" : props.redirectTo
-					}>
+				<StyledNavLink to={redirectTo}>
 					<Button
 						ref={buttonRef}
 						variant="contained"
@@ -92,7 +87,7 @@ const CallToAction = (props: CallToActionProps) => {
 								color: "secondary.main",
 							},
 						}}>
-						{props.callToAction}
+						{callToAction}
 					</Button>
 				</StyledNavLink>
 			</Box>
