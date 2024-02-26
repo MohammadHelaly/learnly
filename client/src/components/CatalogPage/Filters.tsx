@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
 	Button,
 	SwipeableDrawer,
 	Select,
-	SelectChangeEvent,
 	Checkbox,
 	InputLabel,
 	MenuItem,
@@ -20,6 +22,15 @@ import FormContainer from "../UI/FormContainer";
 import PageWrapper from "../UI/PageWrapper";
 import categories from "../../assets/data/categories";
 
+const schema = z.object({
+	sort: z.string().optional(),
+	selectedCategories: z.array(z.string()).optional(),
+	pricing: z.string().optional(),
+	difficulty: z.string().optional(),
+});
+
+type FiltersSchema = z.infer<typeof schema>;
+
 interface FiltersProps {
 	setSearchHandler: (search: Partial<Search>) => void;
 }
@@ -28,11 +39,23 @@ const Filters = (props: FiltersProps) => {
 	const { setSearchHandler } = props;
 
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const [hasFilters, setHasFilters] = useState(false); // Used to determine if the user has applied filters
-	const [sort, setSort] = useState("");
-	const [categoryArray, setCategoryArray] = useState<string[]>([]);
-	const [pricing, setPricing] = useState("");
-	const [difficulty, setDifficulty] = useState("");
+
+	const {
+		control,
+		handleSubmit,
+		reset,
+		watch,
+		formState: { isDirty },
+	} = useForm<FiltersSchema>({
+		resolver: zodResolver(schema),
+		mode: "onChange",
+		defaultValues: {
+			sort: "",
+			selectedCategories: [],
+			pricing: "",
+			difficulty: "",
+		},
+	});
 
 	const handleDrawerOpen = () => {
 		setIsDrawerOpen(true);
@@ -42,67 +65,51 @@ const Filters = (props: FiltersProps) => {
 		setIsDrawerOpen(false);
 	};
 
-	const handleSortChange = (event: SelectChangeEvent<typeof sort>) => {
-		setSort(event.target.value);
-	};
-
 	const renderSelectedCategories = (selected: string[]) => {
 		return selected.join(", ");
 	};
 
-	const handleCategoryChange = (
-		event: SelectChangeEvent<typeof categoryArray>
-	) => {
-		const value = event.target.value;
-		setCategoryArray(typeof value === "string" ? value.split(",") : value);
-	};
-
-	const handlePricingChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		setPricing(event.target.value);
-	};
-
-	const handleDifficultyChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		setDifficulty(event.target.value);
+	const isSelected = (value: string) => {
+		return watch().selectedCategories?.includes(value);
 	};
 
 	const handleClearSearch = () => {
-		setSort("");
-		setCategoryArray([]);
-		setPricing("");
-		setDifficulty("");
-		setSearchHandler({
-			sort: undefined,
-			categories: undefined,
-			paid: undefined,
-			difficulty: undefined,
-		});
-		setHasFilters(false);
+		reset();
 	};
 
-	const handleSetSearch = () => {
+	const onSubmit = (data: FiltersSchema) => {
 		setSearchHandler({
-			sort: sort || undefined,
-			categories: { in: categoryArray } || undefined,
+			sort: data.sort || undefined,
+			categories:
+				{ in: data.selectedCategories as string[] } || undefined,
 			paid:
-				pricing === "paid"
+				data.pricing === "paid"
 					? true
-					: pricing === "free"
+					: data.pricing === "free"
 					? false
 					: undefined,
-			difficulty: difficulty || undefined,
+			difficulty: data.difficulty || undefined,
 		});
-		setHasFilters(
-			!!sort || !!categoryArray.length || !!pricing || !!difficulty
-		);
 	};
 
 	useEffect(() => {
-		handleSetSearch();
-	}, [sort, categoryArray, pricing, difficulty]);
+		const subscription = watch((value) => {
+			setSearchHandler({
+				sort: value.sort || undefined,
+				categories:
+					{ in: value.selectedCategories as string[] } || undefined,
+				paid:
+					value.pricing === "paid"
+						? true
+						: value.pricing === "free"
+						? false
+						: undefined,
+				difficulty: value.difficulty || undefined,
+			});
+		});
+
+		return () => subscription.unsubscribe();
+	}, [watch]);
 
 	return (
 		<>
@@ -113,9 +120,8 @@ const Filters = (props: FiltersProps) => {
 				onClick={handleDrawerOpen}
 				sx={{
 					backgroundColor:
-						isDrawerOpen || hasFilters ? "primary.main" : "white",
-					color:
-						isDrawerOpen || hasFilters ? "white" : "primary.main",
+						isDrawerOpen || isDirty ? "primary.main" : "white",
+					color: isDrawerOpen || isDirty ? "white" : "primary.main",
 					"&:hover": {
 						backgroundColor: "primary.main",
 						color: "white",
@@ -130,177 +136,205 @@ const Filters = (props: FiltersProps) => {
 				onOpen={handleDrawerOpen}>
 				<PageWrapper modal>
 					<FormContainer modal>
-						<Stack
-							direction="column"
-							spacing={2}
-							justifyContent="center"
-							alignItems="flex-start">
-							<SectionHeader
-								heading="Filters"
-								headingAlignment="left"
-								sx={{
-									mb: 0,
-								}}
-							/>
-							<FormControl size="small" fullWidth>
-								<InputLabel id="sort-select-label">
-									Sort by
-								</InputLabel>
-								<Select
-									labelId="sort-select-label"
-									id="sort-select"
-									label="Sort by"
-									value={sort}
-									defaultValue=""
-									onChange={handleSortChange}
-									variant="outlined"
-									fullWidth>
-									<MenuItem value="price">
-										Price - Low to High
-									</MenuItem>
-									<MenuItem value="-price">
-										Price - High to Low
-									</MenuItem>
-									<MenuItem value="-ratingsAverage">
-										Rating
-									</MenuItem>
-									<MenuItem value="-ratingsQuantity">
-										Popularity
-									</MenuItem>
-									<MenuItem value="-createdAt">
-										Newest
-									</MenuItem>
-								</Select>
-							</FormControl>
-							<FormControl size="small" fullWidth>
-								<InputLabel id="categories-select-label">
-									Categories
-								</InputLabel>
-								<Select
-									labelId="categories-select-label"
-									id="categories-select"
-									multiple
-									size="small"
-									label="Categories"
-									value={categoryArray}
-									renderValue={renderSelectedCategories}
-									onChange={handleCategoryChange}
-									variant="outlined"
-									fullWidth>
-									{categories.sort().map((category) => (
-										<MenuItem
-											key={category}
-											value={category}>
-											<Checkbox
-												checked={
-													categoryArray.indexOf(
-														category
-													) > -1
-												}
-											/>
-											{category}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-							<FormControl component="fieldset">
-								<FormLabel
-									sx={{
-										fontSize: 20,
-									}}
-									component="label">
-									Pricing
-								</FormLabel>
-								<RadioGroup
-									row
-									aria-label="Free or Paid"
-									name="freeOrPaid"
-									value={pricing}
-									defaultValue=""
-									onChange={handlePricingChange}>
-									<FormControlLabel
-										value=""
-										control={<Radio />}
-										label="All"
-									/>
-									<FormControlLabel
-										value="free"
-										control={<Radio />}
-										label="Free"
-									/>
-									<FormControlLabel
-										value="paid"
-										control={<Radio />}
-										label="Paid"
-									/>
-								</RadioGroup>
-							</FormControl>
-							<FormControl component="fieldset">
-								<FormLabel
-									sx={{
-										fontSize: 20,
-									}}
-									component="label">
-									Difficulty
-								</FormLabel>
-								<RadioGroup
-									row
-									aria-label="Difficulty"
-									name="difficulty"
-									value={difficulty}
-									defaultValue=""
-									onChange={handleDifficultyChange}>
-									<FormControlLabel
-										value=""
-										control={<Radio />}
-										label="All"
-									/>
-									<FormControlLabel
-										value="Beginner"
-										control={<Radio />}
-										label="Beginner"
-									/>
-									<FormControlLabel
-										value="Intermediate"
-										control={<Radio />}
-										label="Intermediate"
-									/>
-									<FormControlLabel
-										value="Advanced"
-										control={<Radio />}
-										label="Advanced"
-									/>
-								</RadioGroup>
-							</FormControl>
+						<form
+							style={{ width: "100%" }}
+							onSubmit={handleSubmit(onSubmit)}
+							autoComplete="off"
+							noValidate>
 							<Stack
-								direction="row"
+								maxWidth="lg"
+								direction="column"
 								spacing={2}
-								justifyContent="space-between"
-								width="100%">
-								<Button
-									size="medium"
-									fullWidth
-									variant="contained"
-									disableElevation
-									onClick={handleSetSearch}>
-									Apply Filters
-								</Button>
-								<Button
-									fullWidth
-									size="medium"
-									variant="outlined"
-									color="error"
-									onClick={handleClearSearch}
+								justifyContent="center"
+								alignItems="flex-start">
+								<SectionHeader
+									heading="Filters"
+									headingAlignment="left"
 									sx={{
-										"&:hover": {
-											backgroundColor: "error.main",
-											color: "white",
-										},
-									}}>
-									Clear Filters
-								</Button>
+										mb: 0,
+									}}
+								/>
+								<FormControl size="small" fullWidth>
+									<InputLabel id="sort-select-label">
+										Sort by
+									</InputLabel>
+									<Controller
+										name="sort"
+										control={control}
+										render={({ field }) => (
+											<Select
+												{...field}
+												labelId="sort-select-label"
+												id="sort-select"
+												label="Sort by"
+												variant="outlined"
+												fullWidth>
+												<MenuItem value="price">
+													Price - Low to High
+												</MenuItem>
+												<MenuItem value="-price">
+													Price - High to Low
+												</MenuItem>
+												<MenuItem value="-ratingsAverage">
+													Rating
+												</MenuItem>
+												<MenuItem value="-ratingsQuantity">
+													Popularity
+												</MenuItem>
+												<MenuItem value="-createdAt">
+													Newest
+												</MenuItem>
+											</Select>
+										)}
+									/>
+								</FormControl>
+								<FormControl size="small" fullWidth>
+									<InputLabel id="categories-select-label">
+										Categories
+									</InputLabel>
+									<Controller
+										name="selectedCategories"
+										control={control}
+										render={({ field }) => (
+											<Select
+												{...field}
+												labelId="categories-select-label"
+												id="categories-select"
+												multiple
+												size="small"
+												label="Categories"
+												renderValue={
+													renderSelectedCategories
+												}
+												variant="outlined"
+												fullWidth>
+												{categories
+													.sort()
+													.map((category) => (
+														<MenuItem
+															key={category}
+															value={category}>
+															<Checkbox
+																checked={isSelected(
+																	category
+																)}
+															/>
+															{category}
+														</MenuItem>
+													))}
+											</Select>
+										)}
+									/>
+								</FormControl>
+								<FormControl component="fieldset">
+									<FormLabel
+										sx={{
+											fontSize: 20,
+										}}
+										component="label">
+										Pricing
+									</FormLabel>
+									<Controller
+										name="pricing"
+										control={control}
+										render={({ field }) => (
+											<RadioGroup
+												{...field}
+												row
+												aria-label="Free or Paid"
+												name="freeOrPaid"
+												defaultValue="">
+												<FormControlLabel
+													value=""
+													control={<Radio />}
+													label="All"
+												/>
+												<FormControlLabel
+													value="free"
+													control={<Radio />}
+													label="Free"
+												/>
+												<FormControlLabel
+													value="paid"
+													control={<Radio />}
+													label="Paid"
+												/>
+											</RadioGroup>
+										)}
+									/>
+								</FormControl>
+								<FormControl component="fieldset">
+									<FormLabel
+										sx={{
+											fontSize: 20,
+										}}
+										component="label">
+										Difficulty
+									</FormLabel>
+									<Controller
+										name="difficulty"
+										control={control}
+										render={({ field }) => (
+											<RadioGroup
+												{...field}
+												row
+												aria-label="Difficulty"
+												name="difficulty"
+												defaultValue="">
+												<FormControlLabel
+													value=""
+													control={<Radio />}
+													label="All"
+												/>
+												<FormControlLabel
+													value="Beginner"
+													control={<Radio />}
+													label="Beginner"
+												/>
+												<FormControlLabel
+													value="Intermediate"
+													control={<Radio />}
+													label="Intermediate"
+												/>
+												<FormControlLabel
+													value="Advanced"
+													control={<Radio />}
+													label="Advanced"
+												/>
+											</RadioGroup>
+										)}
+									/>
+								</FormControl>
+								<Stack
+									direction="row"
+									spacing={2}
+									justifyContent="space-between"
+									width="100%">
+									<Button
+										type="submit"
+										size="medium"
+										fullWidth
+										variant="contained"
+										disableElevation>
+										Apply Filters
+									</Button>
+									<Button
+										fullWidth
+										size="medium"
+										variant="outlined"
+										color="error"
+										onClick={handleClearSearch}
+										sx={{
+											"&:hover": {
+												backgroundColor: "error.main",
+												color: "white",
+											},
+										}}>
+										Clear Filters
+									</Button>
+								</Stack>
 							</Stack>
-						</Stack>
+						</form>
 					</FormContainer>
 				</PageWrapper>
 			</SwipeableDrawer>

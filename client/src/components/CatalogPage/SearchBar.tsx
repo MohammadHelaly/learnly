@@ -1,3 +1,7 @@
+import { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
 	Button,
 	InputAdornment,
@@ -7,8 +11,13 @@ import {
 	Container,
 } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { useState, useEffect } from "react";
 import Filters from "./Filters";
+
+const schema = z.object({
+	searchTerm: z.string({}).optional(),
+});
+
+type SearchTermSchema = z.infer<typeof schema>;
 
 interface SearchBarProps {
 	setSearchHandler: (search: Partial<Search>) => void;
@@ -17,21 +26,26 @@ interface SearchBarProps {
 const SearchBar = (props: SearchBarProps) => {
 	const { setSearchHandler } = props;
 	const [scrolled, setScrolled] = useState(false);
-	const [searchTerm, setSearchTerm] = useState("");
 
-	const searchChangeHandler = (
-		event: React.ChangeEvent<HTMLInputElement>
-	) => {
-		setSearchTerm(event.target.value);
-	};
+	const { control, handleSubmit, watch } = useForm<SearchTermSchema>({
+		resolver: zodResolver(schema),
+		mode: "onChange",
+		defaultValues: {
+			searchTerm: "",
+		},
+	});
 
-	const handleSetSearch = () => {
-		setSearchHandler({ name: searchTerm || undefined });
+	const onSubmit = (data: SearchTermSchema) => {
+		setSearchHandler({ name: data.searchTerm || undefined });
 	};
 
 	useEffect(() => {
-		handleSetSearch();
-	}, [searchTerm]);
+		const subscription = watch((value) => {
+			setSearchHandler({ name: value.searchTerm || undefined });
+		});
+
+		return () => subscription.unsubscribe();
+	}, [watch]);
 
 	useEffect(() => {
 		window.addEventListener("scroll", () => {
@@ -54,60 +68,74 @@ const SearchBar = (props: SearchBarProps) => {
 				zIndex: 2,
 			}}>
 			<Container maxWidth="lg">
-				<Stack
-					direction="row"
-					alignItems="center"
-					justifyContent="center"
-					spacing={2}>
-					<TextField
-						id="searchBar"
-						placeholder={
-							window.innerWidth > 600
-								? "What do you want to learn today?"
-								: "Learn anything..."
-						}
-						size="small"
-						fullWidth
-						sx={{
-							maxWidth: window.innerWidth > 600 ? 350 : 250,
-							backgroundColor: "transparent",
-						}}
-						InputProps={{
-							sx: {
-								borderRadius: 5,
-								px: 1,
-								backgroundColor: "white",
-								height: window.innerWidth > 600 ? 37 : 36,
-							},
-							endAdornment: (
-								<InputAdornment position="end">
-									<Button
-										variant="text"
-										disableElevation
-										sx={{
-											borderTopRightRadius: 30,
-											borderBottomRightRadius: 30,
-											borderTopLeftRadius: 0,
-											borderBottomLeftRadius: 0,
-											left: 8,
-										}}
-										onClick={handleSetSearch}>
-										<SearchOutlinedIcon
-											sx={{
-												color: "primary.main",
-												borderRadius: 3,
-											}}
-										/>
-									</Button>
-								</InputAdornment>
-							),
-						}}
-						variant="outlined"
-						value={searchTerm}
-						onChange={searchChangeHandler}
-					/>
-					<Filters setSearchHandler={setSearchHandler} />
-				</Stack>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					autoComplete="off"
+					noValidate>
+					<Stack
+						direction="row"
+						alignItems="center"
+						justifyContent="center"
+						spacing={2}>
+						<Controller
+							name="searchTerm"
+							control={control}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									id="searchBar"
+									placeholder={
+										window.innerWidth > 600
+											? "What do you want to learn today?"
+											: "Learn anything..."
+									}
+									size="small"
+									fullWidth
+									sx={{
+										maxWidth:
+											window.innerWidth > 600 ? 350 : 250,
+										backgroundColor: "transparent",
+									}}
+									InputProps={{
+										sx: {
+											borderRadius: 5,
+											px: 1,
+											backgroundColor: "white",
+											height:
+												window.innerWidth > 600
+													? 37
+													: 36,
+										},
+										endAdornment: (
+											<InputAdornment position="end">
+												<Button
+													type="submit"
+													variant="text"
+													disableElevation
+													sx={{
+														borderTopRightRadius: 30,
+														borderBottomRightRadius: 30,
+														borderTopLeftRadius: 0,
+														borderBottomLeftRadius: 0,
+														left: 8,
+													}}>
+													<SearchOutlinedIcon
+														sx={{
+															color: "primary.main",
+															borderRadius: 3,
+														}}
+													/>
+												</Button>
+											</InputAdornment>
+										),
+									}}
+									variant="outlined"
+								/>
+							)}
+						/>
+						<Filters setSearchHandler={setSearchHandler} />
+					</Stack>
+				</form>
 			</Container>
 		</Box>
 	);

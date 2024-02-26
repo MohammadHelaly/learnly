@@ -6,19 +6,22 @@ class APIFeatures {
 
 	filter() {
 		const queryObj = { ...this.queryString };
-		const excludedFields = ["page", "sort", "limit", "fields"];
+		const name = queryObj.name; // Skip regex for name, don't want to replace matches in name with regex
+		const excludedFields = ["page", "sort", "limit", "fields", "name"];
 		excludedFields.forEach((el) => delete queryObj[el]);
-
-		// Partial match for name field
-		if (queryObj.name) {
-			queryObj.name = { $regex: queryObj.name, $options: "i" }; // Case-insensitive partial matching
-		}
 
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(
 			/\b(gte|gt|lte|lt|ne|in)\b/g, // Add more MongoDB operators here as needed
 			(match) => `$${match}`
 		);
+
+		// Add case insensitive partial match for name
+		if (name) {
+			this.query = this.query.find({
+				name: { $regex: name, $options: "i" },
+			});
+		}
 
 		this.query = this.query.find(JSON.parse(queryStr));
 		return this;
