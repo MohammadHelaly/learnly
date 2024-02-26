@@ -1,9 +1,8 @@
 import { Stack, Typography, Skeleton } from "@mui/material";
 import { AccessTime, BarChart } from "@mui/icons-material";
 
-interface CourseDurationAndDifficultyProps {
-	duration: number;
-	difficulty: string;
+interface CourseDurationAndDifficultyProps
+	extends Pick<Course, "duration" | "difficulty"> {
 	isLoading: boolean;
 }
 

@@ -70,7 +70,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 	return (
 		<>
 			<CourseBanner
-				courseId={courseId as string}
+				id={courseId as string}
 				name={course?.name}
 				price={course?.price}
 				isLoading={isLoadingCourse}

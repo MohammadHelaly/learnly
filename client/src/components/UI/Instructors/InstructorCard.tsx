@@ -2,17 +2,6 @@ import { Card, Stack, Typography, Rating, Avatar } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
-interface InstructorCardProps {
-	id: number | string;
-	name: string;
-	photo?: string;
-	ratingsAverage: number;
-	ratingsQuantity: number;
-	students: number;
-	bio?: string;
-	courses: (number | string)[];
-}
-
 const StyledNavLink = styled(NavLink)((theme) => ({
 	color: "black",
 	transition: "all 1s ease",
@@ -23,13 +12,13 @@ const StyledNavLink = styled(NavLink)((theme) => ({
 	},
 }));
 
-const InstructorCard = (props: InstructorCardProps) => {
+const InstructorCard = (props: Instructor) => {
 	const {
 		id,
 		name,
 		photo,
 		bio,
-		courses,
+		coursesCreated,
 		ratingsAverage,
 		ratingsQuantity,
 		students,
@@ -42,7 +31,8 @@ const InstructorCard = (props: InstructorCardProps) => {
 				p: 2,
 				borderRadius: 0,
 				boxShadow: "none",
-				borderBottom: "1px solid #dddddd",
+				borderBottom: 1,
+				borderColor: "divider",
 			}}>
 			<Stack
 				direction="row"
@@ -95,7 +85,7 @@ const InstructorCard = (props: InstructorCardProps) => {
 						{students + " Students"}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						{courses?.length + " Courses"}
+						{coursesCreated?.length + " Courses"}
 					</Typography>
 				</Stack>
 			</Stack>

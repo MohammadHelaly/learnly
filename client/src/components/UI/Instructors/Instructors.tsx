@@ -6,16 +6,7 @@ import ErrorWarning from "../ErrorWarning";
 interface InstructorsProps {
 	isLoading: boolean;
 	isError: boolean;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-		courses: (number | string)[];
-	}[];
+	instructors: Instructor[];
 }
 
 const Instructors = (props: InstructorsProps) => {

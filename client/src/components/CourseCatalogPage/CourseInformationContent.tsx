@@ -3,22 +3,17 @@ import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import CourseDurationAndDifficulty from "./CourseDurationAndDifficulty";
 
-interface CourseInformationContentProps {
-	name: string;
-	summary: string;
-	duration: number;
-	difficulty: string;
-	ratingsAverage: number;
-	ratingsQuantity: number;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-	}[];
+interface CourseInformationContentProps
+	extends Pick<
+		Course,
+		| "name"
+		| "summary"
+		| "duration"
+		| "difficulty"
+		| "ratingsAverage"
+		| "ratingsQuantity"
+		| "instructors"
+	> {
 	isLoading: boolean;
 }
 

@@ -16,27 +16,7 @@ interface CoursesProps {
 	maxLength: number;
 	cardsAnimated?: boolean;
 	sx?: SxProps;
-	courses: {
-		id: number | string;
-		name: string;
-		price: number;
-		summary: string;
-		duration: number;
-		difficulty: "Beginner" | "Intermediate" | "Advanced";
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		instructors: {
-			id: number | string;
-			name: string;
-			photo?: string;
-			ratingsAverage: number;
-			ratingsQuantity: number;
-			students: number;
-			bio?: string;
-		}[];
-		imageCover: string;
-		paid: boolean;
-	}[];
+	courses: Course[];
 }
 
 const Courses = (props: CoursesProps) => {

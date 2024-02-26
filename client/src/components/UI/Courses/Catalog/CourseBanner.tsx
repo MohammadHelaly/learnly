@@ -11,16 +11,13 @@ import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 
-interface CourseBannerProps {
-	courseId: string | number;
-	name: string;
-	price: number;
+interface CourseBannerProps extends Pick<Course, "id" | "name" | "price"> {
 	isLoading: boolean;
 	isError: boolean;
 }
 
 const CourseBanner = (props: CourseBannerProps) => {
-	const { courseId, name, price, isLoading, isError } = props;
+	const { id, name, price, isLoading, isError } = props;
 
 	const [scrolled, setScrolled] = useState(false);
 

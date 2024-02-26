@@ -2,39 +2,32 @@ import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
-interface CourseCardProps {
-	id: number | string;
-	name: string;
-	imageCover: string;
-	summary: string;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-	}[];
-	paid: boolean;
-	price: number;
-	ratingsAverage: number;
-	ratingsQuantity: number;
-	duration: number;
-	difficulty: "Beginner" | "Intermediate" | "Advanced";
-}
+interface InstructorDashboardCourseCardProps
+	extends Pick<
+		Course,
+		| "id"
+		| "name"
+		| "imageCover"
+		| "price"
+		| "paid"
+		| "ratingsAverage"
+		| "ratingsQuantity"
+		| "difficulty"
+		| "duration"
+	> {}
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	textDecoration: "none",
 	color: "inherit",
 }));
 
-const InstructorDashboardCourseCard = (props: CourseCardProps) => {
+const InstructorDashboardCourseCard = (
+	props: InstructorDashboardCourseCardProps
+) => {
 	const {
 		id,
 		name,
 		imageCover,
-		instructors,
 		price,
 		paid,
 		ratingsAverage,
@@ -93,14 +86,7 @@ const InstructorDashboardCourseCard = (props: CourseCardProps) => {
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}>
-						{instructors &&
-						instructors?.length > 0 &&
-						instructors[0]?.name.length > 30
-							? `${instructors[0]?.name.slice(0, 30)}...`
-							: instructors?.[0]?.name ??
-							  "[Instructor Name Unavailable]"}
-					</Typography>
+						}}></Typography>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"

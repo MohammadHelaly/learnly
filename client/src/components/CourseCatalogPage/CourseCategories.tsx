@@ -3,8 +3,7 @@ import SectionWrapper from "../UI/SectionWrapper";
 import CategoryTitle from "../UI/CategoryTitle";
 import ErrorWarning from "../UI/ErrorWarning";
 
-interface CourseCategoriesProps {
-	categories: string[];
+interface CourseCategoriesProps extends Pick<Course, "categories"> {
 	isLoading: boolean;
 	isError: boolean;
 }

@@ -3,8 +3,7 @@ import SectionHeader from "../UI/SectionHeader";
 import ErrorWarning from "../UI/ErrorWarning";
 import SectionWrapper from "../UI/SectionWrapper";
 
-interface CourseDescriptionProps {
-	description: string;
+interface CourseDescriptionProps extends Pick<Course, "description"> {
 	isLoading: boolean;
 	isError: boolean;
 }

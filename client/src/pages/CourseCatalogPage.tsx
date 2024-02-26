@@ -39,14 +39,14 @@ const CourseCatalogPage = () => {
 	return (
 		<AnimatedPage>
 			<CourseBanner
-				courseId={courseId as string}
+				id={courseId as string}
 				name={course?.name}
 				price={course?.price}
 				isLoading={isLoading}
 				isError={isError}
 			/>
 			<CourseInformation
-				courseId={courseId as string}
+				id={courseId as string}
 				name={course?.name}
 				price={course?.price}
 				summary={course?.summary}
@@ -55,7 +55,7 @@ const CourseCatalogPage = () => {
 				ratingsAverage={course?.ratingsAverage}
 				ratingsQuantity={course?.ratingsQuantity}
 				instructors={course?.instructors}
-				image={course?.imageCover}
+				imageCover={course?.imageCover}
 				paid={course?.paid as boolean}
 				isLoading={isLoading}
 				isError={isError}
@@ -78,7 +78,11 @@ const CourseCatalogPage = () => {
 						isLoading={isLoading}
 						isError={isError}
 					/>
-					<CourseContents isLoading={isLoading} isError={isError} />
+					<CourseContents
+						sections={course?.sections}
+						isLoading={isLoading}
+						isError={isError}
+					/>
 					<CourseDescription
 						description={course?.description}
 						isLoading={isLoading}
@@ -90,7 +94,7 @@ const CourseCatalogPage = () => {
 						isError={isError}
 					/>
 					<CourseReviews
-						courseId={courseId as string}
+						id={courseId as string}
 						reviews={course?.reviews as Review[]}
 						ratingsAverage={course?.ratingsAverage}
 						ratingsQuantity={course?.ratingsQuantity}

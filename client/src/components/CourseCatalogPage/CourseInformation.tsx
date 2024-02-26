@@ -5,33 +5,28 @@ import CourseEnrollmentPrompt from "./CourseEnrollmentPrompt";
 import CourseImage from "../UI/Courses/Catalog/CourseImage";
 import CourseInformationContent from "./CourseInformationContent";
 
-interface CourseInformationProps {
-	courseId: string | number;
-	name: string;
-	summary: string;
-	duration: number;
-	difficulty: string;
-	ratingsAverage: number;
-	ratingsQuantity: number;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-	}[];
-	image: string;
-	paid: boolean;
-	price: number;
+interface CourseInformationProps
+	extends Pick<
+		Course,
+		| "id"
+		| "name"
+		| "summary"
+		| "duration"
+		| "difficulty"
+		| "ratingsAverage"
+		| "ratingsQuantity"
+		| "instructors"
+		| "imageCover"
+		| "paid"
+		| "price"
+	> {
 	isLoading: boolean;
 	isError: boolean;
 }
 
 const CourseInformation = (props: CourseInformationProps) => {
 	const {
-		courseId,
+		id,
 		name,
 		summary,
 		duration,
@@ -39,7 +34,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 		ratingsAverage,
 		ratingsQuantity,
 		instructors,
-		image,
+		imageCover,
 		paid,
 		price,
 		isLoading,
@@ -98,7 +93,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 												? "none"
 												: "flex",
 									}}
-									courseId={courseId}
+									id={id}
 									isLoading={isLoading}
 									paid={paid}
 									price={price}
@@ -115,7 +110,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 									pb: window.innerWidth > 600 ? 0 : 4,
 								}}>
 								<CourseImage
-									image={image}
+									imageCover={imageCover}
 									name={name}
 									isLoading={isLoading}
 								/>
@@ -126,7 +121,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 												? "flex"
 												: "none",
 									}}
-									courseId={courseId}
+									id={id}
 									isLoading={isLoading}
 									paid={paid}
 									price={price}

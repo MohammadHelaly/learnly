@@ -6,8 +6,7 @@ import ErrorWarning from "../UI/ErrorWarning";
 import SectionHeader from "../UI/SectionHeader";
 import SectionWrapper from "../UI/SectionWrapper";
 
-interface CourseHighlightsProps {
-	duration: number;
+interface CourseHighlightsProps extends Pick<Course, "duration"> {
 	isLoading: boolean;
 	isError: boolean;
 }

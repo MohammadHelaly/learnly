@@ -2,34 +2,27 @@ import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
-interface CourseCardProps {
-	id: number | string;
-	name: string;
-	imageCover: string;
-	summary: string;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-	}[];
-	paid: boolean;
-	price: number;
-	ratingsAverage: number;
-	ratingsQuantity: number;
-	duration: number;
-	difficulty: "Beginner" | "Intermediate" | "Advanced";
-}
+interface StudentDashboardCourseCardProps
+	extends Pick<
+		Course,
+		| "id"
+		| "name"
+		| "imageCover"
+		| "instructors"
+		| "price"
+		| "paid"
+		| "ratingsAverage"
+		| "ratingsQuantity"
+		| "difficulty"
+		| "duration"
+	> {}
 
 const StyledNavLink = styled(NavLink)((theme) => ({
 	textDecoration: "none",
 	color: "inherit",
 }));
 
-const CourseCard = (props: CourseCardProps) => {
+const CourseCard = (props: StudentDashboardCourseCardProps) => {
 	const {
 		id,
 		name,

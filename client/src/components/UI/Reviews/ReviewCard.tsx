@@ -1,16 +1,6 @@
 import { Card, Stack, Typography, Rating, Avatar } from "@mui/material";
 
-interface ReviewCardProps {
-	rating: number;
-	review: string;
-	createdAt: string | Date;
-	user: {
-		name: string;
-		photo: string;
-	};
-}
-
-const ReviewCard = (props: ReviewCardProps) => {
+const ReviewCard = (props: Review) => {
 	const { rating, review, createdAt, user } = props;
 	const { name, photo } = user;
 
@@ -20,8 +10,9 @@ const ReviewCard = (props: ReviewCardProps) => {
 				width: "100%",
 				p: 2,
 				boxShadow: "none",
-				borderBottom: "1px solid #dddddd",
+				borderBottom: 1,
 				borderRadius: 0,
+				borderColor: "divider",
 			}}>
 			<Stack
 				direction="row"

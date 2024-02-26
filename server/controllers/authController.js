@@ -186,10 +186,12 @@ exports.isLoggedIn = async (req, res, next) => {
 				});
 			}
 
-			// 6) There is a logged in user, so we pass the user data to the frontend (except the password)
+			// 6) There is a logged in user, so we pass the user data to the frontend (except the password and passwordResetToken)
 			// res.locals.user = user;
 			// return next();
 			user.password = undefined;
+			user.passwordResetToken = undefined;
+			user.passwordResetExpires = undefined;
 
 			res.status(200).json({
 				status: "success",

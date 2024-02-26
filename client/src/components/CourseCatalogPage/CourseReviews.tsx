@@ -7,17 +7,15 @@ import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
 import SectionHeader from "../UI/SectionHeader";
 import SectionWrapper from "../UI/SectionWrapper";
 
-interface CourseReviewsProps {
-	courseId: string | number;
+interface CourseReviewsProps
+	extends Pick<Course, "id" | "ratingsAverage" | "ratingsQuantity"> {
 	reviews: Review[];
-	ratingsAverage: number;
-	ratingsQuantity: number;
 	isLoading?: boolean;
 	isError?: boolean;
 }
 
 const CourseReviews = (props: CourseReviewsProps) => {
-	const { courseId, ratingsAverage, ratingsQuantity } = props;
+	const { id, ratingsAverage, ratingsQuantity } = props;
 
 	const dummyReviews = dummyCourseReviewsData.slice(0, 3);
 
@@ -26,9 +24,9 @@ const CourseReviews = (props: CourseReviewsProps) => {
 		isLoading: isLoading,
 		isError: isError,
 	} = useQuery({
-		queryKey: ["courseReviews", { courseId }],
+		queryKey: ["courseReviews", { id }],
 		queryFn: async () =>
-			await api.get(`/courses/${courseId}/reviews`, {
+			await api.get(`/courses/${id}/reviews`, {
 				params: {
 					limit: 3,
 					fields: "name,price,ratingsAverage,ratingsQuantity",
@@ -65,7 +63,7 @@ const CourseReviews = (props: CourseReviewsProps) => {
 				maxLength={3}
 			/>
 			<BottomTextLink
-				to={`/courses/${courseId}/reviews`}
+				to={`/courses/${id}/reviews`}
 				text="See More Reviews"
 			/>
 		</SectionWrapper>

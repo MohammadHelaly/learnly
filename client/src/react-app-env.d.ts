@@ -7,6 +7,10 @@ interface User {
 	bio?: string;
 	photo?: string;
 	role: "user" | "instructor" | "admin";
+	ratingsAverage: number;
+	ratingsQuantity: number;
+	students: number;
+	wishlist: (number | string)[];
 	coursesEnrolled: (number | string)[];
 	coursesCreated: (number | string)[];
 }
@@ -16,12 +20,21 @@ interface Review {
 	rating: number;
 	review: string;
 	createdAt: string | Date;
-	user: {
-		id: number | string;
-		name: string;
-		photo: string;
-	};
+	user: User<"id" | "name" | "photo">;
 }
+
+interface Instructor
+	extends Pick<
+		User,
+		| "id"
+		| "name"
+		| "photo"
+		| "bio"
+		| "ratingsAverage"
+		| "ratingsQuantity"
+		| "students"
+		| "coursesCreated"
+	> {}
 
 interface Course {
 	id: number | string;
@@ -29,16 +42,7 @@ interface Course {
 	imageCover: string;
 	summary: string;
 	description: string;
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-		courses: (number | string)[];
-	}[];
+	instructors: Instructor[];
 	paid: boolean;
 	price: number;
 	ratingsAverage: number;
@@ -49,6 +53,10 @@ interface Course {
 	difficulty: "Beginner" | "Intermediate" | "Advanced";
 	prerequisites: string[];
 	skills: string[];
+	onSale?: boolean;
+	priceDiscount?: number;
+	sections?: Section[];
+	channel?: string | number;
 }
 
 interface Section {

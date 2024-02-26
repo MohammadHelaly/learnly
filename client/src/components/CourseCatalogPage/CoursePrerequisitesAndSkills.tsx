@@ -12,9 +12,8 @@ import SectionHeader from "../UI/SectionHeader";
 import SectionWrapper from "../UI/SectionWrapper";
 import ErrorWarning from "../UI/ErrorWarning";
 
-interface CoursePrerequisitesAndSkillsProps {
-	prerequisites: string[];
-	skills: string[];
+interface CoursePrerequisitesAndSkillsProps
+	extends Pick<Course, "prerequisites" | "skills"> {
 	isLoading: boolean;
 	isError: boolean;
 }

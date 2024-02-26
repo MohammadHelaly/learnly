@@ -1,16 +1,14 @@
 import { Stack, Button, Typography, Skeleton, SxProps } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 
-interface CourseEnrollmentPromptProps {
-	courseId: string | number;
+interface CourseEnrollmentPromptProps
+	extends Pick<Course, "id" | "price" | "paid"> {
 	isLoading: boolean;
-	paid: boolean;
-	price: number;
 	sx?: SxProps;
 }
 
 const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
-	const { courseId, isLoading, paid, price, sx } = props;
+	const { id, isLoading, paid, price, sx } = props;
 
 	return (
 		<Stack

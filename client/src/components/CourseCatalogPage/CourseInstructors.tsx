@@ -3,16 +3,7 @@ import SectionHeader from "../UI/SectionHeader";
 import SectionWrapper from "../UI/SectionWrapper";
 
 interface CourseInstructorsProps {
-	instructors: {
-		id: number | string;
-		name: string;
-		photo?: string;
-		ratingsAverage: number;
-		ratingsQuantity: number;
-		students: number;
-		bio?: string;
-		courses: (number | string)[];
-	}[];
+	instructors: Instructor[];
 	isLoading: boolean;
 	isError: boolean;
 }

@@ -1,13 +1,11 @@
 import { Skeleton } from "@mui/material";
 
-interface CourseImageProps {
-	image: string;
-	name: string;
+interface CourseImageProps extends Pick<Course, "imageCover" | "name"> {
 	isLoading: boolean;
 }
 
 const CourseImage = (props: CourseImageProps) => {
-	const { image, name, isLoading } = props;
+	const { imageCover, name, isLoading } = props;
 
 	return isLoading ? (
 		<Skeleton
@@ -21,7 +19,7 @@ const CourseImage = (props: CourseImageProps) => {
 		/>
 	) : (
 		<img
-			src={image}
+			src={imageCover}
 			alt={name}
 			style={{
 				objectFit: "cover",

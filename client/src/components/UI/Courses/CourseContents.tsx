@@ -13,7 +13,7 @@ import ErrorWarning from "../ErrorWarning";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
-	sections?: Section[];
+	sections: Section[];
 }
 
 const CourseContents = (props: CourseContentsProps) => {
