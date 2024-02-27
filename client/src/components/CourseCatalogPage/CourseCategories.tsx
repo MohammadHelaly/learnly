@@ -1,7 +1,7 @@
 import { Stack, Skeleton } from "@mui/material";
-import SectionWrapper from "../UI/SectionWrapper";
-import CategoryTitle from "../UI/CategoryTitle";
-import ErrorWarning from "../UI/ErrorWarning";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import CategoryTitle from "../UI/Courses/CategoryTitle";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
 
 interface CourseCategoriesProps extends Pick<Course, "categories"> {
 	isLoading: boolean;

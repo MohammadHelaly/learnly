@@ -1,6 +1,6 @@
 import { Container, Stack } from "@mui/material";
-import ErrorWarning from "../UI/ErrorWarning";
-import SectionWrapper from "../UI/SectionWrapper";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import CourseEnrollmentPrompt from "./CourseEnrollmentPrompt";
 import CourseImage from "../UI/Courses/Catalog/CourseImage";
 import CourseInformationContent from "./CourseInformationContent";

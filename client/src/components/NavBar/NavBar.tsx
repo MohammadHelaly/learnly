@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import AuthContext from "../../store/auth-context";
 import api from "../../api";
@@ -23,18 +23,10 @@ import {
 	ShoppingCartOutlined,
 	FavoriteBorderOutlined,
 } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
+import StyledNavLink from "../UI/Links/StyledNavLink";
 
 const leftDrawerPages = ["Catalog", "Careers", "About"];
 const rightDrawerPages = ["Dashboard", "Account"];
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	color: "inherit",
-	fontSize: "1.5rem",
-	fontWeight: "500",
-	transition: "all 0.5s ease",
-	textDecoration: "none",
-}));
 
 const NavBar = () => {
 	const [isLeftDrawerOpen, setIsLeftDrawerOpen] = useState(false);

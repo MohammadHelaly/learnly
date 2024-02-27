@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { Button, TextField, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import FormContainer from "../UI/FormContainer";
+import FormContainer from "../UI/PageLayout/FormContainer";
+import TextNavLink from "../UI/Links/TextNavLink";
 
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
@@ -18,14 +18,6 @@ const schema = z.object({
 });
 
 type LogInSchemaType = z.infer<typeof schema>;
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "primary.main",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
 
 const LogInForm = () => {
 	const authContext = useContext(AuthContext);
@@ -77,7 +69,7 @@ const LogInForm = () => {
 					mb: 4,
 				}}>
 				Don't have an account?{" "}
-				<StyledNavLink to="/sign-up">Sign up</StyledNavLink>
+				<TextNavLink to="/sign-up">Sign up</TextNavLink>
 			</Typography>
 			<Typography
 				variant="body1"
@@ -140,9 +132,9 @@ const LogInForm = () => {
 										</Typography>
 									)}
 									<Typography variant="body1">
-										<StyledNavLink to="/forgot-password">
+										<TextNavLink to="/forgot-password">
 											Forgot your password?
-										</StyledNavLink>
+										</TextNavLink>
 									</Typography>
 								</>
 							}
@@ -157,9 +149,9 @@ const LogInForm = () => {
 						fontSize: "0.75rem",
 					}}>
 					By clicking "Log in", you agree to Learnly's{" "}
-					<StyledNavLink to="/legal">
+					<TextNavLink to="/legal">
 						Terms of Service and Privacy Policy
-					</StyledNavLink>
+					</TextNavLink>
 				</Typography>
 				<Button
 					type="submit"

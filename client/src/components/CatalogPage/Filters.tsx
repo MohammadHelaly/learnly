@@ -17,9 +17,9 @@ import {
 	FormLabel,
 } from "@mui/material";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
-import SectionHeader from "../UI/SectionHeader";
-import FormContainer from "../UI/FormContainer";
-import PageWrapper from "../UI/PageWrapper";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import FormContainer from "../UI/PageLayout/FormContainer";
+import PageWrapper from "../UI/PageLayout/PageWrapper";
 import categories from "../../assets/data/categories";
 
 const schema = z.object({

@@ -1,7 +1,6 @@
 import { Stack, Typography, Skeleton, Rating } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
 import CourseDurationAndDifficulty from "./CourseDurationAndDifficulty";
+import TextNavLink from "../UI/Links/TextNavLink";
 
 interface CourseInformationContentProps
 	extends Pick<
@@ -16,14 +15,6 @@ interface CourseInformationContentProps
 	> {
 	isLoading: boolean;
 }
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: theme.theme.palette.primary.main,
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
 
 const CourseInformationContent = (props: CourseInformationContentProps) => {
 	const {
@@ -157,11 +148,10 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 									window.innerWidth > 600 ? "left" : "center",
 							}}>
 							{"Taught by"}
-							<StyledNavLink
-								to={`/users/${instructors?.[0]?.id}`}>
+							<TextNavLink to={`/users/${instructors?.[0]?.id}`}>
 								{" "}
 								{instructors?.[0]?.name}
-							</StyledNavLink>
+							</TextNavLink>
 						</Typography>
 					</Stack>
 				</>

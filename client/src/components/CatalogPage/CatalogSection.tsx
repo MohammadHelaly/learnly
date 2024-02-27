@@ -5,7 +5,7 @@ import { Pagination, Container } from "@mui/material";
 import SearchBar from "./SearchBar";
 import Courses from "../UI/Courses/Courses";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
-import PageWrapper from "../UI/PageWrapper";
+import PageWrapper from "../UI/PageLayout/PageWrapper";
 
 const CatalogSection = () => {
 	const [page, setPage] = useState(1);

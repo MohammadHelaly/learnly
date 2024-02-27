@@ -1,7 +1,7 @@
 import { Typography, Skeleton } from "@mui/material";
-import SectionHeader from "../UI/SectionHeader";
-import ErrorWarning from "../UI/ErrorWarning";
-import SectionWrapper from "../UI/SectionWrapper";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 interface CourseDescriptionProps extends Pick<Course, "description"> {
 	isLoading: boolean;

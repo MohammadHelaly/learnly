@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import SectionHeader from "../UI/SectionHeader";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
 
 interface SuccessDialogProps {
 	isSuccess: boolean;

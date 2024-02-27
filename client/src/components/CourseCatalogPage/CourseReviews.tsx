@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Reviews from "../UI/Reviews/Reviews";
-import BottomTextLink from "../UI/BottomTextLink";
+import BottomTextLink from "../UI/Links/BottomTextLink";
 import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
-import SectionHeader from "../UI/SectionHeader";
-import SectionWrapper from "../UI/SectionWrapper";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 interface CourseReviewsProps
 	extends Pick<Course, "id" | "ratingsAverage" | "ratingsQuantity"> {

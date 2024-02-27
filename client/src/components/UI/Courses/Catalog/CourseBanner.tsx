@@ -7,8 +7,6 @@ import {
 	Typography,
 	Skeleton,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
 import ArrowForward from "@mui/icons-material/ArrowForward";
 
 interface CourseBannerProps extends Pick<Course, "id" | "name" | "price"> {

@@ -3,10 +3,10 @@ import { AxiosRequestConfig } from "axios";
 import { Container } from "@mui/material";
 import api from "../../../../api";
 import Courses from "../Courses";
-import SectionHeader from "../../SectionHeader";
-import BottomTextLink from "../../BottomTextLink";
+import SectionHeader from "../../PageLayout/SectionHeader";
+import BottomTextLink from "../../Links/BottomTextLink";
 import dummyCoursesData from "../../../../assets/data/dummyCoursesData";
-import SectionWrapper from "../../SectionWrapper";
+import SectionWrapper from "../../PageLayout/SectionWrapper";
 
 interface CourseSelectionProps {
 	query: {

@@ -1,6 +1,6 @@
-import { Box, Button, Typography, styled } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import useAnimate from "../../hooks/use-animate";
+import useAnimate from "../../../hooks/use-animate";
 import { NavLink } from "react-router-dom";
 
 interface CallToActionProps {
@@ -9,11 +9,6 @@ interface CallToActionProps {
 	callToAction: string;
 	redirectTo: string;
 }
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "inherit",
-}));
 
 const CallToAction = (props: CallToActionProps) => {
 	const { question, answer, callToAction, redirectTo } = props;
@@ -63,7 +58,7 @@ const CallToAction = (props: CallToActionProps) => {
 					}}>
 					{answer}
 				</Typography>
-				<StyledNavLink to={redirectTo}>
+				<NavLink to={redirectTo}>
 					<Button
 						ref={buttonRef}
 						variant="contained"
@@ -89,7 +84,7 @@ const CallToAction = (props: CallToActionProps) => {
 						}}>
 						{callToAction}
 					</Button>
-				</StyledNavLink>
+				</NavLink>
 			</Box>
 		</Box>
 	);

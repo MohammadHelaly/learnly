@@ -5,9 +5,9 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import { Container } from "@mui/material";
-import SectionHeader from "../components/UI/SectionHeader";
-import SectionWrapper from "../components/UI/SectionWrapper";
-import PageWrapper from "../components/UI/PageWrapper";
+import SectionHeader from "../components/UI/PageLayout/SectionHeader";
+import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
+import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 import StudentDashboard from "../components/DashboardPage/StudentDashboard";
 import InstructorDashboard from "../components/DashboardPage/InstructorDashboard";
 

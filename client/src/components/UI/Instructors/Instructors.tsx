@@ -1,7 +1,7 @@
 import { Container, Stack } from "@mui/material";
 import InstructorCard from "./InstructorCard";
 import SkeletonInstructorCard from "./SkeletonInstructorCard";
-import ErrorWarning from "../ErrorWarning";
+import ErrorWarning from "../Messages/ErrorWarning";
 
 interface InstructorsProps {
 	isLoading: boolean;

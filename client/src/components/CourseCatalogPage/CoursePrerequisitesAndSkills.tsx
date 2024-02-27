@@ -8,9 +8,9 @@ import {
 } from "@mui/material";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
-import SectionHeader from "../UI/SectionHeader";
-import SectionWrapper from "../UI/SectionWrapper";
-import ErrorWarning from "../UI/ErrorWarning";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
 
 interface CoursePrerequisitesAndSkillsProps
 	extends Pick<Course, "prerequisites" | "skills"> {

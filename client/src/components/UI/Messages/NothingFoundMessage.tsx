@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import SectionWrapper from "./SectionWrapper";
+import SectionWrapper from "../PageLayout/SectionWrapper";
 
 interface NothingFoundMessageProps {
 	variant?: "studentDashboard" | "instructorDashboard";

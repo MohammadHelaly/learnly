@@ -5,10 +5,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import dummyCourseSectionsData from "../../../assets/data/dummyCourseSectionsData";
-import SectionHeader from "../SectionHeader";
-import SectionWrapper from "../SectionWrapper";
+import SectionHeader from "../PageLayout/SectionHeader";
+import SectionWrapper from "../PageLayout/SectionWrapper";
 import SkeletonCourseContents from "./SkeletonCourseContents";
-import ErrorWarning from "../ErrorWarning";
+import ErrorWarning from "../Messages/ErrorWarning";
 
 interface CourseContentsProps {
 	isLoading: boolean;

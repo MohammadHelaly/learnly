@@ -1,8 +1,8 @@
 import { Container, Stack, SxProps } from "@mui/material";
 import ReviewCard from "./ReviewCard";
 import SkeletonReviewCard from "./SkeletonReviewCard";
-import ErrorWarning from "../ErrorWarning";
-import NothingFoundMessage from "../NothingFoundMessage";
+import ErrorWarning from "../Messages/ErrorWarning";
+import NothingFoundMessage from "../Messages/NothingFoundMessage";
 
 interface ReviewsProps {
 	isError: boolean;

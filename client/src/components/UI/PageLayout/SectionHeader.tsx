@@ -1,5 +1,5 @@
 import { SxProps, Typography } from "@mui/material";
-import useAnimate from "../../hooks/use-animate";
+import useAnimate from "../../../hooks/use-animate";
 
 interface SectionHeaderProps {
 	heading: string | JSX.Element;

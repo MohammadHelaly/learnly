@@ -2,7 +2,7 @@ import AnimatedPage from "./AnimatedPage";
 import SignUpForm from "../components/SignUpPage/SignUpForm";
 import Footer from "../components/Footer/Footer";
 import NavigationGuard from "../components/Navigation/NavigationGuard";
-import PageWrapper from "../components/UI/PageWrapper";
+import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 
 const SignUpPage = () => {
 	return (

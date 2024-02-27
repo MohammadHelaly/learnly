@@ -1,13 +1,13 @@
 import { Grid, SxProps } from "@mui/material";
 import CourseCard from "./Catalog/CourseCard";
 import SkeletonCourseCard from "./Catalog/SkeletonCourseCard";
-import AnimatedCard from "../AnimatedCard";
+import AnimatedCard from "./AnimatedCard";
 import SkeletonInstructorDashboardCourseCard from "./Dashboard/SkeletonInstructorDashboardCourseCard";
 import SkeletonStudentDashboardCourseCard from "./Dashboard/SkeletonStudentDashboardCourseCard";
 import InstructorDashboardCourseCard from "./Dashboard/InstructorDashboardCourseCard";
 import StudentDashboardCourseCard from "./Dashboard/StudentDashboardCourseCard";
-import ErrorWarning from "../ErrorWarning";
-import NothingFoundMessage from "../NothingFoundMessage";
+import ErrorWarning from "../Messages/ErrorWarning";
+import NothingFoundMessage from "../Messages/NothingFoundMessage";
 
 interface CoursesProps {
 	variant?: "studentDashboard" | "instructorDashboard";

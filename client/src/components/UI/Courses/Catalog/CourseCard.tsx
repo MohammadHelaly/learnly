@@ -1,6 +1,5 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import CardNavLink from "../../Links/CardNavLink";
 
 interface CourseCardProps
 	extends Pick<
@@ -16,11 +15,6 @@ interface CourseCardProps
 		| "difficulty"
 		| "duration"
 	> {}
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "inherit",
-}));
 
 const CourseCard = (props: CourseCardProps) => {
 	const {
@@ -50,7 +44,7 @@ const CourseCard = (props: CourseCardProps) => {
 				boxShadow: "none",
 				p: 0,
 			}}>
-			<StyledNavLink to={`/courses/${id}`}>
+			<CardNavLink to={`/courses/${id}`}>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
 						src={imageCover}
@@ -142,7 +136,7 @@ const CourseCard = (props: CourseCardProps) => {
 						{" Level"}
 					</Typography>
 				</Box>
-			</StyledNavLink>
+			</CardNavLink>
 		</Card>
 	);
 };

@@ -2,9 +2,9 @@ import { Stack, Typography, Skeleton } from "@mui/material";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
 import AppShortcutIcon from "@mui/icons-material/AppShortcut";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
-import ErrorWarning from "../UI/ErrorWarning";
-import SectionHeader from "../UI/SectionHeader";
-import SectionWrapper from "../UI/SectionWrapper";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 interface CourseHighlightsProps extends Pick<Course, "duration"> {
 	isLoading: boolean;

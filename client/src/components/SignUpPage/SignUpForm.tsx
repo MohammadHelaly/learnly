@@ -1,6 +1,5 @@
 import { Button, TextField, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -8,7 +7,8 @@ import { z } from "zod";
 import api from "../../api";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
-import FormContainer from "../UI/FormContainer";
+import FormContainer from "../UI/PageLayout/FormContainer";
+import TextNavLink from "../UI/Links/TextNavLink";
 
 const schema = z
 	.object({
@@ -25,14 +25,6 @@ const schema = z
 		path: ["passwordConfirm"],
 		message: "Passwords do not match",
 	});
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	textDecoration: "none",
-	color: "primary.main",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
 
 type SignUpSchemaType = z.infer<typeof schema>;
 
@@ -87,7 +79,7 @@ const SignUpForm = () => {
 					mb: 4,
 				}}>
 				Already have an account?{" "}
-				<StyledNavLink to="/log-in">Log in</StyledNavLink>
+				<TextNavLink to="/log-in">Log in</TextNavLink>
 			</Typography>
 			<Typography
 				variant="body1"
@@ -201,9 +193,9 @@ const SignUpForm = () => {
 						fontSize: "0.75rem",
 					}}>
 					By clicking "Sign up", you agree to Learnly's{" "}
-					<StyledNavLink to="/legal">
+					<TextNavLink to="/legal">
 						Terms of Service and Privacy Policy
-					</StyledNavLink>
+					</TextNavLink>
 				</Typography>
 				<Button
 					type="submit"

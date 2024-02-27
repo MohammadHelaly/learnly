@@ -7,9 +7,9 @@ import CourseBanner from "../UI/Courses/Catalog/CourseBanner";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Reviews from "../UI/Reviews/Reviews";
 import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
-import PageWrapper from "../UI/PageWrapper";
-import SectionWrapper from "../UI/SectionWrapper";
-import SectionHeader from "../UI/SectionHeader";
+import PageWrapper from "../UI/PageLayout/PageWrapper";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
 
 interface CourseReviewsSectionProps {
 	courseId: string | number;

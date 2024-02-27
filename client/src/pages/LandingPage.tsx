@@ -1,7 +1,7 @@
-import HomeSection from "../components/LandingPage/HomeSection";
+import HomeSection from "../components/UI/PageLayout/HomeSection";
 import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
-import InformationSection from "../components/LandingPage/InformationSection";
-import CallToAction from "../components/UI/CallToAction";
+import InformationSection from "../components/UI/PageLayout/InformationSection";
+import CallToAction from "../components/UI/PageLayout/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";
 import Footer from "../components/Footer/Footer";
 import AnimatedPage from "./AnimatedPage";
@@ -9,7 +9,15 @@ import AnimatedPage from "./AnimatedPage";
 const LandingPage = () => {
 	return (
 		<AnimatedPage>
-			<HomeSection />
+			<HomeSection
+				title="Learn. Teach. Grow."
+				description="Learnly allows you to learn and teach anywhere, anytime. Develop your skills and share your knowledge with others."
+				buttonText="Start Learning"
+				buttonLink="/courses"
+				secondButtonText="Start Teaching"
+				secondButtonLink="/careers"
+				landing
+			/>
 			<CourseSelection
 				heading="Check Out Our Most Popular Courses"
 				headingAlignment="center"
@@ -20,7 +28,7 @@ const LandingPage = () => {
 					url: "/courses",
 				}}
 			/>
-			<InformationSection />
+			<InformationSection variant="transparent" />
 			<TestimonialSection />
 			<CallToAction
 				question="Ready to start improving?"

@@ -1,6 +1,6 @@
 import Instructors from "../UI/Instructors/Instructors";
-import SectionHeader from "../UI/SectionHeader";
-import SectionWrapper from "../UI/SectionWrapper";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 interface CourseInstructorsProps {
 	instructors: Instructor[];

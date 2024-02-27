@@ -4,7 +4,7 @@ import api from "../../api";
 import AuthContext from "../../store/auth-context";
 import { Pagination } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
-import PageWrapper from "../UI/PageWrapper";
+import PageWrapper from "../UI/PageLayout/PageWrapper";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
 
 const InstructorDashboard = () => {

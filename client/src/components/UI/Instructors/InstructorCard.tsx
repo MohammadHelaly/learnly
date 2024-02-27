@@ -1,16 +1,5 @@
 import { Card, Stack, Typography, Rating, Avatar } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	color: "black",
-	transition: "all 1s ease",
-	textDecoration: "none",
-	marginLeft: window.innerWidth > 600 ? 10 : 2,
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
+import TextNavLink from "../Links/TextNavLink";
 
 const InstructorCard = (props: Instructor) => {
 	const {
@@ -54,7 +43,12 @@ const InstructorCard = (props: Instructor) => {
 					spacing={1}
 					alignItems="flex-start"
 					justifyContent="center">
-					<StyledNavLink to={`/users/${id}`}>
+					<TextNavLink
+						sx={{
+							color: "black",
+							marginLeft: window.innerWidth > 600 ? 10 : 2,
+						}}
+						to={`/users/${id}`}>
 						<Typography
 							variant="h5"
 							sx={{
@@ -62,7 +56,7 @@ const InstructorCard = (props: Instructor) => {
 							}}>
 							{name}
 						</Typography>
-					</StyledNavLink>
+					</TextNavLink>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"

@@ -1,27 +1,7 @@
 import { Box, Container, Grid, Typography, Stack } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import { Facebook, GitHub, Instagram, LinkedIn } from "@mui/icons-material";
-
-const StyledNavLink = styled(NavLink)((theme) => ({
-	color: " #000000",
-	fontSize: "1.25rem",
-	fontWeight: "300",
-	transition: "all 0.5s ease",
-	textDecoration: "none",
-	"&:hover": {
-		textDecoration: "underline",
-	},
-}));
-
-const StyledList = styled("ul")((theme) => ({
-	listStyle: "none",
-	paddingLeft: 0,
-	"& li": {
-		marginBottom: 16,
-		marginLeft: window.innerWidth > 600 ? 24 : 16,
-	},
-}));
+import SmallList from "../../components/UI/PageLayout/SmallList";
+import TextNavLink from "../UI/Links/TextNavLink";
 
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
@@ -35,10 +15,10 @@ const Footer = () => {
 				padding: "50px 0",
 			}}>
 			<Container maxWidth="lg">
-				<StyledNavLink
+				<TextNavLink
 					to="/"
-					color="inherit"
 					sx={{
+						color: " #000000",
 						"&:hover": {
 							textDecoration: "none",
 						},
@@ -48,7 +28,7 @@ const Footer = () => {
 						sx={{ marginBottom: 6, letterSpacing: "0.1rem" }}>
 						Learnly
 					</Typography>
-				</StyledNavLink>
+				</TextNavLink>
 				{/* <Grid container spacing={2}> */}
 				<Grid item xs={12} sm={4}>
 					<Typography
@@ -56,22 +36,42 @@ const Footer = () => {
 						sx={{ fontWeight: 400, marginBottom: 2 }}>
 						Useful Links
 					</Typography>
-
-					<StyledList>
+					<SmallList>
 						<li>
-							<StyledNavLink to="/courses" color="inherit">
+							<TextNavLink
+								sx={{
+									color: " #000000",
+									fontSize: "1.25rem",
+									fontWeight: "300",
+								}}
+								to="/courses"
+								color="inherit">
 								Catalog
-							</StyledNavLink>
+							</TextNavLink>
 						</li>
 						<li>
-							<StyledNavLink to="/careers" color="inherit">
+							<TextNavLink
+								sx={{
+									color: " #000000",
+									fontSize: "1.25rem",
+									fontWeight: "300",
+								}}
+								to="/careers"
+								color="inherit">
 								Careers
-							</StyledNavLink>
+							</TextNavLink>
 						</li>
 						<li>
-							<StyledNavLink to="/about" color="inherit">
+							<TextNavLink
+								sx={{
+									color: " #000000",
+									fontSize: "1.25rem",
+									fontWeight: "300",
+								}}
+								to="/about"
+								color="inherit">
 								About Us
-							</StyledNavLink>
+							</TextNavLink>
 						</li>
 						{/* <li>
 							<StyledNavLink
@@ -82,11 +82,18 @@ const Footer = () => {
 							</StyledNavLink>
 						</li> */}
 						<li>
-							<StyledNavLink to="/help" color="inherit">
+							<TextNavLink
+								sx={{
+									color: " #000000",
+									fontSize: "1.25rem",
+									fontWeight: "300",
+								}}
+								to="/help"
+								color="inherit">
 								Help and FAQs
-							</StyledNavLink>
+							</TextNavLink>
 						</li>
-					</StyledList>
+					</SmallList>
 				</Grid>
 				<Stack
 					direction="row"
@@ -174,15 +181,16 @@ const Footer = () => {
 						experience on our website.
 					</Typography>
 					<Typography variant="body2" sx={{ marginTop: 1 }}>
-						<StyledNavLink
+						<TextNavLink
 							to="/legal"
 							color="inherit"
 							sx={{
 								fontSize: "inherit",
 								fontWeight: "inherit",
+								color: "inherit",
 							}}>
 							Legal & Privacy
-						</StyledNavLink>
+						</TextNavLink>
 					</Typography>
 				</Stack>
 			</Container>

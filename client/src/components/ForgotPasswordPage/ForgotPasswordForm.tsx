@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import { Button, TextField, Typography } from "@mui/material";
-import FormContainer from "../UI/FormContainer";
+import FormContainer from "../UI/PageLayout/FormContainer";
 import SucessDialog from "./SuccessDialog";
 
 const schema = z.object({

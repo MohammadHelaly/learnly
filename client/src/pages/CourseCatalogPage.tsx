@@ -15,7 +15,7 @@ import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import api from "../api";
-import PageWrapper from "../components/UI/PageWrapper";
+import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 
 const CourseCatalogPage = () => {
 	const { courseId } = useParams();

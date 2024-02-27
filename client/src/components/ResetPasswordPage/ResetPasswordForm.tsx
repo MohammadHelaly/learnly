@@ -7,7 +7,7 @@ import { z } from "zod";
 import api from "../../api";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
-import FormContainer from "../UI/FormContainer";
+import FormContainer from "../UI/PageLayout/FormContainer";
 
 const schema = z
 	.object({
