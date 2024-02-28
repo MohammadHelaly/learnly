@@ -21,6 +21,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "../../api";
+import { useNavigate } from "react-router-dom";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -28,8 +29,7 @@ import categories from "../../assets/data/categories";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
-import { Clear } from "@mui/icons-material";
-import { is } from "@babel/types";
+import { Clear, Done } from "@mui/icons-material";
 
 const schema = z.object({
 	name: z
@@ -79,10 +79,16 @@ type CourseFormSchemaType = z.infer<typeof schema>;
 interface ImageState {
 	preview: File | undefined | null;
 	uploaded: string | number | readonly string[] | undefined;
-	data: {};
 }
 
 const CreateCourseForm = () => {
+	const [prerequisite, setPrerequisite] = useState("");
+	const [skill, setSkill] = useState("");
+	const [image, setImage] = useState<ImageState>({
+		preview: null,
+		uploaded: "",
+	});
+
 	const {
 		control,
 		handleSubmit,
@@ -106,6 +112,8 @@ const CreateCourseForm = () => {
 		},
 	});
 
+	const navigate = useNavigate();
+
 	const { mutate, isError, isPending } = useMutation({
 		mutationFn: (formData: FormData) => {
 			return api.post("/courses", {
@@ -113,23 +121,12 @@ const CreateCourseForm = () => {
 			});
 		},
 		onSuccess: (response) => {
-			setImage((previousValue) => ({
-				...previousValue,
-				data: response.data.data.data,
-			}));
-			setValue("imageCover", response.data.data.data.Location);
+			navigate(`/courses/${response.data.data.data.id}`);
 		},
 		onError: (error) => {
 			console.error(error);
+			alert("An error occurred. Please try again.");
 		},
-	});
-
-	const [prerequisite, setPrerequisite] = useState("");
-	const [skill, setSkill] = useState("");
-	const [image, setImage] = useState<ImageState>({
-		preview: null,
-		uploaded: "",
-		data: {},
 	});
 
 	const renderSelectedCategories = (selected: string[]) => {
@@ -197,7 +194,6 @@ const CreateCourseForm = () => {
 		setImage({
 			preview: null,
 			uploaded: "",
-			data: {},
 		});
 	};
 
@@ -231,9 +227,7 @@ const CreateCourseForm = () => {
 		formData.append("difficulty", data.difficulty);
 
 		console.log(formData);
-
-		// uploadCourseImage(resizedImage as Blob);
-		mutate(formData);
+		// mutate(formData);
 	};
 
 	return (
@@ -859,15 +853,38 @@ const CreateCourseForm = () => {
 							</Box>
 						)}
 					</SectionWrapper>
-					<Button
-						disabled={isPending}
-						variant="contained"
-						type="submit"
-						fullWidth
-						disableElevation
-						size="large">
-						Save and Continue
-					</Button>
+					<SectionWrapper>
+						<SectionHeader
+							heading="Save and Continue"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 0,
+							}}
+						/>
+						<SectionHeader
+							isSubHeading
+							variant="h6"
+							heading="You're almost there! Once you're ready, click the button below to save your course and continue. You'll get to set up your course contents in the next step. You can always come back and edit your course later."
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
+						/>
+						<Button
+							disabled={isPending}
+							variant="contained"
+							type="submit"
+							fullWidth
+							disableElevation
+							size="large"
+							endIcon={<Done />}>
+							Save and Continue
+						</Button>
+					</SectionWrapper>
 				</Stack>
 			</form>
 		</FormContainer>
