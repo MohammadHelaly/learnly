@@ -1,4 +1,5 @@
 import {
+	Box,
 	Typography,
 	TextField,
 	Button,
@@ -12,17 +13,23 @@ import {
 	InputLabel,
 	Select,
 	Checkbox,
+	IconButton,
 } from "@mui/material";
 import { useState, ChangeEvent } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import api from "../../api";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import categories from "../../assets/data/categories";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
+import resizeImageFile from "../../helpers/resizeImageFile";
+import { Clear } from "@mui/icons-material";
+import { is } from "@babel/types";
 
 const schema = z.object({
 	name: z
@@ -69,6 +76,12 @@ const schema = z.object({
 
 type CourseFormSchemaType = z.infer<typeof schema>;
 
+interface ImageState {
+	preview: File | undefined | null;
+	uploaded: string | number | readonly string[] | undefined;
+	data: {};
+}
+
 const CreateCourseForm = () => {
 	const {
 		control,
@@ -92,9 +105,32 @@ const CreateCourseForm = () => {
 			imageCover: null,
 		},
 	});
+
+	const { mutate, isError, isPending } = useMutation({
+		mutationFn: (formData: FormData) => {
+			return api.post("/courses", {
+				formData,
+			});
+		},
+		onSuccess: (response) => {
+			setImage((previousValue) => ({
+				...previousValue,
+				data: response.data.data.data,
+			}));
+			setValue("imageCover", response.data.data.data.Location);
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
-	const [image, setImage] = useState<File | null>(null);
+	const [image, setImage] = useState<ImageState>({
+		preview: null,
+		uploaded: "",
+		data: {},
+	});
 
 	const renderSelectedCategories = (selected: string[]) => {
 		return selected.join(", ");
@@ -156,21 +192,48 @@ const CreateCourseForm = () => {
 		setValue("price", parseFloat(event.target.value));
 	};
 
-	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (image) {
-			setImage(null);
-			setValue("imageCover", null);
-		}
+	const removeImage = () => {
+		console.log("removed");
+		setImage({
+			preview: null,
+			uploaded: "",
+			data: {},
+		});
+	};
 
-		if (e.target.files) {
-			const file = e.target.files[0];
-			setImage(file);
-			setValue("imageCover", file);
+	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+		try {
+			const file = event?.target?.files?.[0];
+			setImage((previousValue) => ({
+				...previousValue,
+				preview: file,
+			}));
+		} catch (err) {
+			console.log(err);
 		}
 	};
 
-	const onSubmit = (data: CourseFormSchemaType) => {
-		console.log(data);
+	const onSubmit = async (data: CourseFormSchemaType) => {
+		const resizedImage = await resizeImageFile(image.preview as File);
+		setValue("imageCover", resizedImage);
+
+		const formData = new FormData();
+
+		formData.append("name", data.name);
+		formData.append("summary", data.summary);
+		formData.append("description", data.description);
+		formData.append("price", data.price.toString());
+		formData.append("paid", data.paid.toString()); // Convert boolean to string
+		formData.append("categories", JSON.stringify(data.categories)); // Convert array to string
+		formData.append("skills", JSON.stringify(data.skills)); // Convert array to string
+		formData.append("prerequisites", JSON.stringify(data.prerequisites));
+		formData.append("imageCover", resizedImage as Blob);
+		formData.append("difficulty", data.difficulty);
+
+		console.log(formData);
+
+		// uploadCourseImage(resizedImage as Blob);
+		mutate(formData);
 	};
 
 	return (
@@ -503,7 +566,8 @@ const CreateCourseForm = () => {
 								type="button"
 								disabled={
 									watch().prerequisites.length >= 12 ||
-									prerequisite.length === 0
+									prerequisite.length === 0 ||
+									isPending
 								}
 								onClick={() => addPrequisite(prerequisite)}
 								sx={{
@@ -583,7 +647,8 @@ const CreateCourseForm = () => {
 								type="button"
 								disabled={
 									watch().skills.length >= 12 ||
-									skill.length === 0
+									skill.length === 0 ||
+									isPending
 								}
 								onClick={() => addSkill(skill)}
 								sx={{
@@ -736,16 +801,21 @@ const CreateCourseForm = () => {
 								variant="contained"
 								disableElevation
 								size="large"
+								disabled={isPending}
 								sx={{
 									mb: 2,
 								}}>
-								{image ? "Change Image" : "Upload Image"}
+								{image?.preview
+									? "Change Image"
+									: "Upload Image"}
 								<input
+									disabled={isPending}
 									accept="image/*"
 									style={{ display: "none" }}
 									multiple={false}
 									type="file"
 									hidden
+									value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 							</Button>
@@ -755,21 +825,42 @@ const CreateCourseForm = () => {
 								"Please upload a valid image for your course."
 							</Typography>
 						)}
-						{image && (
-							<img
-								src={URL.createObjectURL(image)}
-								alt={image?.name}
-								style={{
+						{image?.preview && (
+							<Box
+								sx={{
 									width: "100%",
-									height: "auto",
 									borderRadius: 12,
-									objectFit: "cover",
-									objectPosition: "center",
-								}}
-							/>
+									position: "relative",
+								}}>
+								<IconButton
+									onClick={removeImage}
+									sx={{
+										position: "absolute",
+										top: 0,
+										left: 0,
+										m: 1,
+										backgroundColor: "white",
+										"&:hover": {
+											backgroundColor: "white",
+										},
+									}}>
+									<Clear />
+								</IconButton>
+								<img
+									src={URL.createObjectURL(image?.preview)}
+									alt={image?.preview?.name}
+									style={{
+										width: "100%",
+										height: "auto",
+										borderRadius: 12,
+										objectFit: "cover",
+										objectPosition: "center",
+									}}></img>
+							</Box>
 						)}
 					</SectionWrapper>
 					<Button
+						disabled={isPending}
 						variant="contained"
 						type="submit"
 						fullWidth
