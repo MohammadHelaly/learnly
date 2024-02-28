@@ -11,6 +11,7 @@ import ChecklistRtlIcon from "@mui/icons-material/ChecklistRtl";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
+import CheckListItem from "../UI/Courses/CheckListItem";
 
 interface CoursePrerequisitesAndSkillsProps
 	extends Pick<Course, "prerequisites" | "skills"> {
@@ -59,44 +60,13 @@ const CoursePrerequisitesAndSkills = (
 												xs={12}
 												sm={6}
 												key={index + "prerequisite"}>
-												<Stack
-													direction="row"
-													spacing={1}
-													alignItems="center"
-													color="text.secondary">
-													<ChecklistIcon />
-													<Skeleton
-														variant="text"
-														animation="wave"
-														sx={{
-															width: "80%",
-														}}
-													/>
-												</Stack>
+												<CheckListItem skeleton />
 											</Grid>
 										))
 								) : prerequisites?.length === 0 ||
 								  !prerequisites ? (
 									<Grid item xs={12} sm={6}>
-										<Stack
-											direction="row"
-											spacing={1}
-											alignItems="center"
-											color="text.secondary">
-											<ChecklistIcon />
-											<Typography
-												variant="body1"
-												color="text.secondary"
-												sx={{
-													textAlign:
-														window.innerWidth > 600
-															? "left"
-															: "center",
-													my: 3,
-												}}>
-												No prerequisites needed
-											</Typography>
-										</Stack>
+										<CheckListItem item="No prerequisites needed." />
 									</Grid>
 								) : (
 									prerequisites?.map(
@@ -106,27 +76,9 @@ const CoursePrerequisitesAndSkills = (
 												xs={12}
 												sm={6}
 												key={index + "prerequisite"}>
-												<Stack
-													direction="row"
-													spacing={1}
-													alignItems="center"
-													color="text.secondary">
-													<ChecklistIcon />
-
-													<Typography
-														variant="body1"
-														color="text.secondary"
-														sx={{
-															textAlign:
-																window.innerWidth >
-																600
-																	? "left"
-																	: "center",
-															my: 3,
-														}}>
-														{prerequisite}
-													</Typography>
-												</Stack>
+												<CheckListItem
+													item={prerequisite}
+												/>
 											</Grid>
 										)
 									)
@@ -157,20 +109,7 @@ const CoursePrerequisitesAndSkills = (
 													xs={12}
 													sm={6}
 													key={index + "skill"}>
-													<Stack
-														direction="row"
-														spacing={1}
-														alignItems="center"
-														color="text.secondary">
-														<ChecklistRtlIcon />
-														<Skeleton
-															variant="text"
-															animation="wave"
-															sx={{
-																width: "80%",
-															}}
-														/>
-													</Stack>
+													<CheckListItem skeleton />
 												</Grid>
 											))
 									: skills?.map((skill, index) => (
@@ -179,36 +118,7 @@ const CoursePrerequisitesAndSkills = (
 												xs={12}
 												sm={6}
 												key={index + "skill"}>
-												<Stack
-													direction="row"
-													spacing={1}
-													alignItems="center"
-													color="text.secondary">
-													<ChecklistRtlIcon />
-													{isLoading ? (
-														<Skeleton
-															variant="text"
-															animation="wave"
-															sx={{
-																width: "80%",
-															}}
-														/>
-													) : (
-														<Typography
-															variant="body1"
-															color="text.secondary"
-															sx={{
-																textAlign:
-																	window.innerWidth >
-																	600
-																		? "left"
-																		: "center",
-																my: 3,
-															}}>
-															{skill}
-														</Typography>
-													)}
-												</Stack>
+												<CheckListItem item={skill} />
 											</Grid>
 									  ))}
 							</Grid>

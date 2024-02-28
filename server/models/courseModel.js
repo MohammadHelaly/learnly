@@ -12,7 +12,7 @@ const courseSchema = new mongoose.Schema(
 			required: [true, "A course must have a name"],
 			unique: true,
 			trim: true,
-			maxLength: [40, "A course name must be atmost 40 characters."],
+			maxLength: [80, "A course name must be atmost 100 characters."],
 		},
 		slug: String,
 		duration: {

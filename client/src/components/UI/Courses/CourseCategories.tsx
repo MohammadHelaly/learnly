@@ -1,15 +1,18 @@
-import { Stack, Skeleton } from "@mui/material";
-import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import CategoryTitle from "../UI/Courses/CategoryTitle";
-import ErrorWarning from "../UI/Messages/ErrorWarning";
+import { Stack, Skeleton, SxProps } from "@mui/material";
+import SectionWrapper from "../PageLayout/SectionWrapper";
+import CategoryTag from "./CategoryTag";
+import ErrorWarning from "../Messages/ErrorWarning";
 
 interface CourseCategoriesProps extends Pick<Course, "categories"> {
 	isLoading: boolean;
 	isError: boolean;
+	sx?: SxProps;
+	editable?: boolean;
+	onEdit?: (category: string) => void;
 }
 
 const CourseCategories = (props: CourseCategoriesProps) => {
-	const { categories, isLoading, isError } = props;
+	const { categories, isLoading, isError, sx, editable, onEdit } = props;
 
 	return (
 		<SectionWrapper>
@@ -20,7 +23,8 @@ const CourseCategories = (props: CourseCategoriesProps) => {
 				flexWrap="wrap"
 				sx={{
 					py: 4,
-					gap: 1,
+					gap: 2,
+					...sx,
 				}}>
 				{
 					// isError ? (
@@ -30,18 +34,25 @@ const CourseCategories = (props: CourseCategoriesProps) => {
 						? Array(5)
 								.fill(null)
 								.map((_, index) => (
-									<CategoryTitle key={index}>
+									<CategoryTag key={index}>
 										<Skeleton
 											animation="wave"
 											variant="text"
 											width={100}
 										/>
-									</CategoryTitle>
+									</CategoryTag>
 								))
 						: categories?.map((category: string, index: number) => (
-								<CategoryTitle key={index}>
+								<CategoryTag
+									key={index}
+									editable={editable}
+									onEdit={
+										onEdit
+											? () => onEdit(category)
+											: undefined
+									}>
 									{category}
-								</CategoryTitle>
+								</CategoryTag>
 						  ))
 				}
 			</Stack>

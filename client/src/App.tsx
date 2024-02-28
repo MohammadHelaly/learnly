@@ -20,6 +20,7 @@ import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
+import CreateCoursePage from "./pages/CreateCoursePage";
 import "./App.css";
 
 function App() {
@@ -122,6 +123,10 @@ function App() {
 							element={<ResetPasswordPage />}
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
+						<Route
+							path="/dashboard/create-course"
+							element={<CreateCoursePage />}
+						/>
 						<Route
 							path="/dashboard/:courseId"
 							element={<LandingPage />}
