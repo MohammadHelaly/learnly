@@ -7,7 +7,7 @@ interface HomeSectionProps {
 	landing?: boolean;
 	title: string;
 	description: string;
-	buttonText: string;
+	buttonText?: string;
 	buttonLink?: string;
 	buttonOnClick?: () => void;
 	secondButtonOnClick?: () => void;
@@ -35,7 +35,7 @@ const HomeSection = (props: HomeSectionProps) => {
 			sx={{
 				bgcolor: "transparent",
 				pt: landing ? 25 : 20,
-				pb: landing ? 20 : 10,
+				pb: landing ? 20 : !buttonText ? 5 : 10,
 				minWidth: "100vw !important",
 				minHeight: "100",
 			}}>
@@ -67,62 +67,65 @@ const HomeSection = (props: HomeSectionProps) => {
 						paragraph>
 						{description}
 					</Typography>
-					<Stack
-						sx={{ pt: 2 }}
-						direction="row"
-						spacing={2}
-						justifyContent="center">
-						<NavLink to={buttonLink ?? ""}>
-							<Button
-								variant="contained"
-								size="large"
-								color="secondary"
-								disableElevation
-								onClick={buttonOnClick}
-								endIcon={!landing && <ArrowForward />}
-								sx={{
-									height: "100%",
-									color: "#000000",
-									backgroundColor: "secondary.main",
-									border: 1,
-									borderColor: "secondary.main",
-									"&:hover": {
-										backgroundColor: "rgba(0, 0, 0, 0)",
+					{buttonText && (
+						<Stack
+							sx={{ pt: 2 }}
+							direction="row"
+							spacing={2}
+							justifyContent="center">
+							<NavLink to={buttonLink ?? ""}>
+								<Button
+									variant="contained"
+									size="large"
+									color="secondary"
+									disableElevation
+									onClick={buttonOnClick}
+									endIcon={!landing && <ArrowForward />}
+									sx={{
+										height: "100%",
+										color: "#000000",
+										backgroundColor: "secondary.main",
 										border: 1,
 										borderColor: "secondary.main",
-										color: "secondary.main",
-									},
-								}}>
-								{buttonText}
-							</Button>
-						</NavLink>
-						{secondButtonText &&
-							(secondButtonLink || secondButtonOnClick) && (
-								<NavLink to={secondButtonLink ?? ""}>
-									<Button
-										variant="outlined"
-										size="large"
-										color="secondary"
-										disableElevation
-										onClick={secondButtonOnClick}
-										sx={{
-											height: "100%",
-											color: "secondary.main",
+										"&:hover": {
+											backgroundColor: "rgba(0, 0, 0, 0)",
 											border: 1,
 											borderColor: "secondary.main",
-											"&:hover": {
+											color: "secondary.main",
+										},
+									}}>
+									{buttonText}
+								</Button>
+							</NavLink>
+							{secondButtonText &&
+								(secondButtonLink || secondButtonOnClick) && (
+									<NavLink to={secondButtonLink ?? ""}>
+										<Button
+											variant="outlined"
+											size="large"
+											color="secondary"
+											disableElevation
+											onClick={secondButtonOnClick}
+											sx={{
+												height: "100%",
+												color: "secondary.main",
 												border: 1,
 												borderColor: "secondary.main",
-												backgroundColor:
-													"secondary.main",
-												color: "#000000",
-											},
-										}}>
-										{secondButtonText}
-									</Button>
-								</NavLink>
-							)}
-					</Stack>
+												"&:hover": {
+													border: 1,
+													borderColor:
+														"secondary.main",
+													backgroundColor:
+														"secondary.main",
+													color: "#000000",
+												},
+											}}>
+											{secondButtonText}
+										</Button>
+									</NavLink>
+								)}
+						</Stack>
+					)}
 				</Box>
 			</Container>
 		</Box>

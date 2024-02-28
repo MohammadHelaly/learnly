@@ -82,6 +82,9 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 						<SectionHeader
 							heading={course?.name}
 							headingAlignment="left"
+							sx={{
+								mb: 2,
+							}}
 						/>
 						<SectionHeader
 							isSubHeading

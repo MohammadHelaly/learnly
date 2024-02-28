@@ -3,10 +3,11 @@ import { Grid } from "@mui/material";
 interface FormContainerProps {
 	children: React.ReactNode;
 	modal?: boolean;
+	large?: boolean;
 }
 
 const FormContainer = (props: FormContainerProps) => {
-	const { children, modal } = props;
+	const { children, modal, large } = props;
 
 	return (
 		<Grid
@@ -14,7 +15,7 @@ const FormContainer = (props: FormContainerProps) => {
 			direction="column"
 			sx={{
 				width: "100%",
-				maxWidth: "500px",
+				maxWidth: large ? "md" : "500px",
 				transition: "all 0.4s ease-in-out",
 				p: 2,
 				my: modal ? 0 : 6,

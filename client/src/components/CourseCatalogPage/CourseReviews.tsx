@@ -43,6 +43,9 @@ const CourseReviews = (props: CourseReviewsProps) => {
 				heading="What People Are Saying About This Course"
 				headingAlignment="left"
 				headingAnimated={false}
+				sx={{
+					mb: 2,
+				}}
 			/>
 			<SectionHeader
 				heading={

@@ -3,74 +3,114 @@ const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
-const multer = require("multer");
-// const sharp = require("sharp");
+// const multer = require("multer");
+// // const sharp = require("sharp");
 
-// Multer configuration
-// const multerStorage = multer.diskStorage({
-// 	destination: (req, file, cb) => {
-// 		cb(null, "public/img/users");
-// 	},
-// 	filename: (req, file, cb) => {
-// 		// user-123abc123abc123abc-1234567890.jpeg
-// 		const ext = file.mimetype.split("/")[1];
-// 		cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
-// 	},
+// // Multer configuration
+// // const multerStorage = multer.diskStorage({
+// // 	destination: (req, file, cb) => {
+// // 		cb(null, "public/img/users");
+// // 	},
+// // 	filename: (req, file, cb) => {
+// // 		// user-123abc123abc123abc-1234567890.jpeg
+// // 		const ext = file.mimetype.split("/")[1];
+// // 		cb(null, `user-${req.user.id}-${Date.now()}.${ext}`);
+// // 	},
+// // });
+
+// const multerStorage = multer.memoryStorage();
+
+// const multerFilter = (req, file, cb) => {
+// 	if (file.mimetype.startsWith("image")) {
+// 		cb(null, true);
+// 	} else {
+// 		cb(new Error("Not an image! Please upload only images."), false);
+// 	}
+// };
+
+// const upload = multer({
+// 	storage: multerStorage,
+// 	fileFilter: multerFilter,
 // });
 
-const multerStorage = multer.memoryStorage();
+// exports.resizeCourseImages = catchAsync(async (req, res, next) => {
+// 	if (!req.files.images && !req.files.imageCover) return next();
 
-const multerFilter = (req, file, cb) => {
-	if (file.mimetype.startsWith("image")) {
-		cb(null, true);
-	} else {
-		cb(new Error("Not an image! Please upload only images."), false);
+// 	// 1) Cover image
+// 	req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+
+// 	// await sharp(req.files.imageCover[0].buffer)
+// 	// 	.resize(2000, 1333)
+// 	// 	.toFormat("jpeg")
+// 	// 	.jpeg({ quality: 90 })
+// 	// 	.toFile(`public/img/tours/${req.body.imageCover}`);
+
+// 	// 2) Images
+// 	req.body.images = [];
+
+// 	await Promise.all(
+// 		req.files.images.map(async (file, i) => {
+// 			const filename = `tour-${req.params.id}-${Date.now()}-${
+// 				i + 1
+// 			}.jpeg`;
+
+// 			// await sharp(file.buffer)
+// 			// 	.resize(2000, 1333)
+// 			// 	.toFormat("jpeg")
+// 			// 	.jpeg({ quality: 90 })
+// 			// 	.toFile(`public/img/tours/${filename}`);
+
+// 			req.body.images.push(filename);
+// 		})
+// 	);
+
+// 	next();
+// });
+
+// exports.uploadCourseImages = upload.fields([
+// 	{ name: "imageCover", maxCount: 1 },
+// 	{ name: "images", maxCount: 3 },
+// ]);
+
+exports.uploadCourseImage = (req, res, next) => {
+	console.log(req.body.imageCover);
+	const { imageCover } = req.body;
+	if (!imageCover) {
+		return next(new AppError("Please upload an image", 400));
 	}
-};
 
-const upload = multer({
-	storage: multerStorage,
-	fileFilter: multerFilter,
-});
-
-exports.resizeCourseImages = catchAsync(async (req, res, next) => {
-	if (!req.files.images && !req.files.imageCover) return next();
-
-	// 1) Cover image
-	req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
-
-	// await sharp(req.files.imageCover[0].buffer)
-	// 	.resize(2000, 1333)
-	// 	.toFormat("jpeg")
-	// 	.jpeg({ quality: 90 })
-	// 	.toFile(`public/img/tours/${req.body.imageCover}`);
-
-	// 2) Images
-	req.body.images = [];
-
-	await Promise.all(
-		req.files.images.map(async (file, i) => {
-			const filename = `tour-${req.params.id}-${Date.now()}-${
-				i + 1
-			}.jpeg`;
-
-			// await sharp(file.buffer)
-			// 	.resize(2000, 1333)
-			// 	.toFormat("jpeg")
-			// 	.jpeg({ quality: 90 })
-			// 	.toFile(`public/img/tours/${filename}`);
-
-			req.body.images.push(filename);
-		})
+	const base64Data = new Buffer.from(
+		imageCover.replace(/^data:image\/\w+;base64,/, ""),
+		"base64"
 	);
 
-	next();
-});
+	const type = imageCover.split(";")[0].split("/")[1];
 
-exports.uploadCourseImages = upload.fields([
-	{ name: "imageCover", maxCount: 1 },
-	{ name: "images", maxCount: 3 },
-]);
+	const params = {};
+
+	// s3 upload returns data containing location and key then do the following
+
+	// req.body.imageCover = {
+	// 	location: data.Location,
+	// 	key: data.Key
+	// };
+	next();
+};
+
+exports.deleteCourseImage = (req, res) => {
+	console.log(req.body.imageCover);
+	const { imageCover } = req.body;
+	if (!imageCover) {
+		return next(new AppError("Please upload an image", 400));
+	}
+
+	const params = {
+		Bucket: imageCover.Bucket,
+		Key: imageCover.Name,
+	};
+
+	// s3 delete
+};
 
 exports.aliasTop5CheapestCourses = (req, res, next) => {
 	req.query.limit = "5";

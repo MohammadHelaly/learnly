@@ -10,7 +10,7 @@ import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
 import CourseContents from "../components/UI/Courses/CourseContents";
 import CourseInstructors from "../components/CourseCatalogPage/CourseInstructors";
 import CourseInformation from "../components/CourseCatalogPage/CourseInformation";
-import CourseCategories from "../components/CourseCatalogPage/CourseCategories";
+import CourseCategories from "../components/UI/Courses/CourseCategories";
 import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";

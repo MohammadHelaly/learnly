@@ -13,6 +13,7 @@ router
 	.post(
 		authController.protect,
 		authController.restrictTo("admin", "instuctor"),
+		courseController.uploadCourseImage,
 		courseController.createCourse
 	);
 
