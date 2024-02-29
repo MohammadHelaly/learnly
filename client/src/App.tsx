@@ -16,7 +16,6 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CatalogPage from "./pages/CatalogPage";
 import CourseCatalogPage from "./pages/CourseCatalogPage";
-import TestChatPage from "./pages/TestChatPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
@@ -147,7 +146,6 @@ function App() {
 							element={<CourseCatalogReviewPage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
-						<Route path="/chat" element={<TestChatPage />} />
 						<Route path="/about" element={<AboutPage />} />
 						<Route path="/help" element={<LandingPage />} />
 						<Route path="/legal" element={<LandingPage />} />
