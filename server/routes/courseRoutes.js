@@ -7,15 +7,12 @@ const router = express.Router();
 
 router.use("/:courseId/reviews", reviewRouter);
 
-router
-	.route("/")
-	.get(courseController.getAllCourses)
-	.post(
-		authController.protect,
-		authController.restrictTo("admin", "instuctor"),
-		courseController.uploadCourseImage,
-		courseController.createCourse
-	);
+router.route("/").get(courseController.getAllCourses).post(
+	// authController.protect,
+	// authController.restrictTo("admin", "instuctor"),
+	courseController.uploadCourseImage,
+	courseController.createCourse
+);
 
 // router
 // 	.route("/top-5-cheapest")

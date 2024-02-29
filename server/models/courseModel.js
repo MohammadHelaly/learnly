@@ -18,7 +18,7 @@ const courseSchema = new mongoose.Schema(
 		duration: {
 			type: Number,
 			// type: String,
-			required: [true, "A course must have a duration"],
+			//   required: [true, "A course must have a duration"],
 			min: [0.25, "A course duration must be atleast 0.25 hours."],
 		},
 		difficulty: {
@@ -164,9 +164,13 @@ const courseSchema = new mongoose.Schema(
 			// ],
 		},
 		imageCover: {
-			type: String,
-			required: [true, "A course must have a cover image"],
+			url: { type: String },
+			key: { type: String },
 		},
+		// imageCover: {
+		// 	type: String,
+		// 	required: [true, "A course must have a cover image"],
+		// },
 		images: [String],
 		createdAt: {
 			type: Date,

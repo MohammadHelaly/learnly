@@ -3,6 +3,16 @@ const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
+const AWS = require("aws-sdk");
+const uuid = require("uuid").v4;
+
+const awsConfig = {
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION,
+};
+const S3 = new AWS.S3(awsConfig);
+
 // const multer = require("multer");
 // // const sharp = require("sharp");
 
@@ -72,8 +82,7 @@ const handlerFactory = require("./handlerFactory");
 // 	{ name: "images", maxCount: 3 },
 // ]);
 
-exports.uploadCourseImage = (req, res, next) => {
-	console.log(req.body.imageCover);
+exports.uploadCourseImage = async (req, res, next) => {
 	const { imageCover } = req.body;
 	if (!imageCover) {
 		return next(new AppError("Please upload an image", 400));
@@ -86,15 +95,25 @@ exports.uploadCourseImage = (req, res, next) => {
 
 	const type = imageCover.split(";")[0].split("/")[1];
 
-	const params = {};
+	const params = {
+		Bucket: process.env.S3_BUCKET_NAME,
+		Key: `${uuid()}.${type}`,
+		Body: base64Data,
+		ACL: "public-read",
+		ContentEncoding: "base64",
+		ContentType: `image/${type}`,
+	};
+	try {
+		const stored = await S3.upload(params).promise();
 
-	// s3 upload returns data containing location and key then do the following
-
-	// req.body.imageCover = {
-	// 	location: data.Location,
-	// 	key: data.Key
-	// };
-	next();
+		req.body.imageCover = {
+			url: stored.Location,
+			key: stored.Key,
+		};
+		next();
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.deleteCourseImage = (req, res) => {
