@@ -73,20 +73,25 @@ const handlerFactory = require("./handlerFactory");
 // ]);
 
 exports.uploadCourseImage = (req, res, next) => {
-	console.log(req.body.imageCover);
-	const { imageCover } = req.body;
-	if (!imageCover) {
-		return next(new AppError("Please upload an image", 400));
-	}
+	console.log(req.body);
+	res.status(200).json({
+		status: "success",
+		data: req.body,
+	});
 
-	const base64Data = new Buffer.from(
-		imageCover.replace(/^data:image\/\w+;base64,/, ""),
-		"base64"
-	);
+	// const { imageCover } = req.body;
+	// if (!imageCover) {
+	// 	return next(new AppError("Please upload an image", 400));
+	// }
 
-	const type = imageCover.split(";")[0].split("/")[1];
+	// const base64Data = new Buffer.from(
+	// 	imageCover.replace(/^data:image\/\w+;base64,/, ""),
+	// 	"base64"
+	// );
 
-	const params = {};
+	// const type = imageCover.split(";")[0].split("/")[1];
+
+	// const params = {};
 
 	// s3 upload returns data containing location and key then do the following
 
@@ -94,7 +99,7 @@ exports.uploadCourseImage = (req, res, next) => {
 	// 	location: data.Location,
 	// 	key: data.Key
 	// };
-	next();
+	// next();
 };
 
 exports.deleteCourseImage = (req, res) => {

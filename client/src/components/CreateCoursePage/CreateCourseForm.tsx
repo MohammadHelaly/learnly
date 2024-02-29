@@ -115,13 +115,14 @@ const CreateCourseForm = () => {
 	const navigate = useNavigate();
 
 	const { mutate, isError, isPending } = useMutation({
-		mutationFn: (formData: FormData) => {
+		mutationFn: (data: CourseFormSchemaType) => {
 			return api.post("/courses", {
-				formData,
+				...data,
 			});
 		},
 		onSuccess: (response) => {
-			navigate(`/courses/${response.data.data.data.id}`);
+			// navigate(`/courses/${response.data.data.data.id}`);
+			navigate("/dashboard");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -213,21 +214,20 @@ const CreateCourseForm = () => {
 		const resizedImage = await resizeImageFile(image.preview as File);
 		setValue("imageCover", resizedImage);
 
-		const formData = new FormData();
+		const body = {
+			name: data.name,
+			summary: data.summary,
+			description: data.description,
+			price: data.price,
+			paid: data.paid,
+			categories: data.categories,
+			skills: data.skills,
+			prerequisites: data.prerequisites,
+			imageCover: resizedImage,
+			difficulty: data.difficulty,
+		};
 
-		formData.append("name", data.name);
-		formData.append("summary", data.summary);
-		formData.append("description", data.description);
-		formData.append("price", data.price.toString());
-		formData.append("paid", data.paid.toString()); // Convert boolean to string
-		formData.append("categories", JSON.stringify(data.categories)); // Convert array to string
-		formData.append("skills", JSON.stringify(data.skills)); // Convert array to string
-		formData.append("prerequisites", JSON.stringify(data.prerequisites));
-		formData.append("imageCover", resizedImage as Blob);
-		formData.append("difficulty", data.difficulty);
-
-		console.log(formData);
-		// mutate(formData);
+		mutate(body);
 	};
 
 	return (
