@@ -88,12 +88,15 @@ exports.uploadCourseImage = async (req, res, next) => {
 		return next(new AppError("Please upload an image", 400));
 	}
 
-	const base64Data = new Buffer.from(
-		imageCover.replace(/^data:image\/\w+;base64,/, ""),
-		"base64"
-	);
+	// const { imageCover } = req.body;
+	// if (!imageCover) {
+	// 	return next(new AppError("Please upload an image", 400));
+	// }
 
-	const type = imageCover.split(";")[0].split("/")[1];
+	// const base64Data = new Buffer.from(
+	// 	imageCover.replace(/^data:image\/\w+;base64,/, ""),
+	// 	"base64"
+	// );
 
 	const params = {
 		Bucket: process.env.S3_BUCKET_NAME,

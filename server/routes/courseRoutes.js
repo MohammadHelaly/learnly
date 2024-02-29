@@ -9,7 +9,7 @@ router.use("/:courseId/reviews", reviewRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
 	// authController.protect,
-	// authController.restrictTo("admin", "instuctor"),
+	// authController.restrictTo("admin", "instuctor", "user"),
 	courseController.uploadCourseImage,
 	courseController.createCourse
 );
