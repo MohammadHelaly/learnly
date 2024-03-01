@@ -29,7 +29,6 @@ const ChatPage: React.FC = () => {
   const [msg, setMessage] = useState<Msg | null>(null);
   const [allMessages, setAllMessages] = useState<Msg[]>([]);
   const userItem = localStorage.getItem("user");
-
   var user: User | null = null;
   if (userItem) {
     user = JSON.parse(userItem);
@@ -67,7 +66,9 @@ const ChatPage: React.FC = () => {
           if (socket) {
             socket.emit("newMessage", msg); // Assuming `content` should be `msg.value`
             setMessage(null); // Now correctly typed
+            
           }
+          
         }
     };
 
@@ -84,24 +85,20 @@ const ChatPage: React.FC = () => {
    <SectionHeader
 							heading=" Chat Room"
 							headingAlignment="center"
-              sx={{color:"white", marginTop:"60px"}}
+              sx={{color:"white", marginTop:"55px"}}
 						/>
-    <Container sx={{width:"70%",height:"500px", borderRadius:"50px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white"}}>
-     <Box sx={{paddingLeft:"25px",maxHeight:"20px",scrollBehavior:"smooth"}}>
+    <Container className="styles"sx={{width:"70%",height:"500px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
       <ListItemText >
         {allMessages.map((m, index) => (
           <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}: {m.value}</Typography>
         ))}
       </ListItemText>
-      </Box>
       </Container>
       <Grid>
-      <TextField sx={{marginTop:"20px",color:"white", marginBottom:"10px", paddingLeft:"5px"}}
-        color='secondary'
-        variant='filled'
-        onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"no one":user.name ,roomName:roomname})}
+      <TextField sx={{color:"red", marginTop:"10px", marginBottom:"5px", paddingLeft:"5px"}} 
+        onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"no one":user.name ,roomName:roomname})} 
       />
-      <Button onClick={sendMessage} sx={{marginTop:"30px"}}>Send</Button>
+      <Button onClick={sendMessage} sx={{marginTop:"20px",color:"white"}}>Send</Button>
       </Grid>
     </Grid>
     </AnimatedPage>
