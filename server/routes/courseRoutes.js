@@ -8,8 +8,8 @@ const router = express.Router();
 router.use("/:courseId/reviews", reviewRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
-	// authController.protect,
-	// authController.restrictTo("admin", "instuctor", "user"),
+	authController.protect,
+	// authController.restrictTo("admin", "instuctor"),
 	courseController.uploadCourseImage,
 	courseController.createCourse
 );

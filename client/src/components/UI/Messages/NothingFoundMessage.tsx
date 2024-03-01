@@ -47,7 +47,7 @@ const NothingFoundMessage = (props: NothingFoundMessageProps) => {
 						You haven't created any courses yet. Get started by
 						creating a new course!
 					</Typography>
-					<StyledNavLink to="/courses">
+					<StyledNavLink to="/dashboard/create-course">
 						<Button
 							variant="contained"
 							color="primary"
