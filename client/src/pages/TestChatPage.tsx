@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Container, Grid, ListItem, ListItemText, TextField, Typography } from "@mui/material";
 import { io, Socket } from "socket.io-client";
 import e from 'express';
+import SectionHeader from '../components/UI/PageLayout/SectionHeader';
+import HomeSection from '../components/UI/PageLayout/HomeSection';
+import AnimatedPage from './AnimatedPage';
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -70,6 +73,7 @@ const ChatPage: React.FC = () => {
 
 
   return (
+    <AnimatedPage>
     <Grid
       container
       direction="column"
@@ -77,17 +81,30 @@ const ChatPage: React.FC = () => {
       justifyContent="center"
       sx={{ minHeight: '100vh' }}
     >
-      <ul>
+   <SectionHeader
+							heading=" Chat Room"
+							headingAlignment="center"
+              sx={{color:"white", marginTop:"60px"}}
+						/>
+    <Container sx={{width:"70%",height:"500px", borderRadius:"50px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white"}}>
+     <Box sx={{paddingLeft:"25px",maxHeight:"20px",scrollBehavior:"smooth"}}>
+      <ListItemText >
         {allMessages.map((m, index) => (
-          <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}::::{m.value}</Typography>
+          <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}: {m.value}</Typography>
         ))}
-      </ul>
-      <TextField
+      </ListItemText>
+      </Box>
+      </Container>
+      <Grid>
+      <TextField sx={{marginTop:"20px",color:"white", marginBottom:"10px", paddingLeft:"5px"}}
         color='secondary'
+        variant='filled'
         onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"no one":user.name ,roomName:roomname})}
       />
-      <Button onClick={sendMessage}>Send</Button>
+      <Button onClick={sendMessage} sx={{marginTop:"30px"}}>Send</Button>
+      </Grid>
     </Grid>
+    </AnimatedPage>
   );
 };
 
