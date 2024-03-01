@@ -94,9 +94,14 @@ const ChatPage: React.FC = () => {
         ))}
       </ListItemText>
       </Paper>
-      <Grid>
-      <TextField sx={{color:"red", marginTop:"10px", marginBottom:"5px", paddingLeft:"5px"}} 
-        onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"no one":user.name ,roomName:roomname})} 
+      <Grid sx={{ marginTop:"10px", marginBottom:"7px", paddingLeft:"5px"}}>
+      <TextField 
+      placeholder="Send a message..."
+      variant='filled'
+      InputProps={{
+    style: { color: 'white'},
+  }}  
+        onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"me":user.name ,roomName:roomname})} 
       />
       <Button onClick={sendMessage} sx={{marginTop:"20px",color:"white"}}>Send</Button>
       </Grid>
