@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Card, Container, Grid, ListItem, ListItemText, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Container, Grid, ListItem, ListItemText, Paper, TextField, Typography } from "@mui/material";
 import { io, Socket } from "socket.io-client";
 import e from 'express';
 import SectionHeader from '../components/UI/PageLayout/SectionHeader';
@@ -85,15 +85,15 @@ const ChatPage: React.FC = () => {
    <SectionHeader
 							heading=" Chat Room"
 							headingAlignment="center"
-              sx={{color:"white", marginTop:"55px"}}
+              sx={{color:"white", marginTop:"50px"}}
 						/>
-    <Container className="styles"sx={{width:"70%",height:"500px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
+    <Paper elevation={24} sx={{width:"70%",height:"450px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
       <ListItemText >
         {allMessages.map((m, index) => (
           <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}: {m.value}</Typography>
         ))}
       </ListItemText>
-      </Container>
+      </Paper>
       <Grid>
       <TextField sx={{color:"red", marginTop:"10px", marginBottom:"5px", paddingLeft:"5px"}} 
         onChange={(e) => setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"no one":user.name ,roomName:roomname})} 
