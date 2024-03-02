@@ -8,10 +8,11 @@ const router = express.Router();
 router.use("/:courseId/reviews", reviewRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
-	authController.protect,
-	// authController.restrictTo("admin", "instuctor"),
-	courseController.uploadCourseImage,
-	courseController.createCourse
+  authController.protect,
+  // authController.restrictTo("admin", "instuctor"),
+  courseController.getCourseInstructorID,
+  courseController.uploadCourseImage,
+  courseController.createCourse
 );
 
 // router
@@ -32,16 +33,16 @@ router.route("/").get(courseController.getAllCourses).post(
 // 	);
 
 router
-	.route("/:id")
-	.get(courseController.getCourse)
-	.patch(
-		authController.protect,
-		authController.restrictTo("admin", "instructor"),
-		courseController.updateCourse
-	)
-	.delete(
-		authController.protect,
-		authController.restrictTo("admin", "instructor")
-	);
+  .route("/:id")
+  .get(courseController.getCourse)
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin", "instructor"),
+    courseController.updateCourse
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin", "instructor")
+  );
 
 module.exports = router;
