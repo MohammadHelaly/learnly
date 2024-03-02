@@ -240,21 +240,62 @@ courseSchema.pre(/^find/, function (next) {
 //   })
 // );
 
-courseSchema.post(
-  "save",
-  catchAsync(async (doc, res) => {
-    console.log("reached");
-    const instructors = await User.find({ _id: { $in: doc.instructors } });
+// courseSchema.post("save", async (doc) => {
+//   console.log("reached");
+//   try {
+//     const instructors = await User.find({ _id: { $in: doc.instructors } });
 
-    console.log("found instructors:", instructors);
-    if (instructors) {
-      for (const instructor of instructors) {
-        instructor.coursesCreated.push(doc._id);
-        await instructor.save();
-      }
-    }
-  })
-);
+//     console.log("found instructors:", instructors);
+//     if (instructors) {
+//       for (const instructor of instructors) {
+//         instructor.coursesCreated.push(doc._id);
+//         await instructor.save();
+//       }
+//     }
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
+
+// const instructors = await User.find({ _id: { $in: doc.instructors } });
+
+//     console.log("found instructors:", instructors);
+//     if (instructors) {
+//       for (const instructor of instructors) {
+//         instructor.coursesCreated.push(doc._id);
+//         await instructor.save();
+
+// courseSchema.post("save", async (doc, next) => {
+//   console.log("reached");
+//   try {
+//     const instructors = await User.find({ _id: { $in: doc.instructors } });
+//     console.log("found instructors:", instructors);
+
+//     if (instructors.length > 0) {
+//       await Promise.all(
+//         instructors.map(async (instructor) => {
+//           instructor.coursesCreated.push(doc._id);
+//           await instructor.save();
+//         })
+//       );
+//     }
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
+
+// courseSchema.post('save', async function(doc) {
+//   const instructors = await User.find({ _id: { $in: doc.instructors } });
+//   for (const instructor of instructors) {
+//   if (!this.isNew){
+//    return next();
+//   }
+//   instructor.coursesCreated.push(doc._id);
+//   await instructor.save();
+//   }
+// });
 
 const Course = mongoose.model("Course", courseSchema);
 
