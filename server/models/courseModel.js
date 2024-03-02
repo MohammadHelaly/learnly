@@ -270,12 +270,13 @@ courseSchema.pre(/^find/, function (next) {
 //   console.log("reached");
 //   try {
 //     const instructors = await User.find({ _id: { $in: doc.instructors } });
-//     console.log("found instructors:", instructors);
+//     console.log("found instructors:", instructors._id);
 
-//     if (instructors.length > 0) {
+//     if (instructor.length > 0) {
 //       await Promise.all(
 //         instructors.map(async (instructor) => {
 //           instructor.coursesCreated.push(doc._id);
+//           console.log(instructor);
 //           await instructor.save();
 //         })
 //       );

@@ -140,9 +140,9 @@ exports.aliasTop5CheapestCourses = (req, res, next) => {
 
 exports.getCourseInstructorID = catchAsync(async (req, res, next) => {
   if (!req.body.instructors || req.body.instructors.length === 0) {
-    req.body.instructors = [req.user.id]; // Initialize instructors array if it doesn't exist
+    req.body.instructors = [req.user.id];
   } else {
-    req.body.instructors.push(req.user.id); // Append user ID to the instructors array
+    req.body.instructors.push(req.user.id);
   }
   next();
 });
