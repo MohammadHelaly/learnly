@@ -224,6 +224,36 @@ courseSchema.pre(/^find/, function (next) {
   next();
 });
 
+courseSchema.pre("save", async function (next) {
+  if (this.isNew) {
+    const instructorIds = this.instructors;
+    for (const instructorId of instructorIds) {
+      try {
+        const instructor = await User.findByIdAndUpdate(
+          instructorId,
+          { $push: { coursesCreated: this._id } },
+          { new: true }
+        );
+
+        if (!instructor) {
+          throw new Error(`Instructor with id ${instructorId} not found.`);
+        }
+      } catch (error) {
+        console.error(
+          `Error updating coursesCreated for instructor ${instructorId}: ${error}`
+        );
+
+        return next(error);
+      }
+    }
+  }
+  next();
+});
+
+const Course = mongoose.model("Course", courseSchema);
+
+module.exports = Course;
+
 // Put course Id into createdCourses array of each instructor in instructors array
 
 // courseSchema.post(
@@ -325,7 +355,3 @@ courseSchema.pre(/^find/, function (next) {
 //   await instructor.save();
 //   }
 // });
-
-const Course = mongoose.model("Course", courseSchema);
-
-module.exports = Course;
