@@ -286,6 +286,34 @@ courseSchema.pre(/^find/, function (next) {
 //   }
 //   next();
 // });
+// courseSchema.post("save", async (doc, next) => {
+//   console.log("reached");
+//   console.log(doc.instructors);
+//   try {
+//     const updateOperation = { $push: { createdCourses: doc._id } };
+//     const condition = { _id: { $in: doc.instructors } };
+//     const res = await User.updateMany(condition, updateOperation);
+
+//     const updateOperation = {
+//       $set: {
+//         "createdCourses.$[elem]": doc._id,
+//       },
+//     };
+
+//     const arrayFilters = [{ elem: { $in: doc.instructors } }];
+//     const condition = {};
+//     const res = await User.updateMany(condition, updateOperation, {
+//       arrayFilters: arrayFilters,
+//     });
+//     console.log("match documents:", res.n);
+//     console.log("update documents:", res.nModified);
+// const user = await User.find({ _id: { $in: doc.instructors } });
+// console.log(user);
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
 
 // courseSchema.post('save', async function(doc) {
 //   const instructors = await User.find({ _id: { $in: doc.instructors } });
