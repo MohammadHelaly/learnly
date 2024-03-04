@@ -5,6 +5,7 @@ const catchAsync = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
+const fs = require("fs");
 
 const awsConfig = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -136,6 +137,33 @@ exports.deleteCourseImage = (req, res) => {
 	}
 
 	// s3 delete
+};
+//testing was performed using postman and a body containing a local path and a video type
+exports.uploadCourseVideo = (req, res) => {
+	try {
+		const video = req.body;
+		if (!video) return res.status(400).send("no video");
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: `${uuid()}.${video.type}`,
+			Body: fs.readFileSync(video.path),
+			ACL: "public-read",
+			ContentType: `video/${video.type}`,
+		};
+		console.log(params);
+		//upload to S3
+		S3.upload(params, (err, data) => {
+			if (err) {
+				console.log(err);
+				res.sendStatus(400);
+			}
+			console.log(data);
+			res.sendStatus(200);
+		});
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 exports.aliasTop5CheapestCourses = (req, res, next) => {
