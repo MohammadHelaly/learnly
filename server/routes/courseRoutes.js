@@ -8,13 +8,13 @@ const router = express.Router();
 router.use("/:courseId/reviews", reviewRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
-  authController.protect,
-  // authController.restrictTo("admin", "instuctor"),
-  courseController.getCourseInstructorID,
-  courseController.uploadCourseImage,
-  courseController.createCourse
+	authController.protect,
+	// authController.restrictTo("admin", "instuctor"),
+	courseController.getCourseInstructorID,
+	courseController.uploadCourseImage,
+	courseController.createCourse
 );
-
+router.delete("/deleteCourseImage", courseController.deleteCourseImage);
 // router
 // 	.route("/top-5-cheapest")
 // 	.get(
@@ -33,16 +33,17 @@ router.route("/").get(courseController.getAllCourses).post(
 // 	);
 
 router
-  .route("/:id")
-  .get(courseController.getCourse)
-  .patch(
-    authController.protect,
-    authController.restrictTo("admin", "instructor"),
-    courseController.updateCourse
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo("admin", "instructor")
-  );
+	.route("/:id")
+	.get(courseController.getCourse)
+	.patch(
+		authController.protect,
+		authController.restrictTo("admin", "instructor"),
+		courseController.updateCourse
+	)
+	.delete(
+		authController.protect,
+		authController.restrictTo("admin", "instructor"),
+		courseController.deleteCourseImage
+	);
 
 module.exports = router;
