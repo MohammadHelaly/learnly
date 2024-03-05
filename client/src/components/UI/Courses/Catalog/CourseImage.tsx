@@ -19,7 +19,7 @@ const CourseImage = (props: CourseImageProps) => {
 		/>
 	) : (
 		<img
-			src={imageCover}
+			src={imageCover.url}
 			alt={name}
 			style={{
 				objectFit: "cover",

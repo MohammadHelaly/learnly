@@ -39,7 +39,7 @@ interface Instructor
 interface Course {
 	id: number | string;
 	name: string;
-	imageCover: string;
+	imageCover: { url: string; key: string };
 	summary: string;
 	description: string;
 	instructors: Instructor[];

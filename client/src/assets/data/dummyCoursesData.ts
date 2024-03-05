@@ -2,8 +2,11 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 1,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
+
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -60,8 +63,11 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 2,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
+
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -118,8 +124,11 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 3,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
+
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -176,8 +185,11 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 4,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
+
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -234,8 +246,10 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 5,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -292,8 +306,10 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 6,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -350,8 +366,10 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 7,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -408,8 +426,10 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 8,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
@@ -466,8 +486,10 @@ const dummyCoursesData: Course[] = [
 	{
 		id: 9,
 		name: "The Complete JavaScript Course: From Zero to Expert!",
-		imageCover:
-			"https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+		imageCover: {
+			url: "https://cdn.sanity.io/images/tlr8oxjg/production/8980e92e19621099e7f69bf42be9d4aece603754-1456x816.png?w=640&q=80&fit=clip&auto=format",
+			key: "",
+		},
 		summary:
 			"This is a summary of the course content.You will learn how to build a website using HTML, CSS, and JavaScript.",
 		description:
