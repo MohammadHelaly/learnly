@@ -5,7 +5,7 @@ interface User {
 	name: string;
 	email: string;
 	bio?: string;
-	photo?: string;
+	photo?: { url: string; key: string };
 	role: "user" | "instructor" | "admin";
 	ratingsAverage: number;
 	ratingsQuantity: number;

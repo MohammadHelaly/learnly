@@ -21,7 +21,7 @@ const ReviewCard = (props: Review) => {
 				sx={{
 					mb: 1,
 				}}>
-				<Avatar alt={name} src={photo} />
+				<Avatar alt={name} src={photo?.url} />
 				<Typography variant="h6">{name}</Typography>
 				<Typography variant="body2" color="text.secondary">
 					{new Date(createdAt).toLocaleDateString()}

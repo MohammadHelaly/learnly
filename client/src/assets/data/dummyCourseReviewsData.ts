@@ -6,7 +6,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -17,7 +20,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -28,7 +34,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -39,7 +48,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -50,7 +62,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -61,7 +76,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -72,7 +90,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -83,7 +104,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -94,7 +118,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},
@@ -105,7 +132,10 @@ const dummyCourseReviewsData = [
 		user: {
 			id: 1,
 			name: "John Doe",
-			photo: "https://i.pravatar.cc/300",
+			photo: {
+				url: "https://i.pravatar.cc/300",
+				key: "",
+			},
 		},
 		createdAt: "2021-10-10",
 	},

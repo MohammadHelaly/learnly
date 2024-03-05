@@ -15,7 +15,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -25,7 +28,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -76,7 +82,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -86,7 +95,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -137,7 +149,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -147,7 +162,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -198,7 +216,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -208,7 +229,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -258,7 +282,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -268,7 +295,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -318,7 +348,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -328,7 +361,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -378,7 +414,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -388,7 +427,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -438,7 +480,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -448,7 +493,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -498,7 +546,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
@@ -508,7 +559,10 @@ const dummyCoursesData: Course[] = [
 			{
 				name: "John Doe",
 				id: "1",
-				photo: "https://i.pravatar.cc/300",
+				photo: {
+					url: "https://i.pravatar.cc/300",
+					key: "",
+				},
 				ratingsAverage: 4.5,
 				ratingsQuantity: 100,
 				students: 1000,
