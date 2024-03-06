@@ -6,15 +6,14 @@ import { Pagination } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
+import StyledNavLink from "../UI/Links/StyledNavLink";
+import { Button } from "@mui/material";
 
 const InstructorDashboard = () => {
 	const [page, setPage] = useState(1);
 
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
-	const coursesCreated = user?.coursesCreated.length
-		? user?.coursesCreated
-		: [user?.id]; // This is a hack to prevent the API from returning all courses when the user has not created any courses, axios removes empty arrays from the query params, look into a better solution
 
 	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
 		setPage(value);
@@ -25,14 +24,14 @@ const InstructorDashboard = () => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["userCourses", { page, coursesCreated }],
+		queryKey: ["userCourses", { page, user }],
 		queryFn: async () =>
 			await api.get("/courses", {
 				params: {
 					page,
 					limit: 3,
-					_id: {
-						in: coursesCreated,
+					instructors: {
+						in: user?.id,
 					},
 				},
 			}),
@@ -45,6 +44,16 @@ const InstructorDashboard = () => {
 
 	return (
 		<PageWrapper>
+			<StyledNavLink to="/dashboard/create-course">
+				<Button
+					variant="contained"
+					color="primary"
+					size="large"
+					disableElevation
+				>
+					Create a Course
+				</Button>
+			</StyledNavLink>
 			<Courses
 				variant="instructorDashboard"
 				courses={courses}
