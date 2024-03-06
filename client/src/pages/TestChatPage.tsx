@@ -29,6 +29,7 @@ interface Msg {
 const roomname = "1";
 
 const ChatPage: React.FC = () => {
+  const [photo,setUserPhoto]= useState('');
   const [textFieldValue, setTextFieldValue] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
@@ -39,7 +40,10 @@ const ChatPage: React.FC = () => {
   if (userItem) {
     user = JSON.parse(userItem);
   }
-  useEffect(() => {
+  useEffect (() => {
+    
+
+    
     const newSocket: Socket = io(ENDPOINT);
     setSocket(newSocket);
     newSocket.emit("setup", user);
@@ -67,6 +71,8 @@ const ChatPage: React.FC = () => {
 
     
     const sendMessage = (e:any) => {
+      
+    
         if (msg !== null) {
           setAllMessages(prevMessages => [...prevMessages, msg]);
           if (socket) {
@@ -93,28 +99,29 @@ const ChatPage: React.FC = () => {
    <SectionHeader
 							heading=" Chat Room"
 							headingAlignment="center"
-              sx={{color:"#9c27b0",marginTop:"1rem"}}
+              sx={{color:"#9c27b0"}}
 						/>
-    <Paper elevation={0} sx={{width:"70%",height:"400px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
+    <Paper elevation={0} sx={{width:"90%",height:"500px", borderRadius:"20px", alignSelf:"center", padding:"60px",maxHeight:"100%",backgroundColor:"white",overflow:"auto"}}>
       <ListItemText >
         {allMessages.map((m, index) => (
-         // <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}: {m.value}</Typography>
          <Chat msg={m} user={user || null} />
         ))}
       </ListItemText>
       </Paper>
-      <Grid sx={{ marginTop:"10px", marginBottom:"7px", paddingLeft:"5px"}}>
+      <Grid sx={{ width: "60%",marginTop:"10px", marginBottom:"7px"}}>
       <TextField 
+            sx={{width:"100%"}}
             id="Text-Field"
             placeholder="Send a message..."
             variant='filled'
             InputProps={{
-          style: { color: 'black',maxWidth:"100%"},
+          style: { color: 'black',width:"100%"},
+          
         }}  
         onChange={(e) =>{ setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"me":user.name ,roomName:roomname,date: new Date().toISOString()} ) ; setTextFieldValue(e.target.value) }}
         value={textFieldValue} 
       />
-      <Button onClick={sendMessage} sx={{marginTop:"15px",color:"#9c27b0"}}>Send</Button>
+      <Button onClick={sendMessage} variant="outlined" sx={{marginTop:"15px",color:"#9c27b0"}}>Send</Button>
       </Grid>
       
     </Grid>
