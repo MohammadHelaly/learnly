@@ -4,23 +4,23 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import dummyCourseSectionsData from "../../../assets/data/dummyCourseSectionsData";
-import SectionHeader from "../PageLayout/SectionHeader";
-import SectionWrapper from "../PageLayout/SectionWrapper";
-import SkeletonCourseContents from "./SkeletonCourseContents";
-import ErrorWarning from "../Messages/ErrorWarning";
-
+import dummyCourseSectionsData from "../../assets/data/dummyCourseSectionsData";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import SkeletonCourseContents from "../UI/Courses/SkeletonCourseContents";
+import ErrorWarning from "../UI/Messages/ErrorWarning";
+import AddModule from "./AddModule";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
 	sections: Section[];
 }
 
-const CourseContents = (props: CourseContentsProps) => {
+const InstructorCourseContents = (props: CourseContentsProps) => {
 	const { sections: selectedSections, isLoading, isError } = props;
 
-	const sections = selectedSections ?? dummyCourseSectionsData;
-
+	// const sections = selectedSections ?? dummyCourseSectionsData;
+	const sections = dummyCourseSectionsData;
 	return (
 		<SectionWrapper>
 			<SectionHeader heading="Course Contents" headingAlignment="left" />
@@ -109,6 +109,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										return (
 											<AccordionDetails
 												key={index + "-" + title}
+												sx={{ paddingLeft: "23px" }}
 											>
 												<Stack
 													direction="row"
@@ -124,6 +125,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										);
 									}
 								)}
+								<AddModule />
 							</Accordion>
 						);
 					})
@@ -133,4 +135,4 @@ const CourseContents = (props: CourseContentsProps) => {
 	);
 };
 
-export default CourseContents;
+export default InstructorCourseContents;

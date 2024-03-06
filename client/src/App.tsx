@@ -21,6 +21,7 @@ import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
+import InstructorCoursePage from "./pages/InstructorCoursepage";
 import "./App.css";
 
 function App() {
@@ -110,7 +111,8 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}>
+						location={useLocation()}
+					>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -150,6 +152,10 @@ function App() {
 						<Route path="/help" element={<LandingPage />} />
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
+						<Route
+							path="/InstructorCoursePage/:courseId"
+							element={<InstructorCoursePage />}
+						/>
 					</Routes>
 				</AnimatePresence>
 			</Box>
