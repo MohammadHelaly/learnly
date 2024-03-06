@@ -7,6 +7,7 @@ import HomeSection from '../components/UI/PageLayout/HomeSection';
 import AnimatedPage from './AnimatedPage';
 import Chat from '../components/Chat/Chat';
 import SectionWrapper from '../components/UI/PageLayout/SectionWrapper';
+import PageWrapper from '../components/UI/PageLayout/PageWrapper';
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -81,6 +82,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <AnimatedPage>
+    <PageWrapper>
     <Grid
       container
       direction="column"
@@ -91,9 +93,9 @@ const ChatPage: React.FC = () => {
    <SectionHeader
 							heading=" Chat Room"
 							headingAlignment="center"
-              sx={{color:"white", marginTop:"50px"}}
+              sx={{color:"#9c27b0",marginTop:"1rem"}}
 						/>
-    <Paper elevation={24} sx={{width:"70%",height:"600px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
+    <Paper elevation={0} sx={{width:"70%",height:"400px", borderRadius:"20px", alignSelf:"center", padding:"20px",maxHeight:"80%",backgroundColor:"white",overflow:"auto"}}>
       <ListItemText >
         {allMessages.map((m, index) => (
          // <Typography key={index}>{m.sender_id===user?.id ?"me": m.sender_name}: {m.value}</Typography>
@@ -107,16 +109,16 @@ const ChatPage: React.FC = () => {
             placeholder="Send a message..."
             variant='filled'
             InputProps={{
-          style: { color: 'white'},
+          style: { color: 'black',maxWidth:"100%"},
         }}  
         onChange={(e) =>{ setMessage({value:e.target.value  , sender_id: user?.id==null? "1":user.id, sender_name:user?.name==null?"me":user.name ,roomName:roomname,date: new Date().toISOString()} ) ; setTextFieldValue(e.target.value) }}
         value={textFieldValue} 
       />
-      <Button onClick={sendMessage} sx={{marginTop:"20px",color:"white"}}>Send</Button>
+      <Button onClick={sendMessage} sx={{marginTop:"15px",color:"#9c27b0"}}>Send</Button>
       </Grid>
       
     </Grid>
-   
+    </PageWrapper>
     </AnimatedPage>
   );
 };
