@@ -41,8 +41,7 @@ function getTimeDifference(dateString: string): string {
 
 const Chat: React.FC<ChatProps> = ({ msg, user }) => {
   return (
-    <Card style={{backgroundColor: msg.sender_id===user?.id?"#F3CCF3":"white"}} sx={{ Width: '100%',borderRadius:2,marginBottom:1}}>
-      
+    <Card style={{backgroundColor: msg.sender_id===user?.id?"#F3CCF3":"white"}} sx={{borderRadius:2,marginBottom:2,display:"flex",flexDirection:"column",maxWidth:"100%",overflowWrap:"anywhere"}}>
       <CardContent>
       <Typography variant="h6" color="text.secondary">
       {user && msg.sender_id === user.id ? "Me" : msg.sender_name}

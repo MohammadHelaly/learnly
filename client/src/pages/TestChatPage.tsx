@@ -6,6 +6,7 @@ import SectionHeader from '../components/UI/PageLayout/SectionHeader';
 import HomeSection from '../components/UI/PageLayout/HomeSection';
 import AnimatedPage from './AnimatedPage';
 import Chat from '../components/Chat/Chat';
+import SectionWrapper from '../components/UI/PageLayout/SectionWrapper';
 
 const ENDPOINT = "http://localhost:5000";
 
@@ -65,7 +66,6 @@ const ChatPage: React.FC = () => {
 
     
     const sendMessage = (e:any) => {
-      
         if (msg !== null) {
           setAllMessages(prevMessages => [...prevMessages, msg]);
           if (socket) {
@@ -114,7 +114,9 @@ const ChatPage: React.FC = () => {
       />
       <Button onClick={sendMessage} sx={{marginTop:"20px",color:"white"}}>Send</Button>
       </Grid>
+      
     </Grid>
+   
     </AnimatedPage>
   );
 };
