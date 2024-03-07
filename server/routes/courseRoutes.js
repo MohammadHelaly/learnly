@@ -1,6 +1,7 @@
 const express = require("express");
 const courseController = require("../controllers/courseController");
 const authController = require("../controllers/authController");
+const sectionController = require("../controllers/sectionController");
 const reviewRouter = require("./reviewRoutes");
 
 const router = express.Router();
@@ -14,8 +15,13 @@ router.route("/").get(courseController.getAllCourses).post(
 	courseController.uploadCourseImage,
 	courseController.createCourse
 );
+
 router.delete("/deleteCourseImage", courseController.deleteCourseImage);
 router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
+// create-Course
+router.post("/addSection/:courseId", sectionController.addSection);
+router.post("/addModule", sectionController.addModule);
+
 // router
 // 	.route("/top-5-cheapest")
 // 	.get(
