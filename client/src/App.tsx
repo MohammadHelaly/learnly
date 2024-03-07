@@ -153,7 +153,7 @@ function App() {
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
 						<Route
-							path="/InstructorCoursePage/:courseId"
+							path="/InstructorCourses/:courseId"
 							element={<InstructorCoursePage />}
 						/>
 					</Routes>

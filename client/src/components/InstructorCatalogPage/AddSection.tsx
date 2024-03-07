@@ -32,7 +32,7 @@ const AddSection = () => {
 						fontWeight: "400",
 					}}
 				>
-					Add new Course
+					Add new Section
 				</Typography>
 			</Button>
 		</Stack>
