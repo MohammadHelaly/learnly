@@ -31,7 +31,7 @@ const InstructorDashboardCourseCard = (
 	} = props;
 
 	return (
-		<CardNavLink to={`/InstructorCourses/${id}`}>
+		<CardNavLink to={`/dashboard/InstructorCourses/${id}`}>
 			<Card
 				sx={{
 					display: "flex",
