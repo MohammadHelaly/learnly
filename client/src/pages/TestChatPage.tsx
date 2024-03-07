@@ -94,21 +94,23 @@ const ChatPage: React.FC = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      sx={{ minHeight: '100vh' }}
+      sx={{ minHeight: '90vh' }}
     >
    <SectionHeader
 							heading=" Chat Room"
 							headingAlignment="center"
               sx={{color:"#9c27b0"}}
 						/>
-    <Paper elevation={0} sx={{width:"90%",height:"500px", borderRadius:"20px", alignSelf:"center", padding:"60px",maxHeight:"100%",backgroundColor:"white",overflow:"auto"}}>
-      <ListItemText >
+        <Grid sx={{
+          width: "90%",       
+        }}>
+        <ListItemText >
         {allMessages.map((m, index) => (
          <Chat msg={m} user={user || null} />
         ))}
       </ListItemText>
-      </Paper>
-      <Grid sx={{ width: "60%",marginTop:"10px", marginBottom:"7px"}}>
+      </Grid>
+      <Grid sx={{ width: "90%",marginTop:"10px", marginBottom:"7px"}}>
       <TextField 
             sx={{width:"100%"}}
             id="Text-Field"
