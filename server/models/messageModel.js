@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Channel = require("./channelModel");
 
 const messageSchema = mongoose.Schema(
 	{

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Course = require("./courseModel");
+const Message = require("./messageModel");
 
 const channelSchema = mongoose.Schema(
 	{
@@ -67,6 +68,7 @@ channelSchema.pre("save", async function (next) {
 	next();
 });
 
+// pre delete middleware is not working, need to fix it
 channelSchema.pre(/^delete/, async function (next) {
 	if (!this.isCourseChannel) {
 		return next();
@@ -89,6 +91,29 @@ channelSchema.pre(/^delete/, async function (next) {
 	} catch (error) {
 		console.error(
 			`Error occurred while updating course with id ${courseId}.`
+		);
+
+		return next(error);
+	}
+	next();
+});
+
+channelSchema.pre(/^delete/, async function (next) {
+	const channelId = this._id;
+
+	try {
+		const messages = await Message.deleteMany({ channel: channelId });
+
+		if (!messages) {
+			throw new Error(
+				`Messages for channel with id ${channelId} not found.`
+			);
+		}
+
+		console.log(`Messages for channel with id ${channelId} deleted.`);
+	} catch (error) {
+		console.error(
+			`Error occurred while deleting messages for channel with id ${channelId}.`
 		);
 
 		return next(error);
