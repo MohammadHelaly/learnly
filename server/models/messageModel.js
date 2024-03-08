@@ -11,5 +11,13 @@ const messageSchema = mongoose.Schema(
 	{ timestamps: true }
 );
 
+messageSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: "sender",
+		select: "id name photo",
+	});
+	next();
+});
+
 const Message = mongoose.model("Message", messageSchema);
 module.exports = Message;

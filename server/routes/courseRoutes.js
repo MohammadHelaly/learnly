@@ -2,10 +2,13 @@ const express = require("express");
 const courseController = require("../controllers/courseController");
 const authController = require("../controllers/authController");
 const reviewRouter = require("./reviewRoutes");
+const channelRouter = require("./channelRoutes");
 
 const router = express.Router();
 
 router.use("/:courseId/reviews", reviewRouter);
+
+router.use("/:courseId/channels", channelRouter);
 
 router
 	.route("/")

@@ -48,35 +48,34 @@ process.on("SIGTERM", () => {
 	server.close(() => {
 		console.log("Process terminated.");
 	});
-
 });
 
-const io=require('socket.io')(server,{
-	//SET PINGTIMEOUT TO VALUE LATER ON
-	cors:{
-		origin:"http://localhost:3000"
-	}
-})
+const io = require("socket.io")(server, {
+	pingTimeout: 60 * 1000,
+	cors: {
+		origin:
+			process.env.NODE_ENV === "development"
+				? process.env.FRONTEND_URL_LOCAL
+				: process.env.FRONTEND_URL,
+	},
+});
 
-io.on("connection",(socket)=>{
-	console.log('connected to socket.io')
-	
-	socket.on("setup",(userData)=>{
-		socket.join(userData.id)
-		console.log('joined',userData.id)
-		socket.emit('connected')
-	})
-	
-	socket.on("join chat",(room)=>{
-		socket.join(room)
-		console.log('joined chat',room)
-	})
+io.on("connection", (socket) => {
+	console.log("connected to socket.io");
+
+	socket.on("setup", (userData) => {
+		socket.join(userData.id);
+		console.log("joined", userData.id);
+		socket.emit("connected");
+	});
+
+	socket.on("join chat", (room) => {
+		socket.join(room);
+		console.log("joined chat", room);
+	});
 
 	socket.on("newMessage", (newMessage) => {
 		// Corrected the event name to "message received"
 		socket.in(newMessage.roomName).emit("message received", newMessage);
-	  });
-})
-
-
-
+	});
+});

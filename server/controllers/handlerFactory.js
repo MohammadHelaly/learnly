@@ -7,6 +7,7 @@ exports.getAll = (Model) =>
 		// To allow for nested GET reviews on course (hack)
 		let auxFilter = {};
 		if (req.params.courseId) auxFilter = { course: req.params.courseId };
+		if (req.params.channelId) auxFilter = { channel: req.params.channelId };
 
 		const features = new APIFeatures(Model.find(auxFilter), req.query)
 			.filter()

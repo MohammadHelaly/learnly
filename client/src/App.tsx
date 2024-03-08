@@ -146,8 +146,16 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/chat" element={<TestChatPage />} />
+						<Route
+							path="/channel/:channelId"
+							element={<TestChatPage />}
+						/>
+						<Route
+							path="/courses/:courseId/channel/:channelId"
+							element={<TestChatPage />}
+						/>
+						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
 						<Route path="/help" element={<LandingPage />} />
 						<Route path="/legal" element={<LandingPage />} />
