@@ -21,7 +21,7 @@ import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
-import InstructorCoursePage from "./pages/InstructorCoursepage";
+import InstructorCourseUpdatePage from "./pages/InstructorCourseUpdatePage";
 import "./App.css";
 
 function App() {
@@ -154,7 +154,7 @@ function App() {
 						<Route path="*" element={<LandingPage />} />
 						<Route
 							path="/dashboard/InstructorCourses/:courseId"
-							element={<InstructorCoursePage />}
+							element={<InstructorCourseUpdatePage />}
 						/>
 					</Routes>
 				</AnimatePresence>

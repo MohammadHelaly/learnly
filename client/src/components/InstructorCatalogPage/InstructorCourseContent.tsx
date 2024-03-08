@@ -22,7 +22,7 @@ const InstructorCourseContents = (props: CourseContentsProps) => {
 	// const sections = selectedSections ?? dummyCourseSectionsData;
 	const sections = dummyCourseSectionsData;
 	return (
-		<SectionWrapper>
+		<>
 			<SectionHeader heading="Course Contents" headingAlignment="left" />
 			{
 				// isError ? (
@@ -131,7 +131,7 @@ const InstructorCourseContents = (props: CourseContentsProps) => {
 					})
 				)
 			}
-		</SectionWrapper>
+		</>
 	);
 };
 
