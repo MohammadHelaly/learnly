@@ -15,7 +15,7 @@ router.route("/").get(courseController.getAllCourses).post(
 	courseController.uploadCourseImage,
 	courseController.createCourse
 );
-
+router.get("/sections", sectionController.getAllSections);
 // router.delete("/deleteCourseImage", courseController.deleteCourseImage);
 // router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
 // create-Course

@@ -10,6 +10,8 @@ import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SkeletonCourseContents from "../UI/Courses/SkeletonCourseContents";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
 import AddModule from "./AddModule";
+import { useQuery } from "@tanstack/react-query";
+import api from "../../api";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
@@ -19,8 +21,27 @@ interface CourseContentsProps {
 const InstructorCourseContents = (props: CourseContentsProps) => {
 	const { sections: selectedSections, isLoading, isError } = props;
 
-	// const sections = selectedSections ?? dummyCourseSectionsData;
-	const sections = dummyCourseSectionsData;
+	const sections = selectedSections ?? dummyCourseSectionsData;
+
+	const {
+		data, //: course,
+		isLoading: isGetlocading, //isError
+		isError: isGetError,
+	} = useQuery({
+		queryKey: ["sections", { sections }],
+		queryFn: async () =>
+			await api.get(`courses/sections`, {
+				params: {
+					_id: {
+						in: sections,
+					},
+				},
+			}),
+		select: (response) => response.data.data.data,
+	});
+	//const sections = data;
+	const sectionsData = data;
+	// const sections = dummyCourseSectionsData;
 	return (
 		<>
 			<SectionHeader heading="Course Contents" headingAlignment="left" />
@@ -31,7 +52,7 @@ const InstructorCourseContents = (props: CourseContentsProps) => {
 				isLoading ? (
 					<SkeletonCourseContents />
 				) : (
-					sections?.map((section: Section, index: number) => {
+					sectionsData?.map((section: Section, index: number) => {
 						const { id, title, description, modules, duration } =
 							section;
 						return (
