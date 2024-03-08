@@ -16,11 +16,9 @@ router.route("/").get(courseController.getAllCourses).post(
 	courseController.createCourse
 );
 
-router.delete("/deleteCourseImage", courseController.deleteCourseImage);
-router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
+// router.delete("/deleteCourseImage", courseController.deleteCourseImage);
+// router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
 // create-Course
-router.post("/addSection/:courseId", sectionController.addSection);
-router.post("/addModule", sectionController.addModule);
 
 // router
 // 	.route("/top-5-cheapest")
@@ -44,7 +42,9 @@ router
 	.get(courseController.getCourse)
 	.patch(
 		authController.protect,
-		authController.restrictTo("admin", "instructor"),
+		// authController.restrictTo("admin", "instructor"),
+		//courseController.deleteCourseImage,
+		//courseController.uploadCourseImage,
 		courseController.updateCourse
 	)
 	.delete(
