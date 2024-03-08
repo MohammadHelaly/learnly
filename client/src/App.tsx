@@ -16,7 +16,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CatalogPage from "./pages/CatalogPage";
 import CourseCatalogPage from "./pages/CourseCatalogPage";
-import TestChatPage from "./pages/TestChatPage";
+import ChannelPage from "./pages/ChannelPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
@@ -146,14 +146,14 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						<Route path="/chat" element={<TestChatPage />} />
+						<Route path="/channel" element={<ChannelPage />} />
 						<Route
 							path="/channel/:channelId"
-							element={<TestChatPage />}
+							element={<ChannelPage />}
 						/>
 						<Route
 							path="/courses/:courseId/channel/:channelId"
-							element={<TestChatPage />}
+							element={<ChannelPage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />

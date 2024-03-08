@@ -1,12 +1,4 @@
-import React from "react";
-import {
-	Card,
-	CardContent,
-	Typography,
-	CardHeader,
-	Avatar,
-	Box,
-} from "@mui/material";
+import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
 
 interface Message {
 	sender_id: string;
@@ -15,7 +7,7 @@ interface Message {
 	date: string;
 }
 
-interface ChatProps {
+interface MessageBubbleProps {
 	msg: Message;
 	user: Pick<User, "id" | "name" | "photo"> | null;
 }
@@ -36,14 +28,17 @@ function getTimeDifference(dateString: string): string {
 	}
 }
 
-const Chat: React.FC<ChatProps> = ({ msg, user }) => {
+const MessageBubble = (props: MessageBubbleProps) => {
+	const { msg, user } = props;
+
 	return (
 		<Card
 			style={{
 				backgroundColor:
 					msg.sender_id === user?.id ? "#00f3b6" : "#9c27b0",
-				marginRight: msg.sender_id === user?.id ? "0%" : "50%",
-				marginLeft: msg.sender_id === user?.id ? "50%" : "0%",
+				alignSelf:
+					msg.sender_id === user?.id ? "flex-end" : "flex-start",
+				width: window.innerWidth > 600 ? "50%" : "80%",
 			}}
 			sx={{
 				borderRadius: 6,
@@ -59,8 +54,10 @@ const Chat: React.FC<ChatProps> = ({ msg, user }) => {
 					flexDirection: "row",
 					alignItems: "center",
 				}}>
-				<Avatar sx={{ marginRight: 1, bgcolor: "black" }}>
-					{msg?.sender_name.slice(0, 2)}
+				<Avatar
+					src={msg?.sender_id === user?.id ? user?.photo : undefined} // message.sender.photo
+					sx={{ marginRight: 1, bgcolor: "black" }}>
+					{msg?.sender_name.slice(0, 1)}
 				</Avatar>
 				<Box>
 					<Typography sx={{ fontWeight: "bold" }} color="black">
@@ -82,4 +79,4 @@ const Chat: React.FC<ChatProps> = ({ msg, user }) => {
 	);
 };
 
-export default Chat;
+export default MessageBubble;

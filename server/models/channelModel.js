@@ -17,7 +17,11 @@ const channelSchema = mongoose.Schema(
 		},
 		admins: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 	},
-	{ timestamps: true }
+	{
+		timestamps: true,
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
 );
 
 // Virtual populate

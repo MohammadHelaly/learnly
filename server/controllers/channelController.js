@@ -10,7 +10,7 @@ exports.setCourseUserIds = (req, res, next) => {
 
 exports.getAllChannels = handlerFactory.getAll(Channel);
 
-exports.getChannel = handlerFactory.getOne(Channel);
+exports.getChannel = handlerFactory.getOne(Channel, { path: "messages" });
 
 exports.createChannel = handlerFactory.createOne(Channel);
 

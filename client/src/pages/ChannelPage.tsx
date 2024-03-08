@@ -1,20 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-	Button,
-	Box,
-	Stack,
-	Grid,
-	ListItemText,
-	TextField,
-	Container,
-} from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { Button, Box, Stack, TextField, Container } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import AuthContext from "../store/auth-context";
 import { io, Socket } from "socket.io-client";
 import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import AnimatedPage from "./AnimatedPage";
-import Chat from "../components/Chat/Chat";
+import MessageBubble from "../components/ChannelPage/MessageBubble";
 import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
 import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 
@@ -29,19 +21,29 @@ interface Msg {
 }
 const roomname = "1";
 
-const ChatPage: React.FC = () => {
+const ChannelPage = () => {
 	const { courseId, channelId } = useParams();
 
 	const authContext = useContext(AuthContext);
 	const { id, name, photo } = authContext.user ?? {};
 	const user: Pick<User, "id" | "name" | "photo"> | null =
-		id && name ? { id, name, photo } : null;
+		id && name ? { id, name, photo } : null; // TODO: look into just passing {...user} as props instead of this
 
 	const [textFieldValue, setTextFieldValue] = useState("");
 	const [socket, setSocket] = useState<Socket | null>(null);
 	const [socketConnected, setSocketConnected] = useState<boolean>(false);
 	const [msg, setMessage] = useState<Msg | null>(null);
 	const [allMessages, setAllMessages] = useState<Msg[]>([]);
+
+	// TODO: Integrate Socket.io with Database Persistence
+
+	// TODO: Refactor, use React Hook Form and AuthContext
+
+	// TODO: Use React Query to fetch the channel
+
+	// TODO: Use React Query to mutate the messages
+
+	// TODO: Add window scroll to bottom on new message
 
 	useEffect(() => {
 		const newSocket: Socket = io(ENDPOINT);
@@ -80,8 +82,11 @@ const ChatPage: React.FC = () => {
 
 	return (
 		<AnimatedPage>
-			<PageWrapper>
-				<SectionWrapper>
+			<PageWrapper
+				sx={{
+					backgroundColor: "#f5f5f5",
+				}}>
+				<SectionWrapper sx={{ pb: 8 }}>
 					<Container maxWidth="lg">
 						<SectionHeader
 							heading=" Chat Room"
@@ -92,24 +97,18 @@ const ChatPage: React.FC = () => {
 								borderColor: "divider",
 							}}
 						/>
-						<Grid
-							container
+						<Stack
 							direction="column"
-							alignItems="flex-start"
-							justifyContent="center"
-							sx={{ minHeight: "100vh" }}>
-							<Grid
-								sx={{
-									width: "100%",
-								}}
-								item>
-								<ListItemText>
-									{allMessages.map((m, index) => (
-										<Chat msg={m} user={user} />
-									))}
-								</ListItemText>
-							</Grid>
-						</Grid>
+							justifyContent="flex-start"
+							sx={{
+								minHeight: "100vh",
+								overflowY: "scroll",
+								scrollbarWidth: "none",
+							}}>
+							{allMessages.map((m, index) => (
+								<MessageBubble msg={m} user={user} />
+							))}
+						</Stack>
 					</Container>
 				</SectionWrapper>
 				<Box
@@ -134,7 +133,6 @@ const ChatPage: React.FC = () => {
 							noValidate>
 							<Stack
 								direction="row"
-								alignItems="center"
 								justifyContent="center"
 								spacing={2}>
 								<TextField
@@ -197,4 +195,4 @@ const ChatPage: React.FC = () => {
 	);
 };
 
-export default ChatPage;
+export default ChannelPage;
