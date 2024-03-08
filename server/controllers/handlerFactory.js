@@ -4,7 +4,7 @@ const APIFeatures = require("../utils/apiFeatures");
 
 exports.getAll = (Model) =>
 	catchAsync(async (req, res, next) => {
-		// To allow for nested GET reviews on course (hack)
+		// To allow for nested GET requests (hack)
 		let auxFilter = {};
 		if (req.params.courseId) auxFilter = { course: req.params.courseId };
 		if (req.params.channelId) auxFilter = { channel: req.params.channelId };
