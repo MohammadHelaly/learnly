@@ -55,6 +55,7 @@ channelSchema.pre("save", async function (next) {
 				throw new Error(`Course with id ${courseId} not found.`);
 			}
 
+			this.name = course.name;
 			this.admins = course.instructors;
 			this.users = course.instructors; // TODO: check if this is the right approach
 		} catch (error) {
