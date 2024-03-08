@@ -25,34 +25,7 @@ const InstructorCourseEnrollmentPrompt = (
 				borderBottom:
 					window.innerWidth > 600 ? "1px solid #dddddd" : "none",
 			}}
-		>
-			<Button
-				component="label"
-				fullWidth
-				variant="contained"
-				disableElevation
-				size="large"
-				//disabled={isPending}
-				sx={{
-					mb: 2,
-				}}
-			>
-				{/* {image?.preview
-									? "Change Image"
-									: "Upload Image"} */}
-				upload Image
-				<input
-					//disabled={isPending}
-					accept="image/*"
-					style={{ display: "none" }}
-					multiple={false}
-					type="file"
-					hidden
-					// value={image.uploaded}
-					// onChange={handleImageChange}
-				/>
-			</Button>
-		</Stack>
+		></Stack>
 	);
 };
 

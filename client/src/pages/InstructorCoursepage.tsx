@@ -408,7 +408,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Give your course a name that reflects its content and purpose."
+									heading="Modify the course name."
 									keepHeadingAlignmentOnSmallScreens
 									headingAlignment="left"
 									headingAnimated={false}
@@ -462,7 +462,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Provide a brief summary of your course. Keep it short and descriptive."
+									heading="Modify the course summary."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -517,7 +517,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Provide a detailed description of your course. Go into detail about what students will learn and why they should take your course. The more information you provide, the better."
+									heading="Modify the course description."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -573,7 +573,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Select up to 12 categories that best describe your course. This will help students find your course when they search for topics."
+									heading="Change the course categories."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -655,7 +655,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Let students know how difficult your course is. This will help them decide if your course is right for them."
+									heading="Modify the course difficulty."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -717,7 +717,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="List up to 12 prerequisites for your course. Write them as short bullet points. If there are none, leave this section blank."
+									heading="Alter the course prerequisites."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -808,7 +808,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="List up to 12 skills that students will learn from your course. This will help students understand what they will gain from your course. We recommend listing at least 3 skills. Write them as short bullet points."
+									heading="Alter the skills that students will learn from your course."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -892,7 +892,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Decide how you'd like to price your course. Either set a price or make it free. Making your course free can help you attract more students."
+									heading=" Alter the course pricing."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -983,8 +983,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="Upload an image for your course. Make sure it's an eye-catching image that represents your course.
-                             This will be the first thing students see when they find your course."
+									heading="Change the course image."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -1075,7 +1074,7 @@ const InstructorCoursePage = () => {
 							</SectionWrapper>
 							<SectionWrapper>
 								<SectionHeader
-									heading="Save and Continue"
+									heading="Update Course"
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -1086,7 +1085,7 @@ const InstructorCoursePage = () => {
 								<SectionHeader
 									isSubHeading
 									variant="h6"
-									heading="You're almost there! Once you're ready, click the button below to save your course and continue. You'll get to set up your course contents in the next step. You can always come back and edit your course later."
+									heading="Click the button below to save your changes."
 									headingAlignment="left"
 									keepHeadingAlignmentOnSmallScreens
 									headingAnimated={false}
@@ -1103,7 +1102,7 @@ const InstructorCoursePage = () => {
 									size="large"
 									endIcon={<Done />}
 								>
-									Save and Continue
+									Update Course
 								</Button>
 							</SectionWrapper>
 						</Stack>
