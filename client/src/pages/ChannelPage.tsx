@@ -158,9 +158,7 @@ const ChannelPage = () => {
 					}}>
 					<SectionWrapper sx={{ pb: 8 }}>
 						<Container maxWidth="lg">
-							{channelError ? (
-								<ErrorWarning />
-							) : channelLoading ? (
+							{channelLoading ? (
 								<Stack
 									direction="column"
 									justifyContent="flex-start"
@@ -169,6 +167,8 @@ const ChannelPage = () => {
 										overflowY: "scroll",
 										scrollbarWidth: "none",
 									}}></Stack>
+							) : channelError || !channel ? (
+								<ErrorWarning />
 							) : (
 								<>
 									<SectionHeader
