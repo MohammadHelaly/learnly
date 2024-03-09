@@ -9,24 +9,19 @@ exports.addSection = async (req, res) => {
 	sectionCreated = await Section.create({
 		title,
 		description,
-		//course: courseId,
 	});
-
 	try {
 		const course = await Course.findByIdAndUpdate(
 			courseId,
 			{ $push: { sections: sectionCreated._id } },
 			{ new: true }
 		);
-
-		if (!course) {
-			throw new Error(`Course with id ${courseId} not found.`);
-		}
 	} catch (error) {
 		console.error(
 			`Error updating coursesCreated for section ${course}: ${error}`
 		);
 	}
+
 	res.status(201).json({
 		status: "success",
 		data: {

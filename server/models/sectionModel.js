@@ -37,10 +37,10 @@ const sectionSchema = new mongoose.Schema(
 			maxlength: 320,
 			required: true,
 		},
-		key: {
-			type: String,
-			required: true,
-		},
+		// key: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		description: {
 			type: String,
 			trim: true,

@@ -24,10 +24,15 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { useState } from "react";
 import { TransitionProps } from "@mui/material/transitions";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-
+import { useMutation } from "@tanstack/react-query";
+import api from "../../api";
 interface Section {
 	title: string;
 	description: string;
+}
+
+interface AddSectionProps {
+	courseId: Pick<Course, "id"> | string | number | undefined;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -39,7 +44,8 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AddSection: React.FC = () => {
+const AddSection = (props: AddSectionProps) => {
+	const { courseId } = props;
 	const [open, setOpen] = useState(false);
 	const [newSectionTitle, setNewSectionTitle] = useState<string>("");
 	const [newSectionDescription, setNewSectionDescription] =
@@ -48,13 +54,27 @@ const AddSection: React.FC = () => {
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
-
+	const { mutate, isError, isPending } = useMutation({
+		mutationFn: (data: Section) => {
+			return api.post(`/courses/${courseId}/addSection`, {
+				...data,
+			});
+		},
+		onSuccess: (response) => {
+			// navigate(`/courses/${response.data.data.data.id}`);
+			// navigate("/dashboard");
+		},
+		onError: (error) => {
+			console.error(error);
+			alert("An error occurred. Please try again.");
+		},
+	});
 	const addNewSection = () => {
 		const newSection: Section = {
 			title: newSectionTitle,
 			description: newSectionDescription,
 		};
-
+		mutate(newSection);
 		setSections([...sections, newSection]);
 		setNewSectionTitle("");
 		setNewSectionDescription("");
@@ -198,7 +218,6 @@ const AddSection: React.FC = () => {
 					</Button>
 				</DialogActions>
 			</Dialog>
-			{/* Render newly added sections as accordions */}
 		</Stack>
 	);
 };

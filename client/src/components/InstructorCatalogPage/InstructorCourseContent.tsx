@@ -21,7 +21,7 @@ interface CourseContentsProps {
 const InstructorCourseContents = (props: CourseContentsProps) => {
 	const { sections: selectedSections, isLoading, isError } = props;
 
-	const sections = selectedSections ?? dummyCourseSectionsData;
+	const sections = selectedSections;
 
 	const {
 		data, //: course,
