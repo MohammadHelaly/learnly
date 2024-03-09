@@ -73,39 +73,8 @@ channelSchema.pre("save", async function (next) {
 	next();
 });
 
-// pre delete middleware is not working, need to fix it
-channelSchema.pre(/^delete/ /*deleteOne OR remove*/, async function (next) {
-	//instead of /^delete , try "deleteOne" for channel and "deleteMany" for messages
-	if (!this.isCourseChannel) {
-		return next();
-	}
-
-	const courseId = this.course;
-
-	try {
-		const course = await Course.findByIdAndUpdate(
-			courseId,
-			{
-				$unset: { channel: "" },
-			},
-			{ new: true }
-		);
-
-		if (!course) {
-			throw new Error(`Course with id ${courseId} not found.`);
-		}
-	} catch (error) {
-		console.error(
-			`Error occurred while updating course with id ${courseId}.`
-		);
-
-		return next(error);
-	}
-	next();
-});
-
-channelSchema.pre(/^delete/ /*deleteMany*/, async function (next) {
-	const channelId = this._id;
+channelSchema.pre("findOneAndDelete", async function (next) {
+	const channelId = this._conditions._id;
 
 	try {
 		const messages = await Message.deleteMany({ channel: channelId });
@@ -116,7 +85,22 @@ channelSchema.pre(/^delete/ /*deleteMany*/, async function (next) {
 			);
 		}
 
-		console.log(`Messages for channel with id ${channelId} deleted.`);
+		console.log(
+			`Messages for channel with id ${channelId} deleted.`,
+			messages
+		);
+
+		const updatedCourse = await Course.findOneAndUpdate(
+			{ channel: channelId },
+			{ $unset: { channel: "" } },
+			{ new: true }
+		);
+
+		if (!updatedCourse) {
+			throw new Error(`Course with channel ${channelId} not found.`);
+		}
+
+		console.log(`Course with channel ${channelId} updated.`);
 	} catch (error) {
 		console.error(
 			`Error occurred while deleting messages for channel with id ${channelId}.`

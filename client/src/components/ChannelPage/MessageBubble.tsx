@@ -29,7 +29,11 @@ const MessageBubble = (props: MessageBubbleProps) => {
 
 	return (
 		<Card
-			style={{
+			sx={{
+				borderRadius: 6,
+				display: "flex",
+				flexDirection: "column",
+				overflowWrap: "anywhere",
 				backgroundColor:
 					message?.sender?.id === user?.id ? "#00f3b6" : "#9c27b0",
 				alignSelf:
@@ -37,14 +41,7 @@ const MessageBubble = (props: MessageBubbleProps) => {
 						? "flex-end"
 						: "flex-start",
 				width: window.innerWidth > 600 ? "50%" : "80%",
-			}}
-			sx={{
-				borderRadius: 6,
-				marginBottom: 2,
-				display: "flex",
-				flexDirection: "column",
-				maxWidth: "100%",
-				overflowWrap: "anywhere",
+				boxShadow: "none",
 			}}>
 			<CardContent
 				sx={{

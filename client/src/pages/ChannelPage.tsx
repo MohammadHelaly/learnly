@@ -183,6 +183,7 @@ const ChannelPage = () => {
 									<Stack
 										direction="column"
 										justifyContent="flex-start"
+										spacing={2}
 										sx={{
 											minHeight: "100vh",
 											overflowY: "scroll",
