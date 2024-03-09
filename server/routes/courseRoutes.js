@@ -1,10 +1,8 @@
 const express = require("express");
 const courseController = require("../controllers/courseController");
 const authController = require("../controllers/authController");
-const sectionController = require("../controllers/sectionController");
 const reviewRouter = require("./reviewRoutes");
 const sectionRouter = require("./sectionRoutes");
-const formidable = require("express-formidable");
 const router = express.Router();
 
 router.use("/:courseId/reviews", reviewRouter);
@@ -18,16 +16,6 @@ router.route("/").get(courseController.getAllCourses).post(
 	courseController.uploadCourseImage,
 	courseController.createCourse
 );
-
-// router.get("/sections", sectionController.getAllSections);
-
-// router.delete("/deleteCourseImage", courseController.deleteCourseImage);
-// router.post(
-// 	"/UploadCourseVideo",
-// 	formidable(),
-// 	courseController.uploadCourseVideo
-// );
-// create-Course
 
 // router
 // 	.route("/top-5-cheapest")
@@ -52,8 +40,8 @@ router
 	.patch(
 		authController.protect,
 		// authController.restrictTo("admin", "instructor"),
-		//courseController.deleteCourseImage,
-		//courseController.uploadCourseImage,
+		courseController.deleteCourseImage,
+		courseController.uploadCourseImage,
 		courseController.updateCourse
 	)
 	.delete(
@@ -61,7 +49,5 @@ router
 		authController.restrictTo("admin", "instructor"),
 		courseController.deleteCourseImage
 	);
-
-// router.post("/:id/addSection", sectionController.addSection);
 
 module.exports = router;
