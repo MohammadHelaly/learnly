@@ -15,11 +15,20 @@ const NavigationGuard = (props: NavigationGuardProps) => {
 	useEffect(() => {
 		if (authContext.isLoggedIn && guardWhileSignedIn) {
 			navigate("/dashboard");
+			return;
 		}
-		if (!authContext.isLoggedIn && !guardWhileSignedIn) {
-			navigate("/log-in");
-		}
-	}, [authContext, navigate, guardWhileSignedIn]);
+
+		const timeout = setTimeout(() => {
+			if (!authContext.isLoggedIn && !guardWhileSignedIn) {
+				navigate("/log-in");
+				return;
+			}
+		}, 1);
+
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [authContext.isLoggedIn, navigate, guardWhileSignedIn]);
 
 	return <>{children}</>;
 };
