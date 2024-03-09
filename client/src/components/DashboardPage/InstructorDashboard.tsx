@@ -44,13 +44,12 @@ const InstructorDashboard = () => {
 
 	return (
 		<PageWrapper>
-			<StyledNavLink to="/dashboard/create-course">
+			<StyledNavLink to="/dashboard/teach/courses/create">
 				<Button
 					variant="contained"
 					color="primary"
 					size="large"
-					disableElevation
-				>
+					disableElevation>
 					Create a Course
 				</Button>
 			</StyledNavLink>

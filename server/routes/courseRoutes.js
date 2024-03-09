@@ -3,10 +3,13 @@ const courseController = require("../controllers/courseController");
 const authController = require("../controllers/authController");
 const sectionController = require("../controllers/sectionController");
 const reviewRouter = require("./reviewRoutes");
+const sectionRouter = require("./sectionRoutes");
 
 const router = express.Router();
 
 router.use("/:courseId/reviews", reviewRouter);
+
+router.use("/:courseId/sections", sectionRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
 	authController.protect,
@@ -16,7 +19,7 @@ router.route("/").get(courseController.getAllCourses).post(
 	courseController.createCourse
 );
 
-router.get("/sections", sectionController.getAllSections);
+// router.get("/sections", sectionController.getAllSections);
 
 // router.delete("/deleteCourseImage", courseController.deleteCourseImage);
 // router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
@@ -55,6 +58,6 @@ router
 		courseController.deleteCourseImage
 	);
 
-router.post("/:id/addSection", sectionController.addSection);
+// router.post("/:id/addSection", sectionController.addSection);
 
 module.exports = router;

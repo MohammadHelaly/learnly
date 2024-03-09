@@ -1,45 +1,21 @@
-import {
-	Box,
-	Typography,
-	TextField,
-	Button,
-	Grid,
-	MenuItem,
-	Stack,
-	FormControl,
-	FormControlLabel,
-	RadioGroup,
-	Radio,
-	InputLabel,
-	Select,
-	Checkbox,
-	IconButton,
-	Container,
-	Tab,
-} from "@mui/material";
+import { Box, Stack, Container, Tab } from "@mui/material";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 import PageWrapper from "../components/UI/PageLayout/PageWrapper";
-import AddSection from "../components/InstructorCatalogPage/AddSection";
-import InstructorCourseContents from "../components/InstructorCatalogPage/InstructorCourseContent";
 import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
 import CourseImage from "../components/UI/Courses/Catalog/CourseImage";
 import CourseInformationContent from "../components/CourseCatalogPage/CourseInformationContent";
-import InstructorCourseEnrollmentPrompt from "../components/InstructorCatalogPage/InstructorCourseEnrollmentPrompt";
-import FormContainer from "../components/UI/PageLayout/FormContainer";
-import resizeImageFile from "../helpers/resizeImageFile";
-import CheckListItem from "../components/UI/Courses/CheckListItem";
-import SectionHeader from "../components/UI/PageLayout/SectionHeader";
-import categories from "../assets/data/categories";
+import InstructorCourseEnrollmentPrompt from "../components/CourseInstructorDashboardPage/InstructorCourseEnrollmentPrompt";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
-import UpdateCourseContent from "../components/InstructorCatalogPage/UpdateCourseContent";
-import UpdateCourseInformation from "../components/InstructorCatalogPage/UpdateCourseInformation";
+import UpdateCourseContent from "../components/CourseInstructorDashboardPage/UpdateCourseContent";
+import UpdateCourseInformationForm from "../components/CourseInstructorDashboardPage/UpdateCourseInformationForm";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useState } from "react";
-function InstructorCourseUpdatePage() {
+
+const CourseInstructorDashboardPage = () => {
 	const [value, setValue] = useState("0");
 
 	const handleChange = (
@@ -72,8 +48,7 @@ function InstructorCourseUpdatePage() {
 				sx={{
 					backgroundColor: "#f5f5f5",
 					mt: window.innerWidth > 600 ? 8 : 7,
-				}}
-			>
+				}}>
 				<Container maxWidth="lg">
 					<Stack
 						direction={
@@ -85,8 +60,7 @@ function InstructorCourseUpdatePage() {
 						sx={{
 							pb: 10,
 							pt: window.innerWidth > 600 ? 10 : 0,
-						}}
-					>
+						}}>
 						{
 							// isError ? (
 							// 	<ErrorWarning />
@@ -103,8 +77,7 @@ function InstructorCourseUpdatePage() {
 										flexDirection: "column",
 										display: "flex",
 										gap: 2,
-									}}
-								>
+									}}>
 									<CourseInformationContent
 										name={course?.name}
 										summary={course?.summary}
@@ -139,8 +112,7 @@ function InstructorCourseUpdatePage() {
 										alignItems: "center",
 										justifyContent: "center",
 										pb: window.innerWidth > 600 ? 0 : 4,
-									}}
-								>
+									}}>
 									<CourseImage
 										imageCover={course?.imageCover}
 										name={course?.name}
@@ -172,13 +144,11 @@ function InstructorCourseUpdatePage() {
 								sx={{
 									borderBottom: 1,
 									borderColor: "divider",
-								}}
-							>
+								}}>
 								<TabList
 									onChange={handleChange}
 									aria-label="Dashboard Tabs"
-									centered={window.innerWidth < 600}
-								>
+									centered={window.innerWidth < 600}>
 									<Tab
 										label="Course Information"
 										value="0"
@@ -198,7 +168,9 @@ function InstructorCourseUpdatePage() {
 								</TabList>
 							</Box>
 							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								<UpdateCourseInformation courseId={courseId} />
+								<UpdateCourseInformationForm
+									courseId={courseId}
+								/>
 							</TabPanel>
 							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
 								<UpdateCourseContent courseId={courseId} />
@@ -210,6 +182,6 @@ function InstructorCourseUpdatePage() {
 			<Footer />
 		</AnimatedPage>
 	);
-}
+};
 
-export default InstructorCourseUpdatePage;
+export default CourseInstructorDashboardPage;

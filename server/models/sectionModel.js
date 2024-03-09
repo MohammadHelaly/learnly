@@ -90,6 +90,17 @@ const sectionSchema = new mongoose.Schema(
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+// sectionSchema.virtual("modules", {
+// 	ref: "Module",
+// 	foreignField: "section",
+// 	localField: "_id",
+// });
+
+sectionSchema.pre("save", function (next) {
+	this.slug = slugify(this.title, { lower: true });
+	next();
+});
+
 const Section = mongoose.model("Section", sectionSchema);
 
 module.exports = Section;

@@ -21,21 +21,12 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Container } from "@mui/material";
 import dummyCoursesData from "../../assets/data/dummyCoursesData";
 import CourseCategories from "../UI/Courses/CourseCategories";
-
-import Footer from "../Footer/Footer";
 import api from "../../api";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
-import AddSection from "../InstructorCatalogPage/AddSection";
-import InstructorCourseContents from "../InstructorCatalogPage/InstructorCourseContent";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import CourseImage from "../UI/Courses/Catalog/CourseImage";
-import CourseInformationContent from "../CourseCatalogPage/CourseInformationContent";
-import InstructorCourseEnrollmentPrompt from "../InstructorCatalogPage/InstructorCourseEnrollmentPrompt";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import CheckListItem from "../UI/Courses/CheckListItem";
@@ -85,9 +76,9 @@ const schema = z.object({
 	imageCover: z.any(),
 });
 
-type CourseFormSchemaType = z.infer<typeof schema>;
+type CourseInformationSchemaType = z.infer<typeof schema>;
 
-interface UpdateCourseInformationProps {
+interface UpdateCourseInformationFormProps {
 	courseId: Pick<Course, "id"> | string | number | undefined;
 }
 
@@ -96,7 +87,9 @@ interface ImageState {
 	uploaded: string | number | readonly string[] | undefined;
 }
 
-const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
+const UpdateCourseInformationForm = (
+	props: UpdateCourseInformationFormProps
+) => {
 	const { courseId } = props;
 
 	const dummyCourse = dummyCoursesData.find(
@@ -128,7 +121,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 		watch,
 		setValue,
 		formState: { errors },
-	} = useForm<CourseFormSchemaType>({
+	} = useForm<CourseInformationSchemaType>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
@@ -145,17 +138,14 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 		},
 	});
 
-	const navigate = useNavigate();
-
 	const { mutate, isError, isPending } = useMutation({
-		mutationFn: (data: CourseFormSchemaType) => {
+		mutationFn: (data: CourseInformationSchemaType) => {
 			return api.patch(`/courses/${courseId}`, {
 				...data,
 			});
 		},
 		onSuccess: (response) => {
-			// navigate(`/courses/${response.data.data.data.id}`);
-			navigate("/dashboard");
+			alert("Course updated successfully.");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -219,12 +209,10 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 	};
 
 	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		console.log(watch().price);
 		setValue("price", parseFloat(event.target.value));
 	};
 
 	const removeImage = () => {
-		console.log("removed");
 		setImage({
 			preview: null,
 			uploaded: "",
@@ -243,7 +231,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 		}
 	};
 
-	const onSubmit = async (data: CourseFormSchemaType) => {
+	const onSubmit = async (data: CourseInformationSchemaType) => {
 		let resizedImage;
 		if (typeof image.preview !== "string") {
 			resizedImage = await resizeImageFile(image.preview as File);
@@ -294,7 +282,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 					}}
 					onSubmit={handleSubmit(onSubmit)}
 					autoComplete="off"
-				>
+					noValidate>
 					<Stack spacing={12}>
 						<SectionWrapper>
 							<SectionHeader
@@ -320,8 +308,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.name}
-							>
+								error={!!errors.name}>
 								<Controller
 									name="name"
 									control={control}
@@ -336,8 +323,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 												errors.name && (
 													<Typography
 														variant="body2"
-														color="error"
-													>
+														color="error">
 														{errors.name.message}
 													</Typography>
 												)
@@ -371,8 +357,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.summary}
-							>
+								error={!!errors.summary}>
 								<Controller
 									name="summary"
 									control={control}
@@ -388,8 +373,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 												errors.summary && (
 													<Typography
 														variant="body2"
-														color="error"
-													>
+														color="error">
 														{errors.summary.message}
 													</Typography>
 												)
@@ -423,8 +407,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.description}
-							>
+								error={!!errors.description}>
 								<Controller
 									name="description"
 									control={control}
@@ -440,8 +423,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 												errors.description && (
 													<Typography
 														variant="body2"
-														color="error"
-													>
+														color="error">
 														{
 															errors.description
 																.message
@@ -478,8 +460,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.categories}
-							>
+								error={!!errors.categories}>
 								<InputLabel id="categories-select-label">
 									Categories
 								</InputLabel>
@@ -497,15 +478,13 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 												renderSelectedCategories
 											}
 											variant="outlined"
-											fullWidth
-										>
+											fullWidth>
 											{categories
 												.sort()
 												.map((category) => (
 													<MenuItem
 														key={category}
-														value={category}
-													>
+														value={category}>
 														<Checkbox
 															checked={isSelected(
 																category
@@ -560,8 +539,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								component="fieldset"
-								error={!!errors.difficulty}
-							>
+								error={!!errors.difficulty}>
 								<Controller
 									name="difficulty"
 									control={control}
@@ -571,8 +549,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 											row={window.innerWidth > 600}
 											aria-label="Difficulty"
 											name="difficulty"
-											defaultValue="Beginner"
-										>
+											defaultValue="Beginner">
 											<FormControlLabel
 												value="Beginner"
 												control={<Radio />}
@@ -622,8 +599,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.prerequisites}
-							>
+								error={!!errors.prerequisites}>
 								<TextField
 									name="prerequisite"
 									value={prerequisite}
@@ -645,8 +621,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									onClick={() => addPrequisite(prerequisite)}
 									sx={{
 										my: 2,
-									}}
-								>
+									}}>
 									Add Prerequisite
 								</Button>
 							</FormControl>
@@ -661,16 +636,14 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									direction="row"
 									rowSpacing="20px"
 									alignItems="left"
-									justifyContent="left"
-								>
+									justifyContent="left">
 									{watch().prerequisites.map(
 										(prerequisite, index) => (
 											<Grid
 												item
 												xs={12}
 												sm={6}
-												key={index + "prerequisite"}
-											>
+												key={index + "prerequisite"}>
 												<CheckListItem
 													item={prerequisite}
 													editable
@@ -710,8 +683,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.skills}
-							>
+								error={!!errors.skills}>
 								<TextField
 									name="skill"
 									value={skill}
@@ -733,8 +705,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									onClick={() => addSkill(skill)}
 									sx={{
 										my: 2,
-									}}
-								>
+									}}>
 									Add Skill
 								</Button>
 							</FormControl>
@@ -749,15 +720,13 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									direction="row"
 									rowSpacing="20px"
 									alignItems="left"
-									justifyContent="left"
-								>
+									justifyContent="left">
 									{watch().skills.map((skill, index) => (
 										<Grid
 											item
 											xs={12}
 											sm={6}
-											key={index + "skill"}
-										>
+											key={index + "skill"}>
 											<CheckListItem
 												item={skill}
 												editable
@@ -794,8 +763,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								component="fieldset"
-								error={!!errors.paid}
-							>
+								error={!!errors.paid}>
 								<Controller
 									name="paid"
 									control={control}
@@ -809,8 +777,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 											onChange={paidChangeHandler}
 											sx={{
 												mb: 2,
-											}}
-										>
+											}}>
 											<FormControlLabel
 												value="true"
 												control={<Radio />}
@@ -853,8 +820,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									{errors.price && (
 										<Typography
 											variant="body2"
-											color="error"
-										>
+											color="error">
 											{errors.price.message}
 										</Typography>
 									)}
@@ -885,8 +851,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.imageCover}
-							>
+								error={!!errors.imageCover}>
 								<Button
 									component="label"
 									fullWidth
@@ -896,8 +861,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 									disabled={isPending}
 									sx={{
 										mb: 2,
-									}}
-								>
+									}}>
 									{image?.preview
 										? "Change Image"
 										: "Upload Image"}
@@ -925,8 +889,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 										width: "100%",
 										borderRadius: 12,
 										position: "relative",
-									}}
-								>
+									}}>
 									<IconButton
 										onClick={removeImage}
 										sx={{
@@ -938,8 +901,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 											"&:hover": {
 												backgroundColor: "white",
 											},
-										}}
-									>
+										}}>
 										<Clear />
 									</IconButton>
 									<img
@@ -957,8 +919,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 											borderRadius: 12,
 											objectFit: "cover",
 											objectPosition: "center",
-										}}
-									></img>
+										}}></img>
 								</Box>
 							)}
 						</SectionWrapper>
@@ -990,8 +951,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 								fullWidth
 								disableElevation
 								size="large"
-								endIcon={<Done />}
-							>
+								endIcon={<Done />}>
 								Update Course
 							</Button>
 						</SectionWrapper>
@@ -1002,4 +962,4 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 	);
 };
 
-export default UpdateCourseInformation;
+export default UpdateCourseInformationForm;

@@ -47,8 +47,7 @@ const CourseContents = (props: CourseContentsProps) => {
 											? 1
 											: "none", // Add bottom border for the last one
 									borderColor: "divider",
-								}}
-							>
+								}}>
 								<AccordionSummary
 									key={id + "-summary"}
 									expandIcon={<ExpandMoreIcon />}
@@ -58,8 +57,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										backgroundColor: "#f5f5f5",
 										width: "100%",
 										flexDirection: "row-reverse",
-									}}
-								>
+									}}>
 									<Stack
 										direction="row"
 										spacing={1}
@@ -68,14 +66,12 @@ const CourseContents = (props: CourseContentsProps) => {
 										width="100%"
 										sx={{
 											ml: 1,
-										}}
-									>
+										}}>
 										<Typography
 											variant="h5"
 											sx={{
 												fontWeight: "400",
-											}}
-										>
+											}}>
 											{title}
 										</Typography>
 										<Typography
@@ -83,9 +79,10 @@ const CourseContents = (props: CourseContentsProps) => {
 											color="text.secondary"
 											sx={{
 												fontWeight: "400",
-											}}
-										>
-											{`${modules?.length} Modules • ${duration} Hours`}
+											}}>
+											{`${modules?.length} Modules • ${
+												duration ?? 0
+											} Hours`}
 										</Typography>
 									</Stack>
 								</AccordionSummary>
@@ -94,12 +91,10 @@ const CourseContents = (props: CourseContentsProps) => {
 									sx={{
 										borderTop: 1,
 										borderColor: "divider",
-									}}
-								>
+									}}>
 									<Typography
 										variant="h6"
-										color="text.secondary"
-									>
+										color="text.secondary">
 										{description}
 									</Typography>
 								</AccordionDetails>
@@ -108,13 +103,11 @@ const CourseContents = (props: CourseContentsProps) => {
 										const { title } = module;
 										return (
 											<AccordionDetails
-												key={index + "-" + title}
-											>
+												key={index + "-" + title}>
 												<Stack
 													direction="row"
 													spacing={1}
-													alignItems="center"
-												>
+													alignItems="center">
 													<PlayCircleIcon fontSize="small" />
 													<Typography variant="body1">
 														{title}

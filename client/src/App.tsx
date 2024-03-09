@@ -21,7 +21,7 @@ import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
-import InstructorCourseUpdatePage from "./pages/InstructorCourseUpdatePage";
+import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import "./App.css";
 
 function App() {
@@ -111,8 +111,7 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}
-					>
+						location={useLocation()}>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -126,12 +125,16 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
-							path="/dashboard/create-course"
+							path="/dashboard/teach/courses/create"
 							element={<CreateCoursePage />}
 						/>
 						<Route
-							path="/dashboard/:courseId"
+							path="/dashboard/learn/courses/:courseId"
 							element={<LandingPage />}
+						/>
+						<Route
+							path="/dashboard/teach/courses/:courseId"
+							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route path="/account" element={<LandingPage />} />
 						<Route
@@ -152,10 +155,6 @@ function App() {
 						<Route path="/help" element={<LandingPage />} />
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
-						<Route
-							path="/dashboard/InstructorCourses/:courseId"
-							element={<InstructorCourseUpdatePage />}
-						/>
 					</Routes>
 				</AnimatePresence>
 			</Box>

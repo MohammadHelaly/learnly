@@ -31,7 +31,7 @@ const InstructorDashboardCourseCard = (
 	} = props;
 
 	return (
-		<CardNavLink to={`/dashboard/InstructorCourses/${id}`}>
+		<CardNavLink to={`/dashboard/teach/courses/${id}`}>
 			<Card
 				sx={{
 					display: "flex",
@@ -46,8 +46,7 @@ const InstructorDashboardCourseCard = (
 					boxShadow: "none",
 					px: 0,
 					py: 1,
-				}}
-			>
+				}}>
 				<Box sx={{ height: 200, width: 356 }}>
 					<img
 						src={imageCover.url}
@@ -63,16 +62,14 @@ const InstructorDashboardCourseCard = (
 				<Box
 					sx={{
 						transition: "all 0.5s ease",
-					}}
-				>
+					}}>
 					<Typography
 						variant="h6"
 						color="common.black"
 						sx={{
 							fontWeight: 500,
 							width: "100%",
-						}}
-					>
+						}}>
 						{name?.length > 30 && window.innerWidth < 600
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
@@ -83,8 +80,7 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}
-					></Typography>
+						}}></Typography>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"
@@ -100,8 +96,7 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"("}
 							{ratingsQuantity}
 							{")"}
@@ -111,16 +106,14 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"Free"}
 						</Typography>
 					) : (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"$"}
 							{price}
 						</Typography>
@@ -128,9 +121,8 @@ const InstructorDashboardCourseCard = (
 					<Typography
 						variant="body2"
 						color="text.secondary"
-						sx={{ fontWeight: 400 }}
-					>
-						{duration}
+						sx={{ fontWeight: 400 }}>
+						{duration ?? 0}
 						{" Hours"}
 						{" - "}
 						{difficulty?.charAt(0).toUpperCase() +
