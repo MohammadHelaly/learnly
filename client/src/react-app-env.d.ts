@@ -100,7 +100,7 @@ interface Message {
 	id: number | string;
 	sender: Pick<User, "id" | "name" | "photo">;
 	content: string;
-	channel: Pick<Channel, "id">;
+	channel: number | string;
 	readBy?: string[];
 	createdAt: string | Date;
 }

@@ -146,13 +146,13 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						<Route path="/channel" element={<ChannelPage />} />
+						<Route path="/channels" element={<ChannelPage />} />
 						<Route
-							path="/channel/:channelId"
+							path="/channels/:channelId"
 							element={<ChannelPage />}
 						/>
 						<Route
-							path="/courses/:courseId/channel/:channelId"
+							path="/courses/:courseId/channels/:channelId"
 							element={<ChannelPage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />

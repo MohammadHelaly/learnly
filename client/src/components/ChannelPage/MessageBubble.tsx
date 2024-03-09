@@ -1,15 +1,9 @@
+import { useContext } from "react";
+import AuthContext from "../../store/auth-context";
 import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
 
-interface Message {
-	sender_id: string;
-	sender_name: string;
-	value: string;
-	date: string;
-}
-
 interface MessageBubbleProps {
-	msg: Message;
-	user: Pick<User, "id" | "name" | "photo"> | null;
+	message: Partial<Message>;
 }
 
 function getTimeDifference(dateString: string): string {
@@ -29,15 +23,19 @@ function getTimeDifference(dateString: string): string {
 }
 
 const MessageBubble = (props: MessageBubbleProps) => {
-	const { msg, user } = props;
+	const { message } = props;
+	const authContext = useContext(AuthContext);
+	const user = authContext.user;
 
 	return (
 		<Card
 			style={{
 				backgroundColor:
-					msg.sender_id === user?.id ? "#00f3b6" : "#9c27b0",
+					message?.sender?.id === user?.id ? "#00f3b6" : "#9c27b0",
 				alignSelf:
-					msg.sender_id === user?.id ? "flex-end" : "flex-start",
+					message?.sender?.id === user?.id
+						? "flex-end"
+						: "flex-start",
 				width: window.innerWidth > 600 ? "50%" : "80%",
 			}}
 			sx={{
@@ -55,24 +53,24 @@ const MessageBubble = (props: MessageBubbleProps) => {
 					alignItems: "center",
 				}}>
 				<Avatar
-					src={msg?.sender_id === user?.id ? user?.photo : undefined} // message.sender.photo
+					src={message?.sender?.photo as string}
 					sx={{ marginRight: 1, bgcolor: "black" }}>
-					{msg?.sender_name.slice(0, 1)}
+					{message?.sender?.name.slice(0, 1)}
 				</Avatar>
 				<Box>
 					<Typography sx={{ fontWeight: "bold" }} color="black">
-						{user && msg?.sender_id === user.id
+						{message?.sender?.id === user?.id
 							? "You"
-							: msg.sender_name}
+							: message?.sender?.name}
 					</Typography>
 					<Typography color="text.secondary" sx={{ fontSize: 12 }}>
-						{getTimeDifference(msg.date)}
+						{getTimeDifference(message.createdAt as string)}
 					</Typography>
 				</Box>
 			</CardContent>
 			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
 				<Typography variant="h5" sx={{ fontWeight: "bold" }}>
-					{msg.value}
+					{message.content}
 				</Typography>
 			</CardContent>
 		</Card>

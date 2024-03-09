@@ -63,9 +63,9 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
 	console.log("connected to socket.io");
 
-	socket.on("setup", (userData) => {
-		socket.join(userData.id);
-		console.log("joined", userData.id);
+	socket.on("setup", (userId) => {
+		socket.join(userId);
+		console.log("joined", userId);
 		socket.emit("connected");
 	});
 
@@ -76,6 +76,11 @@ io.on("connection", (socket) => {
 
 	socket.on("newMessage", (newMessage) => {
 		// Corrected the event name to "message received"
-		socket.in(newMessage.roomName).emit("message received", newMessage);
+		if (newMessage && newMessage.channel) {
+			socket.in(newMessage.channel).emit("message received", newMessage);
+		} else {
+			console.error("Invalid message format:", newMessage);
+		}
+		// socket.in(newMessage.channel).emit("message received", newMessage);
 	});
 });
