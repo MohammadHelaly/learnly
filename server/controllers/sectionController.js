@@ -3,6 +3,16 @@ const Section = require("../models/sectionModel");
 const Error = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
 const CatchAsync = require("../utils/catchAsync");
+const AWS = require("aws-sdk");
+const uuid = require("uuid").v4;
+const fs = require("fs");
+
+const awsConfig = {
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION,
+};
+const S3 = new AWS.S3(awsConfig);
 
 exports.setCourseUserIds = (req, res, next) => {
 	// Allow nested routes
@@ -48,10 +58,15 @@ exports.updateSection = handlerFactory.updateOne(Section);
 exports.deleteSection = handlerFactory.deleteOne(Section);
 
 exports.addModule = async (req, res) => {
-	const { sectionId, title, url } = req.body;
+	const { sectionId, title, url, key } = req.body;
+	console.log(req.body);
+	const video = {
+		url: url,
+		key: key,
+	};
 	const moduleCreated = {
 		title,
-		url,
+		video,
 	};
 
 	try {
@@ -67,7 +82,7 @@ exports.addModule = async (req, res) => {
 			res.status(201).json({
 				status: "success",
 				data: {
-					section,
+					section: section,
 				},
 			});
 		}
@@ -77,4 +92,62 @@ exports.addModule = async (req, res) => {
 		);
 	}
 };
+
+exports.uploadModuleVideo = (req, res) => {
+	console.log("uploading file");
+	try {
+		const { files } = req;
+		console.log(files);
+		const video = files.video;
+		if (!video) return res.status(400).send("no video");
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: `${uuid()}.${video.type.split("/")[1]}`,
+			Body: fs.readFileSync(video.path),
+			ACL: "public-read",
+			ContentType: `${video.type}`,
+		};
+
+		//console.log(params);
+		//upload to S3
+		S3.upload(params, (err, data) => {
+			if (err) {
+				console.log(err);
+				res.sendStatus(400);
+			}
+			console.log(data);
+			const video = {
+				url: data.Location,
+				key: data.Key,
+			};
+			res.send(video);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+exports.deleteModuleVideo = (req, res) => {
+	try {
+		const key = req.body.key;
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		};
+
+		S3.deleteObject(params, (err, data) => {
+			if (err) {
+				console.log(err);
+				res.sendStatus(400);
+			}
+			res.send({ ok: true });
+		});
+	} catch (err) {
+		console.log(err);
+	}
+
+	// s3 delete
+};
+
 exports.getAllSections = handlerFactory.getAll(Section);

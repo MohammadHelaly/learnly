@@ -68,8 +68,9 @@ const sectionSchema = new mongoose.Schema(
 					type: {},
 					minlength: 200,
 				},
-				url: {
-					type: String,
+				video: {
+					url: { type: String },
+					key: { type: String },
 				},
 				free_preview: {
 					type: Boolean,

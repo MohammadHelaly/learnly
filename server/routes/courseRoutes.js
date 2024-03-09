@@ -4,7 +4,7 @@ const authController = require("../controllers/authController");
 const sectionController = require("../controllers/sectionController");
 const reviewRouter = require("./reviewRoutes");
 const sectionRouter = require("./sectionRoutes");
-
+const formidable = require("express-formidable");
 const router = express.Router();
 
 router.use("/:courseId/reviews", reviewRouter);
@@ -22,7 +22,11 @@ router.route("/").get(courseController.getAllCourses).post(
 // router.get("/sections", sectionController.getAllSections);
 
 // router.delete("/deleteCourseImage", courseController.deleteCourseImage);
-// router.post("/UploadCourseVideo", courseController.uploadCourseVideo);
+// router.post(
+// 	"/UploadCourseVideo",
+// 	formidable(),
+// 	courseController.uploadCourseVideo
+// );
 // create-Course
 
 // router

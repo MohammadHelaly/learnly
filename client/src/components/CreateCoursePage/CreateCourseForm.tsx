@@ -192,6 +192,7 @@ const CreateCourseForm = () => {
 
 	const removeImage = () => {
 		console.log("removed");
+		const data = new FormData();
 		setImage({
 			preview: null,
 			uploaded: "",

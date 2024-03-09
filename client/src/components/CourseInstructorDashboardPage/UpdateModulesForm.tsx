@@ -18,6 +18,7 @@ import { AddCircleOutlined } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 interface UpdateModulesFormProps {
 	courseId: number | string;
@@ -29,7 +30,6 @@ const moduleSchema = z.object({
 		.string()
 		.min(3, "Title is too short")
 		.max(100, "Title is too long"),
-	path: z.string().min(3, "Path is too short"),
 });
 
 type AddModuleSchema = z.infer<typeof moduleSchema>;
@@ -45,9 +45,10 @@ const Transition = React.forwardRef(function Transition(
 
 const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	const { courseId, sectionId } = props;
-
+	const [video, setVideo] = useState(null);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
-
+	const [url, setUrl] = useState("");
+	const [key, setKey] = useState("");
 	const {
 		control: moduleControl,
 		handleSubmit: moduleHandleSubmit,
@@ -57,7 +58,6 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		mode: "onBlur",
 		defaultValues: {
 			title: "",
-			path: "",
 		},
 		resolver: zodResolver(moduleSchema),
 	});
@@ -66,6 +66,26 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
 	const handleCloseModuleForm = () => setOpenModuleForm(false);
+
+	const handleVideoChange = async (e: any) => {
+		const file = e.target.files[0];
+		console.log(file);
+		const videoData = new FormData();
+		videoData.append("video", file);
+		console.log("Loading...");
+		try {
+			const { data } = await axios.post(
+				`http://127.0.0.1:5000/api/v1/sections/uploadModuleVideo`,
+				videoData
+			);
+			console.log("Done uploading video");
+			console.log(data);
+			setUrl(data.url);
+			setKey(data.key);
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const {
 		mutate: mutateModule,
@@ -91,7 +111,15 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	});
 
 	const onSubmitModule = (data: AddModuleSchema) => {
-		mutateModule(data);
+		const load = {
+			url: url,
+			title: data.title,
+			sectionId: sectionId,
+			key: key,
+		};
+
+		mutateModule(load);
+
 		handleCloseModuleForm();
 		resetModule();
 	};
@@ -101,13 +129,15 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 			<Button
 				disabled={isPendingModule}
 				sx={{ color: "black" }}
-				onClick={handleOpenModuleForm}>
+				onClick={handleOpenModuleForm}
+			>
 				<AddCircleOutlined />
 				<Typography
 					variant="h6"
 					sx={{
 						fontWeight: "400",
-					}}>
+					}}
+				>
 					Add New Module
 				</Typography>
 			</Button>
@@ -118,11 +148,13 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				onClose={handleCloseModuleForm}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<form
 					onSubmit={moduleHandleSubmit(onSubmitModule)}
 					autoComplete="off"
-					noValidate>
+					noValidate
+				>
 					<DialogTitle>
 						<SectionHeader
 							heading="Add New Module"
@@ -146,22 +178,30 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 									/>
 								)}
 							/>
-							<Controller
-								name="path"
-								control={moduleControl}
-								render={({ field }) => (
-									<TextField
-										{...field}
-										id="outlined-multiline-static"
-										label="Module path"
-										multiline
-										rows={4}
-										variant="outlined"
-										error={!!moduleErrors.path}
-										helperText={moduleErrors.path?.message}
-									/>
-								)}
-							/>
+
+							<Button
+								component="label"
+								fullWidth
+								variant="contained"
+								disableElevation
+								size="large"
+								disabled={isPendingModule}
+								sx={{
+									mb: 2,
+								}}
+							>
+								{" "}
+								Upload Video
+								<input
+									disabled={isPendingModule}
+									accept="video/*"
+									style={{ display: "none" }}
+									multiple={false}
+									type="file"
+									hidden
+									onChange={handleVideoChange}
+								/>
+							</Button>
 						</Stack>
 					</DialogContent>
 					<DialogActions>
@@ -171,7 +211,8 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 							disableElevation
 							size="large"
 							type="submit"
-							sx={{ mr: 2 }}>
+							sx={{ mr: 2 }}
+						>
 							Save
 						</Button>
 					</DialogActions>

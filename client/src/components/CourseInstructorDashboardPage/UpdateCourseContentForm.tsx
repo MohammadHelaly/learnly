@@ -49,7 +49,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							borderBottom:
 								index === sections.length - 1 ? 1 : "none", // Add bottom border for the last one
 							borderColor: "divider",
-						}}>
+						}}
+					>
 						<AccordionSummary
 							key={id + "-summary"}
 							expandIcon={<ExpandMore />}
@@ -59,7 +60,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								backgroundColor: "#f5f5f5",
 								width: "100%",
 								flexDirection: "row-reverse",
-							}}>
+							}}
+						>
 							<Stack
 								direction="row"
 								spacing={1}
@@ -68,12 +70,14 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								width="100%"
 								sx={{
 									ml: 1,
-								}}>
+								}}
+							>
 								<Typography
 									variant="h5"
 									sx={{
 										fontWeight: "400",
-									}}>
+									}}
+								>
 									{title}
 								</Typography>
 								<Typography
@@ -81,7 +85,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									color="text.secondary"
 									sx={{
 										fontWeight: "400",
-									}}>
+									}}
+								>
 									{`${modules?.length} Modules • ${
 										duration ?? 0
 									} Hours`}
@@ -93,7 +98,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							sx={{
 								borderTop: 1,
 								borderColor: "divider",
-							}}>
+							}}
+						>
 							<Typography variant="h6" color="text.secondary">
 								{description}
 							</Typography>
@@ -105,11 +111,14 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									<Stack
 										direction="row"
 										spacing={1}
-										alignItems="center">
-										<PlayCircle fontSize="small" />
-										<Typography variant="body1">
-											{title}
-										</Typography>
+										alignItems="center"
+									>
+										<a href={module.video.url}>
+											<PlayCircle fontSize="small" />
+											<Typography variant="body1">
+												{title}
+											</Typography>
+										</a>
 									</Stack>
 								</AccordionDetails>
 							);

@@ -1,6 +1,7 @@
 const express = require("express");
 const sectionController = require("../controllers/sectionController");
 const authController = require("../controllers/authController");
+const formidable = require("express-formidable");
 
 const router = express.Router({ mergeParams: true });
 
@@ -20,13 +21,19 @@ router
 		////////////////////////////////////////////////
 		// TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
 		////////////////////////////////////////////////
-		sectionController.updateSection
+		sectionController.addModule
 	)
 	.delete(
 		authController.protect,
 		// authController.restrictTo("user", "admin"),
 		sectionController.deleteSection
 	);
+
+router.post(
+	"/uploadModuleVideo",
+	formidable(),
+	sectionController.uploadModuleVideo
+);
 
 // router
 // 	.route("/:id/modules")

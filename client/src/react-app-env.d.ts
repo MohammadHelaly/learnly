@@ -70,6 +70,7 @@ interface Section {
 interface Module {
 	title: string;
 	duration?: number;
+	video: { url: string; key: string };
 }
 
 interface Testimonial {
