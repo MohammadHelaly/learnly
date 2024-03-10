@@ -157,7 +157,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 								)}
 							/>
 							<Button
-								startIcon={<Check />}
+								endIcon={<Check />}
 								color="primary"
 								variant="contained"
 								disableElevation

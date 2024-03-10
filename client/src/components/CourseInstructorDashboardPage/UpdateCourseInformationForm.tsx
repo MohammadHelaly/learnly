@@ -100,19 +100,7 @@ interface ImageState {
 const UpdateCourseInformationForm = (
 	props: UpdateCourseInformationFormProps
 ) => {
-	const {
-		id: courseId,
-		name,
-		price,
-		paid,
-		skills,
-		categories,
-		difficulty,
-		summary,
-		description,
-		prerequisites,
-		imageCover,
-	} = props;
+	const { id: courseId, imageCover } = props;
 
 	const queryClient = useQueryClient();
 
@@ -129,21 +117,13 @@ const UpdateCourseInformationForm = (
 		watch,
 		setValue,
 		reset,
+		resetField,
 		formState: { errors, dirtyFields, isDirty },
 	} = useForm<CourseInformationSchemaType>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
-			name: name,
-			price: price,
-			paid: paid,
-			skills: skills,
-			categories: categories,
-			difficulty: difficulty,
-			summary: summary,
-			description: description,
-			prerequisites: prerequisites,
-			imageCover: imageCover,
+			...props,
 		},
 	});
 
@@ -177,7 +157,7 @@ const UpdateCourseInformationForm = (
 		const newCategories = watch().categories.filter(
 			(category) => category !== selectedCategory
 		);
-		setValue("categories", newCategories);
+		setValue("categories", newCategories, { shouldDirty: true });
 	};
 
 	const prerequisiteChangeHandler = (
@@ -187,7 +167,9 @@ const UpdateCourseInformationForm = (
 	};
 
 	const addPrequisite = (value: string) => {
-		setValue("prerequisites", [...watch().prerequisites, value]);
+		setValue("prerequisites", [...watch().prerequisites, value], {
+			shouldDirty: true,
+		});
 		setPrerequisite("");
 	};
 
@@ -195,7 +177,7 @@ const UpdateCourseInformationForm = (
 		const newPrerequisites = watch().prerequisites.filter(
 			(prerequisite) => prerequisite !== selectedPrerequisite
 		);
-		setValue("prerequisites", newPrerequisites);
+		setValue("prerequisites", newPrerequisites, { shouldDirty: true });
 	};
 
 	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +185,7 @@ const UpdateCourseInformationForm = (
 	};
 
 	const addSkill = (value: string) => {
-		setValue("skills", [...watch().skills, value]);
+		setValue("skills", [...watch().skills, value], { shouldDirty: true });
 		setSkill("");
 	};
 
@@ -211,17 +193,19 @@ const UpdateCourseInformationForm = (
 		const newSkills = watch().skills.filter(
 			(skill) => skill !== selectedSkill
 		);
-		setValue("skills", newSkills);
+		setValue("skills", newSkills, { shouldDirty: true });
 	};
 
 	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === "true";
-		setValue("paid", value);
-		setValue("price", price);
+		setValue("paid", value, { shouldDirty: true });
+		resetField("price");
 	};
 
 	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		setValue("price", parseFloat(event.target.value));
+		setValue("price", parseFloat(event.target.value), {
+			shouldDirty: true,
+		});
 	};
 
 	const removeImage = () => {
@@ -244,6 +228,12 @@ const UpdateCourseInformationForm = (
 	};
 
 	useEffect(() => {
+		reset({
+			...props,
+		});
+	}, [props]);
+
+	useEffect(() => {
 		const resizeImage = async () => {
 			if (image.preview && typeof image.preview !== "string") {
 				const resizedImage = await resizeImageFile(
@@ -251,7 +241,8 @@ const UpdateCourseInformationForm = (
 				);
 				setValue("imageCover", resizedImage, { shouldDirty: true });
 			} else {
-				setValue("imageCover", imageCover, { shouldDirty: true });
+				resetField("imageCover");
+				// setValue("imageCover", imageCover, { shouldDirty: true });
 			}
 		};
 
@@ -277,8 +268,6 @@ const UpdateCourseInformationForm = (
 		};
 
 		mutate(body);
-
-		reset();
 	};
 
 	return (

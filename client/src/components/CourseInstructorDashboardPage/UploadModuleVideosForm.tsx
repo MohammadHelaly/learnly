@@ -150,7 +150,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 							variant="contained"
 							disableElevation
 							disabled={isPendingModule}
-							startIcon={!isModuleError && <Check />}
+							endIcon={!isModuleError && <Check />}
 							size="large">
 							{isModuleError
 								? "Something went wrong..."

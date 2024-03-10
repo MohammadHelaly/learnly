@@ -34,7 +34,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 			<FormContainer
 				sx={{
 					mt: 0,
-					pt: 0,
+					p: 0,
 					mb: 16,
 				}}
 				large>

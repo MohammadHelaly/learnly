@@ -178,7 +178,7 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 								)}
 							/>
 							<Button
-								startIcon={<Check />}
+								endIcon={<Check />}
 								color="primary"
 								variant="contained"
 								disableElevation
