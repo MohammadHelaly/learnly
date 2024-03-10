@@ -6,7 +6,6 @@ import {
 	Dialog,
 	DialogTitle,
 	DialogContent,
-	DialogActions,
 	Slide,
 	TextField,
 } from "@mui/material";
@@ -14,7 +13,7 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
-import { Add } from "@mui/icons-material";
+import { Add, Check } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,7 +66,10 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 	const queryClient = useQueryClient();
 
 	const handleOpenSectionForm = () => setOpenSectionForm(true);
-	const handleCloseSectionForm = () => setOpenSectionForm(false);
+	const handleCloseSectionForm = () => {
+		setOpenSectionForm(false);
+		resetSection();
+	};
 
 	const {
 		mutate: mutateSection,
@@ -93,26 +95,24 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 
 	const onSubmitSection = (data: AddSectionSchema) => {
 		mutateSection(data);
-		resetSection();
 		handleCloseSectionForm();
 	};
 
 	return (
 		<>
 			<Button
+				startIcon={<Add />}
 				disabled={isPendingSection}
 				fullWidth
 				size="large"
 				sx={{ color: "black", height: 56 }}
 				onClick={handleOpenSectionForm}>
-				<Add />
 				<Typography
 					variant="h6"
 					sx={{
-						ml: 1,
 						fontWeight: "400",
 					}}>
-					Add new Section
+					Add New Section
 				</Typography>
 			</Button>
 			<Dialog
@@ -123,18 +123,25 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth>
-				<form
-					onSubmit={handleSectionSubmit(onSubmitSection)}
-					autoComplete="off"
-					noValidate>
-					<DialogTitle>
-						<SectionHeader
-							heading="Add New Section"
-							headingAlignment="left"
-							sx={{ mb: 0, textAlign: "left" }}
-						/>
-					</DialogTitle>
-					<DialogContent>
+				<DialogTitle>
+					<SectionHeader
+						heading="Add New Section"
+						headingAlignment="left"
+						sx={{ mb: 0 }}
+					/>
+					<SectionHeader
+						heading="Add a new section to your course. Sections are used to organize your course content into topics. You can add modules to each section."
+						isSubHeading
+						variant="h6"
+						headingAlignment="left"
+						sx={{ mb: 0 }}
+					/>
+				</DialogTitle>
+				<DialogContent>
+					<form
+						onSubmit={handleSectionSubmit(onSubmitSection)}
+						autoComplete="off"
+						noValidate>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -170,20 +177,19 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 									/>
 								)}
 							/>
+							<Button
+								startIcon={<Check />}
+								color="primary"
+								variant="contained"
+								disableElevation
+								size="large"
+								type="submit"
+								fullWidth>
+								Save New Section
+							</Button>
 						</Stack>
-					</DialogContent>
-					<DialogActions>
-						<Button
-							color="primary"
-							variant="contained"
-							disableElevation
-							size="large"
-							type="submit"
-							fullWidth>
-							Save
-						</Button>
-					</DialogActions>
-				</form>
+					</form>
+				</DialogContent>
 			</Dialog>
 		</>
 	);

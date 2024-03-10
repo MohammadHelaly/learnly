@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import {
 	Stack,
 	Button,
-	Typography,
 	Dialog,
 	DialogTitle,
 	DialogContent,
-	DialogActions,
 	Slide,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import { CloudUpload } from "@mui/icons-material";
+import { Check, CloudUpload } from "@mui/icons-material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -33,11 +31,14 @@ const Transition = React.forwardRef(function Transition(
 const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 	const { courseId, sectionId, moduleNumber } = props;
 
-	const [video, setVideo] = useState<any>(null);
+	const [video, setVideo] = useState<File | undefined>(undefined);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
-	const handleCloseModuleForm = () => setOpenModuleForm(false);
+	const handleCloseModuleForm = () => {
+		setOpenModuleForm(false);
+		setVideo(undefined);
+	};
 
 	const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setVideo(e?.target?.files?.[0]);
@@ -50,6 +51,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 		mutate: mutateModule,
 		isError: isModuleError,
 		isPending: isPendingModule,
+		isSuccess: isModuleSuccess,
 	} = useMutation({
 		mutationFn: (data: FormData) => {
 			return api.post(
@@ -77,6 +79,8 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 	});
 
 	const handleUploadModuleVideo = async () => {
+		if (!video) return;
+
 		const videoData = new FormData();
 
 		videoData.append("video", video);
@@ -86,16 +90,11 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 
 	return (
 		<>
-			<Button sx={{ color: "black" }} onClick={handleOpenModuleForm}>
-				<CloudUpload />
-				<Typography
-					variant="body1"
-					sx={{
-						ml: 1,
-						fontWeight: "400",
-					}}>
-					Upload Module Video
-				</Typography>
+			<Button
+				sx={{ color: "black" }}
+				startIcon={<CloudUpload />}
+				onClick={handleOpenModuleForm}>
+				Upload Module Video
 			</Button>
 			<Dialog
 				open={openModuleForm}
@@ -107,8 +106,15 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 				fullWidth>
 				<DialogTitle>
 					<SectionHeader
-						heading="Add New Module"
+						heading="Upload Module Video"
 						headingAlignment="left"
+						sx={{ mb: 0, textAlign: "left" }}
+					/>
+					<SectionHeader
+						heading="Upload the video for this module."
+						headingAlignment="left"
+						variant="h6"
+						isSubHeading
 						sx={{ mb: 0, textAlign: "left" }}
 					/>
 				</DialogTitle>
@@ -117,14 +123,15 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 						<Button
 							component="label"
 							fullWidth
-							variant="contained"
 							disableElevation
 							size="large"
 							disabled={isPendingModule}
+							startIcon={<CloudUpload />}
 							sx={{
 								mb: 2,
+								color: "black",
+								backgroundColor: video ? "lightgray" : "",
 							}}>
-							{" "}
 							Choose Video
 							<input
 								disabled={isPendingModule}
@@ -136,24 +143,25 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 								onChange={handleVideoChange}
 							/>
 						</Button>
+						<Button
+							onClick={handleUploadModuleVideo}
+							fullWidth
+							color="primary"
+							variant="contained"
+							disableElevation
+							disabled={isPendingModule}
+							startIcon={!isModuleError && <Check />}
+							size="large">
+							{isModuleError
+								? "Something went wrong..."
+								: isPendingModule
+								? "Uploading..."
+								: isModuleSuccess
+								? "Uploaded!"
+								: "Upload Video"}
+						</Button>
 					</Stack>
 				</DialogContent>
-				<DialogActions>
-					<Button
-						onClick={handleUploadModuleVideo}
-						fullWidth
-						color="primary"
-						variant="contained"
-						disableElevation
-						disabled={isPendingModule}
-						size="large">
-						{isModuleError
-							? "Something went wrong..."
-							: isPendingModule
-							? "Uploading..."
-							: "Upload Video"}
-					</Button>
-				</DialogActions>
 			</Dialog>
 		</>
 	);

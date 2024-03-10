@@ -14,11 +14,10 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
-import { AddCircleOutlined } from "@mui/icons-material";
+import { AddCircleOutlined, Check } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 
 interface UpdateModulesFormProps {
 	courseId: number | string;
@@ -45,10 +44,9 @@ const Transition = React.forwardRef(function Transition(
 
 const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	const { courseId, sectionId } = props;
-	// const [video, setVideo] = useState(null);
+
 	const [openModuleForm, setOpenModuleForm] = useState(false);
-	// const [url, setUrl] = useState("");
-	// const [key, setKey] = useState("");
+
 	const {
 		control: moduleControl,
 		handleSubmit: moduleHandleSubmit,
@@ -65,27 +63,10 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	const queryClient = useQueryClient();
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
-	const handleCloseModuleForm = () => setOpenModuleForm(false);
-
-	// const handleVideoChange = async (e: any) => {
-	// 	const file = e.target.files[0];
-	// 	console.log(file);
-	// 	const videoData = new FormData();
-	// 	videoData.append("video", file);
-	// 	console.log("Loading...");
-	// 	try {
-	// 		const { data } = await axios.post(
-	// 			`http://127.0.0.1:5000/api/v1/sections/uploadModuleVideo`,
-	// 			videoData
-	// 		);
-	// 		console.log("Done uploading video");
-	// 		console.log(data);
-	// 		setUrl(data.url);
-	// 		setKey(data.key);
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
+	const handleCloseModuleForm = () => {
+		setOpenModuleForm(false);
+		resetModule();
+	};
 
 	const {
 		mutate: mutateModule,
@@ -93,7 +74,6 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		isPending: isPendingModule,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			//// <----- CHANGE THIS
 			return api.patch(`/courses/${courseId}/sections/${sectionId}`, {
 				...data,
 			});
@@ -111,17 +91,8 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	});
 
 	const onSubmitModule = (data: AddModuleSchema) => {
-		// const load = {
-		// 	// url: url,
-		// 	title: data.title,
-		// 	// sectionId: sectionId,
-		// 	// key: key,
-		// };
-
 		mutateModule(data);
-
 		handleCloseModuleForm();
-		resetModule();
 	};
 
 	return (
@@ -129,12 +100,11 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 			<Button
 				disabled={isPendingModule}
 				sx={{ color: "black" }}
+				startIcon={<AddCircleOutlined />}
 				onClick={handleOpenModuleForm}>
-				<AddCircleOutlined />
 				<Typography
 					variant="h6"
 					sx={{
-						ml: 1,
 						fontWeight: "400",
 					}}>
 					Add New Module
@@ -148,18 +118,29 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth>
-				<form
-					onSubmit={moduleHandleSubmit(onSubmitModule)}
-					autoComplete="off"
-					noValidate>
-					<DialogTitle>
-						<SectionHeader
-							heading="Add New Module"
-							headingAlignment="left"
-							sx={{ mb: 0, textAlign: "left" }}
-						/>
-					</DialogTitle>
-					<DialogContent>
+				<DialogTitle>
+					<SectionHeader
+						heading="Add New Module"
+						headingAlignment="left"
+						sx={{
+							mb: 0,
+						}}
+					/>
+					<SectionHeader
+						heading="Add a new module to this section."
+						headingAlignment="left"
+						isSubHeading
+						variant="h6"
+						sx={{
+							mb: 0,
+						}}
+					/>
+				</DialogTitle>
+				<DialogContent>
+					<form
+						onSubmit={moduleHandleSubmit(onSubmitModule)}
+						autoComplete="off"
+						noValidate>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -175,42 +156,19 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 									/>
 								)}
 							/>
-							{/* <Button
-								component="label"
-								fullWidth
+							<Button
+								startIcon={<Check />}
+								color="primary"
 								variant="contained"
 								disableElevation
+								fullWidth
 								size="large"
-								disabled={isPendingModule}
-								sx={{
-									mb: 2,
-								}}>
-								{" "}
-								Upload Video
-								<input
-									disabled={isPendingModule}
-									accept="video/*"
-									style={{ display: "none" }}
-									multiple={false}
-									type="file"
-									hidden
-									onChange={handleVideoChange}
-								/>
-							</Button> */}
+								type="submit">
+								Save New Module
+							</Button>
 						</Stack>
-					</DialogContent>
-					<DialogActions>
-						<Button
-							color="primary"
-							variant="contained"
-							disableElevation
-							fullWidth
-							size="large"
-							type="submit">
-							Save
-						</Button>
-					</DialogActions>
-				</form>
+					</form>
+				</DialogContent>
 			</Dialog>
 		</>
 	);
