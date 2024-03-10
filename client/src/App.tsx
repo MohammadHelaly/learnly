@@ -22,6 +22,7 @@ import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
+import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import "./App.css";
 
 function App() {
@@ -40,7 +41,7 @@ function App() {
 	});
 
 	useEffect(() => {
-		const storedUser = localStorage.getItem("user"); // TODO: Look into using sessionStorage instead of localStorage + using React Query to manage loading state
+		const storedUser = localStorage.getItem("user"); // TODO: Look into using React Query to manage loading state
 
 		if (storedUser) {
 			const parsedUser = JSON.parse(storedUser);
@@ -125,12 +126,16 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
-							path="/dashboard/create-course"
+							path="/dashboard/teach/courses/create"
 							element={<CreateCoursePage />}
 						/>
 						<Route
-							path="/dashboard/:courseId"
+							path="/dashboard/learn/courses/:courseId"
 							element={<LandingPage />}
+						/>
+						<Route
+							path="/dashboard/teach/courses/:courseId"
+							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route path="/account" element={<LandingPage />} />
 						<Route

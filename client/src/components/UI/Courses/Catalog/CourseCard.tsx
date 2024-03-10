@@ -47,7 +47,7 @@ const CourseCard = (props: CourseCardProps) => {
 			<CardNavLink to={`/courses/${id}`}>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
-						src={imageCover}
+						src={imageCover.url}
 						alt="course"
 						style={{
 							objectFit: "cover",
@@ -128,7 +128,7 @@ const CourseCard = (props: CourseCardProps) => {
 						variant="body2"
 						color="text.secondary"
 						sx={{ fontWeight: 400 }}>
-						{duration}
+						{duration ?? 0}
 						{" Hours"}
 						{" - "}
 						{difficulty?.charAt(0).toUpperCase() +

@@ -32,7 +32,7 @@ const InstructorCard = (props: Instructor) => {
 				}}>
 				<Avatar
 					alt={name}
-					src={photo}
+					src={photo?.url}
 					sx={{
 						width: 130,
 						height: 130,

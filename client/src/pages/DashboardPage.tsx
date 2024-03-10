@@ -22,57 +22,57 @@ const DashboardPage = () => {
 	};
 
 	return (
-		// <NavigationGuard>
-		<AnimatedPage>
-			<PageWrapper>
-				<Container maxWidth="lg">
-					<SectionWrapper>
-						<SectionHeader
-							heading="Where You Left Off"
-							headingAlignment="left"
-							variant="h4"
-						/>
-						<TabContext value={value}>
-							<Box
-								sx={{
-									borderBottom: 1,
-									borderColor: "divider",
-								}}>
-								<TabList
-									onChange={handleChange}
-									aria-label="Dashboard Tabs"
-									centered={window.innerWidth < 600}>
-									<Tab
-										label="Your Learning"
-										value="0"
-										sx={{
-											fontSize: "1.2rem",
-											fontWeight: 400,
-										}}
-									/>
-									<Tab
-										label="Your Teaching"
-										value="1"
-										sx={{
-											fontSize: "1.2rem",
-											fontWeight: 400,
-										}}
-									/>
-								</TabList>
-							</Box>
-							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								<StudentDashboard />
-							</TabPanel>
-							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								<InstructorDashboard />
-							</TabPanel>
-						</TabContext>
-					</SectionWrapper>
-				</Container>
-			</PageWrapper>
-			<Footer />
-		</AnimatedPage>
-		// </NavigationGuard>
+		<NavigationGuard>
+			<AnimatedPage>
+				<PageWrapper>
+					<Container maxWidth="lg">
+						<SectionWrapper>
+							<SectionHeader
+								heading="Where You Left Off"
+								headingAlignment="left"
+								variant="h4"
+							/>
+							<TabContext value={value}>
+								<Box
+									sx={{
+										borderBottom: 1,
+										borderColor: "divider",
+									}}>
+									<TabList
+										onChange={handleChange}
+										aria-label="Dashboard Tabs"
+										centered={window.innerWidth < 600}>
+										<Tab
+											label="Your Learning"
+											value="0"
+											sx={{
+												fontSize: "1.2rem",
+												fontWeight: 400,
+											}}
+										/>
+										<Tab
+											label="Your Teaching"
+											value="1"
+											sx={{
+												fontSize: "1.2rem",
+												fontWeight: 400,
+											}}
+										/>
+									</TabList>
+								</Box>
+								<TabPanel value="0" sx={{ p: 0, m: 0 }}>
+									<StudentDashboard />
+								</TabPanel>
+								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
+									<InstructorDashboard />
+								</TabPanel>
+							</TabContext>
+						</SectionWrapper>
+					</Container>
+				</PageWrapper>
+				<Footer />
+			</AnimatedPage>
+		</NavigationGuard>
 	);
 };
 

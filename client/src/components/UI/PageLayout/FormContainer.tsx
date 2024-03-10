@@ -1,13 +1,14 @@
-import { Grid } from "@mui/material";
+import { Grid, SxProps } from "@mui/material";
 
 interface FormContainerProps {
 	children: React.ReactNode;
 	modal?: boolean;
 	large?: boolean;
+	sx?: SxProps;
 }
 
 const FormContainer = (props: FormContainerProps) => {
-	const { children, modal, large } = props;
+	const { children, modal, large, sx } = props;
 
 	return (
 		<Grid
@@ -22,6 +23,7 @@ const FormContainer = (props: FormContainerProps) => {
 				backgroundColor: "white",
 				borderRadius: "10px",
 				boxShadow: "0 0 0px rgba(0,0,0,0.5)",
+				...sx,
 			}}>
 			{children}
 		</Grid>

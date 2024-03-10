@@ -282,7 +282,7 @@ const NavBar = () => {
 										sx={{ p: 0 }}>
 										<Avatar
 											alt={authContext.user?.name}
-											src={authContext.user?.photo}
+											src={authContext.user?.photo?.url}
 											sx={{
 												backgroundColor: "primary.main",
 											}}

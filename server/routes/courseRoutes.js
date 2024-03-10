@@ -3,6 +3,7 @@ const courseController = require("../controllers/courseController");
 const authController = require("../controllers/authController");
 const reviewRouter = require("./reviewRoutes");
 const channelRouter = require("./channelRoutes");
+const sectionRouter = require("./sectionRoutes");
 
 const router = express.Router();
 
@@ -10,15 +11,15 @@ router.use("/:courseId/reviews", reviewRouter);
 
 router.use("/:courseId/channels", channelRouter);
 
-router
-	.route("/")
-	.get(courseController.getAllCourses)
-	.post(
-		authController.protect,
-		authController.restrictTo("admin", "instuctor"),
-		courseController.uploadCourseImage,
-		courseController.createCourse
-	);
+router.use("/:courseId/sections", sectionRouter);
+
+router.route("/").get(courseController.getAllCourses).post(
+	authController.protect,
+	// authController.restrictTo("admin", "instuctor"),
+	courseController.getCourseInstructorID,
+	courseController.uploadCourseImage,
+	courseController.createCourse
+);
 
 // router
 // 	.route("/top-5-cheapest")
@@ -42,12 +43,15 @@ router
 	.get(courseController.getCourse)
 	.patch(
 		authController.protect,
-		authController.restrictTo("admin", "instructor"),
+		// authController.restrictTo("admin", "instructor"),
+		courseController.deleteCourseImage,
+		courseController.uploadCourseImage,
 		courseController.updateCourse
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo("admin", "instructor")
+		authController.restrictTo("admin", "instructor"),
+		courseController.deleteCourseImage
 	);
 
 module.exports = router;

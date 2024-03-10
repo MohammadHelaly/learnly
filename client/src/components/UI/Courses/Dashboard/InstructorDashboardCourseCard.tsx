@@ -31,7 +31,7 @@ const InstructorDashboardCourseCard = (
 	} = props;
 
 	return (
-		<CardNavLink to={`/courses/${id}`}>
+		<CardNavLink to={`/dashboard/teach/courses/${id}`}>
 			<Card
 				sx={{
 					display: "flex",
@@ -49,7 +49,7 @@ const InstructorDashboardCourseCard = (
 				}}>
 				<Box sx={{ height: 200, width: 356 }}>
 					<img
-						src={imageCover}
+						src={imageCover.url}
 						alt="course"
 						style={{
 							objectFit: "cover",
@@ -122,7 +122,7 @@ const InstructorDashboardCourseCard = (
 						variant="body2"
 						color="text.secondary"
 						sx={{ fontWeight: 400 }}>
-						{duration}
+						{duration ?? 0}
 						{" Hours"}
 						{" - "}
 						{difficulty?.charAt(0).toUpperCase() +

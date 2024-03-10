@@ -3,6 +3,17 @@ const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
+const AWS = require("aws-sdk");
+const uuid = require("uuid").v4;
+const fs = require("fs");
+
+const awsConfig = {
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION,
+};
+const S3 = new AWS.S3(awsConfig);
+
 // const multer = require("multer");
 // // const sharp = require("sharp");
 
@@ -72,44 +83,77 @@ const handlerFactory = require("./handlerFactory");
 // 	{ name: "images", maxCount: 3 },
 // ]);
 
-exports.uploadCourseImage = (req, res, next) => {
-	console.log(req.body.imageCover);
+exports.uploadCourseImage = async (req, res, next) => {
 	const { imageCover } = req.body;
-	if (!imageCover) {
-		return next(new AppError("Please upload an image", 400));
+
+	try {
+		if (!imageCover && req.method === "POST") {
+			throw new AppError("Please upload an image", 400);
+		}
+
+		if (!imageCover && req.method === "PATCH") {
+			return next();
+		}
+
+		const base64Data = new Buffer.from(
+			imageCover.replace(/^data:image\/\w+;base64,/, ""),
+			"base64"
+		);
+
+		const type = imageCover.split(";")[0].split("/")[1];
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: `${uuid()}.${type}`,
+			Body: base64Data,
+			ACL: "public-read",
+			ContentEncoding: "base64",
+			ContentType: `image/${type}`,
+		};
+
+		const stored = await S3.upload(params).promise();
+
+		req.body.imageCover = {
+			url: stored.Location,
+			key: stored.Key,
+		};
+	} catch (err) {
+		console.log(err);
+		return next(err);
 	}
-
-	const base64Data = new Buffer.from(
-		imageCover.replace(/^data:image\/\w+;base64,/, ""),
-		"base64"
-	);
-
-	const type = imageCover.split(";")[0].split("/")[1];
-
-	const params = {};
-
-	// s3 upload returns data containing location and key then do the following
-
-	// req.body.imageCover = {
-	// 	location: data.Location,
-	// 	key: data.Key
-	// };
 	next();
 };
 
-exports.deleteCourseImage = (req, res) => {
-	console.log(req.body.imageCover);
-	const { imageCover } = req.body;
-	if (!imageCover) {
-		return next(new AppError("Please upload an image", 400));
+exports.deleteCourseImage = async (req, res, next) => {
+	const courseId = req.params.id;
+
+	try {
+		const course = await Course.findById(courseId);
+
+		if (!course) {
+			throw new AppError("No course found with that ID", 404);
+		}
+
+		if (!course.imageCover) {
+			return next();
+		}
+
+		if (!req.body.imageCover && req.method === "PATCH") {
+			return next();
+		}
+
+		const key = course.imageCover.key;
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		};
+
+		const data = await S3.deleteObject(params).promise();
+	} catch (err) {
+		console.log(err);
+		return next(err);
 	}
-
-	const params = {
-		Bucket: imageCover.Bucket,
-		Key: imageCover.Name,
-	};
-
-	// s3 delete
+	next();
 };
 
 exports.aliasTop5CheapestCourses = (req, res, next) => {
@@ -118,6 +162,17 @@ exports.aliasTop5CheapestCourses = (req, res, next) => {
 	req.query.fields = "name,price,duration,difficulty";
 	next();
 };
+
+exports.getCourseInstructorID = catchAsync(async (req, res, next) => {
+	if (!req.body.instructors || req.body.instructors.length === 0) {
+		req.body.instructors = [req.user.id];
+	} else {
+		req.body.instructors.push(req.user.id);
+	}
+	next();
+});
+
+//after course save ,
 
 exports.getAllCourses = handlerFactory.getAll(Course);
 
