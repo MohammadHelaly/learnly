@@ -3,7 +3,6 @@ const slugify = require("slugify");
 const User = require("./userModel");
 const Section = require("./sectionModel");
 const Module = require("./moduleModel");
-const Channel = require("./channelModel");
 const catchAsync = require("../utils/catchAsync");
 
 const courseSchema = new mongoose.Schema(
@@ -216,6 +215,8 @@ courseSchema.virtual("reviews", {
 	foreignField: "course",
 	localField: "_id",
 });
+
+// MAYBE: Add middleware to automatically create a channel for the course
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() but not .insertMany() or .update(), etc
 courseSchema.pre("save", function (next) {

@@ -86,3 +86,22 @@ interface Search {
 	paid?: boolean;
 	sort?: string;
 }
+
+interface Channel {
+	id: number | string;
+	name: string;
+	messages: Message[];
+	course: Pick<Course, "id">;
+	users: Pick<User, "id" | "name" | "photo">[];
+	admins: Pick<User, "id" | "name" | "photo">[];
+	lastMessage: Message;
+}
+
+interface Message {
+	id: number | string;
+	sender: Pick<User, "id" | "name" | "photo">;
+	content: string;
+	channel: number | string;
+	readBy?: string[];
+	createdAt: string | Date;
+}

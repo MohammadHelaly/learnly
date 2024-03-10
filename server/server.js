@@ -49,3 +49,38 @@ process.on("SIGTERM", () => {
 		console.log("Process terminated.");
 	});
 });
+
+const io = require("socket.io")(server, {
+	pingTimeout: 60 * 1000,
+	cors: {
+		origin:
+			process.env.NODE_ENV === "development"
+				? process.env.FRONTEND_URL_LOCAL
+				: process.env.FRONTEND_URL,
+	},
+});
+
+io.on("connection", (socket) => {
+	console.log("connected to socket.io");
+
+	socket.on("setup", (userId) => {
+		socket.join(userId);
+		console.log("joined", userId);
+		socket.emit("connected");
+	});
+
+	socket.on("join chat", (room) => {
+		socket.join(room);
+		console.log("joined chat", room);
+	});
+
+	socket.on("newMessage", (newMessage) => {
+		// Corrected the event name to "message received"
+		if (newMessage && newMessage.channel) {
+			socket.in(newMessage.channel).emit("message received", newMessage);
+		} else {
+			console.error("Invalid message format:", newMessage);
+		}
+		// socket.in(newMessage.channel).emit("message received", newMessage);
+	});
+});

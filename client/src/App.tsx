@@ -16,6 +16,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CatalogPage from "./pages/CatalogPage";
 import CourseCatalogPage from "./pages/CourseCatalogPage";
+import ChannelPage from "./pages/ChannelPage";
 import CourseCatalogReviewPage from "./pages/CourseCatalogReviewPage";
 import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
@@ -40,7 +41,7 @@ function App() {
 	});
 
 	useEffect(() => {
-		const storedUser = localStorage.getItem("user"); // TODO: Look into using sessionStorage instead of localStorage + using React Query to manage loading state
+		const storedUser = localStorage.getItem("user"); // TODO: Look into using React Query to manage loading state
 
 		if (storedUser) {
 			const parsedUser = JSON.parse(storedUser);
@@ -149,6 +150,15 @@ function App() {
 						<Route
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
+						/>
+						<Route path="/channels" element={<ChannelPage />} />
+						<Route
+							path="/channels/:channelId"
+							element={<ChannelPage />}
+						/>
+						<Route
+							path="/courses/:courseId/channels/:channelId"
+							element={<ChannelPage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
