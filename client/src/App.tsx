@@ -126,18 +126,21 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
-							path="/dashboard/teach/courses/create"
-							element={<CreateCoursePage />}
-						/>
-						<Route
 							path="/dashboard/learn/courses/:courseId"
 							element={<LandingPage />}
+						/>
+						<Route
+							path="/dashboard/teach/courses/create"
+							element={<CreateCoursePage />}
 						/>
 						<Route
 							path="/dashboard/teach/courses/:courseId"
 							element={<CourseInstructorDashboardPage />}
 						/>
-						<Route path="/account" element={<LandingPage />} />
+						<Route
+							path="/users/account"
+							element={<LandingPage />}
+						/>
 						<Route
 							path="/users/:userId"
 							element={<LandingPage />}
@@ -151,13 +154,9 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						<Route path="/channels" element={<ChannelPage />} />
+						<Route path="/channels" element={<LandingPage />} />
 						<Route
 							path="/channels/:channelId"
-							element={<ChannelPage />}
-						/>
-						<Route
-							path="/courses/:courseId/channels/:channelId"
 							element={<ChannelPage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
