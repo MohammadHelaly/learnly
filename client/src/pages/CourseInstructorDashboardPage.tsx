@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import UpdateCourseContent from "../components/CourseInstructorDashboardPage/UpdateCourseContent";
-import UpdateCourseInformationForm from "../components/CourseInstructorDashboardPage/UpdateCourseInformationForm";
+import UpdateCourseInformation from "../components/CourseInstructorDashboardPage/UpdateCourseInformation";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useState } from "react";
 
@@ -168,9 +168,7 @@ const CourseInstructorDashboardPage = () => {
 								</TabList>
 							</Box>
 							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								<UpdateCourseInformationForm
-									courseId={courseId}
-								/>
+								<UpdateCourseInformation courseId={courseId} />
 							</TabPanel>
 							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
 								<UpdateCourseContent courseId={courseId} />

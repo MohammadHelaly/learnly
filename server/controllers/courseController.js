@@ -85,60 +85,72 @@ const S3 = new AWS.S3(awsConfig);
 
 exports.uploadCourseImage = async (req, res, next) => {
 	const { imageCover } = req.body;
-	if (!imageCover) {
-		return next(new AppError("Please upload an image", 400));
-	}
 
-	const base64Data = new Buffer.from(
-		imageCover.replace(/^data:image\/\w+;base64,/, ""),
-		"base64"
-	);
-
-	const type = imageCover.split(";")[0].split("/")[1];
-
-	const params = {
-		Bucket: process.env.S3_BUCKET_NAME,
-		Key: `${uuid()}.${type}`,
-		Body: base64Data,
-		ACL: "public-read",
-		ContentEncoding: "base64",
-		ContentType: `image/${type}`,
-	};
 	try {
+		if (!imageCover && req.method === "POST") {
+			throw new AppError("Please upload an image", 400);
+		}
+
+		if (!imageCover && req.method === "PATCH") {
+			return next();
+		}
+
+		const base64Data = new Buffer.from(
+			imageCover.replace(/^data:image\/\w+;base64,/, ""),
+			"base64"
+		);
+
+		const type = imageCover.split(";")[0].split("/")[1];
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: `${uuid()}.${type}`,
+			Body: base64Data,
+			ACL: "public-read",
+			ContentEncoding: "base64",
+			ContentType: `image/${type}`,
+		};
+
 		const stored = await S3.upload(params).promise();
 
 		req.body.imageCover = {
 			url: stored.Location,
 			key: stored.Key,
 		};
-		next();
 	} catch (err) {
 		console.log(err);
+		return next(err);
 	}
+	next();
 };
 
-exports.deleteCourseImage = (req, res) => {
+exports.deleteCourseImage = async (req, res, next) => {
+	const courseId = req.params.id;
+
 	try {
-		const key = req.body.key;
+		const course = await Course.findById(courseId);
+
+		if (!course) {
+			throw new AppError("No course found with that ID", 404);
+		}
+
+		if (!course.imageCover) {
+			return next();
+		}
+
+		const key = course.imageCover.key;
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
 		};
 
-		S3.deleteObject(params, (err, data) => {
-			if (err) {
-				console.log(err);
-				res.sendStatus(400);
-			}
-			res.send({ ok: true });
-		});
+		const data = await S3.deleteObject(params).promise();
 	} catch (err) {
 		console.log(err);
+		return next(err);
 	}
-
-	// s3 delete
+	next();
 };
-//testing was performed using postman and a body containing a local path and a video type
 
 exports.aliasTop5CheapestCourses = (req, res, next) => {
 	req.query.limit = "5";

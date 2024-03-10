@@ -16,13 +16,11 @@ import {
 	IconButton,
 } from "@mui/material";
 import { Done, Clear } from "@mui/icons-material";
-import { useEffect, useState, ChangeEvent } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
-import dummyCoursesData from "../../assets/data/dummyCoursesData";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import api from "../../api";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
@@ -31,7 +29,7 @@ import FormContainer from "../UI/PageLayout/FormContainer";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-import categories from "../../assets/data/categories";
+import categoriesArray from "../../assets/data/categories";
 
 const schema = z.object({
 	name: z
@@ -78,40 +76,50 @@ const schema = z.object({
 
 type CourseInformationSchemaType = z.infer<typeof schema>;
 
-interface UpdateCourseInformationFormProps {
-	courseId: Pick<Course, "id"> | string | number | undefined;
-}
+interface UpdateCourseInformationFormProps
+	extends Pick<
+		Course,
+		| "id"
+		| "name"
+		| "price"
+		| "paid"
+		| "skills"
+		| "categories"
+		| "difficulty"
+		| "summary"
+		| "description"
+		| "prerequisites"
+		| "imageCover"
+	> {}
 
 interface ImageState {
-	preview: File | undefined | null;
+	preview: File | undefined | string;
 	uploaded: string | number | readonly string[] | undefined;
 }
 
 const UpdateCourseInformationForm = (
 	props: UpdateCourseInformationFormProps
 ) => {
-	const { courseId } = props;
-
-	const dummyCourse = dummyCoursesData.find(
-		(course) => course.id === parseInt(courseId as string)
-	);
-
 	const {
-		data, //: course,
-		isLoading, //isError
-		isError: isGetError,
-	} = useQuery({
-		queryKey: ["courses", { courseId }],
-		queryFn: async () => await api.get(`/courses/${courseId}`),
-		select: (response) => response.data.data.data,
-	});
+		id: courseId,
+		name,
+		price,
+		paid,
+		skills,
+		categories,
+		difficulty,
+		summary,
+		description,
+		prerequisites,
+		imageCover,
+	} = props;
 
-	const course = data ?? dummyCourse;
+	const queryClient = useQueryClient();
 
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
 	const [image, setImage] = useState<ImageState>({
-		preview: null,
+		preview: imageCover?.url,
 		uploaded: "",
 	});
 
@@ -120,32 +128,36 @@ const UpdateCourseInformationForm = (
 		handleSubmit,
 		watch,
 		setValue,
-		formState: { errors },
+		reset,
+		formState: { errors, dirtyFields, isDirty },
 	} = useForm<CourseInformationSchemaType>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
-			name: "",
-			price: 0.0,
-			paid: false,
-			skills: [],
-			categories: [],
-			difficulty: "Beginner",
-			summary: "",
-			description: "",
-			prerequisites: [],
-			imageCover: null,
+			name: name,
+			price: price,
+			paid: paid,
+			skills: skills,
+			categories: categories,
+			difficulty: difficulty,
+			summary: summary,
+			description: description,
+			prerequisites: prerequisites,
+			imageCover: imageCover,
 		},
 	});
 
 	const { mutate, isError, isPending } = useMutation({
-		mutationFn: (data: CourseInformationSchemaType) => {
+		mutationFn: (data: Partial<CourseInformationSchemaType>) => {
 			return api.patch(`/courses/${courseId}`, {
 				...data,
 			});
 		},
 		onSuccess: (response) => {
 			alert("Course updated successfully.");
+			queryClient.invalidateQueries({
+				queryKey: ["courses", { courseId }],
+			});
 		},
 		onError: (error) => {
 			console.error(error);
@@ -205,7 +217,7 @@ const UpdateCourseInformationForm = (
 	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === "true";
 		setValue("paid", value);
-		setValue("price", 0);
+		setValue("price", price);
 	};
 
 	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -214,7 +226,7 @@ const UpdateCourseInformationForm = (
 
 	const removeImage = () => {
 		setImage({
-			preview: null,
+			preview: undefined,
 			uploaded: "",
 		});
 	};
@@ -231,47 +243,43 @@ const UpdateCourseInformationForm = (
 		}
 	};
 
+	useEffect(() => {
+		const resizeImage = async () => {
+			if (image.preview && typeof image.preview !== "string") {
+				const resizedImage = await resizeImageFile(
+					image.preview as File
+				);
+				setValue("imageCover", resizedImage, { shouldDirty: true });
+			} else {
+				setValue("imageCover", imageCover, { shouldDirty: true });
+			}
+		};
+
+		resizeImage();
+	}, [image.preview]);
+
 	const onSubmit = async (data: CourseInformationSchemaType) => {
-		let resizedImage;
-		if (typeof image.preview !== "string") {
-			resizedImage = await resizeImageFile(image.preview as File);
-		} else {
-			resizedImage = undefined;
-		}
-		setValue("imageCover", resizedImage);
+		if (!isDirty) return;
+
 		const body = {
-			name: data.name,
-			summary: data.summary,
-			description: data.description,
-			price: data.price,
-			paid: data.paid,
-			categories: data.categories,
-			skills: data.skills,
-			prerequisites: data.prerequisites,
-			imageCover: resizedImage,
-			difficulty: data.difficulty,
+			name: dirtyFields.name ? data.name : undefined,
+			summary: dirtyFields.summary ? data.summary : undefined,
+			description: dirtyFields.description ? data.description : undefined,
+			price: dirtyFields.price ? data.price : undefined,
+			paid: dirtyFields.paid ? data.paid : undefined,
+			categories: dirtyFields.categories ? data.categories : undefined,
+			skills: dirtyFields.skills ? data.skills : undefined,
+			prerequisites: dirtyFields.prerequisites
+				? data.prerequisites
+				: undefined,
+			imageCover: dirtyFields.imageCover ? data.imageCover : undefined,
+			difficulty: dirtyFields.difficulty ? data.difficulty : undefined,
 		};
 
 		mutate(body);
-	};
 
-	useEffect(() => {
-		if (course) {
-			setValue("name", course.name);
-			setValue("price", course.price);
-			setValue("paid", course.paid);
-			setValue("skills", course.skills);
-			setValue("categories", course.categories);
-			setValue("difficulty", course.difficulty);
-			setValue("summary", course.summary);
-			setValue("description", course.description);
-			setValue("prerequisites", course.prerequisites);
-			setImage((previousValue) => ({
-				...previousValue,
-				preview: course.imageCover.url,
-			}));
-		}
-	}, [course, setValue]);
+		reset();
+	};
 
 	return (
 		<PageWrapper sx={{ mt: 0, pb: 0 }}>
@@ -479,7 +487,7 @@ const UpdateCourseInformationForm = (
 											}
 											variant="outlined"
 											fullWidth>
-											{categories
+											{categoriesArray
 												.sort()
 												.map((category) => (
 													<MenuItem
@@ -502,7 +510,7 @@ const UpdateCourseInformationForm = (
 									{errors.categories.message}
 								</Typography>
 							)}
-							{watch().categories.length > 0 && (
+							{watch().categories?.length > 0 && (
 								<CourseCategories
 									categories={watch().categories}
 									isLoading={false}
@@ -614,8 +622,8 @@ const UpdateCourseInformationForm = (
 									variant="contained"
 									type="button"
 									disabled={
-										watch().prerequisites.length >= 12 ||
-										prerequisite.length === 0 ||
+										watch().prerequisites?.length >= 12 ||
+										prerequisite?.length === 0 ||
 										isPending
 									}
 									onClick={() => addPrequisite(prerequisite)}
@@ -630,7 +638,7 @@ const UpdateCourseInformationForm = (
 									{errors.prerequisites.message}
 								</Typography>
 							)}
-							{watch().prerequisites.length > 0 && (
+							{watch().prerequisites?.length > 0 && (
 								<Grid
 									container
 									direction="row"
@@ -698,8 +706,8 @@ const UpdateCourseInformationForm = (
 									variant="contained"
 									type="button"
 									disabled={
-										watch().skills.length >= 12 ||
-										skill.length === 0 ||
+										watch().skills?.length >= 12 ||
+										skill?.length === 0 ||
 										isPending
 									}
 									onClick={() => addSkill(skill)}
@@ -714,7 +722,7 @@ const UpdateCourseInformationForm = (
 									{errors.skills.message}
 								</Typography>
 							)}
-							{watch().skills.length > 0 && (
+							{watch().skills?.length > 0 && (
 								<Grid
 									container
 									direction="row"
@@ -912,10 +920,11 @@ const UpdateCourseInformationForm = (
 														image?.preview
 												  )
 										}
-										alt={image?.preview?.name}
+										alt="Course Image"
 										style={{
 											width: "100%",
 											height: "auto",
+											maxHeight: 400,
 											borderRadius: 12,
 											objectFit: "cover",
 											objectPosition: "center",
