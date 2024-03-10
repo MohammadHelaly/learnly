@@ -138,6 +138,10 @@ exports.deleteCourseImage = async (req, res, next) => {
 			return next();
 		}
 
+		if (!req.body.imageCover && req.method === "PATCH") {
+			return next();
+		}
+
 		const key = course.imageCover.key;
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,

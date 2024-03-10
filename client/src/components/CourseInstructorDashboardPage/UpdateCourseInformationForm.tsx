@@ -127,6 +127,12 @@ const UpdateCourseInformationForm = (
 		},
 	});
 
+	const setValueOptions = {
+		shouldDirty: true,
+		shouldValidate: true,
+		shouldTouch: true,
+	};
+
 	const { mutate, isError, isPending } = useMutation({
 		mutationFn: (data: Partial<CourseInformationSchemaType>) => {
 			return api.patch(`/courses/${courseId}`, {
@@ -157,7 +163,7 @@ const UpdateCourseInformationForm = (
 		const newCategories = watch().categories.filter(
 			(category) => category !== selectedCategory
 		);
-		setValue("categories", newCategories, { shouldDirty: true });
+		setValue("categories", newCategories, setValueOptions);
 	};
 
 	const prerequisiteChangeHandler = (
@@ -167,9 +173,11 @@ const UpdateCourseInformationForm = (
 	};
 
 	const addPrequisite = (value: string) => {
-		setValue("prerequisites", [...watch().prerequisites, value], {
-			shouldDirty: true,
-		});
+		setValue(
+			"prerequisites",
+			[...watch().prerequisites, value],
+			setValueOptions
+		);
 		setPrerequisite("");
 	};
 
@@ -177,7 +185,7 @@ const UpdateCourseInformationForm = (
 		const newPrerequisites = watch().prerequisites.filter(
 			(prerequisite) => prerequisite !== selectedPrerequisite
 		);
-		setValue("prerequisites", newPrerequisites, { shouldDirty: true });
+		setValue("prerequisites", newPrerequisites, setValueOptions);
 	};
 
 	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +193,7 @@ const UpdateCourseInformationForm = (
 	};
 
 	const addSkill = (value: string) => {
-		setValue("skills", [...watch().skills, value], { shouldDirty: true });
+		setValue("skills", [...watch().skills, value], setValueOptions);
 		setSkill("");
 	};
 
@@ -193,19 +201,17 @@ const UpdateCourseInformationForm = (
 		const newSkills = watch().skills.filter(
 			(skill) => skill !== selectedSkill
 		);
-		setValue("skills", newSkills, { shouldDirty: true });
+		setValue("skills", newSkills, setValueOptions);
 	};
 
 	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value === "true";
-		setValue("paid", value, { shouldDirty: true });
+		setValue("paid", value, setValueOptions);
 		resetField("price");
 	};
 
 	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		setValue("price", parseFloat(event.target.value), {
-			shouldDirty: true,
-		});
+		setValue("price", parseFloat(event.target.value), setValueOptions);
 	};
 
 	const removeImage = () => {
@@ -239,10 +245,9 @@ const UpdateCourseInformationForm = (
 				const resizedImage = await resizeImageFile(
 					image.preview as File
 				);
-				setValue("imageCover", resizedImage, { shouldDirty: true });
+				setValue("imageCover", resizedImage, setValueOptions);
 			} else {
 				resetField("imageCover");
-				// setValue("imageCover", imageCover, { shouldDirty: true });
 			}
 		};
 
