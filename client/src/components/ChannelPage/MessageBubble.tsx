@@ -50,7 +50,7 @@ const MessageBubble = (props: MessageBubbleProps) => {
 					alignItems: "center",
 				}}>
 				<Avatar
-					src={message?.sender?.photo as string}
+					src={message?.sender?.photo?.url}
 					sx={{ marginRight: 1, bgcolor: "black" }}>
 					{message?.sender?.name.slice(0, 1)}
 				</Avatar>

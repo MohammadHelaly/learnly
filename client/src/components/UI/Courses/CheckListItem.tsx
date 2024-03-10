@@ -15,7 +15,7 @@ const CheckListItem = (props: CheckListItemProps) => {
 		<Stack
 			direction="row"
 			spacing={1}
-			alignItems="center"
+			alignItems="start"
 			color="text.secondary">
 			<Checklist />
 			{skeleton ? (
