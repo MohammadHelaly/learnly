@@ -109,6 +109,7 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 				<Typography
 					variant="h6"
 					sx={{
+						ml: 1,
 						fontWeight: "400",
 					}}>
 					Add new Section
@@ -178,7 +179,7 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 							disableElevation
 							size="large"
 							type="submit"
-							sx={{ mr: 2 }}>
+							fullWidth>
 							Save
 						</Button>
 					</DialogActions>

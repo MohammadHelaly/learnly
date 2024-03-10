@@ -58,15 +58,11 @@ exports.updateSection = handlerFactory.updateOne(Section);
 exports.deleteSection = handlerFactory.deleteOne(Section);
 
 exports.addModule = async (req, res) => {
-	const { sectionId, title, url, key } = req.body;
+	const sectionId = req.params.id;
+	const { title } = req.body;
 	console.log(req.body);
-	const video = {
-		url: url,
-		key: key,
-	};
 	const moduleCreated = {
 		title,
-		video,
 	};
 
 	try {
@@ -88,41 +84,55 @@ exports.addModule = async (req, res) => {
 		}
 	} catch (error) {
 		console.error(
-			`Error updating modulesCreated for section ${section}: ${error}`
+			`Error updating modulesCreated for section ${sectionId}: ${error}`
 		);
 	}
 };
 
-exports.uploadModuleVideo = (req, res) => {
-	console.log("uploading file");
+exports.uploadModuleVideo = async (req, res) => {
 	try {
+		const { id, moduleNumber } = req.params;
 		const { files } = req;
-		console.log(files);
-		const video = files.video;
-		if (!video) return res.status(400).send("no video");
+
+		const receivedVideo = files.video;
+		if (!receivedVideo) return res.status(400).send("No video received");
 
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
-			Key: `${uuid()}.${video.type.split("/")[1]}`,
-			Body: fs.readFileSync(video.path),
+			Key: `${uuid()}.${receivedVideo.type.split("/")[1]}`,
+			Body: fs.readFileSync(receivedVideo.path),
 			ACL: "public-read",
-			ContentType: `${video.type}`,
+			ContentType: `${receivedVideo.type}`,
 		};
 
-		//console.log(params);
+		console.log("Uploading to S3");
+
 		//upload to S3
-		S3.upload(params, (err, data) => {
-			if (err) {
-				console.log(err);
-				res.sendStatus(400);
-			}
-			console.log(data);
-			const video = {
-				url: data.Location,
-				key: data.Key,
-			};
-			res.send(video);
-		});
+		const stored = await S3.upload(params).promise();
+
+		console.log("Uploaded to S3");
+
+		const video = {
+			url: stored.Location,
+			key: stored.Key,
+		};
+
+		const section = await Section.findByIdAndUpdate(
+			id,
+			{ $set: { [`modules.${moduleNumber}.video`]: video } },
+			{ new: true }
+		);
+
+		if (!section) {
+			throw new Error(`Section with id ${id} not found.`);
+		} else {
+			res.status(201).json({
+				status: "success",
+				data: {
+					section: section,
+				},
+			});
+		}
 	} catch (err) {
 		console.log(err);
 	}

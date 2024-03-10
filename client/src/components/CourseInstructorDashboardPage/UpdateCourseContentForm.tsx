@@ -4,13 +4,15 @@ import {
 	Accordion,
 	AccordionSummary,
 	AccordionDetails,
+	Button,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import { ExpandMore, PlayCircle } from "@mui/icons-material";
+import { CloudUpload, ExpandMore, PlayCircle } from "@mui/icons-material";
 import UpdateSectionsForm from "./UpdateSectionsForm";
 import UpdateModulesForm from "./UpdateModulesForm";
-import TextNavLink from "../UI/Links/TextNavLink";
+import StyledNavLink from "../UI/Links/StyledNavLink";
+import UploadModuleVideosForm from "./UploadModuleVideosForm";
 
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
@@ -99,24 +101,60 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								{description}
 							</Typography>
 						</AccordionDetails>
-						{modules?.map((module: Module, index: number) => {
-							const { title } = module;
-							return (
-								<AccordionDetails key={index + "-" + title}>
-									<Stack
-										direction="row"
-										spacing={1}
-										alignItems="center">
-										<TextNavLink to={module.video.url}>
+						{modules?.map((module: Module, index: number) => (
+							<AccordionDetails key={index + "-" + module.title}>
+								<Stack
+									direction="row"
+									alignItems="center"
+									justifyContent="space-between">
+									{module?.video?.url ? (
+										<StyledNavLink
+											to={module?.video?.url}
+											rel="noreferrer"
+											target="_blank"
+											sx={{
+												display: "flex",
+												flexDirection: "row",
+												alignItems: "center",
+												gap: 1,
+												"&:hover": {
+													textDecoration: "underline",
+												},
+											}}>
 											<PlayCircle fontSize="small" />
 											<Typography variant="body1">
-												{title}
+												{module?.title}
 											</Typography>
-										</TextNavLink>
+										</StyledNavLink>
+									) : (
+										<Typography variant="body1">
+											{module?.title}
+										</Typography>
+									)}
+									<Stack direction="row" alignItems="center">
+										<UploadModuleVideosForm
+											courseId={courseId}
+											sectionId={id}
+											moduleNumber={index}
+										/>
+										{/* <Button
+												sx={{ color: "black" }}
+												// onClick={handleOpenModuleForm}
+											>
+												<CloudUpload />
+												<Typography
+													variant="body1"
+													sx={{
+														ml: 1,
+														fontWeight: "400",
+													}}>
+													Upload Module Video
+												</Typography>
+											</Button> */}
 									</Stack>
-								</AccordionDetails>
-							);
-						})}
+								</Stack>
+							</AccordionDetails>
+						))}
 						<AccordionDetails>
 							<UpdateModulesForm
 								courseId={courseId}

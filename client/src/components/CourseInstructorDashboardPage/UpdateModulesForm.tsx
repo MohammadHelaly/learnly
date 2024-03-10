@@ -45,10 +45,10 @@ const Transition = React.forwardRef(function Transition(
 
 const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	const { courseId, sectionId } = props;
-	const [video, setVideo] = useState(null);
+	// const [video, setVideo] = useState(null);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
-	const [url, setUrl] = useState("");
-	const [key, setKey] = useState("");
+	// const [url, setUrl] = useState("");
+	// const [key, setKey] = useState("");
 	const {
 		control: moduleControl,
 		handleSubmit: moduleHandleSubmit,
@@ -67,25 +67,25 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
 	const handleCloseModuleForm = () => setOpenModuleForm(false);
 
-	const handleVideoChange = async (e: any) => {
-		const file = e.target.files[0];
-		console.log(file);
-		const videoData = new FormData();
-		videoData.append("video", file);
-		console.log("Loading...");
-		try {
-			const { data } = await axios.post(
-				`http://127.0.0.1:5000/api/v1/sections/uploadModuleVideo`,
-				videoData
-			);
-			console.log("Done uploading video");
-			console.log(data);
-			setUrl(data.url);
-			setKey(data.key);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	// const handleVideoChange = async (e: any) => {
+	// 	const file = e.target.files[0];
+	// 	console.log(file);
+	// 	const videoData = new FormData();
+	// 	videoData.append("video", file);
+	// 	console.log("Loading...");
+	// 	try {
+	// 		const { data } = await axios.post(
+	// 			`http://127.0.0.1:5000/api/v1/sections/uploadModuleVideo`,
+	// 			videoData
+	// 		);
+	// 		console.log("Done uploading video");
+	// 		console.log(data);
+	// 		setUrl(data.url);
+	// 		setKey(data.key);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
 
 	const {
 		mutate: mutateModule,
@@ -111,14 +111,14 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	});
 
 	const onSubmitModule = (data: AddModuleSchema) => {
-		const load = {
-			url: url,
-			title: data.title,
-			sectionId: sectionId,
-			key: key,
-		};
+		// const load = {
+		// 	// url: url,
+		// 	title: data.title,
+		// 	// sectionId: sectionId,
+		// 	// key: key,
+		// };
 
-		mutateModule(load);
+		mutateModule(data);
 
 		handleCloseModuleForm();
 		resetModule();
@@ -129,15 +129,14 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 			<Button
 				disabled={isPendingModule}
 				sx={{ color: "black" }}
-				onClick={handleOpenModuleForm}
-			>
+				onClick={handleOpenModuleForm}>
 				<AddCircleOutlined />
 				<Typography
 					variant="h6"
 					sx={{
+						ml: 1,
 						fontWeight: "400",
-					}}
-				>
+					}}>
 					Add New Module
 				</Typography>
 			</Button>
@@ -148,13 +147,11 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				onClose={handleCloseModuleForm}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth
-			>
+				fullWidth>
 				<form
 					onSubmit={moduleHandleSubmit(onSubmitModule)}
 					autoComplete="off"
-					noValidate
-				>
+					noValidate>
 					<DialogTitle>
 						<SectionHeader
 							heading="Add New Module"
@@ -178,8 +175,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 									/>
 								)}
 							/>
-
-							<Button
+							{/* <Button
 								component="label"
 								fullWidth
 								variant="contained"
@@ -188,8 +184,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 								disabled={isPendingModule}
 								sx={{
 									mb: 2,
-								}}
-							>
+								}}>
 								{" "}
 								Upload Video
 								<input
@@ -201,7 +196,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 									hidden
 									onChange={handleVideoChange}
 								/>
-							</Button>
+							</Button> */}
 						</Stack>
 					</DialogContent>
 					<DialogActions>
@@ -209,10 +204,9 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 							color="primary"
 							variant="contained"
 							disableElevation
+							fullWidth
 							size="large"
-							type="submit"
-							sx={{ mr: 2 }}
-						>
+							type="submit">
 							Save
 						</Button>
 					</DialogActions>

@@ -13,6 +13,10 @@ router.route("/").get(sectionController.getAllSections).post(
 );
 
 router
+	.route("/:id/modules/:moduleNumber")
+	.post(formidable(), sectionController.uploadModuleVideo);
+
+router
 	.route("/:id")
 	.get(sectionController.getSection)
 	.patch(
@@ -28,12 +32,6 @@ router
 		// authController.restrictTo("user", "admin"),
 		sectionController.deleteSection
 	);
-
-router.post(
-	"/uploadModuleVideo",
-	formidable(),
-	sectionController.uploadModuleVideo
-);
 
 // router
 // 	.route("/:id/modules")
