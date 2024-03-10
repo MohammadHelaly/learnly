@@ -115,13 +115,14 @@ const CreateCourseForm = () => {
 	const navigate = useNavigate();
 
 	const { mutate, isError, isPending } = useMutation({
-		mutationFn: (formData: FormData) => {
+		mutationFn: (data: CourseFormSchemaType) => {
 			return api.post("/courses", {
-				formData,
+				...data,
 			});
 		},
 		onSuccess: (response) => {
-			navigate(`/courses/${response.data.data.data.id}`);
+			// navigate(`/courses/${response.data.data.data.id}`);
+			navigate("/dashboard");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -191,6 +192,7 @@ const CreateCourseForm = () => {
 
 	const removeImage = () => {
 		console.log("removed");
+		const data = new FormData();
 		setImage({
 			preview: null,
 			uploaded: "",
@@ -213,21 +215,20 @@ const CreateCourseForm = () => {
 		const resizedImage = await resizeImageFile(image.preview as File);
 		setValue("imageCover", resizedImage);
 
-		const formData = new FormData();
+		const body = {
+			name: data.name,
+			summary: data.summary,
+			description: data.description,
+			price: data.price,
+			paid: data.paid,
+			categories: data.categories,
+			skills: data.skills,
+			prerequisites: data.prerequisites,
+			imageCover: resizedImage,
+			difficulty: data.difficulty,
+		};
 
-		formData.append("name", data.name);
-		formData.append("summary", data.summary);
-		formData.append("description", data.description);
-		formData.append("price", data.price.toString());
-		formData.append("paid", data.paid.toString()); // Convert boolean to string
-		formData.append("categories", JSON.stringify(data.categories)); // Convert array to string
-		formData.append("skills", JSON.stringify(data.skills)); // Convert array to string
-		formData.append("prerequisites", JSON.stringify(data.prerequisites));
-		formData.append("imageCover", resizedImage as Blob);
-		formData.append("difficulty", data.difficulty);
-
-		console.log(formData);
-		// mutate(formData);
+		mutate(body);
 	};
 
 	return (
@@ -237,7 +238,8 @@ const CreateCourseForm = () => {
 					width: "100%",
 				}}
 				onSubmit={handleSubmit(onSubmit)}
-				autoComplete="off">
+				autoComplete="off"
+			>
 				<Stack spacing={12}>
 					<SectionWrapper>
 						<SectionHeader
@@ -275,7 +277,8 @@ const CreateCourseForm = () => {
 											errors.name && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.name.message}
 												</Typography>
 											)
@@ -309,7 +312,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.summary}>
+							error={!!errors.summary}
+						>
 							<Controller
 								name="summary"
 								control={control}
@@ -325,7 +329,8 @@ const CreateCourseForm = () => {
 											errors.summary && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.summary.message}
 												</Typography>
 											)
@@ -359,7 +364,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.description}>
+							error={!!errors.description}
+						>
 							<Controller
 								name="description"
 								control={control}
@@ -375,7 +381,8 @@ const CreateCourseForm = () => {
 											errors.description && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.description.message}
 												</Typography>
 											)
@@ -409,7 +416,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.categories}>
+							error={!!errors.categories}
+						>
 							<InputLabel id="categories-select-label">
 								Categories
 							</InputLabel>
@@ -425,11 +433,13 @@ const CreateCourseForm = () => {
 										label="Categories"
 										renderValue={renderSelectedCategories}
 										variant="outlined"
-										fullWidth>
+										fullWidth
+									>
 										{categories.sort().map((category) => (
 											<MenuItem
 												key={category}
-												value={category}>
+												value={category}
+											>
 												<Checkbox
 													checked={isSelected(
 														category
@@ -484,7 +494,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.difficulty}>
+							error={!!errors.difficulty}
+						>
 							<Controller
 								name="difficulty"
 								control={control}
@@ -494,7 +505,8 @@ const CreateCourseForm = () => {
 										row={window.innerWidth > 600}
 										aria-label="Difficulty"
 										name="difficulty"
-										defaultValue="Beginner">
+										defaultValue="Beginner"
+									>
 										<FormControlLabel
 											value="Beginner"
 											control={<Radio />}
@@ -544,7 +556,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.prerequisites}>
+							error={!!errors.prerequisites}
+						>
 							<TextField
 								name="prerequisite"
 								value={prerequisite}
@@ -566,7 +579,8 @@ const CreateCourseForm = () => {
 								onClick={() => addPrequisite(prerequisite)}
 								sx={{
 									my: 2,
-								}}>
+								}}
+							>
 								Add Prerequisite
 							</Button>
 						</FormControl>
@@ -581,14 +595,16 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left">
+								justifyContent="left"
+							>
 								{watch().prerequisites.map(
 									(prerequisite, index) => (
 										<Grid
 											item
 											xs={12}
 											sm={6}
-											key={index + "prerequisite"}>
+											key={index + "prerequisite"}
+										>
 											<CheckListItem
 												item={prerequisite}
 												editable
@@ -647,7 +663,8 @@ const CreateCourseForm = () => {
 								onClick={() => addSkill(skill)}
 								sx={{
 									my: 2,
-								}}>
+								}}
+							>
 								Add Skill
 							</Button>
 						</FormControl>
@@ -662,13 +679,15 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left">
+								justifyContent="left"
+							>
 								{watch().skills.map((skill, index) => (
 									<Grid
 										item
 										xs={12}
 										sm={6}
-										key={index + "skill"}>
+										key={index + "skill"}
+									>
 										<CheckListItem
 											item={skill}
 											editable
@@ -703,7 +722,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.paid}>
+							error={!!errors.paid}
+						>
 							<Controller
 								name="paid"
 								control={control}
@@ -717,7 +737,8 @@ const CreateCourseForm = () => {
 										onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
-										}}>
+										}}
+									>
 										<FormControlLabel
 											value="true"
 											control={<Radio />}
@@ -788,7 +809,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.imageCover}>
+							error={!!errors.imageCover}
+						>
 							<Button
 								component="label"
 								fullWidth
@@ -798,7 +820,8 @@ const CreateCourseForm = () => {
 								disabled={isPending}
 								sx={{
 									mb: 2,
-								}}>
+								}}
+							>
 								{image?.preview
 									? "Change Image"
 									: "Upload Image"}
@@ -825,7 +848,8 @@ const CreateCourseForm = () => {
 									width: "100%",
 									borderRadius: 12,
 									position: "relative",
-								}}>
+								}}
+							>
 								<IconButton
 									onClick={removeImage}
 									sx={{
@@ -837,7 +861,8 @@ const CreateCourseForm = () => {
 										"&:hover": {
 											backgroundColor: "white",
 										},
-									}}>
+									}}
+								>
 									<Clear />
 								</IconButton>
 								<img
@@ -849,7 +874,8 @@ const CreateCourseForm = () => {
 										borderRadius: 12,
 										objectFit: "cover",
 										objectPosition: "center",
-									}}></img>
+									}}
+								></img>
 							</Box>
 						)}
 					</SectionWrapper>
@@ -881,7 +907,8 @@ const CreateCourseForm = () => {
 							fullWidth
 							disableElevation
 							size="large"
-							endIcon={<Done />}>
+							endIcon={<Done />}
+						>
 							Save and Continue
 						</Button>
 					</SectionWrapper>

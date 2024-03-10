@@ -37,7 +37,7 @@ const CourseDurationAndDifficulty = (
 				{isLoading ? (
 					<Skeleton animation="wave" width="80px" />
 				) : (
-					duration + " Hours"
+					`${duration ?? 0} Hours`
 				)}
 			</Typography>
 			<Typography

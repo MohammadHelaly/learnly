@@ -1,4 +1,4 @@
-import { Typography, Skeleton, Stack, Box } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -36,7 +36,7 @@ const CourseContents = (props: CourseContentsProps) => {
 							section;
 						return (
 							<Accordion
-								key={id}
+								key={id + "-accordion"}
 								disableGutters={true}
 								sx={{
 									boxShadow: "none !important",
@@ -49,7 +49,7 @@ const CourseContents = (props: CourseContentsProps) => {
 									borderColor: "divider",
 								}}>
 								<AccordionSummary
-									key={id + "summary"}
+									key={id + "-summary"}
 									expandIcon={<ExpandMoreIcon />}
 									aria-controls="panel1a-content"
 									id="panel1a-header"
@@ -80,12 +80,14 @@ const CourseContents = (props: CourseContentsProps) => {
 											sx={{
 												fontWeight: "400",
 											}}>
-											{`${modules?.length} Modules • ${duration} Hours`}
+											{`${modules?.length} Modules • ${
+												duration ?? 0
+											} Hours`}
 										</Typography>
 									</Stack>
 								</AccordionSummary>
 								<AccordionDetails
-									key={id + "details"}
+									key={id + "-details"}
 									sx={{
 										borderTop: 1,
 										borderColor: "divider",
@@ -96,22 +98,25 @@ const CourseContents = (props: CourseContentsProps) => {
 										{description}
 									</Typography>
 								</AccordionDetails>
-								{modules?.map((module: Module) => {
-									const { title } = module;
-									return (
-										<AccordionDetails key={title}>
-											<Stack
-												direction="row"
-												spacing={1}
-												alignItems="center">
-												<PlayCircleIcon fontSize="small" />
-												<Typography variant="body1">
-													{title}
-												</Typography>
-											</Stack>
-										</AccordionDetails>
-									);
-								})}
+								{modules?.map(
+									(module: Module, index: number) => {
+										const { title } = module;
+										return (
+											<AccordionDetails
+												key={index + "-" + title}>
+												<Stack
+													direction="row"
+													spacing={1}
+													alignItems="center">
+													<PlayCircleIcon fontSize="small" />
+													<Typography variant="body1">
+														{title}
+													</Typography>
+												</Stack>
+											</AccordionDetails>
+										);
+									}
+								)}
 							</Accordion>
 						);
 					})

@@ -21,6 +21,7 @@ import CareersPage from "./pages/CareersPage";
 import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
+import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import "./App.css";
 
 function App() {
@@ -124,12 +125,16 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
 						<Route
-							path="/dashboard/create-course"
+							path="/dashboard/teach/courses/create"
 							element={<CreateCoursePage />}
 						/>
 						<Route
-							path="/dashboard/:courseId"
+							path="/dashboard/learn/courses/:courseId"
 							element={<LandingPage />}
+						/>
+						<Route
+							path="/dashboard/teach/courses/:courseId"
+							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route path="/account" element={<LandingPage />} />
 						<Route

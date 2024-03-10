@@ -5,7 +5,7 @@ interface User {
 	name: string;
 	email: string;
 	bio?: string;
-	photo?: string;
+	photo?: { url: string; key: string };
 	role: "user" | "instructor" | "admin";
 	ratingsAverage: number;
 	ratingsQuantity: number;
@@ -39,7 +39,7 @@ interface Instructor
 interface Course {
 	id: number | string;
 	name: string;
-	imageCover: string;
+	imageCover: { url: string; key: string };
 	summary: string;
 	description: string;
 	instructors: Instructor[];
@@ -70,6 +70,7 @@ interface Section {
 interface Module {
 	title: string;
 	duration?: number;
+	video: { url: string; key: string };
 }
 
 interface Testimonial {

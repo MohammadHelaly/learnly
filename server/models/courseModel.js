@@ -4,6 +4,7 @@ const User = require("./userModel");
 const Section = require("./sectionModel");
 const Module = require("./moduleModel");
 const Channel = require("./channelModel");
+const catchAsync = require("../utils/catchAsync");
 
 const courseSchema = new mongoose.Schema(
 	{
@@ -18,7 +19,7 @@ const courseSchema = new mongoose.Schema(
 		duration: {
 			type: Number,
 			// type: String,
-			required: [true, "A course must have a duration"],
+			//   required: [true, "A course must have a duration"],
 			min: [0.25, "A course duration must be atleast 0.25 hours."],
 		},
 		difficulty: {
@@ -164,9 +165,13 @@ const courseSchema = new mongoose.Schema(
 			// ],
 		},
 		imageCover: {
-			type: String,
-			required: [true, "A course must have a cover image"],
+			url: { type: String },
+			key: { type: String },
 		},
+		// imageCover: {
+		// 	type: String,
+		// 	required: [true, "A course must have a cover image"],
+		// },
 		images: [String],
 		createdAt: {
 			type: Date,
@@ -227,6 +232,144 @@ courseSchema.pre(/^find/, function (next) {
 	next();
 });
 
+courseSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: "sections",
+		select: "-__v",
+	});
+	next();
+});
+
+courseSchema.pre("save", async function (next) {
+	if (this.isNew) {
+		const instructorIds = this.instructors;
+		for (const instructorId of instructorIds) {
+			try {
+				const instructor = await User.findByIdAndUpdate(
+					instructorId,
+					{ $push: { coursesCreated: this._id } },
+					{ new: true }
+				);
+
+				if (!instructor) {
+					throw new Error(
+						`Instructor with id ${instructorId} not found.`
+					);
+				}
+			} catch (error) {
+				console.error(
+					`Error updating coursesCreated for instructor ${instructorId}: ${error}`
+				);
+
+				return next(error);
+			}
+		}
+	}
+	next();
+});
+
 const Course = mongoose.model("Course", courseSchema);
 
 module.exports = Course;
+
+// Put course Id into createdCourses array of each instructor in instructors array
+
+// courseSchema.post(
+//   "save",
+//   catchAsync(async (doc, res, next) => {
+//     const instructors = await User.find({ _id: { $in: doc.instructors } });
+//     if (instructors) {
+//       for (const instructor of instructors) {
+//         instructor.coursesCreated.push(doc._id);
+//         await instructor.save();
+//       }
+//     }
+//     next();
+//   })
+// );
+
+// courseSchema.post("save", async (doc) => {
+//   console.log("reached");
+//   try {
+//     const instructors = await User.find({ _id: { $in: doc.instructors } });
+
+//     console.log("found instructors:", instructors);
+//     if (instructors) {
+//       for (const instructor of instructors) {
+//         instructor.coursesCreated.push(doc._id);
+//         await instructor.save();
+//       }
+//     }
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
+
+// const instructors = await User.find({ _id: { $in: doc.instructors } });
+
+//     console.log("found instructors:", instructors);
+//     if (instructors) {
+//       for (const instructor of instructors) {
+//         instructor.coursesCreated.push(doc._id);
+//         await instructor.save();
+
+// courseSchema.post("save", async (doc, next) => {
+//   console.log("reached");
+//   try {
+//     const instructors = await User.find({ _id: { $in: doc.instructors } });
+//     console.log("found instructors:", instructors._id);
+
+//     if (instructor.length > 0) {
+//       await Promise.all(
+//         instructors.map(async (instructor) => {
+//           instructor.coursesCreated.push(doc._id);
+//           console.log(instructor);
+//           await instructor.save();
+//         })
+//       );
+//     }
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
+// courseSchema.post("save", async (doc, next) => {
+//   console.log("reached");
+//   console.log(doc.instructors);
+//   try {
+//     const updateOperation = { $push: { createdCourses: doc._id } };
+//     const condition = { _id: { $in: doc.instructors } };
+//     const res = await User.updateMany(condition, updateOperation);
+
+//     const updateOperation = {
+//       $set: {
+//         "createdCourses.$[elem]": doc._id,
+//       },
+//     };
+
+//     const arrayFilters = [{ elem: { $in: doc.instructors } }];
+//     const condition = {};
+//     const res = await User.updateMany(condition, updateOperation, {
+//       arrayFilters: arrayFilters,
+//     });
+//     console.log("match documents:", res.n);
+//     console.log("update documents:", res.nModified);
+// const user = await User.find({ _id: { $in: doc.instructors } });
+// console.log(user);
+//   } catch (err) {
+//     console.error("Error in middleware:", err);
+//   }
+//   next();
+// });
+
+// courseSchema.post('save', async function(doc) {
+//   const instructors = await User.find({ _id: { $in: doc.instructors } });
+//   for (const instructor of instructors) {
+//   if (!this.isNew){
+//    return next();
+//   }
+//   instructor.coursesCreated.push(doc._id);
+//   await instructor.save();
+//   }
+// });

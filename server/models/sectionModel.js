@@ -37,6 +37,10 @@ const sectionSchema = new mongoose.Schema(
 			maxlength: 320,
 			required: true,
 		},
+		// key: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		description: {
 			type: String,
 			trim: true,
@@ -64,7 +68,10 @@ const sectionSchema = new mongoose.Schema(
 					type: {},
 					minlength: 200,
 				},
-				video: {},
+				video: {
+					url: { type: String },
+					key: { type: String },
+				},
 				free_preview: {
 					type: Boolean,
 					default: false,
@@ -83,6 +90,17 @@ const sectionSchema = new mongoose.Schema(
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+// sectionSchema.virtual("modules", {
+// 	ref: "Module",
+// 	foreignField: "section",
+// 	localField: "_id",
+// });
+
+sectionSchema.pre("save", function (next) {
+	this.slug = slugify(this.title, { lower: true });
+	next();
+});
 
 const Section = mongoose.model("Section", sectionSchema);
 
