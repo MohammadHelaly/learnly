@@ -6,32 +6,34 @@ const formidable = require("express-formidable");
 const router = express.Router({ mergeParams: true });
 
 router.route("/").get(sectionController.getAllSections).post(
-	authController.protect,
-	// authController.restrictTo("user", "instructor"),
-	sectionController.setCourseUserIds,
-	sectionController.createSection
+  authController.protect,
+  // authController.restrictTo("user", "instructor"),
+  sectionController.setCourseUserIds,
+  sectionController.createSection
 );
 
 router
-	.route("/:id/modules/:moduleNumber")
-	.post(formidable(), sectionController.uploadModuleVideo);
+  .route("/:id/modules/:moduleNumber")
+  .post(formidable(), sectionController.uploadModuleVideo)
+  //DELETE MODULE HERE
+  .delete(authController.protect, sectionController.deleteModule);
 
 router
-	.route("/:id")
-	.get(sectionController.getSection)
-	.patch(
-		authController.protect,
-		// authController.restrictTo("user", "admin"),
-		////////////////////////////////////////////////
-		// TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
-		////////////////////////////////////////////////
-		sectionController.addModule
-	)
-	.delete(
-		authController.protect,
-		// authController.restrictTo("user", "admin"),
-		sectionController.deleteSection
-	);
+  .route("/:id")
+  .get(sectionController.getSection)
+  .patch(
+    authController.protect,
+    // authController.restrictTo("user", "admin"),
+    ////////////////////////////////////////////////
+    // TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
+    ////////////////////////////////////////////////
+    sectionController.addModule
+  )
+  .delete(
+    authController.protect,
+    // authController.restrictTo("user", "admin"),
+    sectionController.deleteSection
+  );
 
 // router
 // 	.route("/:id/modules")
