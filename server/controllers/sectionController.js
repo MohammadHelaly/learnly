@@ -179,43 +179,43 @@ const Section = require("../models/Section"); // Assuming you have a Section mod
 // };
 
 // //DELETE MODULE
-exports.deleteModule = async (req, res) => {
-  const sectionId = req.params.id;
-  const module = req.params.moduleId;
+// exports.deleteModule = async (req, res) => {
+//   const sectionId = req.params.id;
+//   const module = req.params.moduleId;
 
-  try {
-    const section = await Section.findByIdAndUpdate(
-      sectionId,
-      { $pull: { modules: { _id: module } } },
-      { new: true }
-    );
+//   try {
+//     const section = await Section.findByIdAndUpdate(
+//       sectionId,
+//       { $pull: { modules: { _id: module } } },
+//       { new: true }
+//     );
 
-    //const module = req.params
-    //   try {
-    //     const section = await Section.findByIdAndDelete(sectionId,
-    //       { $pull: { modules: { _id: module } } },
-    //       { new: true }
-    //       );
+//     //const module = req.params
+//     //   try {
+//     //     const section = await Section.findByIdAndDelete(sectionId,
+//     //       { $pull: { modules: { _id: module } } },
+//     //       { new: true }
+//     //       );
 
-    if (!section) {
-      throw new Error(`Section with id ${sectionId} not found.`);
-    } else {
-      res.status(200).json({
-        status: "success",
-        message: `Module with id ${module} has been deleted from section with id ${sectionId}.`,
-        data: {
-          section: section,
-        },
-      });
-    }
-  } catch (error) {
-    console.error(`Error deleting module from section ${sectionId}: ${error}`);
-    res.status(500).json({
-      status: "error",
-      message: "Internal server error.",
-    });
-  }
-};
+//     if (!section) {
+//       throw new Error(`Section with id ${sectionId} not found.`);
+//     } else {
+//       res.status(200).json({
+//         status: "success",
+//         message: `Module with id ${module} has been deleted from section with id ${sectionId}.`,
+//         data: {
+//           section: section,
+//         },
+//       });
+//     }
+//   } catch (error) {
+//     console.error(`Error deleting module from section ${sectionId}: ${error}`);
+//     res.status(500).json({
+//       status: "error",
+//       message: "Internal server error.",
+//     });
+//   }
+// };
 
 exports.getAllSections = handlerFactory.getAll(Section);
 
