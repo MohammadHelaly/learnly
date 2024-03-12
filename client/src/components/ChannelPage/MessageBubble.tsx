@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
-import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
-
+import { Card, CardContent, Typography, Avatar, Box,Button } from "@mui/material";
+import Delete from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 interface MessageBubbleProps {
 	message: Partial<Message>;
 }
@@ -22,11 +23,21 @@ function getTimeDifference(dateString: string): string {
 	}
 }
 
+
 const MessageBubble = (props: MessageBubbleProps) => {
 	const { message } = props;
 	const authContext = useContext(AuthContext);
 	const user = authContext.user;
+    const [isEditing, setIsEditing] = useState(false);
 
+  const handleEdit = () => {
+   
+  };
+
+  const handleDelete = () => {
+    
+	
+  };
 	return (
 		<Card
 			sx={{
@@ -64,6 +75,22 @@ const MessageBubble = (props: MessageBubbleProps) => {
 						{getTimeDifference(message.createdAt as string)}
 					</Typography>
 				</Box>
+				{message?.sender?.id === user?.id && (
+          <Box sx={{ marginLeft: "auto" }}>
+            <Button variant="outlined" onClick={handleEdit} sx={{borderRadius:"20px"}}>
+			{message?.sender?.id === user?.id && (
+					<EditIcon sx={{
+						marginRight: "2%", 
+					}} />
+				)}
+            </Button>
+            <Button variant="outlined" onClick={handleDelete} sx={{ marginLeft: 1 , borderRadius:"20px"}}>
+			{message?.sender?.id === user?.id && (
+					<Delete /> 
+				)}
+            </Button>
+          </Box>
+        )}
 			</CardContent>
 			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
 				<Typography variant="h5" sx={{ fontWeight: "bold" }}>
