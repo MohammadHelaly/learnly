@@ -6,6 +6,7 @@ import {
 	AccordionDetails,
 	Button,
 } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import { CloudUpload, ExpandMore, PlayCircle } from "@mui/icons-material";
@@ -36,12 +37,79 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		select: (response) => response.data.data.data.sections,
 	});
 
+	const [Contentsections, setContentSections] = useState([] as Section[]);
+	const handleSectionDrag = (
+		e: React.DragEvent<HTMLDivElement>,
+		index: number
+	) => {
+		console.log("dragging", index);
+		e.dataTransfer.setData("itemIndex", index.toString());
+	};
+	const handleSectionDrop = (
+		e: React.DragEvent<HTMLDivElement>,
+		index: number
+	) => {
+		console.log("dropping", index);
+		const movingSectionIndex = Number(e.dataTransfer.getData("itemIndex"));
+		const targetItemIndex = index;
+		let allSections = [...Contentsections];
+
+		let movingSection = allSections[movingSectionIndex];
+		allSections.splice(movingSectionIndex, 1);
+		allSections.splice(targetItemIndex, 0, movingSection);
+		setContentSections(allSections);
+		console.log(allSections);
+	};
+	const handleModuleDrag = (
+		e: React.DragEvent<HTMLDivElement>,
+		index: number,
+		sectionId: number | string
+	) => {
+		console.log("module drag", index, sectionId);
+		e.dataTransfer.setData("moduleId", index.toString());
+		e.dataTransfer.setData("sectionId", sectionId.toString());
+	};
+	const handleModuleDrop = (
+		e: React.DragEvent<HTMLDivElement>,
+		index: number,
+		sectionId: number | string
+	) => {
+		const movingModuleIndex = Number(e.dataTransfer.getData("moduleId"));
+		const movingSectionId = e.dataTransfer.getData("sectionId");
+		if (sectionId === movingSectionId) {
+			const updatedSections = Contentsections.map((section) => {
+				if (section.id === sectionId) {
+					const updatedModules = [...section.modules];
+					const movedModule = updatedModules.splice(
+						movingModuleIndex,
+						1
+					)[0];
+					updatedModules.splice(index, 0, movedModule);
+					return {
+						...section,
+						modules: updatedModules,
+					};
+				}
+				return section;
+			});
+			setContentSections(updatedSections);
+		}
+	};
+	useEffect(() => {
+		console.log(sections);
+		if (sections) {
+			setContentSections(sections);
+		}
+	}, [sections]);
+
 	return (
 		<Stack alignItems="center">
-			{sections?.map((section: Section, index: number) => {
+			{Contentsections?.map((section: Section, index: number) => {
 				const { id, title, description, modules, duration } = section;
 				return (
 					<Accordion
+						onDragOver={(e) => e.preventDefault()}
+						draggable={true}
 						key={id + "-accordion"}
 						disableGutters={true}
 						sx={{
@@ -52,8 +120,12 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							borderBottom:
 								index === sections.length - 1 ? 1 : "none", // Add bottom border for the last one
 							borderColor: "divider",
-						}}>
+						}}
+					>
 						<AccordionSummary
+							draggable={true}
+							onDragStart={(e) => handleSectionDrag(e, index)}
+							onDrop={(e) => handleSectionDrop(e, index)}
 							key={id + "-summary"}
 							expandIcon={<ExpandMore />}
 							aria-controls="panel1a-content"
@@ -62,7 +134,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								backgroundColor: "#f5f5f5",
 								width: "100%",
 								flexDirection: "row-reverse",
-							}}>
+							}}
+						>
 							<Stack
 								direction="row"
 								spacing={1}
@@ -71,12 +144,14 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								width="100%"
 								sx={{
 									ml: 1,
-								}}>
+								}}
+							>
 								<Typography
 									variant="h5"
 									sx={{
 										fontWeight: "400",
-									}}>
+									}}
+								>
 									{title}
 								</Typography>
 								<Typography
@@ -84,7 +159,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									color="text.secondary"
 									sx={{
 										fontWeight: "400",
-									}}>
+									}}
+								>
 									{`${modules?.length} Modules • ${
 										duration ?? 0
 									} Hours`}
@@ -96,17 +172,27 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							sx={{
 								borderTop: 1,
 								borderColor: "divider",
-							}}>
+							}}
+						>
 							<Typography variant="h6" color="text.secondary">
 								{description}
 							</Typography>
 						</AccordionDetails>
 						{modules?.map((module: Module, index: number) => (
-							<AccordionDetails key={index + "-" + module.title}>
+							<AccordionDetails
+								onDragOver={(e) => e.preventDefault()}
+								key={index + "-" + module.title}
+								draggable={true}
+								onDragStart={(e) =>
+									handleModuleDrag(e, index, id)
+								}
+								onDrop={(e) => handleModuleDrop(e, index, id)}
+							>
 								<Stack
 									direction="row"
 									alignItems="center"
-									justifyContent="space-between">
+									justifyContent="space-between"
+								>
 									{module?.video?.url ? (
 										<StyledNavLink
 											to={module?.video?.url}
@@ -120,7 +206,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 												"&:hover": {
 													textDecoration: "underline",
 												},
-											}}>
+											}}
+										>
 											<PlayCircle fontSize="small" />
 											<Typography variant="body1">
 												{module?.title}
