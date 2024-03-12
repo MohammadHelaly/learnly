@@ -9,7 +9,12 @@ import {
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
-import { CloudUpload, ExpandMore, PlayCircle } from "@mui/icons-material";
+import {
+	AllOutSharp,
+	CloudUpload,
+	ExpandMore,
+	PlayCircle,
+} from "@mui/icons-material";
 import UpdateSectionsForm from "./UpdateSectionsForm";
 import UpdateModulesForm from "./UpdateModulesForm";
 import StyledNavLink from "../UI/Links/StyledNavLink";
@@ -45,7 +50,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		console.log("dragging", index);
 		e.dataTransfer.setData("itemIndex", index.toString());
 	};
-	const handleSectionDrop = (
+	const handleSectionDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
 	) => {
@@ -58,7 +63,10 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		allSections.splice(movingSectionIndex, 1);
 		allSections.splice(targetItemIndex, 0, movingSection);
 		setContentSections(allSections);
-		console.log(allSections);
+
+		const updatedCourse = await api.put(`courses/${courseId}`, {
+			sections: allSections,
+		});
 	};
 	const handleModuleDrag = (
 		e: React.DragEvent<HTMLDivElement>,
@@ -69,7 +77,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		e.dataTransfer.setData("moduleId", index.toString());
 		e.dataTransfer.setData("sectionId", sectionId.toString());
 	};
-	const handleModuleDrop = (
+	const handleModuleDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number,
 		sectionId: number | string
@@ -93,6 +101,12 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 				return section;
 			});
 			setContentSections(updatedSections);
+
+			await api.put(`sections/${sectionId}`, {
+				modules: updatedSections.find(
+					(section) => section.id === sectionId
+				)?.modules,
+			});
 		}
 	};
 	useEffect(() => {

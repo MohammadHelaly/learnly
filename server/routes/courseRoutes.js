@@ -52,6 +52,6 @@ router
 		authController.protect,
 		authController.restrictTo("admin", "instructor"),
 		courseController.deleteCourseImage
-	);
-
+	)
+	.put(courseController.updateCourse);
 module.exports = router;
