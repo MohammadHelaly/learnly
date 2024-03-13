@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import ErrorWarning from "../components/UI/Messages/ErrorWarning";
 import NavigationGuard from "../components/Navigation/NavigationGuard";
+import { Console } from "console";
 
 const schema = z.object({
 	content: z
@@ -26,9 +27,10 @@ const schema = z.object({
 
 type MessageSchemaType = z.infer<typeof schema>;
 
+
 const ENDPOINT = "http://localhost:5000";
 
-const ChannelPage = () => {
+const ChannelPage: React.FC = () => {
 	const { courseId, channelId } = useParams();
 
 	const authContext = useContext(AuthContext);
@@ -64,6 +66,9 @@ const ChannelPage = () => {
 		queryFn: async () => await api.get(`/channels/${channelId}`),
 		select: (response) => response.data.data.data,
 	});
+	console.log("refreshed");
+
+
 
 	const {
 		mutate,
@@ -86,6 +91,8 @@ const ChannelPage = () => {
 		},
 	});
 
+
+
 	useEffect(() => {
 		if (!channelId) return;
 		const newSocket: Socket = io(ENDPOINT);
@@ -93,23 +100,40 @@ const ChannelPage = () => {
 		newSocket.emit("setup", user?.id);
 		newSocket.on("connection", () => setSocketConnected(true));
 		newSocket.emit("join chat", channelId);
-
 		return () => {
 			newSocket.close();
 		};
 	}, []);
 
+
+	
 	useEffect(() => {
 		if (!socket) return;
+		
+		const receiveEditedMsg=(newcontent:string,date:string)=>{
+			const updatedMessages = allMessages.map((message) => {
+		  
+				if (message.createdAt === date) {
+				  return { ...message, content: newcontent };
+				} else {
+				  return message;
+				}
+			  });
+			  setAllMessages(updatedMessages);
+		}
+		socket.on("new edited message", receiveEditedMsg)
+
+
 		const messageReceived = (newMessage: Message) => {
-			console.log("new message:", newMessage.content);
-			setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+				console.log("new message:", newMessage.content);
+				setAllMessages((prevMessages) => [...prevMessages, newMessage]);
 		};
 		socket.on("message received", messageReceived);
+		
 		return () => {
 			socket.off("message received", messageReceived);
 		};
-	}, [socket]);
+	}, [socket,allMessages]);
 
 	useEffect(() => {
 		if (channel?.messages) {
@@ -134,6 +158,22 @@ const ChannelPage = () => {
 
 		return () => subscription.unsubscribe();
 	}, [watch]);
+	
+
+
+	  
+	const editMsg = (msg: string, date: string) => {
+		const updatedMessages = allMessages.map((message) => {
+		  if (message.createdAt === date) {
+			socket?.emit("EditedMessage",msg,message.createdAt,channelId)
+			return { ...message, content: msg };
+		  } else {
+			return message;
+		  }
+		});
+		setAllMessages(updatedMessages);
+	};
+
 
 	const onSubmit = (data: MessageSchemaType) => {
 		mutate(data);
@@ -145,7 +185,6 @@ const ChannelPage = () => {
 		}
 
 		reset();
-
 		setMessage(null);
 	};
 
@@ -192,7 +231,8 @@ const ChannelPage = () => {
 										{allMessages.map((message, index) => (
 											<MessageBubble
 												key={index}
-												message={message}
+												msg={message}
+												editmsg={editMsg}												
 											/>
 										))}
 									</Stack>

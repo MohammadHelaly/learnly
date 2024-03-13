@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
-import { Card, CardContent, Typography, Avatar, Box,Button } from "@mui/material";
+import { Card, CardContent, Typography, Avatar, Box,Button, TextField } from "@mui/material";
 import Delete from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 interface MessageBubbleProps {
-	message: Partial<Message>;
+	msg: Partial<Message>;
+	editmsg:(message:string,date:string)=>void;
+	
 }
 
 function getTimeDifference(dateString: string): string {
@@ -24,21 +26,46 @@ function getTimeDifference(dateString: string): string {
 }
 
 
-const MessageBubble = (props: MessageBubbleProps) => {
-	const { message } = props;
+const MessageBubble: React.FC<MessageBubbleProps> = ({ msg,editmsg }) => {
+	const  message  = msg;
 	const authContext = useContext(AuthContext);
 	const user = authContext.user;
     const [isEditing, setIsEditing] = useState(false);
+	const [EditedMsg, SetNewMsg] = useState(message.content);
+
 
   const handleEdit = () => {
-   
+	setIsEditing(!isEditing)
   };
 
-  const handleDelete = () => {
-    
-	
-  };
+  	if(message.content==="Deleted Message"){
+		return(
+		<Card
+			sx={{
+				borderRadius: 6,
+				display: "flex",
+				flexDirection: "column",
+				overflowWrap: "anywhere",
+				backgroundColor: "grey",
+				alignSelf:
+					message?.sender?.id === user?.id
+						? "flex-end"
+						: "flex-start",
+				width: window.innerWidth > 600 ? "50%" : "80%",
+				boxShadow: "none",
+			}}>
+			
+			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
+				<Typography variant="h5" >
+					Deleted Message
+				</Typography>
+			</CardContent>
+		</Card>
+		)
+	}
+
 	return (
+		<>
 		<Card
 			sx={{
 				borderRadius: 6,
@@ -76,19 +103,16 @@ const MessageBubble = (props: MessageBubbleProps) => {
 					</Typography>
 				</Box>
 				{message?.sender?.id === user?.id && (
-          <Box sx={{ marginLeft: "auto" }}>
-            <Button variant="outlined" onClick={handleEdit} sx={{borderRadius:"20px"}}>
+          <Box sx={{ marginLeft: "auto", display:"flex"}}>
 			{message?.sender?.id === user?.id && (
-					<EditIcon sx={{
+					<EditIcon onClick={handleEdit} sx={{
 						marginRight: "2%", 
+						
 					}} />
 				)}
-            </Button>
-            <Button variant="outlined" onClick={handleDelete} sx={{ marginLeft: 1 , borderRadius:"20px"}}>
 			{message?.sender?.id === user?.id && (
-					<Delete /> 
-				)}
-            </Button>
+  					<Delete onClick={() => editmsg("Deleted Message",message?.createdAt?.toString() || "defaultDateString")} />
+  				)}
           </Box>
         )}
 			</CardContent>
@@ -98,6 +122,51 @@ const MessageBubble = (props: MessageBubbleProps) => {
 				</Typography>
 			</CardContent>
 		</Card>
+		{isEditing && (
+		<Box sx={{display:"flex"}}>
+		<TextField
+			onChange={(e)=>{SetNewMsg(e.target.value)}}				
+			size="small"
+			multiline									
+			defaultValue={message.content}
+			sx={{
+			backgroundColor:
+			"transparent",
+			width:"90%",
+			paddingRight:"3%"
+			}}
+			placeholder="Send a message..."
+			InputProps={{
+			sx: {
+			borderRadius: 5,
+			px: 2,
+			backgroundColor:
+			"white",
+			},
+			}}									
+			/>
+			<Button
+				type="submit"
+				onClick={()=>{
+					if(message?.content ){
+						editmsg(EditedMsg||"",message?.createdAt?.toString() || "defaultDateString")
+					}							
+					setIsEditing(false)		
+							}
+						}
+				variant="outlined"
+				size="large"
+				endIcon={<EditIcon />}
+				sx={{
+				backgroundColor: "white",
+				color: "primary.main",
+				width:"10%",
+				}}>
+				Edit
+			</Button>
+		</Box>
+		)}
+		</>
 	);
 };
 
