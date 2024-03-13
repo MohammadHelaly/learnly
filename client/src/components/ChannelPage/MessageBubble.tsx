@@ -46,7 +46,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ msg,editmsg }) => {
 				display: "flex",
 				flexDirection: "column",
 				overflowWrap: "anywhere",
-				backgroundColor: "grey",
+				backgroundColor: "#B5C0D0",
 				alignSelf:
 					message?.sender?.id === user?.id
 						? "flex-end"
@@ -56,6 +56,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ msg,editmsg }) => {
 			}}>
 			
 			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
+				<Avatar
+					src={message?.sender?.photo?.url}
+					sx={{ marginRight: 1, bgcolor: "black" }}>
+					{message?.sender?.name.slice(0, 1)}
+				</Avatar>
+				
 				<Typography variant="h5" >
 					Deleted Message
 				</Typography>
@@ -148,6 +154,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ msg,editmsg }) => {
 			<Button
 				type="submit"
 				onClick={()=>{
+					if(EditedMsg?.length===0){
+						setIsEditing(false)		
+						return;
+					}
 					if(message?.content ){
 						editmsg(EditedMsg||"",message?.createdAt?.toString() || "defaultDateString")
 					}							
