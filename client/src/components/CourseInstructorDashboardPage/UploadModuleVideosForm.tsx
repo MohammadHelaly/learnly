@@ -93,7 +93,8 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 			<Button
 				sx={{ color: "black" }}
 				startIcon={<CloudUpload />}
-				onClick={handleOpenModuleForm}>
+				onClick={handleOpenModuleForm}
+			>
 				Upload Module Video
 			</Button>
 			<Dialog
@@ -103,7 +104,8 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 				onClose={handleCloseModuleForm}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Upload Module Video"
@@ -131,7 +133,8 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 								mb: 2,
 								color: "black",
 								backgroundColor: video ? "lightgray" : "",
-							}}>
+							}}
+						>
 							Choose Video
 							<input
 								disabled={isPendingModule}
@@ -151,7 +154,8 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 							disableElevation
 							disabled={isPendingModule}
 							endIcon={!isModuleError && <Check />}
-							size="large">
+							size="large"
+						>
 							{isModuleError
 								? "Something went wrong..."
 								: isPendingModule

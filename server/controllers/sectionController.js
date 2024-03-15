@@ -6,6 +6,7 @@ const CatchAsync = require("../utils/catchAsync");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
 const fs = require("fs");
+const { getVideoDurationInSeconds } = require("get-video-duration");
 
 const awsConfig = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -89,6 +90,8 @@ exports.uploadModuleVideo = async (req, res) => {
 		const receivedVideo = files.video;
 		if (!receivedVideo) return res.status(400).send("No video received");
 
+		const duration = await getVideoDurationInSeconds(receivedVideo.path);
+
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: `${uuid()}.${receivedVideo.type.split("/")[1]}`,
@@ -111,7 +114,12 @@ exports.uploadModuleVideo = async (req, res) => {
 
 		const section = await Section.findByIdAndUpdate(
 			id,
-			{ $set: { [`modules.${moduleNumber}.video`]: video } },
+			{
+				$set: {
+					[`modules.${moduleNumber}.video`]: video,
+					[`modules.${moduleNumber}.duration`]: duration,
+				},
+			},
 			{ new: true }
 		);
 

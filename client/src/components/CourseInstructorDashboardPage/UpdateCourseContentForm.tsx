@@ -15,10 +15,14 @@ import {
 	ExpandMore,
 	PlayCircle,
 } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import UpdateSectionsForm from "./UpdateSectionsForm";
 import UpdateModulesForm from "./UpdateModulesForm";
 import StyledNavLink from "../UI/Links/StyledNavLink";
 import UploadModuleVideosForm from "./UploadModuleVideosForm";
+import DeleteModuleVideoForm from "./DeleteModuleVideoForm";
+import DeleteModule from "./DeleteModule";
 
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
@@ -47,14 +51,12 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
 	) => {
-		console.log("dragging", index);
 		e.dataTransfer.setData("itemIndex", index.toString());
 	};
 	const handleSectionDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
 	) => {
-		console.log("dropping", index);
 		const movingSectionIndex = Number(e.dataTransfer.getData("itemIndex"));
 		const targetItemIndex = index;
 		let allSections = [...Contentsections];
@@ -73,7 +75,6 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		index: number,
 		sectionId: number | string
 	) => {
-		console.log("module drag", index, sectionId);
 		e.dataTransfer.setData("moduleId", index.toString());
 		e.dataTransfer.setData("sectionId", sectionId.toString());
 	};
@@ -109,6 +110,15 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 			});
 		}
 	};
+
+	const handleSectionRemoval = (sectionId: number | string) => {
+		api.delete(`sections/${sectionId}`);
+		alert("Section removed");
+		const updatedSections = Contentsections.filter(
+			(section) => section.id !== sectionId
+		);
+		setContentSections(updatedSections);
+	};
 	useEffect(() => {
 		console.log(sections);
 		if (sections) {
@@ -119,7 +129,13 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 	return (
 		<Stack alignItems="center">
 			{Contentsections?.map((section: Section, index: number) => {
-				const { id, title, description, modules, duration } = section;
+				const { id, title, description, modules } = section;
+				let duration = 0;
+				for (let i = 0; i < modules.length; i++) {
+					duration += modules[i]?.duration ?? 0;
+				}
+				duration = duration / 60;
+				duration = Math.round(duration);
 				return (
 					<Accordion
 						onDragOver={(e) => e.preventDefault()}
@@ -177,10 +193,14 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								>
 									{`${modules?.length} Modules • ${
 										duration ?? 0
-									} Hours`}
+									} Minutes`}
 								</Typography>
 							</Stack>
+							<Button onClick={() => handleSectionRemoval(id)}>
+								<RemoveCircleOutlineIcon />
+							</Button>
 						</AccordionSummary>
+
 						<AccordionDetails
 							key={id + "-details"}
 							sx={{
@@ -232,27 +252,34 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 											{module?.title}
 										</Typography>
 									)}
-									<Stack direction="row" alignItems="center">
-										<UploadModuleVideosForm
-											courseId={courseId}
-											sectionId={id}
-											moduleNumber={index}
-										/>
-										{/* <Button
-												sx={{ color: "black" }}
-												// onClick={handleOpenModuleForm}
-											>
-												<CloudUpload />
-												<Typography
-													variant="body1"
-													sx={{
-														ml: 1,
-														fontWeight: "400",
-													}}>
-													Upload Module Video
-												</Typography>
-											</Button> */}
-									</Stack>
+									{module?.video?.url ? (
+										<Stack
+											direction="row"
+											alignItems="center"
+										>
+											<DeleteModuleVideoForm
+												courseId={courseId}
+												sectionId={id}
+												moduleNumber={index}
+											/>
+										</Stack>
+									) : (
+										<Stack
+											direction="row"
+											alignItems="center"
+										>
+											<UploadModuleVideosForm
+												courseId={courseId}
+												sectionId={id}
+												moduleNumber={index}
+											/>
+											<DeleteModule
+												courseId={courseId}
+												sectionId={id}
+												moduleNumber={index}
+											/>
+										</Stack>
+									)}
 								</Stack>
 							</AccordionDetails>
 						))}

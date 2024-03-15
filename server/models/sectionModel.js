@@ -72,6 +72,7 @@ const sectionSchema = new mongoose.Schema(
 					url: { type: String },
 					key: { type: String },
 				},
+				duration: { type: Number },
 				free_preview: {
 					type: Boolean,
 					default: false,
