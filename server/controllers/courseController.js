@@ -8,9 +8,9 @@ const uuid = require("uuid").v4;
 const fs = require("fs");
 
 const awsConfig = {
-	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
 };
 const S3 = new AWS.S3(awsConfig);
 
@@ -84,92 +84,92 @@ const S3 = new AWS.S3(awsConfig);
 // ]);
 
 exports.uploadCourseImage = async (req, res, next) => {
-	const { imageCover } = req.body;
+  const { imageCover } = req.body;
 
-	try {
-		if (!imageCover && req.method === "POST") {
-			throw new AppError("Please upload an image", 400);
-		}
+  try {
+    if (!imageCover && req.method === "POST") {
+      throw new AppError("Please upload an image", 400);
+    }
 
-		if (!imageCover && req.method === "PATCH") {
-			return next();
-		}
+    if (!imageCover && req.method === "PATCH") {
+      return next();
+    }
 
-		const base64Data = new Buffer.from(
-			imageCover.replace(/^data:image\/\w+;base64,/, ""),
-			"base64"
-		);
+    const base64Data = new Buffer.from(
+      imageCover.replace(/^data:image\/\w+;base64,/, ""),
+      "base64"
+    );
 
-		const type = imageCover.split(";")[0].split("/")[1];
+    const type = imageCover.split(";")[0].split("/")[1];
 
-		const params = {
-			Bucket: process.env.S3_BUCKET_NAME,
-			Key: `${uuid()}.${type}`,
-			Body: base64Data,
-			ACL: "public-read",
-			ContentEncoding: "base64",
-			ContentType: `image/${type}`,
-		};
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: `${uuid()}.${type}`,
+      Body: base64Data,
+      ACL: "public-read",
+      ContentEncoding: "base64",
+      ContentType: `image/${type}`,
+    };
 
-		const stored = await S3.upload(params).promise();
+    const stored = await S3.upload(params).promise();
 
-		req.body.imageCover = {
-			url: stored.Location,
-			key: stored.Key,
-		};
-	} catch (err) {
-		console.log(err);
-		return next(err);
-	}
-	next();
+    req.body.imageCover = {
+      url: stored.Location,
+      key: stored.Key,
+    };
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+  next();
 };
 
 exports.deleteCourseImage = async (req, res, next) => {
-	const courseId = req.params.id;
+  const courseId = req.params.id;
 
-	try {
-		const course = await Course.findById(courseId);
+  try {
+    const course = await Course.findById(courseId);
 
-		if (!course) {
-			throw new AppError("No course found with that ID", 404);
-		}
+    if (!course) {
+      throw new AppError("No course found with that ID", 404);
+    }
 
-		if (!course.imageCover) {
-			return next();
-		}
+    if (!course.imageCover) {
+      return next();
+    }
 
-		if (!req.body.imageCover && req.method === "PATCH") {
-			return next();
-		}
+    if (!req.body.imageCover && req.method === "PATCH") {
+      return next();
+    }
 
-		const key = course.imageCover.key;
-		const params = {
-			Bucket: process.env.S3_BUCKET_NAME,
-			Key: key,
-		};
+    const key = course.imageCover.key;
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: key,
+    };
 
-		const data = await S3.deleteObject(params).promise();
-	} catch (err) {
-		console.log(err);
-		return next(err);
-	}
-	next();
+    const data = await S3.deleteObject(params).promise();
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+  next();
 };
 
 exports.aliasTop5CheapestCourses = (req, res, next) => {
-	req.query.limit = "5";
-	req.query.sort = "price";
-	req.query.fields = "name,price,duration,difficulty";
-	next();
+  req.query.limit = "5";
+  req.query.sort = "price";
+  req.query.fields = "name,price,duration,difficulty";
+  next();
 };
 
 exports.getCourseInstructorID = catchAsync(async (req, res, next) => {
-	if (!req.body.instructors || req.body.instructors.length === 0) {
-		req.body.instructors = [req.user.id];
-	} else {
-		req.body.instructors.push(req.user.id);
-	}
-	next();
+  if (!req.body.instructors || req.body.instructors.length === 0) {
+    req.body.instructors = [req.user.id];
+  } else {
+    req.body.instructors.push(req.user.id);
+  }
+  next();
 });
 
 //after course save ,
@@ -184,6 +184,24 @@ exports.updateCourse = handlerFactory.updateOne(Course);
 
 exports.deleteCourse = handlerFactory.deleteOne(Course);
 
+exports.isCourseInstructor = catchAsync(async (req, res, next) => {
+  const courseId = req.params.id;
+  console.log(courseId);
+
+  const course = await Course.findById(courseId);
+
+  console.log(course.instructors); //return null array (no instructors)
+  //
+  if (!course) {
+    return res.sendStatus("404");
+  }
+
+  if (!course.instructors.includes("65d0c32fd8b048eeb371b8fb")) {
+    return res.sendStatus("403");
+  }
+
+  next();
+});
 // exports.getCourseStats = catchAsync(async (req, res, next) => {
 // 	const stats = await Course.aggregate([
 // 		{ $match: { ratingsAverage: { $gte: 4.5 } } },

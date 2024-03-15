@@ -14,11 +14,11 @@ router.use("/:courseId/channels", channelRouter);
 router.use("/:courseId/sections", sectionRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
-	authController.protect,
-	// authController.restrictTo("admin", "instuctor"),
-	courseController.getCourseInstructorID,
-	courseController.uploadCourseImage,
-	courseController.createCourse
+  authController.protect,
+  // authController.restrictTo("admin", "instuctor"),
+  courseController.getCourseInstructorID,
+  courseController.uploadCourseImage,
+  courseController.createCourse
 );
 
 // router
@@ -39,19 +39,19 @@ router.route("/").get(courseController.getAllCourses).post(
 // 	);
 
 router
-	.route("/:id")
-	.get(courseController.getCourse)
-	.patch(
-		authController.protect,
-		// authController.restrictTo("admin", "instructor"),
-		courseController.deleteCourseImage,
-		courseController.uploadCourseImage,
-		courseController.updateCourse
-	)
-	.delete(
-		authController.protect,
-		authController.restrictTo("admin", "instructor"),
-		courseController.deleteCourseImage
-	);
+  .route("/:id")
+  .get(courseController.isCourseInstructor, courseController.getCourse)
+  .patch(
+    authController.protect,
+    // authController.restrictTo("admin", "instructor"),
+    courseController.deleteCourseImage,
+    courseController.uploadCourseImage,
+    courseController.updateCourse
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin", "instructor"),
+    courseController.deleteCourseImage
+  );
 
 module.exports = router;
