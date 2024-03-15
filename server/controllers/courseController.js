@@ -186,17 +186,20 @@ exports.deleteCourse = handlerFactory.deleteOne(Course);
 
 exports.isCourseInstructor = catchAsync(async (req, res, next) => {
   const courseId = req.params.id;
-  console.log(courseId);
 
   const course = await Course.findById(courseId);
 
-  console.log(course.instructors); //return null array (no instructors)
+  // const userId = req.body;
+
+  console.log(req);
+
+  console.log(course.instructors[0].id); //return null array (no instructors)
   //
   if (!course) {
     return res.sendStatus("404");
   }
 
-  if (!course.instructors.includes("65d0c32fd8b048eeb371b8fb")) {
+  if (!(course.instructors[0].id === userId)) {
     return res.sendStatus("403");
   }
 
