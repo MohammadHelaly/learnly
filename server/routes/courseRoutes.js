@@ -40,7 +40,11 @@ router.route("/").get(courseController.getAllCourses).post(
 
 router
   .route("/:id")
-  .get(courseController.isCourseInstructor, courseController.getCourse)
+  .get(
+    authController.protect,
+    courseController.isCourseInstructor,
+    courseController.getCourse
+  )
   .patch(
     authController.protect,
     // authController.restrictTo("admin", "instructor"),

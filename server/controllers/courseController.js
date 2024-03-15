@@ -189,12 +189,8 @@ exports.isCourseInstructor = catchAsync(async (req, res, next) => {
 
   const course = await Course.findById(courseId);
 
-  // const userId = req.body;
+  const userId = req.user.id;
 
-  console.log(req);
-
-  console.log(course.instructors[0].id); //return null array (no instructors)
-  //
   if (!course) {
     return res.sendStatus("404");
   }
