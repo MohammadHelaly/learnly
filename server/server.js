@@ -76,15 +76,19 @@ io.on("connection", (socket) => {
 
 	socket.on("newMessage", (newMessage) => {
 		if (newMessage && newMessage.channel) {
+			console.log("new message", newMessage);
 			socket.in(newMessage.channel).emit("message received", newMessage);
 		} else {
+			console.error(newMessage);
 			console.error("Invalid message format:", newMessage);
 		}
 	});
 
-	socket.on("EditedMessage", (newcontent, date, channel) => {
-		if (newcontent && channel) {
-			socket.in(channel).emit("new edited message", newcontent, date);
+	socket.on("EditedMessage", (newContent) => {
+		if (newContent && newContent.channel) {
+			socket
+				.in(newContent.channel)
+				.emit("new edited message", newContent);
 		}
 	});
 });

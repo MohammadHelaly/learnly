@@ -85,7 +85,7 @@ const MessageBubble = (props: MessageBubbleProps) => {
 	};
 
 	const onSubmit = (data: MessageSchemaType) => {
-		handleEdit(data);
+		handleEdit({ ...data, edited: true });
 	};
 
 	const deleteMessage = () => {

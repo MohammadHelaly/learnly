@@ -103,12 +103,9 @@ const Channel = (props: ChannelProps) => {
 	useEffect(() => {
 		if (!socket) return;
 
-		const receiveEditedMessage = (
-			newContent: Partial<Message>,
-			date: string
-		) => {
+		const receiveEditedMessage = (newContent: Partial<Message>) => {
 			const updatedMessages = allMessages.map((message) => {
-				if (message.createdAt === date) {
+				if (message._id === newContent._id) {
 					return { ...message, ...newContent };
 				} else {
 					return message;
@@ -156,12 +153,10 @@ const Channel = (props: ChannelProps) => {
 	const editMessage = (message: Partial<Message>) => {
 		const updatedMessages = allMessages.map((existingMessage) => {
 			if (existingMessage._id === message._id) {
-				socket?.emit(
-					"EditedMessage",
-					message,
-					existingMessage.createdAt,
-					channelId
-				);
+				socket?.emit("EditedMessage", {
+					...existingMessage,
+					...message,
+				});
 				return { ...existingMessage, ...message };
 			} else {
 				return existingMessage;
