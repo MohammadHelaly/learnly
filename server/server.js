@@ -82,12 +82,9 @@ io.on("connection", (socket) => {
 		}
 	});
 
-	socket.on("EditedMessage", (newcontent,date,channel) => {
+	socket.on("EditedMessage", (newcontent, date, channel) => {
 		if (newcontent && channel) {
-			socket.in(channel).emit("new edited message", newcontent,date);
-		} 
+			socket.in(channel).emit("new edited message", newcontent, date);
+		}
 	});
-
-
-
 });

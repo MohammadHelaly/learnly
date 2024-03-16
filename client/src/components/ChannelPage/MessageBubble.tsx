@@ -1,182 +1,235 @@
 import { useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
-import { Card, CardContent, Typography, Avatar, Box,Button, TextField } from "@mui/material";
-import Delete from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import api from "../../api";
+import {
+	Card,
+	CardContent,
+	Typography,
+	Avatar,
+	Box,
+	Button,
+	TextField,
+} from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import formatDate from "../../helpers/formatDate";
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+	content: z
+		.string()
+		.min(1, "Message must not be empty")
+		.max(4000, "Message must not exceed 4000 characters"),
+});
+
+type MessageSchemaType = z.infer<typeof schema>;
+
 interface MessageBubbleProps {
-	msg: Partial<Message>;
-	editmsg:(message:string,date:string)=>void;
-	
+	message: Partial<Message>;
+	editMessage: (message: Partial<Message>) => void;
 }
 
-function getTimeDifference(dateString: string): string {
-	const inputDate = new Date(dateString);
-	const currentDate = new Date();
-	const timeDifference = currentDate.getTime() - inputDate.getTime();
-	const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-	const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+const MessageBubble = (props: MessageBubbleProps) => {
+	const { message, editMessage } = props;
 
-	if (minutesDifference < 1) {
-		return "just now";
-	} else if (minutesDifference < 60) {
-		return `${minutesDifference} minutes ago`;
-	} else {
-		return `${hoursDifference} hour${hoursDifference !== 1 ? "s" : ""} ago`;
-	}
-}
+	const {
+		control,
+		handleSubmit,
+		watch,
+		formState: { errors, isDirty },
+	} = useForm<MessageSchemaType>({
+		mode: "onBlur",
+		resolver: zodResolver(schema),
+		defaultValues: {
+			content: message.content,
+		},
+	});
 
+	const queryClient = useQueryClient();
 
-const MessageBubble: React.FC<MessageBubbleProps> = ({ msg,editmsg }) => {
-	const  message  = msg;
 	const authContext = useContext(AuthContext);
 	const user = authContext.user;
-    const [isEditing, setIsEditing] = useState(false);
-	const [EditedMsg, SetNewMsg] = useState(message.content);
 
+	const [isEditing, setIsEditing] = useState(false);
 
-  const handleEdit = () => {
-	setIsEditing(!isEditing)
-  };
+	const isCurrentUserMessage = message.sender?.id === user?.id;
+	const isDeleted = message.deleted;
 
-  	if(message.content==="Deleted Message"){
-		return(
-		<Card
-			sx={{
-				borderRadius: 6,
-				display: "flex",
-				flexDirection: "column",
-				overflowWrap: "anywhere",
-				backgroundColor: "#B5C0D0",
-				alignSelf:
-					message?.sender?.id === user?.id
-						? "flex-end"
-						: "flex-start",
-				width: window.innerWidth > 600 ? "50%" : "80%",
-				boxShadow: "none",
-			}}>
-			
-			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
-				<Avatar
-					src={message?.sender?.photo?.url}
-					sx={{ marginRight: 1, bgcolor: "black" }}>
-					{message?.sender?.name.slice(0, 1)}
-				</Avatar>
-				
-				<Typography variant="h5" >
-					Deleted Message
-				</Typography>
-			</CardContent>
-		</Card>
-		)
-	}
+	const toggleEdit = () => {
+		setIsEditing(!isEditing);
+	};
+
+	console.log(message.content);
+
+	const { mutate, isPending, isError } = useMutation({
+		mutationFn: async (data: any) =>
+			api.patch(`/channels/${message.channel}/messages/${message._id}`, {
+				...data,
+			}),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: ["channel", { channelId: message.channel }],
+			});
+		},
+		onError: (error) => {
+			console.error("Error editing message", error);
+			alert("Error editing message. Please try again later.");
+		},
+	});
+
+	const handleEdit = (data: Partial<Message>) => {
+		if (!data.deleted && !data.content) return;
+		mutate(data);
+		editMessage({ ...message, ...data });
+		setIsEditing(false);
+	};
+
+	const onSubmit = (data: MessageSchemaType) => {
+		handleEdit(data);
+	};
+
+	const deleteMessage = () => {
+		handleEdit({ deleted: true, content: "Deleted message." });
+	};
+
+	const renderActions = () => {
+		if (isDeleted || !isCurrentUserMessage) return null;
+		return (
+			<Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
+				<Edit sx={{ color: "white" }} onClick={toggleEdit} />
+				<Delete sx={{ color: "white" }} onClick={deleteMessage} />
+			</Box>
+		);
+	};
 
 	return (
-		<>
-		<Card
+		<Box
 			sx={{
-				borderRadius: 6,
+				gap: 1,
 				display: "flex",
 				flexDirection: "column",
-				overflowWrap: "anywhere",
-				backgroundColor:
-					message?.sender?.id === user?.id ? "#00f3b6" : "#9c27b0",
-				alignSelf:
-					message?.sender?.id === user?.id
-						? "flex-end"
-						: "flex-start",
+				alignSelf: isCurrentUserMessage ? "flex-end" : "flex-start",
 				width: window.innerWidth > 600 ? "50%" : "80%",
-				boxShadow: "none",
 			}}>
-			<CardContent
+			<Card
 				sx={{
+					borderRadius: 6,
 					display: "flex",
-					flexDirection: "row",
-					alignItems: "center",
+					flexDirection: "column",
+					overflowWrap: "anywhere",
+					backgroundColor: isDeleted
+						? "lightgrey"
+						: isCurrentUserMessage
+						? "primary.dark"
+						: "white",
+					boxShadow: "none",
 				}}>
-				<Avatar
-					src={message?.sender?.photo?.url}
-					sx={{ marginRight: 1, bgcolor: "black" }}>
-					{message?.sender?.name.slice(0, 1)}
-				</Avatar>
-				<Box>
-					<Typography sx={{ fontWeight: "bold" }} color="black">
-						{message?.sender?.id === user?.id
-							? "You"
-							: message?.sender?.name}
+				<CardContent
+					sx={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+					}}>
+					<Avatar
+						src={message.sender?.photo?.url}
+						sx={{
+							marginRight: 1,
+							backgroundColor: isDeleted
+								? "black"
+								: isCurrentUserMessage
+								? "white"
+								: "#B5C0D0",
+							color: isDeleted
+								? "white"
+								: isCurrentUserMessage
+								? "primary.dark"
+								: "white",
+						}}>
+						{message.sender?.name.slice(0, 1)}
+					</Avatar>
+					<Box>
+						<Typography
+							sx={{
+								fontWeight: "bold",
+								color:
+									!isCurrentUserMessage || isDeleted
+										? "black"
+										: "white",
+							}}>
+							{isCurrentUserMessage
+								? "You"
+								: message.sender?.name}
+						</Typography>
+						<Typography
+							sx={{
+								fontSize: 12,
+								color:
+									!isCurrentUserMessage || isDeleted
+										? "black"
+										: "white",
+							}}>
+							{formatDate(message.createdAt as string)}{" "}
+							{message.edited && !message.deleted && "(edited)"}
+						</Typography>
+					</Box>
+					{renderActions()}
+				</CardContent>
+				<CardContent sx={{ display: "flex", flexDirection: "column" }}>
+					<Typography
+						variant="h6"
+						sx={{
+							color:
+								isDeleted || !isCurrentUserMessage
+									? "black"
+									: "white",
+						}}>
+						{isDeleted ? "Deleted message." : message.content}
 					</Typography>
-					<Typography color="text.secondary" sx={{ fontSize: 12 }}>
-						{getTimeDifference(message.createdAt as string)}
-					</Typography>
-				</Box>
-				{message?.sender?.id === user?.id && (
-          <Box sx={{ marginLeft: "auto", display:"flex"}}>
-			{message?.sender?.id === user?.id && (
-					<EditIcon onClick={handleEdit} sx={{
-						marginRight: "2%", 
-						
-					}} />
-				)}
-			{message?.sender?.id === user?.id && (
-  					<Delete onClick={() => editmsg("Deleted Message",message?.createdAt?.toString() || "defaultDateString")} />
-  				)}
-          </Box>
-        )}
-			</CardContent>
-			<CardContent sx={{ display: "flex", flexDirection: "column" }}>
-				<Typography variant="h5" sx={{ fontWeight: "bold" }}>
-					{message.content}
-				</Typography>
-			</CardContent>
-		</Card>
-		{isEditing && (
-		<Box sx={{display:"flex"}}>
-		<TextField
-			onChange={(e)=>{SetNewMsg(e.target.value)}}				
-			size="small"
-			multiline									
-			defaultValue={message.content}
-			sx={{
-			backgroundColor:
-			"transparent",
-			width:"90%",
-			paddingRight:"3%"
-			}}
-			placeholder="Send a message..."
-			InputProps={{
-			sx: {
-			borderRadius: 5,
-			px: 2,
-			backgroundColor:
-			"white",
-			},
-			}}									
-			/>
-			<Button
-				type="submit"
-				onClick={()=>{
-					if(EditedMsg?.length===0){
-						setIsEditing(false)		
-						return;
-					}
-					if(message?.content ){
-						editmsg(EditedMsg||"",message?.createdAt?.toString() || "defaultDateString")
-					}							
-					setIsEditing(false)		
-							}
-						}
-				variant="outlined"
-				size="large"
-				endIcon={<EditIcon />}
-				sx={{
-				backgroundColor: "white",
-				color: "primary.main",
-				width:"10%",
-				}}>
-				Edit
-			</Button>
+				</CardContent>
+			</Card>
+			{isEditing && (
+				<form onSubmit={handleSubmit(onSubmit)} noValidate>
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							gap: 2,
+						}}>
+						<Controller
+							name="content"
+							control={control}
+							render={({ field }) => (
+								<TextField
+									{...field}
+									size="small"
+									multiline
+									defaultValue={message.content}
+									sx={{
+										backgroundColor: "transparent",
+										flexGrow: 1,
+									}}
+									placeholder="Edit your message..."
+									InputProps={{
+										sx: { borderRadius: 5, px: 2 },
+									}}
+								/>
+							)}
+						/>
+						<Button
+							type="submit"
+							color="primary"
+							variant="outlined"
+							size="large"
+							endIcon={<Edit />}>
+							Edit
+						</Button>
+					</Box>
+				</form>
+			)}
 		</Box>
-		)}
-		</>
 	);
 };
 

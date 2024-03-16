@@ -98,10 +98,12 @@ interface Channel {
 }
 
 interface Message {
-	id: number | string;
+	_id: number | string;
 	sender: Pick<User, "id" | "name" | "photo">;
 	content: string;
 	channel: number | string;
 	readBy?: string[];
 	createdAt: string | Date;
+	edited: boolean;
+	deleted: boolean;
 }
