@@ -154,7 +154,6 @@ const Channel = (props: ChannelProps) => {
 	}, [watch]);
 
 	const editMessage = (message: Partial<Message>) => {
-		console.log("EDITO:", message);
 		const updatedMessages = allMessages.map((existingMessage) => {
 			if (existingMessage._id === message._id) {
 				socket?.emit(

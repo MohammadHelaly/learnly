@@ -61,8 +61,6 @@ const MessageBubble = (props: MessageBubbleProps) => {
 		setIsEditing(!isEditing);
 	};
 
-	console.log(message.content);
-
 	const { mutate, isPending, isError } = useMutation({
 		mutationFn: async (data: any) =>
 			api.patch(`/channels/${message.channel}/messages/${message._id}`, {
