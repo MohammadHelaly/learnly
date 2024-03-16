@@ -6,7 +6,6 @@ const CatchAsync = require("../utils/catchAsync");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
 const fs = require("fs");
-const { getVideoDurationInSeconds } = require("get-video-duration");
 
 const awsConfig = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
