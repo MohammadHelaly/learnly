@@ -46,7 +46,8 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		select: (response) => response.data.data.data.sections,
 	});
 
-	const [Contentsections, setContentSections] = useState([] as Section[]);
+	const [sectionsContent, setSectionsContent] = useState([] as Section[]);
+
 	const handleSectionDrag = (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
@@ -59,17 +60,18 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 	) => {
 		const movingSectionIndex = Number(e.dataTransfer.getData("itemIndex"));
 		const targetItemIndex = index;
-		let allSections = [...Contentsections];
+		let allSections = [...sectionsContent];
 
 		let movingSection = allSections[movingSectionIndex];
 		allSections.splice(movingSectionIndex, 1);
 		allSections.splice(targetItemIndex, 0, movingSection);
-		setContentSections(allSections);
+		setSectionsContent(allSections);
 
-		const updatedCourse = await api.put(`courses/${courseId}`, {
+		await api.put(`courses/${courseId}`, {
 			sections: allSections,
 		});
 	};
+
 	const handleModuleDrag = (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number,
@@ -78,6 +80,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		e.dataTransfer.setData("moduleId", index.toString());
 		e.dataTransfer.setData("sectionId", sectionId.toString());
 	};
+
 	const handleModuleDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number,
@@ -86,7 +89,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		const movingModuleIndex = Number(e.dataTransfer.getData("moduleId"));
 		const movingSectionId = e.dataTransfer.getData("sectionId");
 		if (sectionId === movingSectionId) {
-			const updatedSections = Contentsections.map((section) => {
+			const updatedSections = sectionsContent.map((section) => {
 				if (section.id === sectionId) {
 					const updatedModules = [...section.modules];
 					const movedModule = updatedModules.splice(
@@ -101,7 +104,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 				}
 				return section;
 			});
-			setContentSections(updatedSections);
+			setSectionsContent(updatedSections);
 
 			await api.put(`sections/${sectionId}`, {
 				modules: updatedSections.find(
@@ -113,22 +116,60 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 
 	const handleSectionRemoval = (sectionId: number | string) => {
 		api.delete(`sections/${sectionId}`);
+
 		alert("Section removed");
-		const updatedSections = Contentsections.filter(
+		const updatedSections = sectionsContent.filter(
 			(section) => section.id !== sectionId
 		);
-		setContentSections(updatedSections);
+		setSectionsContent(updatedSections);
 	};
+
 	useEffect(() => {
-		console.log(sections);
 		if (sections) {
-			setContentSections(sections);
+			setSectionsContent(sections);
+			console.log("USE EFFECT IS RUNNING");
+			for (let i = 0; i < sections.length; i++) {
+				updateSectionDuration(sections[i]);
+			}
+			// updateCourseDuration();
 		}
 	}, [sections]);
 
+	const updateCourseDuration = async () => {
+		let duration = 0;
+		for (let i = 0; i < sectionsContent.length; i++) {
+			let section = sectionsContent[i];
+			for (let j = 0; j < section.modules.length; j++) {
+				duration += section.modules[j]?.duration ?? 0;
+			}
+		}
+		duration = duration / 60;
+		duration = Math.round(duration);
+		await api.patch(`courses/${courseId}`, {
+			duration,
+		});
+	};
+
+	const updateSectionDuration = async (section: Section) => {
+		let duration = 0;
+
+		console.log(section);
+		if (!section) return;
+		for (let i = 0; i < section?.modules.length; i++) {
+			duration += section?.modules[i]?.duration ?? 0;
+		}
+		duration = duration / 60;
+		duration = Math.round(duration);
+		section.duration = duration;
+
+		// await api.patch(`sections/${section.id}`, {
+		// 	...section,
+		// });
+	};
+
 	return (
 		<Stack alignItems="center">
-			{Contentsections?.map((section: Section, index: number) => {
+			{sectionsContent?.map((section: Section, index: number) => {
 				const { id, title, description, modules } = section;
 				let duration = 0;
 				for (let i = 0; i < modules.length; i++) {
@@ -136,6 +177,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 				}
 				duration = duration / 60;
 				duration = Math.round(duration);
+
 				return (
 					<Accordion
 						onDragOver={(e) => e.preventDefault()}

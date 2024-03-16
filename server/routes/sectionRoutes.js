@@ -18,6 +18,15 @@ router
 	//DELETE MODULE HERE
 	.delete(authController.protect, sectionController.deleteModule);
 
+router.route("/:id/modules").patch(
+	authController.protect,
+	// authController.restrictTo("user", "admin"),
+	////////////////////////////////////////////////
+	// TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
+	////////////////////////////////////////////////
+	sectionController.addModule
+);
+
 router
 	.route("/:id")
 	.get(sectionController.getSection)
@@ -27,7 +36,7 @@ router
 		////////////////////////////////////////////////
 		// TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
 		////////////////////////////////////////////////
-		sectionController.addModule
+		sectionController.updateSection
 	)
 	.delete(
 		authController.protect,

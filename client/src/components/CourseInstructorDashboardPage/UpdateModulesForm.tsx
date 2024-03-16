@@ -74,9 +74,12 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		isPending: isPendingModule,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.patch(`/courses/${courseId}/sections/${sectionId}`, {
-				...data,
-			});
+			return api.patch(
+				`/courses/${courseId}/sections/${sectionId}/modules`,
+				{
+					...data,
+				}
+			);
 		},
 		onSuccess: (response) => {
 			alert("Module added successfully");
@@ -101,12 +104,14 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				disabled={isPendingModule}
 				sx={{ color: "black" }}
 				startIcon={<AddCircleOutlined />}
-				onClick={handleOpenModuleForm}>
+				onClick={handleOpenModuleForm}
+			>
 				<Typography
 					variant="h6"
 					sx={{
 						fontWeight: "400",
-					}}>
+					}}
+				>
 					Add New Module
 				</Typography>
 			</Button>
@@ -117,7 +122,8 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				onClose={handleCloseModuleForm}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Add New Module"
@@ -140,7 +146,8 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 					<form
 						onSubmit={moduleHandleSubmit(onSubmitModule)}
 						autoComplete="off"
-						noValidate>
+						noValidate
+					>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -163,7 +170,8 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 								disableElevation
 								fullWidth
 								size="large"
-								type="submit">
+								type="submit"
+							>
 								Save New Module
 							</Button>
 						</Stack>

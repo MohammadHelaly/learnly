@@ -49,7 +49,8 @@ const InstructorDashboard = () => {
 					variant="contained"
 					color="primary"
 					size="large"
-					disableElevation>
+					disableElevation
+				>
 					Create a Course
 				</Button>
 			</StyledNavLink>
