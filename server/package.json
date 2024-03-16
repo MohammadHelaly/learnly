@@ -19,6 +19,7 @@
 		"express-formidable": "^1.2.0",
 		"express-mongo-sanitize": "^2.2.0",
 		"express-rate-limit": "^6.9.0",
+		"get-video-duration": "^4.1.0",
 		"helmet": "^7.0.0",
 		"hpp": "^0.2.3",
 		"html-to-text": "^9.0.5",
