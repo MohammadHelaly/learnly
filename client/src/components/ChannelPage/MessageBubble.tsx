@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import AuthContext from "../../store/auth-context";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import api from "../../api";
 import {
 	Card,
@@ -27,7 +27,7 @@ const schema = z.object({
 type MessageSchemaType = z.infer<typeof schema>;
 
 interface MessageBubbleProps {
-	message: Partial<Message>;
+	message: Message;
 	editMessage: (message: Partial<Message>) => void;
 }
 
@@ -37,7 +37,6 @@ const MessageBubble = (props: MessageBubbleProps) => {
 	const {
 		control,
 		handleSubmit,
-		watch,
 		formState: { errors, isDirty },
 	} = useForm<MessageSchemaType>({
 		mode: "onBlur",
@@ -46,8 +45,6 @@ const MessageBubble = (props: MessageBubbleProps) => {
 			content: message.content,
 		},
 	});
-
-	const queryClient = useQueryClient();
 
 	const authContext = useContext(AuthContext);
 	const user = authContext.user;
@@ -62,13 +59,9 @@ const MessageBubble = (props: MessageBubbleProps) => {
 	};
 
 	const { mutate, isPending, isError } = useMutation({
-		mutationFn: async (data: any) =>
+		mutationFn: async (data: any) => {
 			api.patch(`/channels/${message.channel}/messages/${message._id}`, {
 				...data,
-			}),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ["channel", { channelId: message.channel }],
 			});
 		},
 		onError: (error) => {
@@ -93,7 +86,8 @@ const MessageBubble = (props: MessageBubbleProps) => {
 	};
 
 	const renderActions = () => {
-		if (isDeleted || !isCurrentUserMessage) return null;
+		if (isDeleted || !isCurrentUserMessage || message._id == undefined)
+			return null;
 		return (
 			<Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
 				<Edit sx={{ color: "white" }} onClick={toggleEdit} />
@@ -145,7 +139,7 @@ const MessageBubble = (props: MessageBubbleProps) => {
 								? "primary.dark"
 								: "white",
 						}}>
-						{message.sender?.name.slice(0, 1)}
+						{message.sender?.name?.slice(0, 1)}
 					</Avatar>
 					<Box>
 						<Typography

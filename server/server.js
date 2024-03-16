@@ -76,7 +76,6 @@ io.on("connection", (socket) => {
 
 	socket.on("newMessage", (newMessage) => {
 		if (newMessage && newMessage.channel) {
-			console.log("new message", newMessage);
 			socket.in(newMessage.channel).emit("message received", newMessage);
 		} else {
 			console.error(newMessage);

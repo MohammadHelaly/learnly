@@ -59,7 +59,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 	const courseReviews = reviews ?? dummyReviews;
 
 	const dummyCourse = dummyCoursesData.find(
-		(course) => course.id === parseInt(courseId as string)
+		(course) => course.id === (courseId as string)
 		// (course) => course.id === (courseId ? parseInt(courseId))
 	);
 

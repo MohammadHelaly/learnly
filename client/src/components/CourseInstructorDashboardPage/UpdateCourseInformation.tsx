@@ -14,7 +14,7 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 	const { courseId } = props;
 
 	const dummyCourse = dummyCoursesData.find(
-		(course) => course.id === parseInt(courseId as string)
+		(course) => course.id === (courseId as string)
 	);
 
 	const {

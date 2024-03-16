@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Button, Box, Stack, TextField, Container } from "@mui/material";
 import { Send } from "@mui/icons-material";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import AuthContext from "../../store/auth-context";
 import { io, Socket } from "socket.io-client";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -38,14 +38,12 @@ const Channel = (props: ChannelProps) => {
 
 	const [socket, setSocket] = useState<Socket | null>(null);
 	const [socketConnected, setSocketConnected] = useState<boolean>(false);
-	const [message, setMessage] = useState<Partial<Message> | null>(null);
-	const [allMessages, setAllMessages] = useState<Partial<Message>[]>([]);
+	const [allMessages, setAllMessages] = useState<Message[]>([]);
 
 	const {
 		control,
 		handleSubmit,
 		reset,
-		watch,
 		formState: { errors },
 	} = useForm<MessageSchemaType>({
 		mode: "onBlur",
@@ -54,8 +52,6 @@ const Channel = (props: ChannelProps) => {
 			content: "",
 		},
 	});
-
-	const queryClient = useQueryClient();
 
 	const {
 		data: channel,
@@ -77,10 +73,17 @@ const Channel = (props: ChannelProps) => {
 				...data,
 			}),
 		onSuccess: (data) => {
-			console.log("Message sent successfully", data);
-			queryClient.invalidateQueries({
-				queryKey: ["channel", { courseId, channelId }],
-			});
+			const newMessage: Message = data.data.data.data;
+
+			newMessage.sender = {
+				id: user?.id as string,
+				name: user?.name as string,
+				photo: user?.photo,
+			};
+
+			setAllMessages((prevMessages) => [...prevMessages, newMessage]);
+
+			socket?.emit("newMessage", newMessage);
 		},
 		onError: (error) => {
 			console.error("Error sending message", error);
@@ -89,24 +92,26 @@ const Channel = (props: ChannelProps) => {
 	});
 
 	useEffect(() => {
-		if (!channelId) return;
+		if (!user || !channelId) return;
+
 		const newSocket: Socket = io(ENDPOINT);
 		setSocket(newSocket);
-		newSocket.emit("setup", user?.id);
+		newSocket.emit("setup", user.id);
 		newSocket.on("connection", () => setSocketConnected(true));
 		newSocket.emit("join chat", channelId);
+
 		return () => {
 			newSocket.close();
 		};
-	}, []);
+	}, [user, channelId]);
 
 	useEffect(() => {
 		if (!socket) return;
 
-		const receiveEditedMessage = (newContent: Partial<Message>) => {
+		const receiveEditedMessage = (newContent: Message) => {
 			const updatedMessages = allMessages.map((message) => {
 				if (message._id === newContent._id) {
-					return { ...message, ...newContent };
+					return newContent;
 				} else {
 					return message;
 				}
@@ -116,7 +121,6 @@ const Channel = (props: ChannelProps) => {
 		socket.on("new edited message", receiveEditedMessage);
 
 		const messageReceived = (newMessage: Message) => {
-			console.log("new message:", newMessage.content);
 			setAllMessages((prevMessages) => [...prevMessages, newMessage]);
 		};
 		socket.on("message received", messageReceived);
@@ -127,37 +131,15 @@ const Channel = (props: ChannelProps) => {
 	}, [socket, allMessages]);
 
 	useEffect(() => {
-		if (channel?.messages) {
-			setAllMessages(channel.messages);
-		}
+		setAllMessages(channel?.messages);
 	}, [channel]);
-
-	useEffect(() => {
-		const subscription = watch((value) => {
-			if (user && channelId && value?.content) {
-				setMessage({
-					content: value?.content,
-					sender: {
-						id: user.id,
-						name: user.name,
-						photo: user.photo,
-					},
-					channel: channelId,
-				});
-			}
-		});
-
-		return () => subscription.unsubscribe();
-	}, [watch]);
 
 	const editMessage = (message: Partial<Message>) => {
 		const updatedMessages = allMessages.map((existingMessage) => {
 			if (existingMessage._id === message._id) {
-				socket?.emit("EditedMessage", {
-					...existingMessage,
-					...message,
-				});
-				return { ...existingMessage, ...message };
+				const updatedMessage = { ...existingMessage, ...message };
+				socket?.emit("EditedMessage", updatedMessage);
+				return updatedMessage;
 			} else {
 				return existingMessage;
 			}
@@ -167,15 +149,7 @@ const Channel = (props: ChannelProps) => {
 
 	const onSubmit = (data: MessageSchemaType) => {
 		sendMessage(data);
-
-		message && setAllMessages((prevMessages) => [...prevMessages, message]);
-
-		if (socket) {
-			socket.emit("newMessage", message);
-		}
-
 		reset();
-		setMessage(null);
 	};
 
 	return (
@@ -216,7 +190,7 @@ const Channel = (props: ChannelProps) => {
 									overflowY: "scroll",
 									scrollbarWidth: "none",
 								}}>
-								{allMessages.map((message, index) => (
+								{allMessages.map((message) => (
 									<MessageBubble
 										key={message._id}
 										message={message}
