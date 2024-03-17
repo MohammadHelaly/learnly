@@ -109,7 +109,7 @@ const Channel = (props: ChannelProps) => {
 		if (!socket) return;
 
 		const receiveEditedMessage = (newContent: Message) => {
-			const updatedMessages = allMessages.map((message) => {
+			const updatedMessages = allMessages?.map((message) => {
 				if (message._id === newContent._id) {
 					return newContent;
 				} else {
@@ -135,7 +135,7 @@ const Channel = (props: ChannelProps) => {
 	}, [channel]);
 
 	const editMessage = (message: Partial<Message>) => {
-		const updatedMessages = allMessages.map((existingMessage) => {
+		const updatedMessages = allMessages?.map((existingMessage) => {
 			if (existingMessage._id === message._id) {
 				const updatedMessage = { ...existingMessage, ...message };
 				socket?.emit("EditedMessage", updatedMessage);
@@ -190,7 +190,7 @@ const Channel = (props: ChannelProps) => {
 									overflowY: "scroll",
 									scrollbarWidth: "none",
 								}}>
-								{allMessages.map((message) => (
+								{allMessages?.map((message) => (
 									<MessageBubble
 										key={message._id}
 										message={message}

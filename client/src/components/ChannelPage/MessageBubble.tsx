@@ -10,6 +10,7 @@ import {
 	Box,
 	Button,
 	TextField,
+	IconButton,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import formatDate from "../../helpers/formatDate";
@@ -89,9 +90,13 @@ const MessageBubble = (props: MessageBubbleProps) => {
 		if (isDeleted || !isCurrentUserMessage || message._id == undefined)
 			return null;
 		return (
-			<Box sx={{ marginLeft: "auto", display: "flex", gap: 2 }}>
-				<Edit sx={{ color: "white" }} onClick={toggleEdit} />
-				<Delete sx={{ color: "white" }} onClick={deleteMessage} />
+			<Box sx={{ marginLeft: "auto", display: "flex" }}>
+				<IconButton onClick={toggleEdit}>
+					<Edit sx={{ color: "white" }} />
+				</IconButton>
+				<IconButton onClick={deleteMessage}>
+					<Delete sx={{ color: "white" }} />
+				</IconButton>
 			</Box>
 		);
 	};
