@@ -20,10 +20,9 @@ const CourseHighlights = (props: CourseHighlightsProps) => {
 				heading="This Course Includes"
 				headingAlignment="left"
 			/>
-			{
-				// isError ? (
-				// 	<ErrorWarning />
-				// ) :
+			{isError ? (
+				<ErrorWarning />
+			) : (
 				<Stack spacing={2}>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<OndemandVideoIcon
@@ -60,7 +59,7 @@ const CourseHighlights = (props: CourseHighlightsProps) => {
 						</Typography>
 					</Stack>
 				</Stack>
-			}
+			)}
 		</SectionWrapper>
 	);
 };

@@ -59,10 +59,9 @@ const CourseInformation = (props: CourseInformationProps) => {
 						pb: 10,
 						pt: window.innerWidth > 600 ? 10 : 0,
 					}}>
-					{
-						// isError ? (
-						// 	<ErrorWarning />
-						// ) :
+					{isError ? (
+						<ErrorWarning />
+					) : (
 						<>
 							<Container
 								maxWidth="sm"
@@ -128,7 +127,7 @@ const CourseInformation = (props: CourseInformationProps) => {
 								/>
 							</Container>
 						</>
-					}
+					)}
 				</Stack>
 			</Container>
 		</SectionWrapper>

@@ -41,23 +41,22 @@ const NothingFoundMessage = (props: NothingFoundMessageProps) => {
 						</Button>
 					</StyledNavLink>
 				</>
-			) : variant === "instructorDashboard" ? (
-				<>
-					<Typography variant="h4" color="text.secondary">
-						You haven't created any courses yet. Get started by
-						creating a new course!
-					</Typography>
-					<StyledNavLink to="/dashboard/teach/courses/create">
-						<Button
-							variant="contained"
-							color="primary"
-							size="large"
-							disableElevation>
-							Create a Course
-						</Button>
-					</StyledNavLink>
-				</>
-			) : (
+			) : variant === "instructorDashboard" ? // <>
+			// 	<Typography variant="h4" color="text.secondary">
+			// 		You haven't created any courses yet. Get started by
+			// 		creating a new course!
+			// 	</Typography>
+			// 	<StyledNavLink to="/dashboard/teach/courses/create">
+			// 		<Button
+			// 			variant="contained"
+			// 			color="primary"
+			// 			size="large"
+			// 			disableElevation>
+			// 			Create a Course
+			// 		</Button>
+			// 	</StyledNavLink>
+			// </>
+			null : (
 				<Typography variant="h4" color="text.secondary">
 					Found nothing to show...
 				</Typography>

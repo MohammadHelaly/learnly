@@ -76,6 +76,7 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 						sx={{
 							textAlign:
 								window.innerWidth > 600 ? "left" : "center",
+							wordWrap: "break-word",
 						}}>
 						{name}
 					</Typography>
@@ -85,6 +86,7 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 							textAlign:
 								window.innerWidth > 600 ? "left" : "center",
 							maxWidth: window.innerWidth > 600 ? "70%" : "auto",
+							wordWrap: "break-word",
 						}}>
 						{summary}
 					</Typography>

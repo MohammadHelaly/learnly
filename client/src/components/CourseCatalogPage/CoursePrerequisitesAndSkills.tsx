@@ -31,10 +31,9 @@ const CoursePrerequisitesAndSkills = (
 				spacing={4}
 				alignItems="flex-start"
 				justifyContent="space-between">
-				{
-					// isError ? (
-					// 	<ErrorWarning />
-					// ) :
+				{isError ? (
+					<ErrorWarning />
+				) : (
 					<>
 						<Container
 							maxWidth="sm"
@@ -124,7 +123,7 @@ const CoursePrerequisitesAndSkills = (
 							</Grid>
 						</Container>
 					</>
-				}
+				)}
 			</Stack>
 		</SectionWrapper>
 	);

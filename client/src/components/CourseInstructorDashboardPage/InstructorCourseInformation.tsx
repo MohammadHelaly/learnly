@@ -46,8 +46,7 @@ const InstructorCourseInformation = (props: CourseInformationProps) => {
 			sx={{
 				backgroundColor: "#f5f5f5",
 				mt: window.innerWidth > 600 ? 8 : 7,
-			}}
-		>
+			}}>
 			<Container maxWidth="lg">
 				<Stack
 					direction={
@@ -59,12 +58,10 @@ const InstructorCourseInformation = (props: CourseInformationProps) => {
 					sx={{
 						pb: 10,
 						pt: window.innerWidth > 600 ? 10 : 0,
-					}}
-				>
-					{
-						// isError ? (
-						// 	<ErrorWarning />
-						// ) :
+					}}>
+					{isError ? (
+						<ErrorWarning />
+					) : (
 						<>
 							<Container
 								maxWidth="sm"
@@ -77,8 +74,7 @@ const InstructorCourseInformation = (props: CourseInformationProps) => {
 									flexDirection: "column",
 									display: "flex",
 									gap: 2,
-								}}
-							>
+								}}>
 								<CourseInformationContent
 									name={name}
 									summary={summary}
@@ -111,8 +107,7 @@ const InstructorCourseInformation = (props: CourseInformationProps) => {
 									alignItems: "center",
 									justifyContent: "center",
 									pb: window.innerWidth > 600 ? 0 : 4,
-								}}
-							>
+								}}>
 								<CourseImage
 									imageCover={imageCover}
 									name={name}
@@ -132,7 +127,7 @@ const InstructorCourseInformation = (props: CourseInformationProps) => {
 								/>
 							</Container>
 						</>
-					}
+					)}
 				</Stack>
 			</Container>
 		</SectionWrapper>

@@ -14,20 +14,19 @@ const Instructors = (props: InstructorsProps) => {
 	return (
 		<Container maxWidth="lg">
 			<Stack direction="column" gap={2} alignItems="center">
-				{
-					// isError ? (
-					// 	<ErrorWarning />
-					// ) :
-					isLoading
-						? Array(instructors?.length || 1)
-								.fill(null)
-								.map((_, index) => (
-									<SkeletonInstructorCard key={index} />
-								))
-						: instructors?.map((instructor, index) => (
-								<InstructorCard key={index} {...instructor} />
-						  ))
-				}
+				{isError ? (
+					<ErrorWarning />
+				) : isLoading ? (
+					Array(instructors?.length || 1)
+						.fill(null)
+						.map((_, index) => (
+							<SkeletonInstructorCard key={index} />
+						))
+				) : (
+					instructors?.map((instructor, index) => (
+						<InstructorCard key={index} {...instructor} />
+					))
+				)}
 			</Stack>
 		</Container>
 	);

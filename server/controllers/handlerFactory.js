@@ -16,10 +16,15 @@ exports.getAll = (Model) =>
 			.paginate();
 		const allDocuments = await features.query;
 
+		const count = await new APIFeatures(Model.find(auxFilter), req.query) // TODO: Find a way to avoid repeating the query
+			.filter()
+			.count();
+
 		res.status(200).json({
 			status: "success",
 			results: allDocuments.length,
 			data: { data: allDocuments },
+			count,
 		});
 	});
 

@@ -5,12 +5,16 @@ import AuthContext from "../../store/auth-context";
 import { Pagination } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
-import dummyCoursesData from "../../assets/data/dummyCoursesData";
 import StyledNavLink from "../UI/Links/StyledNavLink";
 import { Button } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import SectionHeader from "../UI/PageLayout/SectionHeader";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 const InstructorDashboard = () => {
 	const [page, setPage] = useState(1);
+
+	const limit = 3;
 
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
@@ -29,36 +33,62 @@ const InstructorDashboard = () => {
 			await api.get("/courses", {
 				params: {
 					page,
-					limit: 3,
+					limit,
 					instructors: {
 						in: user?.id,
 					},
 				},
 			}),
-		select: (response) => response.data.data.data,
+		select: (response) => response.data,
 	});
 
-	const courses = data ?? dummyCoursesData.slice(0, 3);
+	const courses = data?.data?.data;
 
-	const pagesCount = Math.ceil((courses?.length ?? 1) / 3);
+	const count = data?.count ?? 1;
+
+	const pagesCount = Math.ceil(count / limit);
 
 	return (
 		<PageWrapper>
-			<StyledNavLink to="/dashboard/teach/courses/create">
-				<Button
-					variant="contained"
-					color="primary"
-					size="large"
-					disableElevation>
-					Create a Course
-				</Button>
-			</StyledNavLink>
+			<SectionWrapper
+				sx={{
+					mb: 8,
+					mt: 0,
+					py: 0,
+					alignItems: "center",
+					display: "flex",
+					flexDirection: "column",
+				}}>
+				<SectionHeader
+					heading="Create a New Course"
+					headingAlignment="center"
+					sx={{
+						mb: 4,
+					}}
+				/>
+				<StyledNavLink to="/dashboard/teach/courses/create">
+					<Button
+						variant="contained"
+						disableElevation
+						color="primary"
+						aria-label="create course"
+						size="large"
+						sx={{
+							borderRadius: "100%",
+							width: 60,
+							height: 60,
+							mb: 4,
+						}}>
+						<Add fontSize="large" />
+					</Button>
+				</StyledNavLink>
+			</SectionWrapper>
 			<Courses
 				variant="instructorDashboard"
 				courses={courses}
 				isLoading={isLoading}
 				isError={isError}
-				maxLength={3}
+				maxLength={limit}
 			/>
 			<Pagination
 				count={pagesCount}

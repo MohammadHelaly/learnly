@@ -2,11 +2,9 @@ import { ChangeEvent, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import { Container, Pagination } from "@mui/material";
-import dummyCoursesData from "../../assets/data/dummyCoursesData";
 import CourseBanner from "../UI/Courses/Catalog/CourseBanner";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import Reviews from "../UI/Reviews/Reviews";
-import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -19,7 +17,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 	const { courseId } = props;
 	const [page, setPage] = useState(1);
 
-	const dummyReviews = dummyCourseReviewsData.slice(0, 9);
+	const limit = 9;
 
 	const pageChangeHandler = (event: ChangeEvent<unknown>, value: number) => {
 		setPage(value);
@@ -50,22 +48,19 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 			await api.get(`/courses/${courseId}/reviews`, {
 				params: {
 					page,
-					limit: 9,
+					limit,
 				},
 			}),
-		select: (response) => response.data.data.data,
+		select: (response) => response.data,
 	});
 
-	const courseReviews = reviews ?? dummyReviews;
+	const courseReviews = reviews?.data?.data;
 
-	const dummyCourse = dummyCoursesData.find(
-		(course) => course.id === (courseId as string)
-		// (course) => course.id === (courseId ? parseInt(courseId))
-	);
+	const count = reviews?.count ?? 1;
 
-	const course = data ?? dummyCourse;
+	const course = data;
 
-	const pagesCount = Math.ceil((courseReviews?.length ?? 1) / 9);
+	const pagesCount = Math.ceil(count / limit);
 
 	return (
 		<>
@@ -103,7 +98,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 							reviews={courseReviews}
 							isError={isErrorReviews}
 							isLoading={isLoadingReviews}
-							maxLength={9}
+							maxLength={limit}
 						/>
 					</SectionWrapper>
 				</Container>
