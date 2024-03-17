@@ -1,7 +1,7 @@
 /// <reference types="react-scripts" />
 
 interface User {
-	id: number | string;
+	id: string;
 	name: string;
 	email: string;
 	bio?: string;
@@ -10,13 +10,13 @@ interface User {
 	ratingsAverage: number;
 	ratingsQuantity: number;
 	students: number;
-	wishlist: (number | string)[];
-	coursesEnrolled: (number | string)[];
-	coursesCreated: (number | string)[];
+	wishlist: string[];
+	coursesEnrolled: string[];
+	coursesCreated: string[];
 }
 
 interface Review {
-	id: number | string;
+	id: string;
 	rating: number;
 	review: string;
 	createdAt: string | Date;
@@ -37,7 +37,7 @@ interface Instructor
 	> {}
 
 interface Course {
-	id: number | string;
+	id: string;
 	name: string;
 	imageCover: { url: string; key: string };
 	summary: string;
@@ -60,7 +60,7 @@ interface Course {
 }
 
 interface Section {
-	id: number | string;
+	id: string;
 	title: string;
 	description: string;
 	modules: Module[];
@@ -88,7 +88,7 @@ interface Search {
 }
 
 interface Channel {
-	id: number | string;
+	id: string;
 	name: string;
 	messages: Message[];
 	course: Pick<Course, "id">;
@@ -98,10 +98,12 @@ interface Channel {
 }
 
 interface Message {
-	id: number | string;
+	_id: string;
 	sender: Pick<User, "id" | "name" | "photo">;
 	content: string;
 	channel: number | string;
 	readBy?: string[];
 	createdAt: string | Date;
+	edited: boolean;
+	deleted: boolean;
 }

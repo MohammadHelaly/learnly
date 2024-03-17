@@ -6,9 +6,16 @@ const messageSchema = mongoose.Schema(
 		content: { type: String, trim: true },
 		channel: { type: mongoose.Schema.ObjectId, ref: "Channel" },
 		readBy: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+		edited: { type: Boolean, default: false },
+		deleted: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );
+
+messageSchema.pre("findOneAndUpdate", function (next) {
+	this._update.edited = true;
+	next();
+});
 
 messageSchema.pre(/^find/, function (next) {
 	this.populate({
