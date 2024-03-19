@@ -153,10 +153,11 @@ exports.getVideoKey = async (req, res, next) => {
 	next();
 };
 
-exports.deleteModuleVideo = (req, res, next) => {
+exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 	try {
 		const key = req.body.modules[req.params.moduleNumber].video.key;
 		req.body.modules[req.params.moduleNumber].video = undefined;
+		req.body.modules[req.params.moduleNumber].duration = undefined;
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
@@ -175,6 +176,31 @@ exports.deleteModuleVideo = (req, res, next) => {
 
 	// s3 delete
 };
+
+exports.deleteModuleVideo = (req, res) => {
+	try {
+		const key = req.body.modules[req.params.moduleNumber].video.key;
+		req.body.modules[req.params.moduleNumber].video = undefined;
+		req.body.modules[req.params.moduleNumber].duration = undefined;
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		};
+		console.log("Deleting from S3");
+		S3.deleteObject(params, (err) => {
+			if (err) {
+				console.log(err);
+				res.sendStatus(400);
+			}
+			res.sendStatus(200);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+
+	// s3 delete
+};
+
 // Assuming you have a Section model imported
 
 //Delete Section
@@ -203,16 +229,17 @@ exports.deleteSection = async (req, res) => {
 };
 
 //DELETE MODULE
-exports.deleteModule = async (req, res) => {
+exports.deleteModule = async (req, res, next) => {
 	const sectionId = req.params.id;
-	const module = req.params.moduleId;
+	const module = req.params.moduleNumber;
 
 	try {
-		const section = await Section.findByIdAndUpdate(
-			sectionId,
-			{ $pull: { modules: { _id: module } } },
-			{ new: true }
-		);
+		// const section = await Section.findByIdAndUpdate(
+		// 	sectionId,
+		// 	{ $pull: { modules: { _id: module } } },
+		// 	{ new: true }
+		// );
+		const section = await Section.findById(sectionId);
 
 		//const module = req.params
 		//   try {
@@ -224,22 +251,14 @@ exports.deleteModule = async (req, res) => {
 		if (!section) {
 			throw new Error(`Section with id ${sectionId} not found.`);
 		} else {
-			res.status(200).json({
-				status: "success",
-				message: `Module with id ${module} has been deleted from section with id ${sectionId}.`,
-				data: {
-					section: section,
-				},
-			});
+			section.modules.splice(module, 1);
+			req.body = section;
+			next();
 		}
 	} catch (error) {
 		console.error(
 			`Error deleting module from section ${sectionId}: ${error}`
 		);
-		res.status(500).json({
-			status: "error",
-			message: "Internal server error.",
-		});
 	}
 };
 

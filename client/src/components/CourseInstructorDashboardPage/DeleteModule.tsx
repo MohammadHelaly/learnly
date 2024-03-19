@@ -1,17 +1,18 @@
 import React from "react";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@mui/material";
 import api from "../../api";
 import { m } from "framer-motion";
-interface UploadModuleVideosFormProps {
+interface DeleteModuleProps {
 	courseId: number | string;
 	sectionId: number | string;
 	moduleNumber: number;
 }
 
-function DeleteModule(props: UploadModuleVideosFormProps) {
+function DeleteModule(props: DeleteModuleProps) {
 	const { courseId, sectionId, moduleNumber } = props;
+	const queryClient = useQueryClient();
 	const {
 		mutate: deleteModule,
 		isError: isModuleError,
@@ -19,13 +20,16 @@ function DeleteModule(props: UploadModuleVideosFormProps) {
 		isSuccess: isModuleSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(
-				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}`
-			);
+			return api.delete(`/sections/${sectionId}/modules/${moduleNumber}`);
+		},
+		onSuccess: () => {
+			alert("Module deleted successfully");
+			queryClient.invalidateQueries({
+				queryKey: ["sections", { courseId }],
+			});
 		},
 	});
 	const handleDeleteModule = async () => {
-		alert("Module deleted successfully");
 		deleteModule();
 	};
 	return (

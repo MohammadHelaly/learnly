@@ -66,7 +66,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		allSections.splice(targetItemIndex, 0, movingSection);
 		setContentSections(allSections);
 
-		const updatedCourse = await api.put(`courses/${courseId}`, {
+		await api.put(`courses/${courseId}`, {
 			sections: allSections,
 		});
 	};
@@ -111,12 +111,22 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		}
 	};
 
-	const handleSectionRemoval = (sectionId: number | string) => {
-		api.delete(`sections/${sectionId}`);
-		alert("Section removed");
-		const updatedSections = Contentsections.filter(
+	const handleSectionRemoval = async (sectionId: number | string) => {
+		const section = Contentsections.find(
+			(section) => section.id === sectionId
+		);
+
+		section?.modules?.forEach(async (modules, index) => {
+			await api.delete(`sections/${sectionId}/modules/${index}/video`);
+		});
+
+		let updatedSections = Contentsections.filter(
 			(section) => section.id !== sectionId
 		);
+
+		await api.delete(`sections/${sectionId}`);
+		alert("Section removed");
+
 		setContentSections(updatedSections);
 	};
 	useEffect(() => {

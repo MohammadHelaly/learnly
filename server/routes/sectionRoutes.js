@@ -16,15 +16,20 @@ router
 	.route("/:id/modules/:moduleNumber/video")
 	.patch(
 		sectionController.getVideoKey,
-		sectionController.deleteModuleVideo,
+		sectionController.deleteModuleVideoAndUpdateSection,
 		sectionController.updateSection
-	);
+	)
+	.delete(sectionController.getVideoKey, sectionController.deleteModuleVideo);
 
 router
 	.route("/:id/modules/:moduleNumber")
 	.post(formidable(), sectionController.uploadModuleVideo)
 	//DELETE MODULE HERE
-	.delete(authController.protect, sectionController.deleteModule);
+	.delete(
+		authController.protect,
+		sectionController.deleteModule,
+		sectionController.updateSection
+	);
 
 router
 	.route("/:id")
