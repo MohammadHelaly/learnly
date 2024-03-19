@@ -138,20 +138,36 @@ exports.uploadModuleVideo = async (req, res) => {
 	}
 };
 
-exports.deleteModuleVideo = (req, res) => {
+exports.getVideoKey = async (req, res, next) => {
+	const { id, moduleNumber } = req.params;
+	console.log(req.params);
+	const section = await Section.findById(id);
+
+	if (!section) {
+		throw new Error(`Section with id ${id} not found.`);
+	}
+
+	const videoKey = section.modules[moduleNumber].video.key;
+
+	req.body = section;
+	next();
+};
+
+exports.deleteModuleVideo = (req, res, next) => {
 	try {
-		const key = req.body.key;
+		const key = req.body.modules[req.params.moduleNumber].video.key;
+		req.body.modules[req.params.moduleNumber].video = undefined;
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
 		};
-
-		S3.deleteObject(params, (err, data) => {
+		console.log("Deleting from S3");
+		S3.deleteObject(params, (err) => {
 			if (err) {
 				console.log(err);
 				res.sendStatus(400);
 			}
-			res.send({ ok: true });
+			next();
 		});
 	} catch (err) {
 		console.log(err);

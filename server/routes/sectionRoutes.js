@@ -13,6 +13,14 @@ router.route("/").get(sectionController.getAllSections).post(
 );
 
 router
+	.route("/:id/modules/:moduleNumber/video")
+	.patch(
+		sectionController.getVideoKey,
+		sectionController.deleteModuleVideo,
+		sectionController.updateSection
+	);
+
+router
 	.route("/:id/modules/:moduleNumber")
 	.post(formidable(), sectionController.uploadModuleVideo)
 	//DELETE MODULE HERE

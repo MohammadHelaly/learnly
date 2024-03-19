@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 
-interface UploadModuleVideosFormProps {
+interface DeleteModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
 	moduleNumber: number;
@@ -29,10 +29,9 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DeleteModuleVideoForm = (props: UploadModuleVideosFormProps) => {
+const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 	const { courseId, sectionId, moduleNumber } = props;
 
-	//const [video, setVideo] = useState<File | undefined>(undefined);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
@@ -43,15 +42,21 @@ const DeleteModuleVideoForm = (props: UploadModuleVideosFormProps) => {
 	const queryClient = useQueryClient();
 
 	const {
-		mutate: deleteModule,
+		mutate: deleteVideo,
 		isError: isModuleError,
 		isPending: isPendingModule,
 		isSuccess: isModuleSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(
-				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}/video`
+			return api.patch(
+				`/sections/${sectionId}/modules/${moduleNumber}/video`
 			);
+		},
+		onSuccess: () => {
+			alert("Video deleted successfully");
+			queryClient.invalidateQueries({
+				queryKey: ["sections", { courseId }],
+			});
 		},
 	});
 
@@ -98,6 +103,9 @@ const DeleteModuleVideoForm = (props: UploadModuleVideosFormProps) => {
 							variant="contained"
 							disabled={isPendingModule}
 							startIcon={<DeleteIcon />}
+							onClick={() => {
+								deleteVideo();
+							}}
 							sx={{
 								mb: 2,
 								color: "white",
