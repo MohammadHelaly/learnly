@@ -143,6 +143,13 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 			let updatedSections = sections;
 
 			setSectionsContents(updatedSections);
+			let totalDuration = 0;
+			for (let i = 0; i < updatedSections.length; i++) {
+				totalDuration += updatedSections[i].duration;
+			}
+			api.patch(`courses/${courseId}`, {
+				duration: totalDuration,
+			});
 		}
 	}, [sections]);
 
