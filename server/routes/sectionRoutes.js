@@ -15,11 +15,16 @@ router.route("/").get(sectionController.getAllSections).post(
 router
 	.route("/:id/modules/:moduleNumber/video")
 	.patch(
+		authController.protect,
 		sectionController.getVideoKey,
 		sectionController.deleteModuleVideoAndUpdateSection,
 		sectionController.updateSection
 	)
-	.delete(sectionController.getVideoKey, sectionController.deleteModuleVideo);
+	.delete(
+		authController.protect,
+		sectionController.getVideoKey,
+		sectionController.deleteModuleVideo
+	);
 
 router
 	.route("/:id/modules/:moduleNumber")

@@ -6,6 +6,7 @@ import {
 	DialogTitle,
 	DialogContent,
 	Slide,
+	IconButton,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { Check, CloudUpload, Delete } from "@mui/icons-material";
@@ -41,7 +42,6 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		if (event) {
 			event.stopPropagation();
 		}
-
 		setOpenSectionForm(true);
 	};
 	const handleCloseSectionForm = (
@@ -85,11 +85,13 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 
 	return (
 		<>
-			<Button
-				sx={{}}
-				startIcon={<RemoveCircleOutlineIcon />}
+			<IconButton
+				sx={{ color: "primary.main", mx: 2 }}
+				//startIcon={<RemoveCircleOutlineIcon />}
 				onClick={handleOpenSectionForm}
-			></Button>
+			>
+				<RemoveCircleOutlineIcon />
+			</IconButton>
 			<Dialog
 				open={openSectionForm}
 				TransitionComponent={Transition}

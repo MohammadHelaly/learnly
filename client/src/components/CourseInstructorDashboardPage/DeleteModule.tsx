@@ -1,7 +1,7 @@
 import React from "react";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
 import api from "../../api";
 import { m } from "framer-motion";
 interface DeleteModuleProps {
@@ -34,9 +34,12 @@ function DeleteModule(props: DeleteModuleProps) {
 	};
 	return (
 		<>
-			<Button onClick={handleDeleteModule}>
+			<IconButton
+				sx={{ color: "primary.main", mx: 2 }}
+				onClick={handleDeleteModule}
+			>
 				<HighlightOffIcon />
-			</Button>
+			</IconButton>
 		</>
 	);
 }
