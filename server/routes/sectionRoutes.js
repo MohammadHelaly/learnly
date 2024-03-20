@@ -31,6 +31,8 @@ router
 		sectionController.updateSection
 	);
 
+router.route("/:id/updateSection").patch(sectionController.updateSection);
+
 router
 	.route("/:id")
 	.get(sectionController.getSection)

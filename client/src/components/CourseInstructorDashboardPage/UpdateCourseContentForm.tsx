@@ -46,30 +46,33 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		select: (response) => response.data.data.data.sections,
 	});
 
-	const [Contentsections, setContentSections] = useState([] as Section[]);
+	const [sectionsContents, setSectionsContents] = useState([] as Section[]);
+
 	const handleSectionDrag = (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
 	) => {
 		e.dataTransfer.setData("itemIndex", index.toString());
 	};
+
 	const handleSectionDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number
 	) => {
 		const movingSectionIndex = Number(e.dataTransfer.getData("itemIndex"));
 		const targetItemIndex = index;
-		let allSections = [...Contentsections];
+		let allSections = [...sectionsContents];
 
 		let movingSection = allSections[movingSectionIndex];
 		allSections.splice(movingSectionIndex, 1);
 		allSections.splice(targetItemIndex, 0, movingSection);
-		setContentSections(allSections);
+		setSectionsContents(allSections);
 
 		await api.put(`courses/${courseId}`, {
 			sections: allSections,
 		});
 	};
+
 	const handleModuleDrag = (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number,
@@ -78,6 +81,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		e.dataTransfer.setData("moduleId", index.toString());
 		e.dataTransfer.setData("sectionId", sectionId.toString());
 	};
+
 	const handleModuleDrop = async (
 		e: React.DragEvent<HTMLDivElement>,
 		index: number,
@@ -86,7 +90,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		const movingModuleIndex = Number(e.dataTransfer.getData("moduleId"));
 		const movingSectionId = e.dataTransfer.getData("sectionId");
 		if (sectionId === movingSectionId) {
-			const updatedSections = Contentsections.map((section) => {
+			const updatedSections = sectionsContents.map((section) => {
 				if (section.id === sectionId) {
 					const updatedModules = [...section.modules];
 					const movedModule = updatedModules.splice(
@@ -101,7 +105,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 				}
 				return section;
 			});
-			setContentSections(updatedSections);
+			setSectionsContents(updatedSections);
 
 			await api.put(`sections/${sectionId}`, {
 				modules: updatedSections.find(
@@ -112,7 +116,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 	};
 
 	const handleSectionRemoval = async (sectionId: number | string) => {
-		const section = Contentsections.find(
+		const section = sectionsContents.find(
 			(section) => section.id === sectionId
 		);
 
@@ -120,32 +124,48 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 			await api.delete(`sections/${sectionId}/modules/${index}/video`);
 		});
 
-		let updatedSections = Contentsections.filter(
+		let updatedSections = sectionsContents.filter(
 			(section) => section.id !== sectionId
 		);
 
 		await api.delete(`sections/${sectionId}`);
 		alert("Section removed");
 
-		setContentSections(updatedSections);
+		setSectionsContents(updatedSections);
 	};
 	useEffect(() => {
-		console.log(sections);
+		let totalDuration = 0;
 		if (sections) {
-			setContentSections(sections);
+			setSectionsContents(sections);
+
+			sections.forEach((section: Section) => {
+				const { id, modules } = section;
+
+				let duration = 0;
+				for (let i = 0; i < modules.length; i++) {
+					duration += modules[i]?.duration ?? 0;
+				}
+				console.log(duration);
+				duration = duration / 60;
+				duration = Math.round(duration);
+				section.duration = duration;
+				totalDuration += duration;
+				api.patch(`sections/${id}/updateSection`, {
+					duration: duration,
+				});
+			});
+
+			api.patch(`courses/${courseId}/updateCourse`, {
+				duration: totalDuration,
+			});
 		}
 	}, [sections]);
 
 	return (
 		<Stack alignItems="center">
-			{Contentsections?.map((section: Section, index: number) => {
-				const { id, title, description, modules } = section;
-				let duration = 0;
-				for (let i = 0; i < modules.length; i++) {
-					duration += modules[i]?.duration ?? 0;
-				}
-				duration = duration / 60;
-				duration = Math.round(duration);
+			{sectionsContents?.map((section: Section, index: number) => {
+				const { id, title, description, modules, duration } = section;
+
 				return (
 					<Accordion
 						onDragOver={(e) => e.preventDefault()}
