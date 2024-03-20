@@ -115,6 +115,7 @@ exports.uploadModuleVideo = async (req, res) => {
 		const section = await Section.findByIdAndUpdate(
 			id,
 			{
+				$inc: { duration: Math.round(duration) },
 				$set: {
 					[`modules.${moduleNumber}.video`]: video,
 					[`modules.${moduleNumber}.duration`]: duration,
@@ -156,18 +157,25 @@ exports.getVideoKey = async (req, res, next) => {
 exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 	try {
 		const key = req.body.modules[req.params.moduleNumber].video.key;
+
+		req.body.duration =
+			req.body.duration -
+			req.body.modules[req.params.moduleNumber].duration;
 		req.body.modules[req.params.moduleNumber].video = undefined;
 		req.body.modules[req.params.moduleNumber].duration = undefined;
+
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
 		};
+
 		console.log("Deleting from S3");
 		S3.deleteObject(params, (err) => {
 			if (err) {
 				console.log(err);
 				res.sendStatus(400);
 			}
+
 			next();
 		});
 	} catch (err) {
