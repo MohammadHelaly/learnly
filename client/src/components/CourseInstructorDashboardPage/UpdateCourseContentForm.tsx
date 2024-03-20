@@ -23,7 +23,7 @@ import StyledNavLink from "../UI/Links/StyledNavLink";
 import UploadModuleVideosForm from "./UploadModuleVideosForm";
 import DeleteModuleVideoForm from "./DeleteModuleVideoForm";
 import DeleteModule from "./DeleteModule";
-
+import DeleteSectionForm from "./DeleteSectionForm";
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
 }
@@ -115,31 +115,30 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		}
 	};
 
-	const handleSectionRemoval = async (sectionId: number | string) => {
-		const section = sectionsContents.find(
-			(section) => section.id === sectionId
-		);
+	// const handleSectionRemoval = async (sectionId: number | string) => {
+	// 	const section = sectionsContents.find(
+	// 		(section) => section.id === sectionId
+	// 	);
 
-		section?.modules?.forEach(async (modules, index) => {
-			if (modules?.video?.url) {
-				await api.delete(
-					`sections/${sectionId}/modules/${index}/video`
-				);
-			}
-		});
+	// 	section?.modules?.forEach(async (modules, index) => {
+	// 		if (modules?.video?.url) {
+	// 			await api.delete(
+	// 				`sections/${sectionId}/modules/${index}/video`
+	// 			);
+	// 		}
+	// 	});
 
-		let updatedSections = sectionsContents.filter(
-			(section) => section.id !== sectionId
-		);
+	// 	let updatedSections = sectionsContents.filter(
+	// 		(section) => section.id !== sectionId
+	// 	);
 
-		await api.delete(`sections/${sectionId}`);
-		alert("Section removed");
+	// 	await api.delete(`sections/${sectionId}`);
+	// 	alert("Section removed");
 
-		setSectionsContents(updatedSections);
-	};
+	// 	setSectionsContents(updatedSections);
+	// };
+
 	useEffect(() => {
-		let totalDuration = 0;
-		let changedFlag = false;
 		if (sections) {
 			let updatedSections = sections;
 
@@ -212,9 +211,14 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									} Minutes`}
 								</Typography>
 							</Stack>
-							<Button onClick={() => handleSectionRemoval(id)}>
+							{/* <Button onClick={() => handleSectionRemoval(id)}>
 								<RemoveCircleOutlineIcon />
-							</Button>
+							</Button> */}
+							<DeleteSectionForm
+								courseId={courseId}
+								sectionId={section.id}
+								section={section}
+							/>
 						</AccordionSummary>
 
 						<AccordionDetails
