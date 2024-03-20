@@ -121,7 +121,11 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		);
 
 		section?.modules?.forEach(async (modules, index) => {
-			await api.delete(`sections/${sectionId}/modules/${index}/video`);
+			if (modules?.video?.url) {
+				await api.delete(
+					`sections/${sectionId}/modules/${index}/video`
+				);
+			}
 		});
 
 		let updatedSections = sectionsContents.filter(
@@ -135,29 +139,11 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 	};
 	useEffect(() => {
 		let totalDuration = 0;
+		let changedFlag = false;
 		if (sections) {
-			setSectionsContents(sections);
+			let updatedSections = sections;
 
-			sections.forEach((section: Section) => {
-				const { id, modules } = section;
-
-				let duration = 0;
-				for (let i = 0; i < modules.length; i++) {
-					duration += modules[i]?.duration ?? 0;
-				}
-				console.log(duration);
-				duration = duration / 60;
-				duration = Math.round(duration);
-				section.duration = duration;
-				totalDuration += duration;
-				api.patch(`sections/${id}/updateSection`, {
-					duration: duration,
-				});
-			});
-
-			api.patch(`courses/${courseId}/updateCourse`, {
-				duration: totalDuration,
-			});
+			setSectionsContents(updatedSections);
 		}
 	}, [sections]);
 
