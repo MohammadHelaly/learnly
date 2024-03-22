@@ -168,10 +168,10 @@ exports.unsubscribeNewsletter = (req, res) => {
     const dataPost = JSON.stringify(data);
 
     const options = {
-      url: "https://us22.api.mailchimp.com/3.0/lists/7f3f7effdb",
+      url: `https://us22.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_AUDIENCE}`,
       method: "POST",
       headers: {
-        Authorization: "auth f774f86e6144927858ebb792b3a2ffdb-us22",
+        Authorization: `auth ${process.env.MAILCHIMP_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: dataPost,
