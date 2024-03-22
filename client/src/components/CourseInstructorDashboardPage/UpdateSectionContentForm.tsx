@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import {
-	Typography,
-	Stack,
 	Button,
+	Typography,
+	Slide,
+	Stack,
 	Dialog,
 	DialogTitle,
 	DialogContent,
-	Slide,
 	TextField,
 } from "@mui/material";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-import Popup from "../Popup/Popup";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
 import { Add, Check } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-interface UpdateSectionsFormProps {
+interface UpdateSectionContentFormProps {
+	title: string | undefined;
+	description: string | undefined;
+	sectionid: number | string;
 	courseId: number | string;
 }
 
@@ -45,31 +47,42 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
-	const { courseId } = props;
+function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
+	const { title, description, sectionid, courseId } = props;
 
 	const [openSectionForm, setOpenSectionForm] = useState(false);
 
 	const {
 		control: sectionControl,
 		handleSubmit: handleSectionSubmit,
-		reset: resetSection,
+
 		formState: { errors: sectionErrors },
 	} = useForm<AddSectionSchema>({
 		mode: "onBlur",
 		defaultValues: {
-			title: "",
-			description: "",
+			title: title,
+			description: description,
 		},
 		resolver: zodResolver(sectionSchema),
 	});
 
 	const queryClient = useQueryClient();
 
-	const handleOpenSectionForm = () => setOpenSectionForm(true);
-	const handleCloseSectionForm = () => {
+	const handleOpenSectionForm = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		event.stopPropagation();
+		setOpenSectionForm(true);
+	};
+
+	const handleCloseSectionForm = (
+		event?: React.MouseEvent<HTMLButtonElement>
+	) => {
+		if (event) {
+			event.stopPropagation();
+		}
 		setOpenSectionForm(false);
-		resetSection();
+		//resetSection();
 	};
 
 	const {
@@ -79,11 +92,12 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: Pick<Section, "title" | "description">) => {
-			return api.post(`/courses/${courseId}/sections`, {
+			return api.patch(`/sections/${sectionid}/updateSection`, {
 				...data,
 			});
 		},
 		onSuccess: (response) => {
+			alert("Section updated successfully");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
@@ -101,40 +115,36 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 
 	return (
 		<>
-			<Button
-				startIcon={<Add />}
-				disabled={isPendingSection}
-				fullWidth
-				size="large"
-				sx={{ color: "black", height: 56 }}
-				onClick={handleOpenSectionForm}
-			>
+			<Button onClick={handleOpenSectionForm}>
 				<Typography
-					variant="h6"
+					variant="h5"
 					sx={{
 						fontWeight: "400",
 					}}
 				>
-					Add New Section
+					{title}
 				</Typography>
 			</Button>
 			<Dialog
 				open={openSectionForm}
 				TransitionComponent={Transition}
 				keepMounted
-				onClose={handleCloseSectionForm}
+				onClose={(
+					event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+					reason: "backdropClick" | "escapeKeyDown"
+				) => handleCloseSectionForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Add New Section"
+						heading="Modify Section Information"
 						headingAlignment="left"
 						sx={{ mb: 0 }}
 					/>
 					<SectionHeader
-						heading="Add a new section to your course. Sections are used to organize your course content into topics. You can add modules to each section."
+						heading="Update the Section Title and Description."
 						isSubHeading
 						variant="h6"
 						headingAlignment="left"
@@ -191,15 +201,14 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 								type="submit"
 								fullWidth
 							>
-								Save New Section
+								Update Section
 							</Button>
 						</Stack>
 					</form>
 				</DialogContent>
 			</Dialog>
-			<Popup content="Section created" openPopup={isSuccess} />
 		</>
 	);
-};
+}
 
-export default UpdateSectionsForm;
+export default UpdateSectionContentForm;

@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-
+import Popup from "../Popup/Popup";
 interface DeleteSectionFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -59,13 +59,13 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		mutate: deleteSection,
 		isError: isModuleError,
 		isPending: isPendingModule,
-		isSuccess: isModuleSuccess,
+		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
 			return api.delete(`sections/${sectionId}`);
 		},
 		onSuccess: () => {
-			alert("Section deleted successfully");
+			alert("Section Removed");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
@@ -87,7 +87,6 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		<>
 			<IconButton
 				sx={{ color: "primary.main", mx: 2 }}
-				//startIcon={<RemoveCircleOutlineIcon />}
 				onClick={handleOpenSectionForm}
 			>
 				<RemoveCircleOutlineIcon />
@@ -140,6 +139,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 					</Stack>
 				</DialogContent>
 			</Dialog>
+			{/* <Popup content="Section Removed" openPopup={isSuccess} /> */}
 		</>
 	);
 };

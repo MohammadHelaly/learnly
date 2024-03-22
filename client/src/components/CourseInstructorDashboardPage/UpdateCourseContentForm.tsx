@@ -24,6 +24,8 @@ import UploadModuleVideosForm from "./UploadModuleVideosForm";
 import DeleteModuleVideoForm from "./DeleteModuleVideoForm";
 import DeleteModule from "./DeleteModule";
 import DeleteSectionForm from "./DeleteSectionForm";
+import UpdateSectionContentForm from "./UpdateSectionContentForm";
+
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
 }
@@ -198,14 +200,13 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									ml: 1,
 								}}
 							>
-								<Typography
-									variant="h5"
-									sx={{
-										fontWeight: "400",
-									}}
-								>
-									{title}
-								</Typography>
+								{" "}
+								<UpdateSectionContentForm
+									title={title}
+									description={description}
+									sectionid={id}
+									courseId={courseId}
+								/>
 								<Typography
 									variant="body1"
 									color="text.secondary"
