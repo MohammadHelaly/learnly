@@ -70,7 +70,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 		allSections.splice(targetItemIndex, 0, movingSection);
 		setSectionsContents(allSections);
 
-		await api.put(`courses/${courseId}`, {
+		await api.patch(`courses/${courseId}`, {
 			sections: allSections,
 		});
 	};
@@ -109,7 +109,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 			});
 			setSectionsContents(updatedSections);
 
-			await api.put(`sections/${sectionId}`, {
+			await api.patch(`sections/${sectionId}`, {
 				modules: updatedSections.find(
 					(section) => section.id === sectionId
 				)?.modules,

@@ -55,7 +55,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 	} = useMutation({
 		mutationFn: (data: FormData) => {
 			return api.post(
-				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}`,
+				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}/video`,
 				data,
 				{
 					headers: {

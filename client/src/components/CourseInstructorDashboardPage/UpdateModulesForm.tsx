@@ -18,6 +18,7 @@ import { AddCircleOutlined, Check } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Popup from "../Popup/Popup";
 
 interface UpdateModulesFormProps {
 	courseId: number | string;
@@ -72,14 +73,15 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		mutate: mutateModule,
 		isError: isMutateModuleError,
 		isPending: isPendingModule,
+		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.patch(`/courses/${courseId}/sections/${sectionId}`, {
+			return api.put(`/courses/${courseId}/sections/${sectionId}`, {
 				...data,
 			});
 		},
 		onSuccess: (response) => {
-			alert("Module added successfully");
+			//alert("Module added successfully");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
@@ -175,6 +177,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 					</form>
 				</DialogContent>
 			</Dialog>
+			<Popup content="Module created" openPopup={isSuccess} />
 		</>
 	);
 };

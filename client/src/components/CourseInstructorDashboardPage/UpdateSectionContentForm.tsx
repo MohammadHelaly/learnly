@@ -92,7 +92,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: Pick<Section, "title" | "description">) => {
-			return api.patch(`/sections/${sectionid}/updateSection`, {
+			return api.patch(`/courses/${courseId}/sections/${sectionid}`, {
 				...data,
 			});
 		},
