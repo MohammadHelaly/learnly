@@ -93,6 +93,18 @@ const Footer = () => {
 								Help and FAQs
 							</TextNavLink>
 						</li>
+						<li>
+							<TextNavLink
+								sx={{
+									color: " #000000",
+									fontSize: "1.25rem",
+									fontWeight: "300",
+								}}
+								to="/newsletter"
+								color="inherit">
+								Newsletter
+							</TextNavLink>
+						</li>
 					</SmallList>
 				</Grid>
 				<Stack
