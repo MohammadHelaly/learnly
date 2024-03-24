@@ -24,6 +24,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import "./App.css";
+import EditUserProfilePage from "./pages/EditUserProfilePage";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -158,6 +159,10 @@ function App() {
 						<Route
 							path="/channels/:channelId"
 							element={<ChannelPage />}
+						/>
+						<Route
+							path="/edit"
+							element={<EditUserProfilePage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
