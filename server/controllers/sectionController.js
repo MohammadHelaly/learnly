@@ -160,7 +160,7 @@ exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 
 		req.body.duration =
 			req.body.duration -
-			req.body.modules[req.params.moduleNumber].duration;
+			Math.round(req.body.modules[req.params.moduleNumber].duration);
 		req.body.modules[req.params.moduleNumber].video = undefined;
 		req.body.modules[req.params.moduleNumber].duration = undefined;
 
