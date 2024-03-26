@@ -25,6 +25,7 @@ import DeleteModuleVideoForm from "./DeleteModuleVideoForm";
 import DeleteModule from "./DeleteModule";
 import DeleteSectionForm from "./DeleteSectionForm";
 import UpdateSectionContentForm from "./UpdateSectionContentForm";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
@@ -250,33 +251,46 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								}
 								onDrop={(e) => handleModuleDrop(e, index, id)}
 							>
+								{" "}
 								<Stack
 									direction="row"
 									alignItems="center"
 									justifyContent="space-between"
 								>
 									{module?.video?.url ? (
-										<StyledNavLink
-											to={module?.video?.url}
-											rel="noreferrer"
-											target="_blank"
-											sx={{
-												display: "flex",
-												flexDirection: "row",
-												alignItems: "center",
-												gap: 1,
-												"&:hover": {
-													textDecoration: "underline",
-												},
-											}}
-										>
-											<PlayCircle fontSize="small" />
-											<Typography variant="body1">
-												{module?.title}
-											</Typography>
-										</StyledNavLink>
+										<Stack direction="row">
+											<Button
+												sx={{ pl: 3, color: "black" }}
+												startIcon={<EditIcon />}
+											></Button>
+											<StyledNavLink
+												to={module?.video?.url}
+												rel="noreferrer"
+												target="_blank"
+												sx={{
+													display: "flex",
+													flexDirection: "row",
+													alignItems: "center",
+													gap: 1,
+													"&:hover": {
+														textDecoration:
+															"underline",
+													},
+												}}
+											>
+												{" "}
+												<PlayCircle fontSize="small" />
+												<Typography variant="body1">
+													{module?.title}
+												</Typography>
+											</StyledNavLink>
+										</Stack>
 									) : (
 										<Typography variant="body1">
+											<Button
+												sx={{ pl: 3, color: "black" }}
+												startIcon={<EditIcon />}
+											></Button>
 											{module?.title}
 										</Typography>
 									)}
