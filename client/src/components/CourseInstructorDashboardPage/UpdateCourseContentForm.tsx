@@ -26,6 +26,7 @@ import DeleteModule from "./DeleteModule";
 import DeleteSectionForm from "./DeleteSectionForm";
 import UpdateSectionContentForm from "./UpdateSectionContentForm";
 import EditIcon from "@mui/icons-material/Edit";
+import UpdateModuleContentForm from "./UpdateModuleContentForm";
 
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
@@ -259,10 +260,13 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								>
 									{module?.video?.url ? (
 										<Stack direction="row">
-											<Button
-												sx={{ pl: 3, color: "black" }}
-												startIcon={<EditIcon />}
-											></Button>
+											<UpdateModuleContentForm
+												title={module?.title}
+												sectionid={section.id}
+												moduleIndex={index}
+												modules={section.modules}
+												courseId={courseId}
+											/>
 											<StyledNavLink
 												to={module?.video?.url}
 												rel="noreferrer"
@@ -287,10 +291,13 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 										</Stack>
 									) : (
 										<Typography variant="body1">
-											<Button
-												sx={{ pl: 3, color: "black" }}
-												startIcon={<EditIcon />}
-											></Button>
+											<UpdateModuleContentForm
+												title={module?.title}
+												sectionid={section.id}
+												moduleIndex={index}
+												modules={section.modules}
+												courseId={courseId}
+											/>
 											{module?.title}
 										</Typography>
 									)}
