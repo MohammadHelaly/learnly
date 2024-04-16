@@ -21,7 +21,7 @@ const CourseCatalogPage = () => {
 	const { courseId } = useParams();
 
 	const dummyCourse = dummyCoursesData.find(
-		(course) => course.id === parseInt(courseId as string)
+		(course) => course.id === (courseId as string)
 	);
 
 	const {

@@ -75,12 +75,19 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("newMessage", (newMessage) => {
-		// Corrected the event name to "message received"
 		if (newMessage && newMessage.channel) {
 			socket.in(newMessage.channel).emit("message received", newMessage);
 		} else {
+			console.error(newMessage);
 			console.error("Invalid message format:", newMessage);
 		}
-		// socket.in(newMessage.channel).emit("message received", newMessage);
+	});
+
+	socket.on("EditedMessage", (newContent) => {
+		if (newContent && newContent.channel) {
+			socket
+				.in(newContent.channel)
+				.emit("new edited message", newContent);
+		}
 	});
 });

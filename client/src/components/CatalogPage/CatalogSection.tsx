@@ -4,7 +4,6 @@ import api from "../../api";
 import { Pagination, Container } from "@mui/material";
 import SearchBar from "./SearchBar";
 import Courses from "../UI/Courses/Courses";
-import dummyCoursesData from "../../assets/data/dummyCoursesData";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 
 const CatalogSection = () => {
@@ -16,6 +15,8 @@ const CatalogSection = () => {
 		categories: undefined,
 		difficulty: undefined,
 	});
+
+	const limit = 9;
 
 	const searchChangeHandler = (updatedSearch: Partial<Search>) => {
 		setSearch((previousValue) => {
@@ -43,16 +44,18 @@ const CatalogSection = () => {
 			await api.get("/courses", {
 				params: {
 					page,
-					limit: 9,
+					limit,
 					...search,
 				},
 			}),
-		select: (response) => response.data.data.data,
+		select: (response) => response.data,
 	});
 
-	const courses = data ?? dummyCoursesData.slice(0, 9);
+	const courses = data?.data?.data;
 
-	const pagesCount = Math.ceil((courses?.length ?? 1) / 9);
+	const count = data?.count ?? 1;
+
+	const pagesCount = Math.ceil(count / limit);
 
 	return (
 		<PageWrapper>
@@ -62,7 +65,7 @@ const CatalogSection = () => {
 					courses={courses}
 					isLoading={isLoading}
 					isError={isError}
-					maxLength={9}
+					maxLength={limit}
 					sx={{
 						mt: 14,
 					}}

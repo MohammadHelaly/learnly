@@ -18,31 +18,28 @@ const CourseDescription = (props: CourseDescriptionProps) => {
 				headingAlignment="left"
 				headingAnimated={false}
 			/>
-			{
-				// isError ? (
-				// 	<ErrorWarning />
-				// ) :
-				isLoading ? (
-					<>
-						<Skeleton variant="text" animation="wave" />
-						<Skeleton variant="text" animation="wave" />
-						<Skeleton variant="text" animation="wave" />
-						<Skeleton variant="text" animation="wave" />
-						<Skeleton variant="text" animation="wave" />
-						<Skeleton variant="text" animation="wave" width="80%" />
-					</>
-				) : (
-					<Typography
-						variant="body1"
-						color="text.secondary"
-						sx={{
-							textAlign: "left",
-							my: 5,
-						}}>
-						{description}
-					</Typography>
-				)
-			}
+			{isError ? (
+				<ErrorWarning />
+			) : isLoading ? (
+				<>
+					<Skeleton variant="text" animation="wave" />
+					<Skeleton variant="text" animation="wave" />
+					<Skeleton variant="text" animation="wave" />
+					<Skeleton variant="text" animation="wave" />
+					<Skeleton variant="text" animation="wave" />
+					<Skeleton variant="text" animation="wave" width="80%" />
+				</>
+			) : (
+				<Typography
+					variant="body1"
+					color="text.secondary"
+					sx={{
+						textAlign: "left",
+						my: 5,
+					}}>
+					{description}
+				</Typography>
+			)}
 		</SectionWrapper>
 	);
 };

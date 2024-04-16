@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-// const slugify = require("slugify");
+const slugify = require("slugify");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -13,10 +13,14 @@ const userSchema = new mongoose.Schema(
 			maxLength: [40, "A username must be atmost 40 characters."],
 			trim: true,
 		},
+		slug: {
+			type: String,
+			unique: true,
+		},
 		email: {
 			type: String,
 			required: [true, "Please provide an email."],
-			unique: true,
+			unique: [true, "This email is already in use."],
 			lowercase: true,
 			trim: true,
 			validator: [validator.isEmail, "Please provide a valid email."],
@@ -113,6 +117,11 @@ userSchema.pre("save", function (next) {
 	if (!this.isModified("password") || this.isNew) return next();
 
 	this.passwordChangedAt = Date.now() - 1000;
+	next();
+});
+
+userSchema.pre("save", function (next) {
+	this.slug = slugify(this.name, { lower: true });
 	next();
 });
 

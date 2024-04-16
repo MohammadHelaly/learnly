@@ -10,11 +10,14 @@ const courseSchema = new mongoose.Schema(
 		name: {
 			type: String,
 			required: [true, "A course must have a name"],
-			unique: true,
+			unique: [true, "A course with this name already exists."],
 			trim: true,
 			maxLength: [80, "A course name must be atmost 100 characters."],
 		},
-		slug: String,
+		slug: {
+			type: String,
+			unique: true,
+		},
 		duration: {
 			type: Number,
 			// type: String,

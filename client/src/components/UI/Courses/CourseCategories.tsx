@@ -26,35 +26,32 @@ const CourseCategories = (props: CourseCategoriesProps) => {
 					gap: 2,
 					...sx,
 				}}>
-				{
-					// isError ? (
-					// 	<ErrorWarning />
-					// ) :
-					isLoading
-						? Array(5)
-								.fill(null)
-								.map((_, index) => (
-									<CategoryTag key={index}>
-										<Skeleton
-											animation="wave"
-											variant="text"
-											width={100}
-										/>
-									</CategoryTag>
-								))
-						: categories?.map((category: string, index: number) => (
-								<CategoryTag
-									key={index}
-									editable={editable}
-									onEdit={
-										onEdit
-											? () => onEdit(category)
-											: undefined
-									}>
-									{category}
-								</CategoryTag>
-						  ))
-				}
+				{isError ? (
+					<ErrorWarning />
+				) : isLoading ? (
+					Array(5)
+						.fill(null)
+						.map((_, index) => (
+							<CategoryTag key={index}>
+								<Skeleton
+									animation="wave"
+									variant="text"
+									width={100}
+								/>
+							</CategoryTag>
+						))
+				) : (
+					categories?.map((category: string, index: number) => (
+						<CategoryTag
+							key={index}
+							editable={editable}
+							onEdit={
+								onEdit ? () => onEdit(category) : undefined
+							}>
+							{category}
+						</CategoryTag>
+					))
+				)}
 			</Stack>
 		</SectionWrapper>
 	);

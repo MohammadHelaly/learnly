@@ -5,10 +5,11 @@ import AuthContext from "../../store/auth-context";
 import { Pagination } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
-import dummyCoursesData from "../../assets/data/dummyCoursesData";
 
 const StudentDashboard = () => {
 	const [page, setPage] = useState(1);
+
+	const limit = 3;
 
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
@@ -30,18 +31,20 @@ const StudentDashboard = () => {
 			await api.get("/courses", {
 				params: {
 					page,
-					limit: 3,
+					limit,
 					_id: {
 						in: coursesEnrolled,
 					},
 				},
 			}),
-		select: (response) => response.data.data.data,
+		select: (response) => response.data,
 	});
 
-	const courses = data ?? dummyCoursesData.slice(0, 3);
+	const courses = data?.data?.data;
 
-	const pagesCount = Math.ceil((courses?.length ?? 1) / 3);
+	const count = data?.count ?? 1;
+
+	const pagesCount = Math.ceil(count / limit);
 
 	return (
 		<PageWrapper>
@@ -50,7 +53,7 @@ const StudentDashboard = () => {
 				courses={courses}
 				isLoading={isLoading}
 				isError={isError}
-				maxLength={3}
+				maxLength={limit}
 			/>
 			<Pagination
 				count={pagesCount}

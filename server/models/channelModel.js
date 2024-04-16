@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 const Course = require("./courseModel");
 const Message = require("./messageModel");
+const slugify = require("slugify");
 
 const channelSchema = mongoose.Schema(
 	{
 		name: { type: String, trim: true },
+		slug: {
+			type: String,
+			unique: [true, "A channel with this slug already exists."],
+		},
 		course: {
 			type: mongoose.Schema.ObjectId,
 			ref: "Course",
@@ -32,6 +37,11 @@ channelSchema.virtual("messages", {
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() but not .insertMany() or .update(), etc
+channelSchema.pre("save", function (next) {
+	this.slug = slugify(this.name, { lower: true });
+	next();
+});
+
 channelSchema.pre("save", async function (next) {
 	if (this.isNew) {
 		if (!this.isCourseChannel) {

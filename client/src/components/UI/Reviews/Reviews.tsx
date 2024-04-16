@@ -18,24 +18,17 @@ const Reviews = (props: ReviewsProps) => {
 	return (
 		<Container maxWidth="lg">
 			<Stack direction="column" alignItems="center" sx={{ ...sx }}>
-				{
-					// isError ? (
-					// 	<ErrorWarning />
-					// ) :
-					reviews?.length === 0 || !reviews ? (
-						<NothingFoundMessage />
-					) : isLoading ? (
-						Array(maxLength)
-							.fill(null)
-							.map((_, index) => (
-								<SkeletonReviewCard key={index} />
-							))
-					) : (
-						reviews?.map((reviewItem) => (
-							<ReviewCard {...reviewItem} />
-						))
-					)
-				}
+				{isError ? (
+					<ErrorWarning />
+				) : reviews?.length === 0 || !reviews ? (
+					<NothingFoundMessage />
+				) : isLoading ? (
+					Array(maxLength)
+						.fill(null)
+						.map((_, index) => <SkeletonReviewCard key={index} />)
+				) : (
+					reviews?.map((reviewItem) => <ReviewCard {...reviewItem} />)
+				)}
 			</Stack>
 		</Container>
 	);

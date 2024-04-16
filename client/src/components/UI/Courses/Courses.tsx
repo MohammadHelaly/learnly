@@ -38,78 +38,75 @@ const Courses = (props: CoursesProps) => {
 			alignContent="center"
 			gap={2}
 			sx={sx}>
-			{
-				// isError ? (
-				// 	<ErrorWarning />
-				// ) :
-				courses?.length === 0 || !courses ? (
-					<NothingFoundMessage variant={variant} />
-				) : (
-					Array(maxLength)
-						.fill(null)
-						.map((_, index) => {
-							if (isLoading) {
-								return (
-									<Grid
-										item
-										key={index}
-										xs={
-											variant === "instructorDashboard"
-												? 12
-												: "auto"
-										}>
-										<AnimatedCard
-											index={index}
-											animated={cardsAnimated}>
-											{variant === "studentDashboard" ? (
-												<SkeletonStudentDashboardCourseCard />
-											) : variant ===
-											  "instructorDashboard" ? (
-												<SkeletonInstructorDashboardCourseCard />
-											) : (
-												<SkeletonCourseCard />
-											)}
-										</AnimatedCard>
-									</Grid>
-								);
-							}
-
-							if (index >= courses.length) return;
-
-							const course = courses?.[index];
-
+			{isError ? (
+				<ErrorWarning />
+			) : courses?.length === 0 || !courses ? (
+				<NothingFoundMessage variant={variant} />
+			) : (
+				Array(maxLength)
+					.fill(null)
+					.map((_, index) => {
+						if (isLoading) {
 							return (
-								course && (
-									<Grid
-										item
-										key={index}
-										xs={
-											variant === "instructorDashboard"
-												? 12
-												: "auto"
-										}>
-										<AnimatedCard
-											index={index}
-											animated={cardsAnimated}>
-											{variant === "studentDashboard" ? (
-												<StudentDashboardCourseCard
-													{...course}
-												/>
-											) : variant ===
-											  "instructorDashboard" ? (
-												<InstructorDashboardCourseCard
-													{...course}
-												/>
-											) : (
-												<CourseCard {...course} />
-											)}
-										</AnimatedCard>
-									</Grid>
-								)
+								<Grid
+									item
+									key={index}
+									xs={
+										variant === "instructorDashboard"
+											? 12
+											: "auto"
+									}>
+									<AnimatedCard
+										index={index}
+										animated={cardsAnimated}>
+										{variant === "studentDashboard" ? (
+											<SkeletonStudentDashboardCourseCard />
+										) : variant ===
+										  "instructorDashboard" ? (
+											<SkeletonInstructorDashboardCourseCard />
+										) : (
+											<SkeletonCourseCard />
+										)}
+									</AnimatedCard>
+								</Grid>
 							);
-						})
-				)
-			}
+						}
+
+						if (index >= courses.length) return;
+
+						const course = courses?.[index];
+
+						return (
+							course && (
+								<Grid
+									item
+									key={index}
+									xs={
+										variant === "instructorDashboard"
+											? 12
+											: "auto"
+									}>
+									<AnimatedCard
+										index={index}
+										animated={cardsAnimated}>
+										{variant === "studentDashboard" ? (
+											<StudentDashboardCourseCard
+												{...course}
+											/>
+										) : variant ===
+										  "instructorDashboard" ? (
+											<InstructorDashboardCourseCard
+												{...course}
+											/>
+										) : (
+											<CourseCard {...course} />
+										)}
+									</AnimatedCard>
+								</Grid>
+							)
+						);
+					})
+			)}
 		</Grid>
 	);
 };

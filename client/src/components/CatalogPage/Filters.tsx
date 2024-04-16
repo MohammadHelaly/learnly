@@ -75,6 +75,7 @@ const Filters = (props: FiltersProps) => {
 
 	const handleClearSearch = () => {
 		reset();
+		handleDrawerClose();
 	};
 
 	const onSubmit = (data: FiltersSchema) => {
@@ -315,7 +316,8 @@ const Filters = (props: FiltersProps) => {
 										size="medium"
 										fullWidth
 										variant="contained"
-										disableElevation>
+										disableElevation
+										onClick={handleDrawerClose}>
 										Apply Filters
 									</Button>
 									<Button
