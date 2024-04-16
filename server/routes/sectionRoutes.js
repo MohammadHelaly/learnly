@@ -13,8 +13,28 @@ router.route("/").get(sectionController.getAllSections).post(
 );
 
 router
+	.route("/:id/modules/:moduleNumber/video")
+	.post(formidable(), sectionController.uploadModuleVideo)
+	.patch(
+		authController.protect,
+		sectionController.getVideoKey,
+		sectionController.deleteModuleVideoAndUpdateSection,
+		sectionController.updateSection
+	)
+	.delete(
+		authController.protect,
+		sectionController.getVideoKey,
+		sectionController.deleteModuleVideo
+	);
+
+router
 	.route("/:id/modules/:moduleNumber")
-	.post(formidable(), sectionController.uploadModuleVideo);
+	//DELETE MODULE HERE
+	.delete(
+		authController.protect,
+		sectionController.deleteModule,
+		sectionController.updateSection
+	);
 
 router
 	.route("/:id")
@@ -22,15 +42,17 @@ router
 	.patch(
 		authController.protect,
 		// authController.restrictTo("user", "admin"),
-		////////////////////////////////////////////////
-		// TODO: ADD MODULE VIDEO UPLOAD MIDDLEWARE HERE
-		////////////////////////////////////////////////
-		sectionController.addModule
+		sectionController.updateSection
 	)
 	.delete(
 		authController.protect,
 		// authController.restrictTo("user", "admin"),
 		sectionController.deleteSection
+	)
+	.put(
+		authController.protect,
+		// authController.restrictTo("user", "admin"),
+		sectionController.addModule
 	);
 
 // router

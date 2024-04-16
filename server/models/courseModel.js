@@ -22,7 +22,8 @@ const courseSchema = new mongoose.Schema(
 			type: Number,
 			// type: String,
 			//   required: [true, "A course must have a duration"],
-			min: [0.25, "A course duration must be atleast 0.25 hours."],
+			default: 0,
+			// min: [0.25, "A course duration must be atleast 0.25 hours."],
 		},
 		difficulty: {
 			type: String,

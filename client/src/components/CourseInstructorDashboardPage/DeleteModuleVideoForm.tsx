@@ -8,12 +8,13 @@ import {
 	Slide,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import { Check, CloudUpload } from "@mui/icons-material";
+import { Check, CloudUpload, Delete } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 
-interface UploadModuleVideosFormProps {
+interface DeleteModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
 	moduleNumber: number;
@@ -28,74 +29,45 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
+const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 	const { courseId, sectionId, moduleNumber } = props;
 
-	const [video, setVideo] = useState<File | undefined>(undefined);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
 	const handleCloseModuleForm = () => {
 		setOpenModuleForm(false);
-		setVideo(undefined);
-	};
-
-	const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setVideo(e?.target?.files?.[0]);
-		console.log(e?.target?.files?.[0]);
 	};
 
 	const queryClient = useQueryClient();
 
 	const {
-		mutate: mutateModule,
+		mutate: deleteVideo,
 		isError: isModuleError,
 		isPending: isPendingModule,
 		isSuccess: isModuleSuccess,
 	} = useMutation({
-		mutationFn: (data: FormData) => {
-			return api.post(
-				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}/video`,
-				data,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
+		mutationFn: () => {
+			return api.patch(
+				`/sections/${sectionId}/modules/${moduleNumber}/video`
 			);
 		},
-		onSuccess: (response) => {
-			alert("Module added successfully");
-			console.log("Sent!");
-
+		onSuccess: () => {
+			alert("Video deleted successfully");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
 		},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
 	});
-
-	const handleUploadModuleVideo = async () => {
-		if (!video) return;
-
-		const videoData = new FormData();
-
-		videoData.append("video", video);
-
-		mutateModule(videoData);
-	};
 
 	return (
 		<>
 			<Button
 				sx={{ color: "black" }}
-				startIcon={<CloudUpload />}
+				startIcon={<DeleteIcon />}
 				onClick={handleOpenModuleForm}
 			>
-				Upload Module Video
+				Remove Module Video
 			</Button>
 			<Dialog
 				open={openModuleForm}
@@ -108,12 +80,12 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Upload Module Video"
+						heading="Delete Module Video"
 						headingAlignment="left"
 						sx={{ mb: 0, textAlign: "left" }}
 					/>
 					<SectionHeader
-						heading="Upload the video for this module."
+						heading="Delete the video for this module."
 						headingAlignment="left"
 						variant="h6"
 						isSubHeading
@@ -127,42 +99,19 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 							fullWidth
 							disableElevation
 							size="large"
-							disabled={isPendingModule}
-							startIcon={<CloudUpload />}
-							sx={{
-								mb: 2,
-								color: "black",
-								backgroundColor: video ? "lightgray" : "",
-							}}
-						>
-							Choose Video
-							<input
-								disabled={isPendingModule}
-								accept="video/*"
-								style={{ display: "none" }}
-								multiple={false}
-								type="file"
-								hidden
-								onChange={handleVideoChange}
-							/>
-						</Button>
-						<Button
-							onClick={handleUploadModuleVideo}
-							fullWidth
 							color="primary"
 							variant="contained"
-							disableElevation
 							disabled={isPendingModule}
-							endIcon={!isModuleError && <Check />}
-							size="large"
+							startIcon={<DeleteIcon />}
+							onClick={() => {
+								deleteVideo();
+							}}
+							sx={{
+								mb: 2,
+								color: "white",
+							}}
 						>
-							{isModuleError
-								? "Something went wrong..."
-								: isPendingModule
-								? "Uploading..."
-								: isModuleSuccess
-								? "Uploaded!"
-								: "Upload Video"}
+							Are you sure you want to delete this video?
 						</Button>
 					</Stack>
 				</DialogContent>
@@ -171,4 +120,4 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 	);
 };
 
-export default UploadModuleVideosForm;
+export default DeleteModuleVideoForm;

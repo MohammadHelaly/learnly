@@ -38,6 +38,8 @@ router.route("/").get(courseController.getAllCourses).post(
 // 		courseController.getMonthlyPlan
 // 	);
 
+router.route("/:id/updateCourse").patch(courseController.updateCourse);
+
 router
 	.route("/:id")
 	.get(courseController.getCourse)
@@ -52,6 +54,6 @@ router
 		authController.protect,
 		authController.restrictTo("admin", "instructor"),
 		courseController.deleteCourseImage
-	);
-
+	)
+	.put(courseController.updateCourse);
 module.exports = router;
