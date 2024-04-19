@@ -18,7 +18,8 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 			navigate("/dashboard");
 			return;
 		} else if (
-			!authContext.user?.coursesEnrolled.includes(courseId as string)
+			!authContext.user?.coursesEnrolled.includes(courseId as string) &&
+			authContext.isLoggedIn
 		) {
 			navigate("/dashboard");
 			return;

@@ -46,92 +46,93 @@ function CourseStudentPage() {
 	});
 	const course = data ?? dummyCourse;
 	return (
-		<SectionWrapper>
-			<CourseNavigationGuard courseId={courseId} children={null} />
-			<PageWrapper>
-				<SectionHeader
-					heading={course?.name}
-					headingAlignment="center"
-					sx={{ color: "purple", padding: 0, margin: "1rem" }}
-				/>
-				<CourseStudentContents
-					courseName={course?.name}
-					sections={course?.sections}
-					isLoading={isLoading}
-					isError={isError}
-				/>
-				<SectionWrapper>
-					<TabContext value={value}>
-						<Box
-							sx={{
-								borderBottom: 1,
-								borderColor: "divider",
-							}}
-						>
-							<TabList
-								onChange={handleChange}
-								aria-label="Dashboard Tabs"
-								centered={window.innerWidth < 600}
+		<CourseNavigationGuard courseId={courseId}>
+			<SectionWrapper>
+				<PageWrapper>
+					<SectionHeader
+						heading={course?.name}
+						headingAlignment="center"
+						sx={{ color: "purple", padding: 0, margin: "1rem" }}
+					/>
+					<CourseStudentContents
+						courseName={course?.name}
+						sections={course?.sections}
+						isLoading={isLoading}
+						isError={isError}
+					/>
+					<SectionWrapper>
+						<TabContext value={value}>
+							<Box
+								sx={{
+									borderBottom: 1,
+									borderColor: "divider",
+								}}
 							>
-								<Tab
-									label="Course Information"
-									value="0"
-									sx={{
-										fontSize: "1.2rem",
-										fontWeight: 400,
-									}}
+								<TabList
+									onChange={handleChange}
+									aria-label="Dashboard Tabs"
+									centered={window.innerWidth < 600}
+								>
+									<Tab
+										label="Course Information"
+										value="0"
+										sx={{
+											fontSize: "1.2rem",
+											fontWeight: 400,
+										}}
+									/>
+									<Tab
+										label="Course Reviews"
+										value="1"
+										sx={{
+											fontSize: "1.2rem",
+											fontWeight: 400,
+										}}
+									/>
+									<Tab
+										label="Annoucements"
+										value="2"
+										sx={{
+											fontSize: "1.2rem",
+											fontWeight: 400,
+										}}
+									/>
+								</TabList>
+							</Box>
+							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
+								<Container maxWidth="lg">
+									<CourseHighlights
+										duration={course?.duration}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+									<CourseCategories
+										categories={course?.categories}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+									<CourseDescription
+										description={course?.description}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+								</Container>
+							</TabPanel>
+							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
+								<CourseReviews
+									id={courseId as string}
+									reviews={course?.reviews as Review[]}
+									ratingsAverage={course?.ratingsAverage}
+									ratingsQuantity={course?.ratingsQuantity}
 								/>
-								<Tab
-									label="Course Reviews"
-									value="1"
-									sx={{
-										fontSize: "1.2rem",
-										fontWeight: 400,
-									}}
-								/>
-								<Tab
-									label="Annoucements"
-									value="2"
-									sx={{
-										fontSize: "1.2rem",
-										fontWeight: 400,
-									}}
-								/>
-							</TabList>
-						</Box>
-						<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-							<Container maxWidth="lg">
-								<CourseHighlights
-									duration={course?.duration}
-									isLoading={isLoading}
-									isError={isError}
-								/>
-								<CourseCategories
-									categories={course?.categories}
-									isLoading={isLoading}
-									isError={isError}
-								/>
-								<CourseDescription
-									description={course?.description}
-									isLoading={isLoading}
-									isError={isError}
-								/>
-							</Container>
-						</TabPanel>
-						<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-							<CourseReviews
-								id={courseId as string}
-								reviews={course?.reviews as Review[]}
-								ratingsAverage={course?.ratingsAverage}
-								ratingsQuantity={course?.ratingsQuantity}
-							/>
-						</TabPanel>
-						<TabPanel value="2" sx={{ p: 0, m: 0 }}></TabPanel>
-					</TabContext>
-				</SectionWrapper>
-			</PageWrapper>
-			<Footer />
-		</SectionWrapper>
+							</TabPanel>
+							<TabPanel value="2" sx={{ p: 0, m: 0 }}></TabPanel>
+						</TabContext>
+					</SectionWrapper>
+				</PageWrapper>
+				<Footer />
+			</SectionWrapper>
+		</CourseNavigationGuard>
 	);
 }
 
