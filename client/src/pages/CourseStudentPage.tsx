@@ -19,6 +19,8 @@ import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";
+import CourseNavigationGuard from "../components/CourseStudentDashboardPage/CourseNavigationGuard";
+
 function CourseStudentPage() {
 	const { courseId } = useParams();
 	const [value, setValue] = useState("0");
@@ -45,6 +47,7 @@ function CourseStudentPage() {
 	const course = data ?? dummyCourse;
 	return (
 		<SectionWrapper>
+			<CourseNavigationGuard courseId={courseId} children={null} />
 			<PageWrapper>
 				<SectionHeader
 					heading={course?.name}
