@@ -24,6 +24,8 @@ import Footer from "../Footer/Footer";
 import Checkbox from "@mui/material/Checkbox";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import CourseDescription from "../CourseCatalogPage/CourseDescription";
+import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useState } from "react";
 interface CourseContentsProps {
 	isLoading: boolean;
@@ -147,22 +149,10 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 			</Accordion>
 		);
 	});
+
 	return (
 		<>
 			<SectionWrapper>
-				<Button
-					sx={{ alignContent: "right" }}
-					onClick={toggleDrawer(true)}
-				>
-					Open drawer
-				</Button>
-				<Drawer
-					open={open}
-					onClose={toggleDrawer(false)}
-					anchor="right"
-				>
-					<Box>{DrawerList}</Box>
-				</Drawer>
 				{isError ? (
 					<ErrorWarning />
 				) : isLoading ? (
@@ -176,24 +166,85 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							width: "100%",
 						}}
 					>
+						<Button
+							sx={{ position: "fixed", top: "50%", right: 0 }}
+							variant="contained"
+							onClick={() => {
+								if (open) {
+									setOpen(false);
+								} else {
+									setOpen(true);
+								}
+							}}
+						>
+							<ArrowBackIcon sx={{ paddingRight: "0.5rem" }} />
+							Contents
+						</Button>
+						<Drawer
+							open={open}
+							onClose={toggleDrawer(false)}
+							anchor="right"
+							variant="persistent"
+							sx={{ position: "absolute", top: "10%" }}
+						>
+							<Box>
+								{
+									<Box
+										sx={{
+											backgroundColor: "#f5f5f5",
+											width: "100%",
+											boxShadow: "none !important",
+											overflow: "hidden",
+											border: 1,
+											borderBottom: 1,
+											borderColor: "divider",
+											py: 1,
+										}}
+									>
+										<Stack
+											direction="row"
+											spacing={1}
+											alignItems="center"
+											justifyContent="space-between"
+											width="100%"
+											sx={{
+												ml: 1,
+											}}
+										>
+											<Typography
+												variant="h5"
+												sx={{
+													fontWeight: "400",
+												}}
+											>
+												Course Content
+											</Typography>
+											<Button
+												onClick={() => {
+													setOpen(false);
+												}}
+											>
+												<CloseIcon></CloseIcon>
+											</Button>
+										</Stack>
+									</Box>
+								}
+								{DrawerList}
+							</Box>
+						</Drawer>
 						<CardMedia
 							component="video"
 							controls
 							className="MuiCardMedia-media"
 							sx={{
-								width: "70%",
-								boxShadow: "none !important",
+								width: "100%",
 								height: "100%",
 								minHeight: "100%",
-								borderTop: 1,
-								borderBottom: 1,
-								borderLeft: 1,
-								borderColor: "divider",
 							}}
 							image={video ? video : "#"}
 						/>
 
-						<Box
+						{/* <Box
 							sx={{
 								width: "100%",
 								overflowY: "auto",
@@ -337,7 +388,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 									);
 								}
 							)}
-						</Box>
+						</Box> */}
 					</Container>
 				)}
 			</SectionWrapper>

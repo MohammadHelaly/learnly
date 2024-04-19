@@ -44,13 +44,13 @@ function CourseStudentPage() {
 	});
 	const course = data ?? dummyCourse;
 	return (
-		<AnimatedPage>
-			<SectionHeader
-				heading={course?.name}
-				headingAlignment="center"
-				sx={{ color: "white", padding: 0, margin: "1rem" }}
-			/>
-			<PageWrapper sx={{ mt: 0, pb: 0, paddingBottom: "4rem" }}>
+		<SectionWrapper>
+			<PageWrapper>
+				<SectionHeader
+					heading={course?.name}
+					headingAlignment="center"
+					sx={{ color: "purple", padding: 0, margin: "1rem" }}
+				/>
 				<CourseStudentContents
 					courseName={course?.name}
 					sections={course?.sections}
@@ -128,7 +128,7 @@ function CourseStudentPage() {
 				</SectionWrapper>
 			</PageWrapper>
 			<Footer />
-		</AnimatedPage>
+		</SectionWrapper>
 	);
 }
 
