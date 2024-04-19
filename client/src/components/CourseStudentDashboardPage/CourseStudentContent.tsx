@@ -134,7 +134,8 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							key={index + "-" + title}
 							sx={{
 								backgroundColor:
-									module.title === selectedModule
+									module.title === selectedModule &&
+									section.id === selectedSection
 										? "#f5f5f5"
 										: "#fff",
 							}}
