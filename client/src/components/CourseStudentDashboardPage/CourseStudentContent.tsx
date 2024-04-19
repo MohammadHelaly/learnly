@@ -187,9 +187,13 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 								onClose={toggleDrawer(false)}
 								anchor="right"
 								variant="persistent"
+								sx={{ overflowY: "auto" }}
 								PaperProps={{
 									sx: {
 										top: "8.75%", // Adjust this value to move the drawer down the page
+										overflowY: "auto",
+										height: "91.25%",
+										// Adjust this value to change the height of the drawer
 									},
 								}}
 							>
