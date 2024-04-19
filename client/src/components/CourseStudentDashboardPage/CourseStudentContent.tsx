@@ -27,6 +27,7 @@ import CourseDescription from "../CourseCatalogPage/CourseDescription";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useState } from "react";
+import AnimatedPage from "../../pages/AnimatedPage";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
@@ -180,58 +181,63 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							<ArrowBackIcon sx={{ paddingRight: "0.5rem" }} />
 							Contents
 						</Button>
-						<Drawer
-							open={open}
-							onClose={toggleDrawer(false)}
-							anchor="right"
-							variant="persistent"
-							sx={{ position: "absolute", top: "10%" }}
-						>
-							<Box>
-								{
-									<Box
-										sx={{
-											backgroundColor: "#f5f5f5",
-											width: "100%",
-											boxShadow: "none !important",
-											overflow: "hidden",
-											border: 1,
-											borderBottom: 1,
-											borderColor: "divider",
-											py: 1,
-										}}
-									>
-										<Stack
-											direction="row"
-											spacing={1}
-											alignItems="center"
-											justifyContent="space-between"
-											width="100%"
+						<Box>
+							<Drawer
+								open={open}
+								onClose={toggleDrawer(false)}
+								anchor="right"
+								variant="persistent"
+								PaperProps={{
+									sx: {
+										top: "8.75%", // Adjust this value to move the drawer down the page
+									},
+								}}
+							>
+								<Box>
+									{
+										<Box
 											sx={{
-												ml: 1,
+												backgroundColor: "#f5f5f5",
+												width: "100%",
+												boxShadow: "none !important",
+												overflow: "hidden",
+												border: 1,
+												borderBottom: 1,
+												borderColor: "divider",
 											}}
 										>
-											<Typography
-												variant="h5"
+											<Stack
+												direction="row"
+												spacing={1}
+												alignItems="center"
+												justifyContent="space-between"
+												width="100%"
 												sx={{
-													fontWeight: "400",
+													ml: 1,
 												}}
 											>
-												Course Content
-											</Typography>
-											<Button
-												onClick={() => {
-													setOpen(false);
-												}}
-											>
-												<CloseIcon></CloseIcon>
-											</Button>
-										</Stack>
-									</Box>
-								}
-								{DrawerList}
-							</Box>
-						</Drawer>
+												<Typography
+													variant="h5"
+													sx={{
+														fontWeight: "400",
+													}}
+												>
+													Course Content
+												</Typography>
+												<Button
+													onClick={() => {
+														setOpen(false);
+													}}
+												>
+													<CloseIcon></CloseIcon>
+												</Button>
+											</Stack>
+										</Box>
+									}
+									{DrawerList}
+								</Box>
+							</Drawer>
+						</Box>
 						<CardMedia
 							component="video"
 							controls
