@@ -28,6 +28,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useState } from "react";
 import AnimatedPage from "../../pages/AnimatedPage";
+import { string } from "zod";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
@@ -44,6 +45,12 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 	} = props;
 	const [video, setVideo] = useState("");
 	const [open, setOpen] = useState(false);
+	const [selectedSection, setSelectedSection] = useState<
+		string | null | undefined
+	>(null);
+	const [selectedModule, setSelectedModule] = useState<
+		string | null | undefined
+	>(null);
 
 	const toggleDrawer = (newOpen: boolean) => () => {
 		setOpen(newOpen);
@@ -71,7 +78,8 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 					aria-controls="panel1a-content"
 					id="panel1a-header"
 					sx={{
-						backgroundColor: "#f5f5f5",
+						backgroundColor:
+							section.id === selectedSection ? "#f5f5f5" : "#fff",
 						width: "100%",
 						flexDirection: "row-reverse",
 						py: 1,
@@ -122,7 +130,15 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 				{modules?.map((module: Module, index: number) => {
 					const { title } = module;
 					return (
-						<AccordionDetails key={index + "-" + title}>
+						<AccordionDetails
+							key={index + "-" + title}
+							sx={{
+								backgroundColor:
+									module.title === selectedModule
+										? "#f5f5f5"
+										: "#fff",
+							}}
+						>
 							<Checkbox />
 							<Button
 								onClick={() => {
@@ -131,6 +147,8 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 									} else {
 										setVideo("");
 									}
+									setSelectedModule(module.title);
+									setSelectedSection(section.id);
 								}}
 							>
 								<Stack
