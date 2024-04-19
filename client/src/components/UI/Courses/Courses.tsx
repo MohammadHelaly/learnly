@@ -37,7 +37,8 @@ const Courses = (props: CoursesProps) => {
 			justifyContent="center"
 			alignContent="center"
 			gap={2}
-			sx={sx}>
+			sx={sx}
+		>
 			{isError ? (
 				<ErrorWarning />
 			) : courses?.length === 0 || !courses ? (
@@ -55,10 +56,12 @@ const Courses = (props: CoursesProps) => {
 										variant === "instructorDashboard"
 											? 12
 											: "auto"
-									}>
+									}
+								>
 									<AnimatedCard
 										index={index}
-										animated={cardsAnimated}>
+										animated={cardsAnimated}
+									>
 										{variant === "studentDashboard" ? (
 											<SkeletonStudentDashboardCourseCard />
 										) : variant ===
@@ -85,10 +88,12 @@ const Courses = (props: CoursesProps) => {
 										variant === "instructorDashboard"
 											? 12
 											: "auto"
-									}>
+									}
+								>
 									<AnimatedCard
 										index={index}
-										animated={cardsAnimated}>
+										animated={cardsAnimated}
+									>
 										{variant === "studentDashboard" ? (
 											<StudentDashboardCourseCard
 												{...course}

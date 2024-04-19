@@ -24,6 +24,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
+import CourseStudentPage from "./pages/CourseStudentPage";
 import "./App.css";
 
 function App() {
@@ -113,7 +114,8 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}>
+						location={useLocation()}
+					>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -126,10 +128,7 @@ function App() {
 							element={<ResetPasswordPage />}
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
-						<Route
-							path="/dashboard/learn/courses/:courseId"
-							element={<LandingPage />}
-						/>
+
 						<Route
 							path="/dashboard/teach/courses/create"
 							element={<CreateCoursePage />}
@@ -166,6 +165,10 @@ function App() {
 						<Route
 							path="/newsletter"
 							element={<NewsletterPage />}
+						/>
+						<Route
+							path="/dashboard/learn/courses/:courseId"
+							element={<CourseStudentPage />}
 						/>
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
