@@ -65,7 +65,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 			return api.delete(`sections/${sectionId}`);
 		},
 		onSuccess: () => {
-			alert("Section Removed");
+			// alert("Section Removed");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
@@ -139,7 +139,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 					</Stack>
 				</DialogContent>
 			</Dialog>
-			{/* <Popup content="Section Removed" openPopup={isSuccess} /> */}
+			<Popup content="Section Removed" openPopup={isSuccess} />
 		</>
 	);
 };
