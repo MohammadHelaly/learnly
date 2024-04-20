@@ -217,6 +217,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 										overflowY: "auto",
 										overflowX: "hidden",
 										height: "91.25%",
+										minWidth: "20%",
 										// Adjust this value to change the height of the drawer
 									},
 								}}

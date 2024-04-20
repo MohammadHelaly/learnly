@@ -13,12 +13,13 @@ import { Button, Typography } from "@mui/material";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
+
 	const queryClient = useQueryClient();
 	const authContext = useContext(AuthContext);
 	const {
 		mutate: mutateUser,
 		isError: isMutateSectionError,
-		isPending: isPendingSection,
+		isPending: isPendingUser,
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
@@ -59,6 +60,7 @@ function CourseEnrollmentPage() {
 						color="primary"
 						size="large"
 						disableElevation
+						disabled={isPendingUser}
 						sx={{ width: "100%", mt: 2 }}
 						onClick={() => {
 							if (authContext.user) {

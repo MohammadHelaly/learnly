@@ -20,7 +20,7 @@ import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";
 import CourseNavigationGuard from "../components/CourseStudentDashboardPage/CourseNavigationGuard";
-
+import ReviewForm from "../components/CourseStudentDashboardPage/ReviewForm";
 function CourseStudentPage() {
 	const { courseId } = useParams();
 	const [value, setValue] = useState("0");
@@ -119,12 +119,25 @@ function CourseStudentPage() {
 								</Container>
 							</TabPanel>
 							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								<CourseReviews
-									id={courseId as string}
-									reviews={course?.reviews as Review[]}
-									ratingsAverage={course?.ratingsAverage}
-									ratingsQuantity={course?.ratingsQuantity}
-								/>
+								<Container
+									sx={{
+										display: "flex",
+										justifyContent: "center",
+										alignItems: "center",
+									}}
+								>
+									<ReviewForm />
+								</Container>
+								<Container>
+									<CourseReviews
+										id={courseId as string}
+										reviews={course?.reviews as Review[]}
+										ratingsAverage={course?.ratingsAverage}
+										ratingsQuantity={
+											course?.ratingsQuantity
+										}
+									/>
+								</Container>
 							</TabPanel>
 							<TabPanel value="2" sx={{ p: 0, m: 0 }}></TabPanel>
 						</TabContext>
