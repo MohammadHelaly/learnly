@@ -5,6 +5,7 @@ import {
 	Button,
 	Box,
 	Drawer,
+	IconButton,
 } from "@mui/material";
 
 import Accordion from "@mui/material/Accordion";
@@ -172,7 +173,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 
 	return (
 		<>
-			<SectionWrapper>
+			<SectionWrapper sx={{ mt: 0 }}>
 				{isError ? (
 					<ErrorWarning />
 				) : isLoading ? (
@@ -186,9 +187,12 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 						}}
 					>
 						<Button
+							disableElevation
 							sx={{
 								position: "absolute",
-								top: "19.5%",
+								top: window.innerWidth > 600 ? "25%" : "15%",
+								// top: "25%",
+								zIndex: 2,
 								right: 0,
 								display: open ? "none" : "flex",
 							}}
@@ -210,14 +214,23 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 								onClose={toggleDrawer(false)}
 								anchor="right"
 								variant="persistent"
-								sx={{ overflowY: "auto" }}
+								// sx={{ overflowY: "auto" }}
+
 								PaperProps={{
 									sx: {
-										top: "8.75%", // Adjust this value to move the drawer down the page
-										overflowY: "auto",
+										"::-webkit-scrollbar": {
+											display: "none",
+										},
+										// Hide scrollbar for Firefox
+										"-ms-overflow-style": "none", // IE and Edge
+										scrollbarWidth: "none", // Firefox
+										// top: "8.75%", // Adjust this value to move the drawer down the page
+										mt: window.innerWidth > 600 ? 8 : 7,
+										overflowY: "scroll",
 										overflowX: "hidden",
-										height: "91.25%",
-										minWidth: "20%",
+										// height: "91.25%",
+										minWidth: "25%",
+
 										// Adjust this value to change the height of the drawer
 									},
 								}}
@@ -227,12 +240,13 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 										<Box
 											sx={{
 												backgroundColor: "#f5f5f5",
-												width: "100%",
+												// width: "100%",
 												boxShadow: "none !important",
 												overflow: "hidden",
 												border: 1,
 												borderBottom: 1,
 												borderColor: "divider",
+												p: 2,
 											}}
 										>
 											<Stack
@@ -241,9 +255,6 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 												alignItems="center"
 												justifyContent="space-between"
 												width="100%"
-												sx={{
-													ml: 1,
-												}}
 											>
 												<Typography
 													variant="h5"
@@ -253,13 +264,13 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 												>
 													Course Content
 												</Typography>
-												<Button
+												<IconButton
 													onClick={() => {
 														setOpen(false);
 													}}
 												>
 													<CloseIcon></CloseIcon>
-												</Button>
+												</IconButton>
 											</Stack>
 										</Box>
 									}
@@ -272,7 +283,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							controls
 							className="MuiCardMedia-media"
 							sx={{
-								width: open ? "78%" : "100%",
+								width: open ? "75%" : "100%",
 								height: "100%",
 								overflow: "hidden",
 							}}

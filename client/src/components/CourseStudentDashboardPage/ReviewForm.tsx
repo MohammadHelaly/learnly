@@ -46,7 +46,7 @@ const ReviewForm = () => {
 
 	return (
 		<>
-			<FormContainer>
+			<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
 				<Typography
 					variant="h4"
 					color="common.black"

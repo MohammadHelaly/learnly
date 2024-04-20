@@ -19,7 +19,7 @@ import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";
-import CourseNavigationGuard from "../components/CourseStudentDashboardPage/CourseNavigationGuard";
+import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
 import ReviewForm from "../components/CourseStudentDashboardPage/ReviewForm";
 function CourseStudentPage() {
 	const { courseId } = useParams();
@@ -47,20 +47,22 @@ function CourseStudentPage() {
 	const course = data ?? dummyCourse;
 	return (
 		<CourseNavigationGuard courseId={courseId}>
-			<SectionWrapper>
-				<PageWrapper>
-					<SectionHeader
-						heading={course?.name}
-						headingAlignment="center"
-						sx={{ color: "purple", padding: 0, margin: "1rem" }}
-					/>
-					<CourseStudentContents
-						courseName={course?.name}
-						sections={course?.sections}
-						isLoading={isLoading}
-						isError={isError}
-					/>
+			{/* <SectionWrapper> */}
+
+			<PageWrapper sx={{ pt: 0 }}>
+				<CourseStudentContents
+					courseName={course?.name}
+					sections={course?.sections}
+					isLoading={isLoading}
+					isError={isError}
+				/>
+				<Container maxWidth="lg">
 					<SectionWrapper>
+						<SectionHeader
+							heading={course?.name}
+							headingAlignment="left"
+							variant="h4"
+						/>
 						<TabContext value={value}>
 							<Box
 								sx={{
@@ -82,7 +84,7 @@ function CourseStudentPage() {
 										}}
 									/>
 									<Tab
-										label="Course Reviews"
+										label="Course Channel"
 										value="1"
 										sx={{
 											fontSize: "1.2rem",
@@ -90,7 +92,7 @@ function CourseStudentPage() {
 										}}
 									/>
 									<Tab
-										label="Annoucements"
+										label="Course Reviews"
 										value="2"
 										sx={{
 											fontSize: "1.2rem",
@@ -118,17 +120,26 @@ function CourseStudentPage() {
 									/>
 								</Container>
 							</TabPanel>
-							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								<Container
+							<TabPanel value="1" sx={{ p: 0, m: 0 }}></TabPanel>
+							<TabPanel
+								value="2"
+								sx={{
+									p: 0,
+									m: 0,
+									// display: "flex",
+									// justifyContent: "center",
+									// alignItems: "center",
+								}}
+							>
+								{/* <Container
 									sx={{
 										display: "flex",
 										justifyContent: "center",
 										alignItems: "center",
 									}}
-								>
+								> */}
+								<PageWrapper>
 									<ReviewForm />
-								</Container>
-								<Container>
 									<CourseReviews
 										id={courseId as string}
 										reviews={course?.reviews as Review[]}
@@ -137,14 +148,19 @@ function CourseStudentPage() {
 											course?.ratingsQuantity
 										}
 									/>
-								</Container>
+								</PageWrapper>
+
+								{/* </Container> */}
+								{/* <Container>
+									
+								</Container> */}
 							</TabPanel>
-							<TabPanel value="2" sx={{ p: 0, m: 0 }}></TabPanel>
 						</TabContext>
 					</SectionWrapper>
-				</PageWrapper>
-				<Footer />
-			</SectionWrapper>
+				</Container>
+			</PageWrapper>
+			<Footer />
+			{/* </SectionWrapper> */}
 		</CourseNavigationGuard>
 	);
 }
