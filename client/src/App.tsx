@@ -113,7 +113,8 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}>
+						location={useLocation()}
+					>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -161,7 +162,7 @@ function App() {
 							element={<ChannelPage />}
 						/>
 						<Route
-							path="/edit"
+							path="/account"
 							element={<EditUserProfilePage />}
 						/>
 						<Route path="/careers" element={<CareersPage />} />
