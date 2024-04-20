@@ -178,16 +178,20 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 				) : isLoading ? (
 					<SkeletonCourseContents />
 				) : (
-					<Container
+					<Box
 						sx={{
 							flexDirection: "row",
 							display: "flex",
-							height: "650px",
 							width: "100%",
 						}}
 					>
 						<Button
-							sx={{ position: "fixed", top: "50%", right: 0 }}
+							sx={{
+								position: "absolute",
+								top: "19.5%",
+								right: 0,
+								display: open ? "none" : "flex",
+							}}
 							variant="contained"
 							onClick={() => {
 								if (open) {
@@ -211,6 +215,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 									sx: {
 										top: "8.75%", // Adjust this value to move the drawer down the page
 										overflowY: "auto",
+										overflowX: "hidden",
 										height: "91.25%",
 										// Adjust this value to change the height of the drawer
 									},
@@ -266,9 +271,9 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							controls
 							className="MuiCardMedia-media"
 							sx={{
-								width: open ? "85%" : "100%",
+								width: open ? "78%" : "100%",
 								height: "100%",
-								minHeight: "100%",
+								overflow: "hidden",
 							}}
 							image={video ? video : "#"}
 						/>
@@ -418,7 +423,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 								}
 							)}
 						</Box> */}
-					</Container>
+					</Box>
 				)}
 			</SectionWrapper>
 		</>

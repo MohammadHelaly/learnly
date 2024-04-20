@@ -79,32 +79,34 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 				<Button
 					variant="contained"
 					size="large"
+					component={StyledNavLink}
+					to={`/courses/${id}/enroll`}
 					disableElevation
-					onClick={() => {
-						if (authContext.user) {
-							api.patch(`/users/updateMe`, {
-								coursesEnrolled: [
-									...authContext.user.coursesEnrolled,
-									id,
-								],
-							});
-							// Add React Query mutation here
+					// onClick={() => {
+					// 	if (authContext.user) {
+					// 		api.patch(`/users/updateMe`, {
+					// 			coursesEnrolled: [
+					// 				...authContext.user.coursesEnrolled,
+					// 				id,
+					// 			],
+					// 		});
+					// 		// Add React Query mutation here
 
-							authContext.user.coursesEnrolled = [
-								...authContext.user.coursesEnrolled,
-								id,
-							];
+					// 		authContext.user.coursesEnrolled = [
+					// 			...authContext.user.coursesEnrolled,
+					// 			id,
+					// 		];
 
-							localStorage.setItem(
-								"user",
-								JSON.stringify(authContext.user)
-							);
+					// 		localStorage.setItem(
+					// 			"user",
+					// 			JSON.stringify(authContext.user)
+					// 		);
 
-							alert(
-								"You have successfully enrolled in this course!"
-							);
-						}
-					}}
+					// 		alert(
+					// 			"You have successfully enrolled in this course!"
+					// 		);
+					// 	}
+					// }}
 					sx={{
 						// mb: 3,
 						width: window.innerWidth > 600 ? "45%" : "100%",

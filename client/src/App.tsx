@@ -25,6 +25,7 @@ import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
 import CourseStudentPage from "./pages/CourseStudentPage";
+import CourseEnrollmentPage from "./pages/CourseEnrollmentPage";
 import "./App.css";
 
 function App() {
@@ -169,6 +170,10 @@ function App() {
 						<Route
 							path="/dashboard/learn/courses/:courseId"
 							element={<CourseStudentPage />}
+						/>
+						<Route
+							path="/courses/:courseId/enroll"
+							element={<CourseEnrollmentPage />}
 						/>
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
