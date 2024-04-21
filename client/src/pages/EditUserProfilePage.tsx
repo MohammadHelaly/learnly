@@ -60,10 +60,28 @@ const EditUserProfilePage = () => {
 	const authContext = useContext(AuthContext);
 	const [name, setName] = useState(authContext.user?.name);
 	const [bio, setBio] = useState(authContext.user?.bio);
+	const [email, setEmail] = useState(authContext.user?.email);
+	const [oldPassword, setOldPassword] = useState("");
+	const [password, setPassword] = useState("");
 	const [image, setImage] = useState<ImageState>({
 		preview: authContext.user?.photo?.url,
 		uploaded: "",
 	});
+
+	const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value === "true";
+		setEmail(event.target.value);
+	};
+
+	const handleOldPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value === "true";
+		setOldPassword(event.target.value);
+	};
+
+	const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value === "true";
+		setPassword(event.target.value);
+	};
 
 	const queryClient = useQueryClient();
 
@@ -117,7 +135,7 @@ const EditUserProfilePage = () => {
 			});
 		},
 		onSuccess: (response) => {
-			alert("Course updated successfully.");
+			alert("User updated successfully.");
 			if (authContext.user) {
 				if (name) {
 					authContext.user.name = name;
@@ -128,6 +146,55 @@ const EditUserProfilePage = () => {
 				localStorage.setItem("user", JSON.stringify(authContext.user));
 				console.log(authContext.user);
 			}
+		},
+		onError: (error) => {
+			console.error(error);
+			alert("An error occurred. Please try again.");
+		},
+	});
+
+	const {
+		mutate: mutateUserEmail,
+		isError: isMutateUserEmailError,
+		isPending: isPendingUserEmail,
+		isSuccess: UserEmailSuccess,
+	} = useMutation({
+		mutationFn: (data: any) => {
+			return api.patch(`/users/updateMe`, {
+				email: data,
+			});
+		},
+		onSuccess: (response) => {
+			alert("User email updated successfully");
+			if (authContext.user) {
+				if (email) {
+					authContext.user.email = email;
+				}
+
+				localStorage.setItem("user", JSON.stringify(authContext.user));
+			}
+		},
+		onError: (error) => {
+			console.error(error);
+			alert("An error occurred. Please try again.");
+		},
+	});
+
+	const {
+		mutate: mutateUserPassword,
+		isError: isMutateUserPasswordError,
+		isPending: isPendingUserPassword,
+		isSuccess: UserPasswordSuccess,
+	} = useMutation({
+		mutationFn: (data: any) => {
+			return api.patch(`/users/updatePassword`, {
+				passwordCurrent: data[0],
+				password: data[1],
+				passwordConfirm: data[1],
+			});
+		},
+		onSuccess: (response) => {
+			alert("User password updated successfully");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -375,12 +442,20 @@ const EditUserProfilePage = () => {
 										}}
 									>
 										<TextField
+											onChange={handleEmailChange}
+											value={email}
 											defaultValue={
 												authContext.user?.email
 											}
 											color="primary"
 										/>
-										<Button>Confirm</Button>
+										<Button
+											onClick={() => {
+												mutateUserEmail(email);
+											}}
+										>
+											Confirm
+										</Button>
 									</Stack>
 									<Typography variant="h5">
 										Change Password
@@ -390,14 +465,30 @@ const EditUserProfilePage = () => {
 										sx={{ paddingTop: "2rem" }}
 									>
 										<TextField
+											onChange={handleOldPasswordChange}
+											value={oldPassword}
 											label="Old Password"
 											color="primary"
+											type="password"
 										/>
 										<TextField
+											onChange={handlePasswordChange}
+											value={password}
 											label="New Password"
 											color="primary"
+											type="password"
 										/>
-										<Button>Confirm</Button>
+										<Button
+											onClick={() => {
+												const data = [
+													oldPassword,
+													password,
+												];
+												mutateUserPassword(data);
+											}}
+										>
+											Confirm
+										</Button>
 									</Stack>
 								</Stack>
 							</TabPanel>
