@@ -33,7 +33,7 @@ import ForgotPasswordPage from "./ForgotPasswordPage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
-
+import resizeImageFile from "../helpers/resizeImageFile";
 import { z } from "zod";
 
 const schema = z.object({
@@ -147,6 +147,21 @@ const EditUserProfilePage = () => {
 		setBio(body.bio);
 		mutate(body);
 	};
+
+	useEffect(() => {
+		const resizeImage = async () => {
+			if (image.preview && typeof image.preview !== "string") {
+				const resizedImage = await resizeImageFile(
+					image.preview as File
+				);
+				setValues("photo", resizedImage, setValueOptions);
+			} else {
+				resetField("photo");
+			}
+		};
+
+		resizeImage();
+	}, [image.preview]);
 
 	useEffect(() => {
 		reset({
