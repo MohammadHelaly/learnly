@@ -9,6 +9,7 @@ import {
 	IconButton,
 	Button,
 	Link,
+	FormControl,
 } from "@mui/material";
 import NavigationGuard from "../components/Navigation/NavigationGuard";
 import api from "../api";
@@ -31,6 +32,8 @@ import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import ForgotPasswordPage from "./ForgotPasswordPage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+
 import { z } from "zod";
 
 const schema = z.object({
@@ -55,6 +58,8 @@ interface ImageState {
 const EditUserProfilePage = () => {
 	const [value, setValue] = useState("0");
 	const authContext = useContext(AuthContext);
+	const [name, setName] = useState(authContext.user?.name);
+	const [bio, setBio] = useState(authContext.user?.bio);
 	const [image, setImage] = useState<ImageState>({
 		preview: authContext.user?.photo?.url,
 		uploaded: "",
@@ -113,19 +118,22 @@ const EditUserProfilePage = () => {
 		},
 		onSuccess: (response) => {
 			alert("Course updated successfully.");
+			if (authContext.user) {
+				if (name) {
+					authContext.user.name = name;
+				}
+				if (bio) {
+					authContext.user.bio = bio;
+				}
+				localStorage.setItem("user", JSON.stringify(authContext.user));
+				console.log(authContext.user);
+			}
 		},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
 		},
 	});
-
-	const addName = (value: string) => {
-		setValues("name", value, setValueOptions);
-	};
-	const addBio = (value: string) => {
-		setValues("bio", value, setValueOptions);
-	};
 
 	const onSubmit = async (data: UserInformationSchemaType) => {
 		if (!isDirty) return;
@@ -135,9 +143,18 @@ const EditUserProfilePage = () => {
 			name: dirtyFields.name ? data.name : undefined,
 			bio: dirtyFields.bio ? data.bio : undefined,
 		};
-
+		setName(body.name);
+		setBio(body.bio);
 		mutate(body);
 	};
+
+	useEffect(() => {
+		reset({
+			name: authContext.user?.name,
+			bio: authContext.user?.bio,
+			photo: authContext.user?.photo,
+		});
+	}, [authContext.user]);
 
 	return (
 		<NavigationGuard>
@@ -199,6 +216,13 @@ const EditUserProfilePage = () => {
 											alignItems={"center"}
 											sx={{ paddingTop: "2rem" }}
 										>
+											<Typography
+												align="center"
+												variant="h5"
+												sx={{ paddingBottom: "1rem" }}
+											>
+												Change Profile Picture
+											</Typography>
 											<Avatar
 												alt={authContext.user?.name}
 												/*src={
@@ -242,23 +266,75 @@ const EditUserProfilePage = () => {
 											display={"flex"}
 											flexDirection={"column"}
 										>
-											<TextField
-												defaultValue={
-													authContext.user?.name
-												}
-												color="primary"
-											/>
-											<TextField
-												multiline
-												defaultValue={
-													authContext.user?.bio
-												}
-												color="primary"
-											/>
+											<FormControl
+												required
+												fullWidth
+												error={!!errors.name}
+											>
+												<Controller
+													name="name"
+													control={control}
+													render={({ field }) => (
+														<TextField
+															{...field}
+															fullWidth
+															type="text"
+															name="name"
+															label="Name"
+															helperText={
+																errors.name && (
+																	<Typography
+																		variant="body2"
+																		color="error"
+																	>
+																		{
+																			errors
+																				.name
+																				.message
+																		}
+																	</Typography>
+																)
+															}
+														/>
+													)}
+												/>
+											</FormControl>
+											<FormControl
+												required
+												fullWidth
+												error={!!errors.name}
+											>
+												<Controller
+													name="bio"
+													control={control}
+													render={({ field }) => (
+														<TextField
+															{...field}
+															fullWidth
+															type="text"
+															name="bio"
+															label="Bio"
+															helperText={
+																errors.name && (
+																	<Typography
+																		variant="body2"
+																		color="error"
+																	>
+																		{
+																			errors
+																				.name
+																				.message
+																		}
+																	</Typography>
+																)
+															}
+														/>
+													)}
+												/>
+											</FormControl>
 											<Button
 												type="submit"
 												disabled={isPending}
-												onClick={() => {}}
 											>
 												Save Changes
 											</Button>
