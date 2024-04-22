@@ -6,6 +6,7 @@ const reviewRouter = require("./routes/reviewRoutes");
 const channelRouter = require("./routes/channelRoutes");
 const messageRouter = require("./routes/messageRoutes");
 const sectionRouter = require("./routes/sectionRoutes");
+const courseEnrollmentRouter = require("./routes/courseEnrollmentRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const rateLimit = require("express-rate-limit");
@@ -31,13 +32,13 @@ app.set("views", path.join(__dirname, "views"));
 
 // Implement CORS , allow only the frontend to access the API and allow cookies
 app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === "development"
-        ? process.env.FRONTEND_URL_LOCAL
-        : process.env.FRONTEND_URL,
-    credentials: true,
-  })
+	cors({
+		origin:
+			process.env.NODE_ENV === "development"
+				? process.env.FRONTEND_URL_LOCAL
+				: process.env.FRONTEND_URL,
+		credentials: true,
+	})
 );
 
 // Compression
@@ -48,14 +49,14 @@ app.use(helmet({ contentSecurityPolicy: false }));
 
 // Development logging
 if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+	app.use(morgan("dev"));
 }
 
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 1000,
-  windowMs: 60 * 60 * 1000,
-  message: "Too many requests from this IP, please try again in an hour!",
+	max: 1000,
+	windowMs: 60 * 60 * 1000,
+	message: "Too many requests from this IP, please try again in an hour!",
 });
 app.use("/api", limiter);
 
@@ -84,15 +85,15 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(
-  hpp({
-    whitelist: [
-      "ratingsQuantity",
-      "ratingsAverage",
-      "price",
-      "name",
-      // TODO: Check what to whitelist
-    ],
-  })
+	hpp({
+		whitelist: [
+			"ratingsQuantity",
+			"ratingsAverage",
+			"price",
+			"name",
+			// TODO: Check what to whitelist
+		],
+	})
 );
 
 // ROUTES
@@ -103,9 +104,10 @@ app.use("/api/v1/sections", sectionRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/channels", channelRouter);
 app.use("/api/v1/messages", messageRouter);
+app.use("/api/v1/courseEnrollments", courseEnrollmentRouter);
 
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
+	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
 
 app.use(globalErrorHandler);
