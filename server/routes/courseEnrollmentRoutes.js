@@ -7,5 +7,5 @@ router.route("/");
 // .get(courseEnrollmentController.getCourseEnrollment)
 
 router.route("/:courseId").post(courseEnrollmentController.enrollUser);
-
+router.route("/").get(courseEnrollmentController.getAllCourseEnrollments);
 module.exports = router;

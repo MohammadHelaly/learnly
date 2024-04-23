@@ -22,6 +22,22 @@ const courseEnrollmentSchema = new mongoose.Schema({
 
 courseEnrollmentSchema.index({ user: 1, course: 1 }, { unique: true });
 
+// courseEnrollmentSchema.pre(/^find/, function (next) {
+// 	this.populate({
+// 		path: "user",
+// 		select: "-__v",
+// 	});
+// 	next();
+// });
+
+courseEnrollmentSchema.pre(/^find/, function (next) {
+	this.populate({
+		path: "course",
+		select: "-__v",
+	});
+	next();
+});
+
 const CourseEnrollment = mongoose.model(
 	"CourseEnrollment",
 	courseEnrollmentSchema

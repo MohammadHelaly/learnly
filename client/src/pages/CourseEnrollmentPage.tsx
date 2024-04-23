@@ -23,20 +23,12 @@ function CourseEnrollmentPage() {
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.patch(`/users/updateMe`, {
-				coursesEnrolled: [...data],
+			return api.post(`/courseEnrollments/${courseId}`, {
+				user: data,
 			});
 		},
 		onSuccess: (response) => {
 			alert("Course enrolled successfully");
-			if (authContext.user && courseId) {
-				authContext.user.coursesEnrolled = [
-					...authContext.user.coursesEnrolled,
-					courseId,
-				];
-
-				localStorage.setItem("user", JSON.stringify(authContext.user));
-			}
 		},
 		onError: (error) => {
 			console.error(error);
@@ -64,11 +56,7 @@ function CourseEnrollmentPage() {
 						sx={{ width: "100%", mt: 2 }}
 						onClick={() => {
 							if (authContext.user) {
-								const data = [
-									...authContext.user.coursesEnrolled,
-									courseId,
-								];
-								mutateUser(data);
+								mutateUser(authContext.user.id);
 							}
 						}}
 					>

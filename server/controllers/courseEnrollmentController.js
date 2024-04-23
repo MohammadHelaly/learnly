@@ -37,6 +37,7 @@ exports.enrollUser = async (req, res) => {
 };
 
 // exports.addCourseEnrollment = factory.createOne(CourseEnrollment);
+exports.getAllCourseEnrollments = factory.getAll(CourseEnrollment);
 
 // exports.getAllCourseEnrollments = async (req, res) => {
 // 	const user = req.body.user;

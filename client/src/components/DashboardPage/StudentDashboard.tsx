@@ -1,4 +1,4 @@
-import { useState, useContext, ChangeEvent } from "react";
+import { useState, useContext, ChangeEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import AuthContext from "../../store/auth-context";
@@ -27,21 +27,19 @@ const StudentDashboard = () => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["userCourses", { page, coursesEnrolled }],
+		queryKey: ["courseEnrollments", { user: authContext.user?.id, page }],
 		queryFn: async () =>
-			await api.get("/courses", {
+			await api.get("/courseEnrollments", {
 				params: {
 					page,
 					limit,
-					_id: {
-						in: coursesEnrolled,
-					},
+					user: authContext.user?.id ?? null,
 				},
 			}),
 		select: (response) => response.data,
 	});
 
-	const courses = data?.data?.data;
+	const courses = data?.data?.data.map((course: any) => course.course) ?? [];
 
 	const count = data?.count ?? 1;
 

@@ -4,6 +4,7 @@ import api from "../../api";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 import StyledNavLink from "../UI/Links/StyledNavLink";
+import { useQuery } from "@tanstack/react-query";
 interface CourseEnrollmentPromptProps
 	extends Pick<Course, "id" | "price" | "paid"> {
 	isLoading: boolean;
@@ -13,6 +14,25 @@ interface CourseEnrollmentPromptProps
 const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 	const { id, isLoading, paid, price, sx } = props;
 	const authContext = useContext(AuthContext);
+
+	const {
+		data, //: courses,
+		isLoading: isLoadingCourses,
+		isError,
+	} = useQuery({
+		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
+		queryFn: async () =>
+			await api.get("/courseEnrollments", {
+				params: {
+					user: authContext.user?.id ?? null,
+				},
+			}),
+		select: (response) => response.data,
+	});
+
+	const courses_ids =
+		data?.data?.data.map((course: any) => course.course._id) ?? [];
+
 	return (
 		<Stack
 			direction={window.innerWidth > 600 ? "row" : "column"}
@@ -46,7 +66,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 					{!paid || price === 0 ? "Free!" : "$" + price}
 				</Typography>
 			)}
-			{authContext.user?.coursesEnrolled.includes(id) ? (
+			{courses_ids.includes(id) ? (
 				<Button
 					variant="contained"
 					size="large"
@@ -82,31 +102,6 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 					component={StyledNavLink}
 					to={`/courses/${id}/enroll`}
 					disableElevation
-					// onClick={() => {
-					// 	if (authContext.user) {
-					// 		api.patch(`/users/updateMe`, {
-					// 			coursesEnrolled: [
-					// 				...authContext.user.coursesEnrolled,
-					// 				id,
-					// 			],
-					// 		});
-					// 		// Add React Query mutation here
-
-					// 		authContext.user.coursesEnrolled = [
-					// 			...authContext.user.coursesEnrolled,
-					// 			id,
-					// 		];
-
-					// 		localStorage.setItem(
-					// 			"user",
-					// 			JSON.stringify(authContext.user)
-					// 		);
-
-					// 		alert(
-					// 			"You have successfully enrolled in this course!"
-					// 		);
-					// 	}
-					// }}
 					sx={{
 						// mb: 3,
 						width: window.innerWidth > 600 ? "45%" : "100%",
