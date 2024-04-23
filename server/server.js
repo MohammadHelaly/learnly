@@ -90,4 +90,14 @@ io.on("connection", (socket) => {
 				.emit("new edited message", newContent);
 		}
 	});
+
+	
+	socket.on('join-room', (roomId, userId) => {
+		socket.join(roomId)
+		socket.to(roomId).broadcast.emit('user-connected', userId)
+	
+		socket.on('disconnect', () => {
+		  socket.to(roomId).broadcast.emit('user-disconnected', userId)
+		})
+	})
 });
