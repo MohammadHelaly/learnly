@@ -10,12 +10,17 @@ import api from "../api";
 import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import FormContainer from "../components/UI/PageLayout/FormContainer";
 import { Button, Typography } from "@mui/material";
+import Popup from "../components/Popup/Popup";
+import { useNavigate } from "react-router-dom";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
-
+	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const authContext = useContext(AuthContext);
+	const popupFunction = () => {
+		navigate("/dashboard");
+	};
 	const {
 		mutate: mutateUser,
 		isError: isMutateSectionError,
@@ -27,9 +32,7 @@ function CourseEnrollmentPage() {
 				user: data,
 			});
 		},
-		onSuccess: (response) => {
-			alert("Course enrolled successfully");
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -66,6 +69,12 @@ function CourseEnrollmentPage() {
 			</PageWrapper>
 
 			<Footer />
+			<Popup
+				content="Course enrolled successfully!"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</AnimatedPage>
 	);
 }
