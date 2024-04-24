@@ -22,7 +22,7 @@ import AuthContext from "../../store/auth-context";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { useEffect } from "react";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import { z } from "zod";
@@ -96,6 +96,12 @@ function UserProfile() {
 				if (bio) {
 					authContext.user.bio = bio;
 				}
+				if (image.preview) {
+					authContext.user.photo = {
+						url: image.preview as string,
+						key: image.preview as string,
+					};
+				}
 				authContext.update(authContext.user);
 			}
 		},
@@ -120,6 +126,7 @@ function UserProfile() {
 		};
 		setName(body.name);
 		setBio(body.bio);
+		setImage({ ...image, preview: body.photo });
 		mutate(body);
 	};
 	useEffect(() => {
