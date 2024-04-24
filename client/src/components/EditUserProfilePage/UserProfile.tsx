@@ -96,8 +96,7 @@ function UserProfile() {
 				if (bio) {
 					authContext.user.bio = bio;
 				}
-				localStorage.setItem("user", JSON.stringify(authContext.user));
-				console.log(authContext.user);
+				authContext.update(authContext.user);
 			}
 		},
 		onError: (error) => {

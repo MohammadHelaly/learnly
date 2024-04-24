@@ -45,9 +45,8 @@ function AccountSettings() {
 			if (authContext.user) {
 				if (email) {
 					authContext.user.email = email;
+					authContext.update(authContext.user);
 				}
-
-				localStorage.setItem("user", JSON.stringify(authContext.user));
 			}
 		},
 		onError: (error) => {
