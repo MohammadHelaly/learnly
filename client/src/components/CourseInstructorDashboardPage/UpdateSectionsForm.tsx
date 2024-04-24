@@ -8,6 +8,7 @@ import {
 	DialogContent,
 	Slide,
 	TextField,
+	Box,
 } from "@mui/material";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
@@ -66,6 +67,12 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 
 	const queryClient = useQueryClient();
 
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
+
 	const handleOpenSectionForm = () => setOpenSectionForm(true);
 	const handleCloseSectionForm = () => {
 		setOpenSectionForm(false);
@@ -84,9 +91,9 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 			});
 		},
 		onSuccess: (response) => {
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			//  queryClient.invalidateQueries({
+			// 	queryKey: ["sections", { courseId }],
+			// });
 		},
 		onError: (error) => {
 			console.error(error);
@@ -197,7 +204,13 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 					</form>
 				</DialogContent>
 			</Dialog>
-			<Popup content="Section created" openPopup={isSuccess} />
+
+			<Popup
+				content="Section created"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

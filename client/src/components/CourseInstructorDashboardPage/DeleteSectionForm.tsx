@@ -54,7 +54,11 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	};
 
 	const queryClient = useQueryClient();
-
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const {
 		mutate: deleteSection,
 		isError: isModuleError,
@@ -65,10 +69,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 			return api.delete(`sections/${sectionId}`);
 		},
 		onSuccess: () => {
-			// alert("Section Removed");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenSectionForm(false);
 		},
 	});
 
@@ -139,7 +140,12 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 					</Stack>
 				</DialogContent>
 			</Dialog>
-			<Popup content="Section Removed" openPopup={isSuccess} />
+			<Popup
+				content="Section removed successfully!"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

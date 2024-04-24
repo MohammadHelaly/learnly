@@ -14,6 +14,11 @@ interface DeleteModuleProps {
 function DeleteModule(props: DeleteModuleProps) {
 	const { courseId, sectionId, moduleNumber } = props;
 	const queryClient = useQueryClient();
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const {
 		mutate: deleteModule,
 		isError: isModuleError,
@@ -23,24 +28,25 @@ function DeleteModule(props: DeleteModuleProps) {
 		mutationFn: () => {
 			return api.delete(`/sections/${sectionId}/modules/${moduleNumber}`);
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
-		},
+		onSuccess: () => {},
 	});
 	const handleDeleteModule = async () => {
 		deleteModule();
 	};
 	return (
 		<>
-			<Popup content="Module deleted" openPopup={isSuccess} />
 			<IconButton
 				sx={{ color: "primary.main", mx: 2 }}
 				onClick={handleDeleteModule}
 			>
 				<HighlightOffIcon />
 			</IconButton>
+			<Popup
+				content="Module removed successfully!"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 }
