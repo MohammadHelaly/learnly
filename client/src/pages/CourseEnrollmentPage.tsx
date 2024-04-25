@@ -11,6 +11,7 @@ import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import FormContainer from "../components/UI/PageLayout/FormContainer";
 import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
 import dummyCoursesData from "../assets/data/dummyCoursesData";
+import CardMedia from "@mui/material/CardMedia";
 import {
 	Button,
 	Container,
@@ -22,6 +23,7 @@ import {
 import Popup from "../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
+import { wrap } from "module";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
@@ -70,12 +72,18 @@ function CourseEnrollmentPage() {
 
 	return (
 		<AnimatedPage>
-			<PageWrapper>
+			<PageWrapper sx={{ overflowX: "scroll" }}>
 				{!isLoading ? (
 					<SectionWrapper>
 						<Container>
-							<Stack display="flex" flexDirection="row">
-								<Container sx={{ width: "80%" }}>
+							<Stack
+								display="flex"
+								flexDirection={{
+									xs: "column",
+									md: "row",
+								}}
+							>
+								<Box sx={{ width: "100%", mr: 2 }}>
 									<Stack>
 										<SectionHeader
 											heading="Enrollment"
@@ -105,10 +113,17 @@ function CourseEnrollmentPage() {
 											justifyContent="space-between"
 										>
 											<Stack direction="row" spacing={3}>
-												<img
-													src={course?.imageCover.url}
-													alt={course?.name}
-												/>
+												<Box>
+													<CardMedia
+														component="img"
+														sx={{ width: "100%" }}
+														image={
+															course?.imageCover
+																.url
+														}
+													/>
+												</Box>
+
 												<Stack direction="column">
 													<Typography fontWeight="bold">
 														{course?.name}
@@ -164,18 +179,20 @@ function CourseEnrollmentPage() {
 													</Typography>
 												</Stack>
 											</Stack>
-											<Typography>
-												E£{course.price}
-											</Typography>
+											<Box>
+												<Typography>
+													E£{course.price}
+												</Typography>
+											</Box>
 										</Stack>
 									</Stack>
-								</Container>
-
+								</Box>
 								<Box
 									sx={{
 										borderBottom: "1px solid #e0e0e0",
 										pt: 4,
 										mt: 2,
+										width: "22%",
 									}}
 								>
 									<Typography sx={{ pt: 4 }}>
@@ -213,23 +230,22 @@ function CourseEnrollmentPage() {
 				) : (
 					<Typography>isLoading</Typography>
 				)}
-				<Container>
-					<CourseSelection
-						heading="See Some Similar Courses"
-						headingAlignment="left"
-						headingAnimated={false}
-						variant="white"
-						query={{
-							url: "/courses",
-							config: {
-								params: {
-									categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
-									_id: { ne: courseId },
-								},
+
+				<CourseSelection
+					heading="See Some Similar Courses"
+					headingAlignment="left"
+					headingAnimated={false}
+					variant="white"
+					query={{
+						url: "/courses",
+						config: {
+							params: {
+								categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
+								_id: { ne: courseId },
 							},
-						}}
-					/>
-				</Container>
+						},
+					}}
+				/>
 			</PageWrapper>
 
 			<Footer />
