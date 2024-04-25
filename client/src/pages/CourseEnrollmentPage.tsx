@@ -9,9 +9,10 @@ import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 import api from "../api";
 import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import FormContainer from "../components/UI/PageLayout/FormContainer";
-import { Button, Typography } from "@mui/material";
+import { Button, Container, Typography } from "@mui/material";
 import Popup from "../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
+import CourseImage from "../components/UI/Courses/Catalog/CourseImage";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
@@ -21,6 +22,15 @@ function CourseEnrollmentPage() {
 	const popupFunction = () => {
 		navigate("/dashboard");
 	};
+
+	const { data, isLoading, isError } = useQuery({
+		queryKey: ["courses", { courseId }],
+		queryFn: async () => await api.get(`/courses/${courseId}`),
+		select: (response) => response.data.data.data,
+	});
+	const course = data;
+	console.log(course);
+
 	const {
 		mutate: mutateUser,
 		isError: isMutateSectionError,
@@ -32,7 +42,14 @@ function CourseEnrollmentPage() {
 				user: data,
 			});
 		},
-		onSuccess: (response) => {},
+		onSuccess: (response) => {
+			if (authContext.user && courseId) {
+				authContext.user.coursesEnrolled = [
+					...authContext.user.coursesEnrolled,
+					courseId,
+				];
+			}
+		},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -50,6 +67,14 @@ function CourseEnrollmentPage() {
 					>
 						Course Enrollment
 					</Typography>
+					<Container sx={{ pt: 1, pd: 1 }}>
+						<CourseImage
+							imageCover={course?.imageCover}
+							name={course?.name}
+							isLoading={isLoading}
+						/>
+						<Typography>{course?.name}</Typography>
+					</Container>
 					<Button
 						variant="contained"
 						color="primary"
