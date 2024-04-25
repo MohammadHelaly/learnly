@@ -13,7 +13,7 @@ const StudentDashboard = () => {
 
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
-	console.log(user);
+
 	const coursesEnrolled = user?.coursesEnrolled.length
 		? user?.coursesEnrolled
 		: [user?.id]; // This is a hack to prevent the API from returning all courses when the user has not enrolled in any courses, axios removes empty arrays from the query params, look into a better solution

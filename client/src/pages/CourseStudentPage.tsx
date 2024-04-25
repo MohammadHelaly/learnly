@@ -21,6 +21,7 @@ import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
 import ReviewForm from "../components/CourseStudentDashboardPage/ReviewForm";
+
 function CourseStudentPage() {
 	const { courseId } = useParams();
 	const [value, setValue] = useState("0");
@@ -46,7 +47,7 @@ function CourseStudentPage() {
 	});
 	const course = data ?? dummyCourse;
 	return (
-		<CourseNavigationGuard courseId={courseId}>
+		<CourseNavigationGuard courseId={courseId} role={"Student"}>
 			{/* <SectionWrapper> */}
 
 			<PageWrapper sx={{ pt: 0 }}>
