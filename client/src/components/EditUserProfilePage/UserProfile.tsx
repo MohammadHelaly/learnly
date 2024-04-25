@@ -179,6 +179,8 @@ function UserProfile() {
 						src={
 							typeof image?.preview === "string"
 								? image.preview
+								: image?.preview
+								? URL.createObjectURL(image?.preview as Blob)
 								: ""
 							// : URL.createObjectURL(image?.preview as Blob)
 						}
