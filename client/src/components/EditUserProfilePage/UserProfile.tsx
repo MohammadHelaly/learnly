@@ -53,6 +53,7 @@ function UserProfile() {
 		preview: authContext.user?.photo?.url,
 		uploaded: "",
 	});
+
 	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		try {
 			const file = event?.target?.files?.[0];
@@ -99,7 +100,7 @@ function UserProfile() {
 				if (image.preview) {
 					authContext.user.photo = {
 						url: image.preview as string,
-						key: image.preview as string,
+						key: "",
 					};
 				}
 				authContext.update(authContext.user);
@@ -150,7 +151,13 @@ function UserProfile() {
 			bio: authContext.user?.bio,
 			photo: authContext.user?.photo,
 		});
+		setImage({
+			preview: authContext.user?.photo?.url,
+			uploaded: "",
+		});
 	}, [authContext.user]);
+
+	useEffect(() => {});
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -169,14 +176,12 @@ function UserProfile() {
 					</Typography>
 					<Avatar
 						alt={authContext.user?.name}
-						/*src={
-typeof image?.preview === "string"
-? image.preview
-: URL.createObjectURL(
-    image?.preview
-)
-}*/
-						src={authContext.user?.photo?.url}
+						src={
+							typeof image?.preview === "string"
+								? image.preview
+								: ""
+							// : URL.createObjectURL(image?.preview as Blob)
+						}
 						sx={{
 							marginBottom: "0.5rem",
 							backgroundColor: "primary.main",
