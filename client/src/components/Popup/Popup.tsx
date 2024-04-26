@@ -48,13 +48,6 @@ const Popup = (props: PopupProps) => {
 				onClose={handleClose}
 				aria-describedby="success-dialog-slide-description"
 				fullWidth={true} // Allow the dialog to take up the full width of the container
-				maxWidth="sm"
-				PaperProps={{
-					style: {
-						height: "25%", // Adjust the height as needed
-						width: "35%", // Adjust the width as needed
-					},
-				}}
 			>
 				<DialogTitle>
 					<SectionHeader
