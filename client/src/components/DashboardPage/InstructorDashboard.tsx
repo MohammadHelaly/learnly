@@ -2,7 +2,7 @@ import { useState, useContext, ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import AuthContext from "../../store/auth-context";
-import { Pagination } from "@mui/material";
+import { Pagination, Grid } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import StyledNavLink from "../UI/Links/StyledNavLink";
@@ -58,7 +58,8 @@ const InstructorDashboard = () => {
 					alignItems: "center",
 					display: "flex",
 					flexDirection: "column",
-				}}>
+				}}
+			>
 				<SectionHeader
 					heading="Create a New Course"
 					headingAlignment="center"
@@ -78,11 +79,13 @@ const InstructorDashboard = () => {
 							width: 60,
 							height: 60,
 							mb: 4,
-						}}>
+						}}
+					>
 						<Add fontSize="large" />
 					</Button>
 				</StyledNavLink>
 			</SectionWrapper>
+
 			<Courses
 				variant="instructorDashboard"
 				courses={courses}

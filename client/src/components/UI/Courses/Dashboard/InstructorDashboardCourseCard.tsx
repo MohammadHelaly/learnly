@@ -31,23 +31,22 @@ const InstructorDashboardCourseCard = (
 	} = props;
 
 	return (
-		<CardNavLink to={`/dashboard/teach/courses/${id}`}>
-			<Card
-				sx={{
-					display: "flex",
-					flexDirection: window.innerWidth > 600 ? "row" : "column",
-					gap: 2,
-					// height: 356,
-					width: "100%",
-					transition: `all 0.6s ease-in-out`,
-					borderRadius: 0,
-					backgroundColor: "transparent",
-					borderBottom: "1px solid #dddddd",
-					boxShadow: "none",
-					px: 0,
-					py: 1,
-				}}>
-				<Box sx={{ height: 200, width: 356 }}>
+		<Card
+			sx={{
+				display: "flex",
+				flexDirection: "column",
+				height: 356,
+				width: window.innerWidth > 380 ? 356 : 328,
+				transition: `all 0.6s ease-in-out`,
+				borderRadius: 0,
+				backgroundColor: "transparent",
+				borderBottom: "1px solid #dddddd",
+				boxShadow: "none",
+				p: 0,
+			}}
+		>
+			<CardNavLink to={`/dashboard/teach/courses/${id}`}>
+				<Box sx={{ height: 200, width: "100%" }}>
 					<img
 						src={imageCover.url}
 						alt="course"
@@ -62,15 +61,18 @@ const InstructorDashboardCourseCard = (
 				<Box
 					sx={{
 						transition: "all 0.5s ease",
-					}}>
+						py: 1,
+					}}
+				>
 					<Typography
 						variant="h6"
 						color="common.black"
 						sx={{
 							fontWeight: 500,
 							width: "100%",
-						}}>
-						{name?.length > 30 && window.innerWidth < 600
+						}}
+					>
+						{name?.length > 30
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
 					</Typography>
@@ -80,7 +82,8 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}></Typography>
+						}}
+					></Typography>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"
@@ -96,7 +99,8 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"("}
 							{ratingsQuantity}
 							{")"}
@@ -106,14 +110,16 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"Free"}
 						</Typography>
 					) : (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"$"}
 							{price}
 						</Typography>
@@ -121,7 +127,8 @@ const InstructorDashboardCourseCard = (
 					<Typography
 						variant="body2"
 						color="text.secondary"
-						sx={{ fontWeight: 400 }}>
+						sx={{ fontWeight: 400 }}
+					>
 						{duration ?? 0}
 						{" Hours"}
 						{" - "}
@@ -130,8 +137,8 @@ const InstructorDashboardCourseCard = (
 						{" Level"}
 					</Typography>
 				</Box>
-			</Card>
-		</CardNavLink>
+			</CardNavLink>
+		</Card>
 	);
 };
 

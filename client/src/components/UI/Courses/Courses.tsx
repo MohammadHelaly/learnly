@@ -53,9 +53,10 @@ const Courses = (props: CoursesProps) => {
 									item
 									key={index}
 									xs={
-										variant === "instructorDashboard"
-											? 12
-											: "auto"
+										// variant === "instructorDashboard"
+										// 	? 12
+										// 	: "auto"
+										"auto"
 									}
 								>
 									<AnimatedCard
@@ -85,9 +86,10 @@ const Courses = (props: CoursesProps) => {
 									item
 									key={index}
 									xs={
-										variant === "instructorDashboard"
-											? 12
-											: "auto"
+										// variant === "instructorDashboard"
+										// 	? 12
+										// 	: "auto"
+										"auto"
 									}
 								>
 									<AnimatedCard
