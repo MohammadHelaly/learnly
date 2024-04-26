@@ -76,6 +76,16 @@ function CourseEnrollmentPage() {
 				{!isLoading ? (
 					<SectionWrapper>
 						<Container>
+							<SectionHeader
+								heading="Enrollment"
+								headingAlignment="left"
+								keepHeadingAlignmentOnSmallScreens
+								headingAnimated={false}
+								sx={{
+									mb: 0,
+									pb: 4,
+								}}
+							/>
 							<Stack
 								display="flex"
 								flexDirection={{
@@ -83,19 +93,9 @@ function CourseEnrollmentPage() {
 									md: "row",
 								}}
 							>
+								{" "}
 								<Box sx={{ width: "100%", mr: 2 }}>
 									<Stack>
-										<SectionHeader
-											heading="Enrollment"
-											headingAlignment="left"
-											keepHeadingAlignmentOnSmallScreens
-											headingAnimated={false}
-											sx={{
-												mb: 0,
-												pb: 4,
-											}}
-										/>
-
 										<Typography
 											variant="body1"
 											fontWeight="light bold"
@@ -181,7 +181,9 @@ function CourseEnrollmentPage() {
 											</Stack>
 											<Box>
 												<Typography>
-													E£{course.price}
+													{course.price === 0
+														? "Free"
+														: `E£${course.price}`}
 												</Typography>
 											</Box>
 										</Stack>
@@ -190,39 +192,76 @@ function CourseEnrollmentPage() {
 								<Box
 									sx={{
 										borderBottom: "1px solid #e0e0e0",
-										pt: 4,
-										mt: 2,
+
 										width: "22%",
 									}}
 								>
-									<Typography sx={{ pt: 4 }}>
-										Total:
-									</Typography>
+									<Typography sx={{}}>Total:</Typography>
 									<Typography
-										sx={{ pt: 1, pb: 4, mb: 4 }}
 										variant="h4"
 										fontWeight="light bold"
-									>
-										E£{course.price}
-									</Typography>
-									<Button
-										variant="contained"
-										color="primary"
-										size="large"
-										disableElevation
-										disabled={isPendingUser}
 										sx={{
-											width: "100%",
-											mt: 2,
-										}}
-										onClick={() => {
-											if (authContext.user) {
-												mutateUser(authContext.user.id);
-											}
+											color: "secondary.main",
+											pt: 2,
+											mb: window.innerWidth < 600 ? 2 : 4,
 										}}
 									>
-										Enroll in Course
-									</Button>
+										{course.price === 0
+											? "Free"
+											: `E£${course.price}`}
+									</Typography>
+									<Box
+										sx={{
+											pt: window.innerWidth < 600 ? 0 : 2,
+										}}
+									>
+										<Button
+											variant="contained"
+											color="primary"
+											size="large"
+											disableElevation
+											disabled={isPendingUser}
+											sx={{
+												width: "100%",
+												mt:
+													window.innerWidth < 600
+														? 1
+														: 4,
+
+												backgroundColor:
+													"secondary.main",
+												// backgroundColor: "#9c27b0",
+
+												color: "black",
+												"&:hover": {
+													backgroundColor:
+														"primary.main",
+													color: "white",
+													// backgroundColor: "transparent",
+													// color: "#9c27b0",
+													// border: "1px solid #9c27b0",
+												},
+											}}
+											onClick={() => {
+												if (authContext.user) {
+													mutateUser(
+														authContext.user.id
+													);
+												}
+											}}
+										>
+											{" "}
+											<Typography
+												variant={
+													window.innerWidth < 600
+														? "caption"
+														: "body1"
+												}
+											>
+												Enroll in Course
+											</Typography>
+										</Button>
+									</Box>
 								</Box>
 							</Stack>
 						</Container>
