@@ -8,7 +8,8 @@ import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import { useState, useContext, ChangeEvent } from "react";
 import AuthContext from "../../store/auth-context";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-
+import { Delete } from "@mui/icons-material";
+import DeleteMe from "./DeleteMe";
 function AccountSettings() {
 	const authContext = useContext(AuthContext);
 	const [email, setEmail] = useState(authContext.user?.email);
@@ -108,7 +109,10 @@ function AccountSettings() {
 				</Button>
 			</Stack>
 			<Typography variant="h5">Change Password</Typography>
-			<Stack spacing="1rem" sx={{ paddingTop: "2rem" }}>
+			<Stack
+				spacing="1rem"
+				sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+			>
 				<TextField
 					onChange={handleOldPasswordChange}
 					value={oldPassword}
@@ -132,6 +136,8 @@ function AccountSettings() {
 					Confirm
 				</Button>
 			</Stack>
+			<Typography variant="h5">Deactivate Account</Typography>
+			<DeleteMe />
 		</Stack>
 	);
 }
