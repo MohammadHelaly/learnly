@@ -116,7 +116,18 @@ function CourseEnrollmentPage() {
 												<Box>
 													<CardMedia
 														component="img"
-														sx={{ width: "100%" }}
+														sx={{
+															width:
+																window.innerWidth >
+																600
+																	? "100%"
+																	: "45vw",
+															height:
+																window.innerWidth >
+																600
+																	? 170
+																	: 110,
+														}}
 														image={
 															course?.imageCover
 																.url
