@@ -1,4 +1,4 @@
-import { Box, Stack, Container, Tab } from "@mui/material";
+import { Box, Stack, Container, Tab, Button, Typography } from "@mui/material";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 import PageWrapper from "../components/UI/PageLayout/PageWrapper";
@@ -14,6 +14,7 @@ import UpdateCourseContent from "../components/CourseInstructorDashboardPage/Upd
 import UpdateCourseInformation from "../components/CourseInstructorDashboardPage/UpdateCourseInformation";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
+import SectionHeader from "../components/UI/PageLayout/SectionHeader";
 import { useState } from "react";
 
 const CourseInstructorDashboardPage = () => {
@@ -177,6 +178,14 @@ const CourseInstructorDashboardPage = () => {
 												fontWeight: 400,
 											}}
 										/>
+										<Tab
+											label="Course Channel"
+											value="2"
+											sx={{
+												fontSize: "1.2rem",
+												fontWeight: 400,
+											}}
+										/>
 									</TabList>
 								</Box>
 								<TabPanel value="0" sx={{ p: 0, m: 0 }}>
@@ -186,6 +195,45 @@ const CourseInstructorDashboardPage = () => {
 								</TabPanel>
 								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
 									<UpdateCourseContent courseId={courseId} />
+								</TabPanel>
+								<TabPanel value="2" sx={{ p: 0, m: 0 }}>
+									<SectionWrapper>
+										<SectionHeader
+											heading="Course Channel"
+											headingAlignment="left"
+										/>
+										<Stack>
+											<Typography
+												variant="h5"
+												sx={{ pb: 2 }}
+											>
+												Create Channel
+											</Typography>
+											<Button
+												variant="contained"
+												fullWidth
+												disableElevation
+												size="large"
+												sx={{ mb: 2 }}
+											>
+												Create Channel
+											</Button>
+											<Typography
+												variant="h5"
+												sx={{ pb: 2 }}
+											>
+												Start Live Stream
+											</Typography>
+											<Button
+												variant="contained"
+												fullWidth
+												disableElevation
+												size="large"
+											>
+												Start Live Stream
+											</Button>
+										</Stack>
+									</SectionWrapper>
 								</TabPanel>
 							</TabContext>
 						</SectionWrapper>
