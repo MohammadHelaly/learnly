@@ -21,7 +21,7 @@ import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
 import ReviewForm from "../components/CourseStudentDashboardPage/ReviewForm";
-
+import CourseStudentChannel from "../components/CourseStudentDashboardPage/CourseStudentChannel";
 function CourseStudentPage() {
 	const { courseId } = useParams();
 	const [value, setValue] = useState("0");
@@ -121,7 +121,9 @@ function CourseStudentPage() {
 									/>
 								</Container>
 							</TabPanel>
-							<TabPanel value="1" sx={{ p: 0, m: 0 }}></TabPanel>
+							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
+								<CourseStudentChannel />
+							</TabPanel>
 							<TabPanel
 								value="2"
 								sx={{
