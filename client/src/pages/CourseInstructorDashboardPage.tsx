@@ -14,7 +14,8 @@ import UpdateCourseContent from "../components/CourseInstructorDashboardPage/Upd
 import UpdateCourseInformation from "../components/CourseInstructorDashboardPage/UpdateCourseInformation";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
-import SectionHeader from "../components/UI/PageLayout/SectionHeader";
+
+import UpdateCourseChannel from "../components/CourseInstructorDashboardPage/UpdateCourseChannel";
 import { useState } from "react";
 
 const CourseInstructorDashboardPage = () => {
@@ -197,43 +198,7 @@ const CourseInstructorDashboardPage = () => {
 									<UpdateCourseContent courseId={courseId} />
 								</TabPanel>
 								<TabPanel value="2" sx={{ p: 0, m: 0 }}>
-									<SectionWrapper>
-										<SectionHeader
-											heading="Course Channel"
-											headingAlignment="left"
-										/>
-										<Stack>
-											<Typography
-												variant="h5"
-												sx={{ pb: 2 }}
-											>
-												Create Channel
-											</Typography>
-											<Button
-												variant="contained"
-												fullWidth
-												disableElevation
-												size="large"
-												sx={{ mb: 2 }}
-											>
-												Create Channel
-											</Button>
-											<Typography
-												variant="h5"
-												sx={{ pb: 2 }}
-											>
-												Start Live Stream
-											</Typography>
-											<Button
-												variant="contained"
-												fullWidth
-												disableElevation
-												size="large"
-											>
-												Start Live Stream
-											</Button>
-										</Stack>
-									</SectionWrapper>
+									<UpdateCourseChannel />
 								</TabPanel>
 							</TabContext>
 						</SectionWrapper>
