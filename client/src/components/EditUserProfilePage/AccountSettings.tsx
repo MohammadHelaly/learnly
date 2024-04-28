@@ -80,7 +80,7 @@ function AccountSettings() {
 		},
 	});
 	return (
-		<FormContainer>
+		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
 			<form
 				style={{
 					width: "100%",
@@ -88,22 +88,16 @@ function AccountSettings() {
 					marginBottom: 2,
 				}}
 			>
-				<Stack spacing={12}>
+				<Stack spacing={8}>
 					<SectionWrapper>
-						<Stack
-							spacing="1rem"
-							sx={{
-								paddingTop: "2rem",
-								paddingBottom: "2rem",
-							}}
-						>
+						<Stack>
 							<SectionHeader
 								heading="Change Email"
 								headingAlignment="left"
 								keepHeadingAlignmentOnSmallScreens
 								headingAnimated={false}
 								sx={{
-									mb: 2,
+									mb: 4,
 								}}
 							/>
 							<TextField
@@ -111,16 +105,13 @@ function AccountSettings() {
 								value={email}
 								defaultValue={authContext.user?.email}
 								color="primary"
-								sx={{ mb: 2 }}
+								sx={{ mb: 4 }}
 							/>
 							<Button
 								fullWidth
 								variant="contained"
 								disableElevation
 								size="large"
-								sx={{
-									mb: 2,
-								}}
 								onClick={() => {
 									mutateUserEmail(email);
 								}}
@@ -136,12 +127,12 @@ function AccountSettings() {
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
 							sx={{
-								mb: 2,
+								mb: 4,
 							}}
 						/>
 						<Stack
-							spacing="1rem"
-							sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+						// spacing="1rem"
+						// sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
 						>
 							<TextField
 								onChange={handleOldPasswordChange}
@@ -149,6 +140,7 @@ function AccountSettings() {
 								label="Old Password"
 								color="primary"
 								type="password"
+								sx={{ mb: 2 }}
 							/>
 							<TextField
 								onChange={handlePasswordChange}
@@ -156,16 +148,13 @@ function AccountSettings() {
 								label="New Password"
 								color="primary"
 								type="password"
-								sx={{ mb: 2 }}
+								sx={{ mb: 4 }}
 							/>
 							<Button
 								fullWidth
 								variant="contained"
 								disableElevation
 								size="large"
-								sx={{
-									mb: 2,
-								}}
 								onClick={() => {
 									const data = [oldPassword, password];
 									mutateUserPassword(data);
@@ -182,7 +171,7 @@ function AccountSettings() {
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
 							sx={{
-								mb: 2,
+								mb: 4,
 							}}
 						/>
 						<DeleteMe />

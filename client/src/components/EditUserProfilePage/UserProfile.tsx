@@ -161,7 +161,7 @@ function UserProfile() {
 	useEffect(() => {});
 
 	return (
-		<FormContainer>
+		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
 			<form
 				style={{
 					width: "100%",
@@ -174,7 +174,7 @@ function UserProfile() {
 					alignItems={"center"}
 					display={"flex"}
 					flexDirection={"column"}
-					spacing={12}
+					spacing={8}
 				>
 					<SectionWrapper>
 						<SectionHeader
@@ -183,13 +183,10 @@ function UserProfile() {
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
 							sx={{
-								mb: 2,
+								mb: 4,
 							}}
 						/>
-						<Stack
-							alignItems={"center"}
-							sx={{ paddingTop: "2rem" }}
-						>
+						<Stack alignItems={"center"}>
 							<Avatar
 								alt={authContext.user?.name}
 								src={
@@ -203,18 +200,14 @@ function UserProfile() {
 									// : URL.createObjectURL(image?.preview as Blob)
 								}
 								sx={{
-									marginBottom: "0.5rem",
 									backgroundColor: "primary.main",
 									width: 100,
 									height: 100,
-									mb: 2,
+									mb: 4,
 								}}
 							/>
 							<Button
 								component="label"
-								sx={{
-									mb: 2,
-								}}
 								fullWidth
 								variant="contained"
 								disableElevation
@@ -242,7 +235,7 @@ function UserProfile() {
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
 							sx={{
-								mb: 2,
+								mb: 4,
 							}}
 						/>
 						<Stack
@@ -288,7 +281,7 @@ function UserProfile() {
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
 							sx={{
-								mb: 2,
+								mb: 4,
 							}}
 						/>
 						<FormControl required fullWidth error={!!errors.name}>
@@ -317,21 +310,17 @@ function UserProfile() {
 							/>
 						</FormControl>
 					</SectionWrapper>
-					<SectionWrapper>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							disableElevation
-							size="large"
-							disabled={isPending}
-							sx={{
-								mb: 2,
-							}}
-						>
-							Save Changes
-						</Button>
-					</SectionWrapper>
+
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						disableElevation
+						size="large"
+						disabled={isPending}
+					>
+						Save Changes
+					</Button>
 				</Stack>
 			</form>
 		</FormContainer>

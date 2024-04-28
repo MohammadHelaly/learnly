@@ -23,65 +23,65 @@ const EditUserProfilePage = () => {
 	return (
 		<NavigationGuard>
 			<AnimatedPage>
-				<SectionWrapper
-					sx={{
-						backgroundColor: "#f5f5f5",
-						mt: window.innerWidth > 600 ? 8 : 7,
-					}}
-				>
-					<Container maxWidth="lg" sx={{ paddingTop: "2rem" }}>
-						<SectionHeader
-							heading={"Account"}
-							headingAlignment="left"
-							sx={{
-								pb: 1,
-								borderBottom: 1,
-								borderColor: "divider",
-							}}
-						/>
-						<TabContext value={value}>
-							<Box
-								sx={{
-									borderBottom: 1,
-									borderColor: "divider",
-								}}
-							>
-								<TabList
-									onChange={handleChange}
-									aria-label="Dashboard Tabs"
-									centered={window.innerWidth < 600}
+				<PageWrapper>
+					<SectionWrapper
+						sx={
+							{
+								// backgroundColor: "#f5f5f5",
+								// mt: window.innerWidth > 600 ? 8 : 7,
+							}
+						}
+					>
+						<Container maxWidth="lg">
+							<SectionHeader
+								heading="Your Account"
+								headingAlignment="left"
+								variant="h4"
+							/>
+							<TabContext value={value}>
+								<Box
+									sx={{
+										borderBottom: 1,
+										borderColor: "divider",
+									}}
 								>
-									<Tab
-										label="Your Profile"
-										value="0"
-										sx={{
-											fontSize: "1.2rem",
-											fontWeight: 400,
-										}}
-									/>
-									<Tab
-										label="Account Settings"
-										value="1"
-										sx={{
-											fontSize: "1.2rem",
-											fontWeight: 400,
-										}}
-									/>
-								</TabList>
-							</Box>
-							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								<PageWrapper>
-									<UserProfile />
-								</PageWrapper>
-							</TabPanel>
-							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								<PageWrapper>
-									<AccountSettings />
-								</PageWrapper>
-							</TabPanel>
-						</TabContext>
-					</Container>
-				</SectionWrapper>
+									<TabList
+										onChange={handleChange}
+										aria-label="Dashboard Tabs"
+										centered={window.innerWidth < 600}
+									>
+										<Tab
+											label="Your Profile"
+											value="0"
+											sx={{
+												fontSize: "1.2rem",
+												fontWeight: 400,
+											}}
+										/>
+										<Tab
+											label="Account Settings"
+											value="1"
+											sx={{
+												fontSize: "1.2rem",
+												fontWeight: 400,
+											}}
+										/>
+									</TabList>
+								</Box>
+								<TabPanel value="0" sx={{ p: 0, m: 0 }}>
+									<PageWrapper sx={{ mt: 0 }}>
+										<UserProfile />
+									</PageWrapper>
+								</TabPanel>
+								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
+									<PageWrapper sx={{ mt: 0 }}>
+										<AccountSettings />
+									</PageWrapper>
+								</TabPanel>
+							</TabContext>
+						</Container>
+					</SectionWrapper>
+				</PageWrapper>
 				<Footer />
 			</AnimatedPage>
 		</NavigationGuard>
