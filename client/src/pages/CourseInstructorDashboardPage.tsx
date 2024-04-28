@@ -162,6 +162,8 @@ const CourseInstructorDashboardPage = () => {
 										onChange={handleChange}
 										aria-label="Dashboard Tabs"
 										centered={window.innerWidth < 600}
+										// variant={window.innerWidth<600?"fullWidth":"scrollable"}
+										variant="scrollable"
 									>
 										<Tab
 											label="Course Information"

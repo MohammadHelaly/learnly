@@ -75,6 +75,7 @@ function CourseStudentPage() {
 									onChange={handleChange}
 									aria-label="Dashboard Tabs"
 									centered={window.innerWidth < 600}
+									variant="scrollable"
 								>
 									<Tab
 										label="Course Information"
