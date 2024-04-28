@@ -70,10 +70,14 @@ const EditUserProfilePage = () => {
 								</TabList>
 							</Box>
 							<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-								<UserProfile />
+								<PageWrapper>
+									<UserProfile />
+								</PageWrapper>
 							</TabPanel>
 							<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-								<AccountSettings />
+								<PageWrapper>
+									<AccountSettings />
+								</PageWrapper>
 							</TabPanel>
 						</TabContext>
 					</Container>

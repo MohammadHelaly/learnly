@@ -28,6 +28,14 @@ function DeleteMe() {
 	return (
 		<Stack spacing="1rem" sx={{ paddingTop: "2rem" }}>
 			<Button
+				fullWidth
+				variant="contained"
+				disableElevation
+				size="large"
+				color="error"
+				sx={{
+					mb: 2,
+				}}
 				onClick={() => {
 					alert("Are you sure you want to delete your account?");
 				}}

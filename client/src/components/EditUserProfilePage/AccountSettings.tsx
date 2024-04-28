@@ -10,6 +10,8 @@ import AuthContext from "../../store/auth-context";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { Delete } from "@mui/icons-material";
 import DeleteMe from "./DeleteMe";
+import FormContainer from "../UI/PageLayout/FormContainer";
+
 function AccountSettings() {
 	const authContext = useContext(AuthContext);
 	const [email, setEmail] = useState(authContext.user?.email);
@@ -78,67 +80,116 @@ function AccountSettings() {
 		},
 	});
 	return (
-		<Stack
-			alignItems={"center"}
-			display={"flex"}
-			flexDirection={"column"}
-			sx={{ paddingTop: "2rem" }}
-		>
-			<Typography align="center" variant="h5">
-				Change Email
-			</Typography>
-			<Stack
-				spacing="1rem"
-				sx={{
-					paddingTop: "2rem",
-					paddingBottom: "2rem",
+		<FormContainer>
+			<form
+				style={{
+					width: "100%",
+
+					marginBottom: 2,
 				}}
 			>
-				<TextField
-					onChange={handleEmailChange}
-					value={email}
-					defaultValue={authContext.user?.email}
-					color="primary"
-				/>
-				<Button
-					onClick={() => {
-						mutateUserEmail(email);
-					}}
-				>
-					Confirm
-				</Button>
-			</Stack>
-			<Typography variant="h5">Change Password</Typography>
-			<Stack
-				spacing="1rem"
-				sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
-			>
-				<TextField
-					onChange={handleOldPasswordChange}
-					value={oldPassword}
-					label="Old Password"
-					color="primary"
-					type="password"
-				/>
-				<TextField
-					onChange={handlePasswordChange}
-					value={password}
-					label="New Password"
-					color="primary"
-					type="password"
-				/>
-				<Button
-					onClick={() => {
-						const data = [oldPassword, password];
-						mutateUserPassword(data);
-					}}
-				>
-					Confirm
-				</Button>
-			</Stack>
-			<Typography variant="h5">Deactivate Account</Typography>
-			<DeleteMe />
-		</Stack>
+				<Stack spacing={12}>
+					<SectionWrapper>
+						<Stack
+							spacing="1rem"
+							sx={{
+								paddingTop: "2rem",
+								paddingBottom: "2rem",
+							}}
+						>
+							<SectionHeader
+								heading="Change Email"
+								headingAlignment="left"
+								keepHeadingAlignmentOnSmallScreens
+								headingAnimated={false}
+								sx={{
+									mb: 2,
+								}}
+							/>
+							<TextField
+								onChange={handleEmailChange}
+								value={email}
+								defaultValue={authContext.user?.email}
+								color="primary"
+								sx={{ mb: 2 }}
+							/>
+							<Button
+								fullWidth
+								variant="contained"
+								disableElevation
+								size="large"
+								sx={{
+									mb: 2,
+								}}
+								onClick={() => {
+									mutateUserEmail(email);
+								}}
+							>
+								Confirm
+							</Button>
+						</Stack>
+					</SectionWrapper>
+					<SectionWrapper>
+						<SectionHeader
+							heading="Change Password"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
+						/>
+						<Stack
+							spacing="1rem"
+							sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
+						>
+							<TextField
+								onChange={handleOldPasswordChange}
+								value={oldPassword}
+								label="Old Password"
+								color="primary"
+								type="password"
+							/>
+							<TextField
+								onChange={handlePasswordChange}
+								value={password}
+								label="New Password"
+								color="primary"
+								type="password"
+								sx={{ mb: 2 }}
+							/>
+							<Button
+								fullWidth
+								variant="contained"
+								disableElevation
+								size="large"
+								sx={{
+									mb: 2,
+								}}
+								onClick={() => {
+									const data = [oldPassword, password];
+									mutateUserPassword(data);
+								}}
+							>
+								Confirm
+							</Button>
+						</Stack>
+					</SectionWrapper>
+					<SectionWrapper>
+						<SectionHeader
+							heading="Deactivate Account"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
+						/>
+						<DeleteMe />
+					</SectionWrapper>
+				</Stack>
+			</form>
+		</FormContainer>
 	);
 }
 

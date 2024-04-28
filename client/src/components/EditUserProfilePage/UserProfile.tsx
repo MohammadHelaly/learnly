@@ -20,11 +20,12 @@ import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import { useState, useContext, ChangeEvent } from "react";
 import AuthContext from "../../store/auth-context";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-
+import FormContainer from "../UI/PageLayout/FormContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, set } from "react-hook-form";
 import { useEffect } from "react";
 import resizeImageFile from "../../helpers/resizeImageFile";
+
 import { z } from "zod";
 
 const schema = z.object({
@@ -160,112 +161,180 @@ function UserProfile() {
 	useEffect(() => {});
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Stack
-				alignItems={"center"}
-				display={"flex"}
-				flexDirection={"column"}
+		<FormContainer>
+			<form
+				style={{
+					width: "100%",
+
+					marginBottom: 2,
+				}}
+				onSubmit={handleSubmit(onSubmit)}
 			>
-				<Stack alignItems={"center"} sx={{ paddingTop: "2rem" }}>
-					<Typography
-						align="center"
-						variant="h5"
-						sx={{ paddingBottom: "1rem" }}
-					>
-						Change Profile Picture
-					</Typography>
-					<Avatar
-						alt={authContext.user?.name}
-						src={
-							typeof image?.preview === "string"
-								? image.preview
-								: image?.preview
-								? URL.createObjectURL(image?.preview as Blob)
-								: ""
-							// : URL.createObjectURL(image?.preview as Blob)
-						}
-						sx={{
-							marginBottom: "0.5rem",
-							backgroundColor: "primary.main",
-							width: 70,
-							height: 70,
-						}}
-					/>
-					<Button
-						component="label"
-						sx={{
-							mb: 2,
-						}}
-					>
-						<input
-							accept="image/*"
-							style={{ display: "none" }}
-							multiple={false}
-							type="file"
-							hidden
-							value={image.uploaded}
-							onChange={handleImageChange}
+				<Stack
+					alignItems={"center"}
+					display={"flex"}
+					flexDirection={"column"}
+					spacing={12}
+				>
+					<SectionWrapper>
+						<SectionHeader
+							heading="Profile Picture"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
 						/>
-						Edit Picture
-					</Button>
-				</Stack>
-				<Stack spacing="1rem" display={"flex"} flexDirection={"column"}>
-					<FormControl required fullWidth error={!!errors.name}>
-						<Controller
-							name="name"
-							control={control}
-							render={({ field }) => (
-								<TextField
-									{...field}
-									fullWidth
-									type="text"
+						<Stack
+							alignItems={"center"}
+							sx={{ paddingTop: "2rem" }}
+						>
+							<Avatar
+								alt={authContext.user?.name}
+								src={
+									typeof image?.preview === "string"
+										? image.preview
+										: image?.preview
+										? URL.createObjectURL(
+												image?.preview as Blob
+										  )
+										: ""
+									// : URL.createObjectURL(image?.preview as Blob)
+								}
+								sx={{
+									marginBottom: "0.5rem",
+									backgroundColor: "primary.main",
+									width: 100,
+									height: 100,
+									mb: 2,
+								}}
+							/>
+							<Button
+								component="label"
+								sx={{
+									mb: 2,
+								}}
+								fullWidth
+								variant="contained"
+								disableElevation
+								size="large"
+								disabled={isPending}
+							>
+								<input
+									accept="image/*"
+									style={{ display: "none" }}
+									multiple={false}
+									type="file"
+									hidden
+									value={image.uploaded}
+									onChange={handleImageChange}
+								/>
+								Edit Picture
+							</Button>
+						</Stack>
+					</SectionWrapper>
+
+					<SectionWrapper>
+						<SectionHeader
+							heading="User Name"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
+						/>
+						<Stack
+							spacing="1rem"
+							display={"flex"}
+							flexDirection={"column"}
+						>
+							<FormControl
+								required
+								fullWidth
+								error={!!errors.name}
+							>
+								<Controller
 									name="name"
-									label="Name"
-									helperText={
-										errors.name && (
-											<Typography
-												variant="body2"
-												color="error"
-											>
-												{errors.name.message}
-											</Typography>
-										)
-									}
+									control={control}
+									render={({ field }) => (
+										<TextField
+											{...field}
+											fullWidth
+											type="text"
+											name="name"
+											label="Name"
+											helperText={
+												errors.name && (
+													<Typography
+														variant="body2"
+														color="error"
+													>
+														{errors.name.message}
+													</Typography>
+												)
+											}
+										/>
+									)}
 								/>
-							)}
+							</FormControl>
+						</Stack>
+					</SectionWrapper>
+					<SectionWrapper>
+						<SectionHeader
+							heading="User Bio"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
 						/>
-					</FormControl>
-					<FormControl required fullWidth error={!!errors.name}>
-						<Controller
-							name="bio"
-							control={control}
-							render={({ field }) => (
-								<TextField
-									{...field}
-									fullWidth
-									type="text"
-									name="bio"
-									label="Bio"
-									helperText={
-										errors.name && (
-											<Typography
-												variant="body2"
-												color="error"
-											>
-												{errors.name.message}
-											</Typography>
-										)
-									}
-								/>
-							)}
-						/>
-					</FormControl>
-					<Button type="submit" disabled={isPending}>
-						Save Changes
-					</Button>
+						<FormControl required fullWidth error={!!errors.name}>
+							<Controller
+								name="bio"
+								control={control}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										fullWidth
+										type="text"
+										name="bio"
+										label="Bio"
+										helperText={
+											errors.name && (
+												<Typography
+													variant="body2"
+													color="error"
+												>
+													{errors.name.message}
+												</Typography>
+											)
+										}
+									/>
+								)}
+							/>
+						</FormControl>
+					</SectionWrapper>
+					<SectionWrapper>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							disableElevation
+							size="large"
+							disabled={isPending}
+							sx={{
+								mb: 2,
+							}}
+						>
+							Save Changes
+						</Button>
+					</SectionWrapper>
 				</Stack>
-			</Stack>
-		</form>
+			</form>
+		</FormContainer>
 	);
 }
 
