@@ -143,7 +143,7 @@ function CourseStudentPage() {
 									}}
 								> */}
 								<PageWrapper>
-									<ReviewForm />
+									<ReviewForm courseId={courseId || ""} />
 									<CourseReviews
 										id={courseId as string}
 										reviews={course?.reviews as Review[]}

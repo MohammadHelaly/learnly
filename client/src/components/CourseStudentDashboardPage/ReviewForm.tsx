@@ -1,3 +1,4 @@
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,97 +7,133 @@ import api from "../../api";
 import { Button, TextField, Typography } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import FormContainer from "../UI/PageLayout/FormContainer";
+import AuthContext from "../../store/auth-context";
+import { useContext } from "react";
+import Popup from "../Popup/Popup";
+interface ReviewFormProps {
+	courseId: string;
+}
 
 const schema = z.object({
-	email: z.string().email({ message: "Please enter a valid email." }),
+	rating: z
+		.number()
+		.int()
+		.min(1, "Rating is required.")
+		.max(5, "Rating must be between 1 and 5."),
+	review: z.string().min(4, "Review is too short."),
 });
 
-type ForgotPasswordSchemaType = z.infer<typeof schema>;
+type ReviewFormSchemaType = z.infer<typeof schema>;
 
-const ReviewForm = () => {
+const ReviewForm = (props: ReviewFormProps) => {
+	const { courseId } = props;
+	const authContext = useContext(AuthContext);
+	const queryClient = useQueryClient();
+	const PopupFunction = () => {
+		queryClient.invalidateQueries({ queryKey: ["courseReviews"] });
+	};
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<ForgotPasswordSchemaType>({
-		mode: "onTouched",
+	} = useForm<ReviewFormSchemaType>({
 		resolver: zodResolver(schema),
+		defaultValues: {
+			rating: 0,
+			review: "",
+		},
 	});
 
-	const queryClient = useQueryClient();
-
 	const { mutate, isError, isPending, isSuccess } = useMutation({
-		mutationFn: (formData: FormData) => {
-			return api.post("/users/forgotPassword", formData);
+		mutationFn: (data: any) => {
+			return api.post("/reviews", {
+				...data,
+			});
 		},
-		onSuccess: (response) => {
-			queryClient.invalidateQueries({ queryKey: ["authenticateMe"] }); //TODO: Check if this is necessary
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 		},
 	});
 
-	const onSubmit = (data: ForgotPasswordSchemaType) => {
-		const formData = new FormData();
-		formData.append("email", data.email);
+	const onSubmit = (data: ReviewFormSchemaType) => {
+		const formData = {
+			rating: data.rating,
+			review: data.review,
+			user: authContext.user?.id || "",
+			course: courseId,
+		};
 
 		mutate(formData);
 	};
 
 	return (
-		<>
-			<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
-				<Typography
-					variant="h4"
-					color="common.black"
-					sx={{ paddingBottom: "1rem" }}
-				>
-					Leave a Review?
-				</Typography>
+		<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
+			<Typography
+				variant="h4"
+				color="common.black"
+				sx={{ paddingBottom: "1rem" }}
+			>
+				Leave a Review?
+			</Typography>
 
-				<Rating name="simple-controlled" />
-				<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-					<Controller
-						name="email"
-						control={control}
-						render={({ field }) => (
-							<TextField
-								required
-								id="email"
-								label="Review"
-								type="text"
-								variant="outlined"
-								disabled={isPending}
-								sx={{ width: "100%", mt: 4, mb: 2 }}
-								helperText={
-									errors.email && (
-										<Typography
-											variant="body2"
-											color="error"
-										>
-											{errors.email.message}
-										</Typography>
-									)
-								}
-								{...field}
-							/>
-						)}
-					/>
-					<Button
-						type="submit"
-						variant="contained"
-						color="primary"
-						size="large"
-						disableElevation
-						disabled={isPending}
-						sx={{ width: "100%", mt: 2 }}
-					>
-						Leave Review
-					</Button>
-				</form>
-			</FormContainer>
-		</>
+			<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+				<Controller
+					name="rating"
+					control={control}
+					render={({ field }) => (
+						<Rating
+							{...field}
+							value={field.value || 0}
+							onChange={(event, newValue) =>
+								field.onChange(newValue)
+							}
+							precision={1}
+						/>
+					)}
+				/>
+				{errors.rating && (
+					<Typography color="error">
+						{errors.rating.message}
+					</Typography>
+				)}
+
+				<Controller
+					name="review"
+					control={control}
+					render={({ field }) => (
+						<TextField
+							{...field}
+							label="Review"
+							type="text"
+							variant="outlined"
+							fullWidth
+							multiline
+							rows={4}
+							margin="normal"
+							error={!!errors.review}
+							helperText={errors.review?.message}
+						/>
+					)}
+				/>
+
+				<Button
+					type="submit"
+					variant="contained"
+					color="primary"
+					fullWidth
+					sx={{ mt: 2 }}
+				>
+					Leave Review
+				</Button>
+			</form>
+			<Popup
+				openPopup={isSuccess}
+				content="Review submitted successfully!"
+				buttonText="Great!"
+				popupFunction={PopupFunction}
+			/>
+		</FormContainer>
 	);
 };
 
