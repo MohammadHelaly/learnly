@@ -29,12 +29,11 @@ const CourseReviews = (props: CourseReviewsProps) => {
 			await api.get(`/courses/${id}/reviews`, {
 				params: {
 					limit: 3,
-					fields: "name,price,ratingsAverage,ratingsQuantity",
+					fields: "name,price,ratingsAverage,ratingsQuantity,rating,createdAt,review",
 				},
 			}),
 		select: (response) => response.data.data.data,
 	});
-
 	const courseReviews = data ?? dummyReviews;
 
 	return (
