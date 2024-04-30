@@ -19,7 +19,7 @@ import api from "../../api";
 import { Add, Check } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useForm, Controller } from "react-hook-form";
-
+import Popup from "../Popup/Popup";
 interface UpdateModuleContentFormProps {
 	courseId: number | string;
 	title: string | undefined;
@@ -50,6 +50,12 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 	const { title, sectionid, moduleIndex, modules, courseId } = props;
 
 	const [openModuleForm, setOpenModuleForm] = useState(false);
+
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 
 	const {
 		control: sectionControl,
@@ -94,12 +100,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 				modules: data,
 			});
 		},
-		onSuccess: (response) => {
-			alert("Module updated successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -183,6 +184,12 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 						</Stack>
 					</form>
 				</DialogContent>
+				<Popup
+					content="Module updated successfully!"
+					openPopup={isSuccess}
+					buttonText="Great!"
+					popupFunction={popupFunction}
+				/>
 			</Dialog>
 		</>
 	);
