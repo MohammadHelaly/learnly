@@ -49,7 +49,7 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 	} = useMutation({
 		mutationFn: () => {
 			return api.patch(
-				`/sections/${sectionId}/modules/${moduleNumber}/video`
+				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}/video`
 			);
 		},
 		onSuccess: () => {

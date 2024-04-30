@@ -172,6 +172,24 @@ exports.getCourseInstructorID = catchAsync(async (req, res, next) => {
 	next();
 });
 
+exports.protectCourse = catchAsync(async (req, res, next) => {
+	const instructorId = req.user.id;
+
+	const course = await Course.findById(req.params.id);
+
+	const courseInstructorsIds = course.instructors.map(
+		(instructor) => instructor.id
+	);
+
+	if (!courseInstructorsIds.includes(instructorId)) {
+		return res
+			.status(403)
+			.json({ message: "You are not authorized to perform this action" });
+	} else {
+		next();
+	}
+});
+
 //after course save ,
 
 exports.getAllCourses = handlerFactory.getAll(Course);

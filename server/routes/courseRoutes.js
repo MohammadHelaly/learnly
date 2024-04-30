@@ -45,6 +45,7 @@ router
 	.get(courseController.getCourse)
 	.patch(
 		authController.protect,
+		courseController.protectCourse,
 		// authController.restrictTo("admin", "instructor"),
 		courseController.deleteCourseImage,
 		courseController.uploadCourseImage,
@@ -52,8 +53,13 @@ router
 	)
 	.delete(
 		authController.protect,
+		courseController.protectCourse,
 		authController.restrictTo("admin", "instructor"),
 		courseController.deleteCourseImage
 	)
-	.put(courseController.updateCourse);
+	.put(
+		authController.protect,
+		courseController.protectCourse,
+		courseController.updateCourse
+	);
 module.exports = router;

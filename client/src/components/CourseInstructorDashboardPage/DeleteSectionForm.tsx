@@ -66,7 +66,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(`sections/${sectionId}`);
+			return api.delete(`/courses/${courseId}/sections/${sectionId}`);
 		},
 		onSuccess: () => {
 			setOpenSectionForm(false);
@@ -77,7 +77,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		section?.modules?.forEach(async (modules, index) => {
 			if (modules?.video?.url) {
 				await api.delete(
-					`sections/${sectionId}/modules/${index}/video`
+					`/courses/${courseId}/sections/${sectionId}/modules/${index}/video`
 				);
 			}
 		});

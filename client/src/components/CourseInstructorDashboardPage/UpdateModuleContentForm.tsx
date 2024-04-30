@@ -90,7 +90,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.patch(`sections/${sectionid}`, {
+			return api.patch(`/courses/${courseId}/sections/${sectionid}`, {
 				modules: data,
 			});
 		},

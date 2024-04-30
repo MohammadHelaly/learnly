@@ -26,7 +26,9 @@ function DeleteModule(props: DeleteModuleProps) {
 		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(`/sections/${sectionId}/modules/${moduleNumber}`);
+			return api.delete(
+				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}`
+			);
 		},
 		onSuccess: () => {},
 	});
