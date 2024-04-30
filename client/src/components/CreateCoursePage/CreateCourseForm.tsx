@@ -30,7 +30,7 @@ import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import { Clear, Done } from "@mui/icons-material";
-
+import Popup from "../Popup/Popup";
 const schema = z.object({
 	name: z
 		.string()
@@ -114,7 +114,11 @@ const CreateCourseForm = () => {
 
 	const navigate = useNavigate();
 
-	const { mutate, isError, isPending } = useMutation({
+	const popupFunction = () => {
+		navigate("/dashboard");
+	};
+
+	const { mutate, isError, isPending, isSuccess } = useMutation({
 		mutationFn: (data: CourseFormSchemaType) => {
 			return api.post("/courses", {
 				...data,
@@ -122,7 +126,6 @@ const CreateCourseForm = () => {
 		},
 		onSuccess: (response) => {
 			// navigate(`/courses/${response.data.data.data.id}`);
-			navigate("/dashboard");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -914,6 +917,12 @@ const CreateCourseForm = () => {
 					</SectionWrapper>
 				</Stack>
 			</form>
+			<Popup
+				content={"Course created Successfully!"}
+				openPopup={isSuccess}
+				buttonText={"Go to Dashboard"}
+				popupFunction={popupFunction}
+			/>
 		</FormContainer>
 	);
 };
