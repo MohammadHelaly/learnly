@@ -12,13 +12,12 @@ function DeleteMe() {
 		isPending: isPendingUser,
 		isSuccess: UserSuccess,
 	} = useMutation({
-		mutationFn: (data: any) => {
-			return api.patch(`/users/deleteMe`, {
-				user: data,
-			});
+		mutationFn: () => {
+			return api.delete(`/users/deleteMe`);
 		},
 		onSuccess: (response) => {
 			alert("User deleted successfully");
+			authContext.logout();
 		},
 		onError: (error) => {
 			console.error(error);
@@ -35,6 +34,7 @@ function DeleteMe() {
 				color="error"
 				onClick={() => {
 					alert("Are you sure you want to delete your account?");
+					mutateUser();
 				}}
 			>
 				Delete Me

@@ -24,9 +24,11 @@ import FormContainer from "../UI/PageLayout/FormContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, set } from "react-hook-form";
 import { useEffect } from "react";
+import Clear from "@mui/icons-material/Clear";
 import resizeImageFile from "../../helpers/resizeImageFile";
 
 import { z } from "zod";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 const schema = z.object({
 	name: z
@@ -44,7 +46,7 @@ type UserInformationSchemaType = z.infer<typeof schema>;
 
 interface ImageState {
 	preview: File | undefined | string;
-	uploaded: string | number | readonly string[] | undefined;
+	uploaded: boolean;
 }
 function UserProfile() {
 	const authContext = useContext(AuthContext);
@@ -52,7 +54,7 @@ function UserProfile() {
 	const [bio, setBio] = useState(authContext.user?.bio);
 	const [image, setImage] = useState<ImageState>({
 		preview: authContext.user?.photo?.url,
-		uploaded: "",
+		uploaded: false,
 	});
 
 	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +63,7 @@ function UserProfile() {
 			setImage((previousValue) => ({
 				...previousValue,
 				preview: file,
+				uploaded: true,
 			}));
 		} catch (err) {
 			console.log(err);
@@ -154,7 +157,7 @@ function UserProfile() {
 		});
 		setImage({
 			preview: authContext.user?.photo?.url,
-			uploaded: "",
+			uploaded: false,
 		});
 	}, [authContext.user]);
 
@@ -186,7 +189,7 @@ function UserProfile() {
 								mb: 4,
 							}}
 						/>
-						<Stack alignItems={"center"}>
+						<Stack alignItems={"center"} spacing={2}>
 							<Avatar
 								alt={authContext.user?.name}
 								src={
@@ -206,6 +209,24 @@ function UserProfile() {
 									mb: 4,
 								}}
 							/>
+							{image?.uploaded && (
+								<Box sx={{ md: 2 }}>
+									<IconButton
+										onClick={() => {
+											setImage({
+												preview:
+													authContext.user?.photo
+														?.url,
+												uploaded: false,
+											});
+											resetField("photo");
+										}}
+										// disabled={!image.uploaded}
+									>
+										<Clear />
+									</IconButton>
+								</Box>
+							)}
 							<Button
 								component="label"
 								fullWidth
@@ -220,7 +241,7 @@ function UserProfile() {
 									multiple={false}
 									type="file"
 									hidden
-									value={image.uploaded}
+									// value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 								Edit Picture
