@@ -80,15 +80,15 @@ reviewSchema.post("save", function () {
 	this.constructor.calculateAverageRatings(this.course);
 });
 
-reviewSchema.pre(/^findOneAnd/, async function (next) {
-	this.rev = await this.findOne();
-	next();
-});
+// reviewSchema.pre(/^findOneAnd/, async function (next) {
+// 	this.rev = await this.findOne();
+// 	next();
+// });
 
-reviewSchema.post(/^findOneAnd/, async function () {
-	// await this.findOne(); does NOT work here, query has already executed
-	await this.rev.constructor.calculateAverageRatings(this.rev.course);
-});
+// reviewSchema.post(/^findOneAnd/, async function () {
+// 	// await this.findOne(); does NOT work here, query has already executed
+// 	await this.rev.constructor.calculateAverageRatings(this.rev.course);
+// });
 
 const Review = mongoose.model("Review", reviewSchema);
 

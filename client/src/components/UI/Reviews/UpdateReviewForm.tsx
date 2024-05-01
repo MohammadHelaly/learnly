@@ -3,17 +3,21 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../../api";
+import api from "../../../api";
 import { Button, TextField, Typography } from "@mui/material";
 import Rating from "@mui/material/Rating";
-import FormContainer from "../UI/PageLayout/FormContainer";
-import AuthContext from "../../store/auth-context";
+import FormContainer from "../../UI/PageLayout/FormContainer";
+import AuthContext from "../../../store/auth-context";
 import { useContext } from "react";
-import Popup from "../Popup/Popup";
+import Popup from "../../Popup/Popup";
 import { useQuery } from "@tanstack/react-query";
-import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
-interface ReviewFormProps {
+import dummyCourseReviewsData from "../../../assets/data/dummyCourseReviewsData";
+import { useEffect } from "react";
+interface UpdateReviewFormProps {
 	courseId: string;
+	review: string;
+	rating: number;
+	reviewId: string;
 }
 
 const schema = z.object({
@@ -27,13 +31,16 @@ const schema = z.object({
 
 type ReviewFormSchemaType = z.infer<typeof schema>;
 
-const ReviewForm = (props: ReviewFormProps) => {
-	const { courseId } = props;
+const UpdateReviewForm = (props: UpdateReviewFormProps) => {
+	const { courseId, review, rating, reviewId } = props;
+
 	const authContext = useContext(AuthContext);
 	const queryClient = useQueryClient();
+
 	const PopupFunction = () => {
 		queryClient.invalidateQueries({ queryKey: ["courseReviews"] });
 	};
+
 	const {
 		control,
 		handleSubmit,
@@ -41,14 +48,14 @@ const ReviewForm = (props: ReviewFormProps) => {
 	} = useForm<ReviewFormSchemaType>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			rating: 0,
-			review: "",
+			rating: rating,
+			review: review,
 		},
 	});
 
 	const { mutate, isError, isPending, isSuccess } = useMutation({
 		mutationFn: (data: any) => {
-			return api.post("/reviews", {
+			return api.patch(`/reviews/${reviewId}`, {
 				...data,
 			});
 		},
@@ -62,8 +69,8 @@ const ReviewForm = (props: ReviewFormProps) => {
 		const formData = {
 			rating: data.rating,
 			review: data.review,
-			user: authContext.user?.id || "",
-			course: courseId,
+			// user: authContext.user?.id || "",
+			// course: courseId,
 		};
 
 		mutate(formData);
@@ -76,7 +83,7 @@ const ReviewForm = (props: ReviewFormProps) => {
 				color="common.black"
 				sx={{ paddingBottom: "1rem" }}
 			>
-				Leave a Review?
+				Update Review
 			</Typography>
 
 			<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -136,12 +143,12 @@ const ReviewForm = (props: ReviewFormProps) => {
 					fullWidth
 					sx={{ mt: 2 }}
 				>
-					Leave Review
+					Update Review
 				</Button>
 			</form>
 			<Popup
 				openPopup={isSuccess}
-				content="Review submitted successfully!"
+				content="Review updated successfully!"
 				buttonText="Great!"
 				popupFunction={PopupFunction}
 			/>
@@ -149,4 +156,4 @@ const ReviewForm = (props: ReviewFormProps) => {
 	);
 };
 
-export default ReviewForm;
+export default UpdateReviewForm;

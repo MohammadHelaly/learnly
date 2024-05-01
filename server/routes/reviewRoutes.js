@@ -19,12 +19,12 @@ router
 	.get(reviewController.getReview)
 	.patch(
 		authController.protect,
-		authController.restrictTo("user", "admin"),
+		authController.restrictTo("user", "admin", "instructor"),
 		reviewController.updateReview
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo("user", "admin"),
+		authController.restrictTo("user", "admin", "instructor"),
 		reviewController.deleteReview
 	);
 

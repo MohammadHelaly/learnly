@@ -6,9 +6,10 @@ import api from "../../api";
 
 interface NavigationGuardProps {
 	guardWhileSignedIn?: boolean;
+	isEnrolled?: boolean;
 	courseId: string | undefined;
 	children: React.ReactNode;
-	role: string;
+	role: "student" | "instructor" | "admin";
 }
 
 const CourseNavigationGuard = (props: NavigationGuardProps) => {
@@ -18,8 +19,8 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 
 	const {
 		data: course, //: course,
-		isLoading: course_isLoading,
-		isError: course_isError,
+		isLoading: isCourseLoading,
+		isError: isCourseError,
 		refetch: refetchCourse,
 	} = useQuery({
 		queryKey: ["courses", { courseId }],
@@ -27,10 +28,11 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 		select: (response) => response.data.data.data,
 		enabled: false,
 	});
+
 	const {
-		data: user_courses, //: course,
-		isLoading: user_isLoading,
-		isError: user_isError,
+		data: userCourses, //: course,
+		isLoading: isUserLoading,
+		isError: isUserError,
 		refetch: refetchUserCourses,
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
@@ -48,52 +50,48 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 	});
 
 	useEffect(() => {
-		if (course_isLoading || user_isLoading) return;
-		if (authContext.isLoggedIn && guardWhileSignedIn) {
-			navigate("/dashboard");
-			return;
-		} else if (role === "Student" && authContext.isLoggedIn) {
+		if (isCourseLoading || isUserLoading) return;
+
+		if (role === "student") {
 			const fetchUserCourses = async () => {
 				await refetchUserCourses();
-				if (user_courses === undefined) return;
-				if (!user_courses.includes(courseId)) {
+				if (userCourses === undefined) return;
+				if (!userCourses.includes(courseId)) {
+					// && !guardWhileEnrolled
 					navigate("/dashboard");
 					return;
 				}
 			};
 			fetchUserCourses();
-		} else if (role === "Instructor" && authContext.isLoggedIn) {
+		} else if (role === "instructor") {
 			const fetchCourse = async () => {
 				await refetchCourse();
 				if (course === undefined) return;
-				if (course?.instructors[0].id !== authContext.user?.id) {
+
+				if (
+					!!!course?.instructors.some(
+						(instructor: Instructor) =>
+							instructor.id === authContext.user?.id
+					)
+				) {
 					navigate("/dashboard");
 					return;
 				}
 			};
 			fetchCourse();
 		}
-
-		const timeout = setTimeout(() => {
-			if (!authContext.isLoggedIn && !guardWhileSignedIn) {
-				navigate("/log-in");
-				return;
-			}
-		}, 1);
-
-		return () => {
-			clearTimeout(timeout);
-		};
 	}, [
 		authContext.isLoggedIn,
 		navigate,
 		guardWhileSignedIn,
 		courseId,
-		course_isLoading,
-		user_isLoading,
-		user_courses,
+		isCourseLoading,
+		isUserLoading,
+		userCourses,
 		course,
 		role,
+		refetchCourse,
+		refetchUserCourses,
 	]);
 
 	return <>{children}</>;
