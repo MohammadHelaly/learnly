@@ -10,6 +10,8 @@ import FormContainer from "../UI/PageLayout/FormContainer";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
 import Popup from "../Popup/Popup";
+import { useQuery } from "@tanstack/react-query";
+import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
 interface ReviewFormProps {
 	courseId: string;
 }
@@ -44,6 +46,24 @@ const ReviewForm = (props: ReviewFormProps) => {
 		},
 	});
 
+	const {
+		data, //: courseReviews,
+		isLoading: isLoading,
+		isError: isCourseReviewError,
+	} = useQuery({
+		queryKey: ["courseReviews", { courseId }],
+		queryFn: async () =>
+			await api.get(`/courses/${courseId}/reviews`, {
+				params: {
+					user: authContext.user?.id,
+					course: courseId,
+					fields: "",
+				},
+			}),
+		select: (response) => response.data.data.data,
+	});
+	const courseReviews = data ?? [];
+
 	const { mutate, isError, isPending, isSuccess } = useMutation({
 		mutationFn: (data: any) => {
 			return api.post("/reviews", {
@@ -67,7 +87,9 @@ const ReviewForm = (props: ReviewFormProps) => {
 		mutate(formData);
 	};
 
-	return (
+	return courseReviews.length !== 0 ? (
+		<></>
+	) : (
 		<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
 			<Typography
 				variant="h4"
