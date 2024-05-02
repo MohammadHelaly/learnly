@@ -31,21 +31,27 @@ const InstructorDashboardCourseCard = (
 	} = props;
 
 	return (
-		<Card
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				height: 352,
-				width: window.innerWidth > 600 ? 352 : "100%",
-				transition: `all 0.6s ease-in-out`,
-				borderRadius: 0,
-				backgroundColor: "transparent",
-				borderBottom: "1px solid #dddddd",
-				boxShadow: "none",
-				p: 0,
-			}}>
-			<CardNavLink to={`/dashboard/teach/courses/${id}`}>
-				<Box sx={{ height: 200, width: "100%" }}>
+		<CardNavLink to={`/dashboard/teach/courses/${id}`}>
+			<Card
+				sx={{
+					display: "flex",
+					flexDirection: window.innerWidth > 600 ? "row" : "column",
+					height: window.innerWidth < 600 ? 356 : 204,
+					width: "100%",
+					transition: `all 0.6s ease-in-out`,
+					borderRadius: 0,
+					backgroundColor: "transparent",
+					borderBottom: "1px solid #dddddd",
+					boxShadow: "none",
+					px: 0,
+					py: window.innerWidth < 600 ? 0 : 1,
+				}}>
+				<Box
+					sx={{
+						height: 200,
+						minWidth: window.innerWidth > 600 ? 356 : "100%",
+						maxWidth: window.innerWidth > 600 ? 356 : "100%",
+					}}>
 					<img
 						src={imageCover.url}
 						alt="course"
@@ -59,8 +65,10 @@ const InstructorDashboardCourseCard = (
 				</Box>
 				<Box
 					sx={{
+						flexGrow: 1,
 						transition: "all 0.5s ease",
 						py: 1,
+						px: window.innerWidth > 600 ? 2 : 0,
 					}}>
 					<Typography
 						variant="h6"
@@ -129,8 +137,8 @@ const InstructorDashboardCourseCard = (
 						{" Level"}
 					</Typography>
 				</Box>
-			</CardNavLink>
-		</Card>
+			</Card>
+		</CardNavLink>
 	);
 };
 

@@ -31,20 +31,20 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 	} = props;
 
 	return (
-		<Card
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				height: 352,
-				width: window.innerWidth > 600 ? 352 : "100%",
-				transition: `all 0.6s ease-in-out`,
-				borderRadius: 0,
-				backgroundColor: "transparent",
-				borderBottom: "1px solid #dddddd",
-				boxShadow: "none",
-				p: 0,
-			}}>
-			<CardNavLink to={`/courses/${id}`}>
+		<CardNavLink to={`/courses/${id}`}>
+			<Card
+				sx={{
+					display: "flex",
+					flexDirection: "column",
+					height: 352,
+					width: window.innerWidth > 600 ? 352 : "100%",
+					transition: `all 0.6s ease-in-out`,
+					borderRadius: 0,
+					backgroundColor: "transparent",
+					borderBottom: "1px solid #dddddd",
+					boxShadow: "none",
+					p: 0,
+				}}>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
 						src={imageCover.url}
@@ -136,8 +136,8 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						{" Level"}
 					</Typography>
 				</Box>
-			</CardNavLink>
-		</Card>
+			</Card>
+		</CardNavLink>
 	);
 };
 

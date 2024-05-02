@@ -82,7 +82,8 @@ const Courses = (props: CoursesProps) => {
 									item
 									key={index}
 									width={
-										window.innerWidth > 600
+										window.innerWidth > 600 &&
+										variant !== "instructorDashboard"
 											? "auto"
 											: "100%"
 									}>
