@@ -5,15 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 
 interface NavigationGuardProps {
-	guardWhileSignedIn?: boolean;
-	isEnrolled?: boolean;
+	guardWhileEnrolled?: boolean;
 	courseId: string | undefined;
 	children: React.ReactNode;
 	role: "student" | "instructor" | "admin";
 }
 
 const CourseNavigationGuard = (props: NavigationGuardProps) => {
-	const { guardWhileSignedIn, courseId, children, role } = props;
+	const { courseId, children, role, guardWhileEnrolled } = props;
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 
@@ -55,9 +54,13 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 		if (role === "student") {
 			const fetchUserCourses = async () => {
 				await refetchUserCourses();
-				if (userCourses === undefined) return;
-				if (!userCourses.includes(courseId)) {
-					// && !guardWhileEnrolled
+				// if (userCourses === undefined) return;
+				if (!userCourses?.includes(courseId) && !guardWhileEnrolled) {
+					navigate("/dashboard");
+					return;
+				}
+
+				if (userCourses?.includes(courseId) && guardWhileEnrolled) {
 					navigate("/dashboard");
 					return;
 				}
@@ -66,13 +69,25 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 		} else if (role === "instructor") {
 			const fetchCourse = async () => {
 				await refetchCourse();
-				if (course === undefined) return;
+				// if (course === undefined) return;
 
 				if (
-					!!!course?.instructors.some(
+					!course?.instructors.some(
 						(instructor: Instructor) =>
 							instructor.id === authContext.user?.id
-					)
+					) &&
+					!guardWhileEnrolled
+				) {
+					navigate("/dashboard");
+					return;
+				}
+
+				if (
+					course?.instructors.some(
+						(instructor: Instructor) =>
+							instructor.id === authContext.user?.id
+					) &&
+					guardWhileEnrolled
 				) {
 					navigate("/dashboard");
 					return;
@@ -83,7 +98,6 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 	}, [
 		authContext.isLoggedIn,
 		navigate,
-		guardWhileSignedIn,
 		courseId,
 		isCourseLoading,
 		isUserLoading,
