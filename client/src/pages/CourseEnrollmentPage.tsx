@@ -23,9 +23,10 @@ import {
 import Popup from "../components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
-import { wrap } from "module";
 import NavigationGuard from "../components/Navigation/NavigationGuard";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
+import EnrollmentCourseCard from "../components/UI/Courses/Catalog/EnrollmentCourseCard";
+import { Check } from "@mui/icons-material";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
@@ -100,10 +101,8 @@ function CourseEnrollmentPage() {
 											md: "row",
 										}}
 										width="100%"
-										sx={{ width: "100%" }}
 										justifyContent="space-between"
-										spacing={2}>
-										{" "}
+										spacing={4}>
 										<Stack
 											width={
 												window.innerWidth > 600
@@ -125,135 +124,17 @@ function CourseEnrollmentPage() {
 												}}>
 												Course
 											</Typography>
-											<Stack
-												width="100%"
-												direction={{
-													xs: "column",
-													md: "row",
-												}}
-												justifyContent="space-between">
-												<Stack
-													width="100%"
-													direction={{
-														xs: "column",
-														md: "row",
-													}}
-													spacing={3}>
-													{/* <Box> */}
-													<CardMedia
-														component="img"
-														sx={{
-															// width:
-															// 	window.innerWidth >
-															// 	600
-															// 		? "100%"
-															// 		: "45vw",
-															// height:
-															// 	window.innerWidth >
-															// 	600
-															// 		? 170
-															// 		: 110,
-															objectFit: "cover",
-															width:
-																window.innerWidth <
-																600
-																	? "100%"
-																	: "60%",
-															// : "92.5vw",
-															height:
-																window.innerWidth >
-																600
-																	? 300
-																	: 200,
-															borderRadius:
-																// window.innerWidth >
-																// 600
-																// 	?
-																"20px",
-															// : "0",
-														}}
-														image={
-															course?.imageCover
-																.url
-														}
-													/>
-													{/* </Box> */}
-
-													<Stack
-														direction="column"
-														spacing={1}>
-														<Typography
-															variant="h6"
-															fontWeight="bold">
-															{course?.name}
-														</Typography>
-														<Typography
-															fontWeight="light"
-															variant="body2">
-															By{" "}
-															{
-																course
-																	?.instructors[0]
-																	.name
-															}
-														</Typography>
-														<Stack
-															direction="row"
-															spacing={1}
-															alignItems="center">
-															<Rating
-																name="read-only"
-																value={
-																	course?.ratingsAverage
-																}
-																readOnly
-																precision={0.25}
-																size="small"
-																sx={{
-																	color: "secondary.main",
-																	// color: "black",
-																}}
-															/>
-															<Typography
-																variant="body2"
-																color="text.secondary"
-																sx={{
-																	fontWeight: 400,
-																}}>
-																{"("}
-																{
-																	course?.ratingsQuantity
-																}
-																{")"}
-															</Typography>
-														</Stack>
-														<Typography
-															fontWeight="1"
-															variant="body2">
-															{course.duration}{" "}
-															Hours
-														</Typography>
-														<Typography
-															fontWeight="1"
-															variant="body2">
-															{course.difficulty}
-														</Typography>
-													</Stack>
-												</Stack>
-												<Box>
-													<Typography>
-														{course.price === 0
-															? "Free"
-															: `E£${course.price}`}
-													</Typography>
-												</Box>
-											</Stack>
+											<EnrollmentCourseCard {...course} />
 										</Stack>
 										<Stack
 											sx={{
+												mt:
+													window.innerWidth > 600
+														? "0px !important"
+														: 4,
 												borderBottom: {
-													xs: "0px",
-													md: "1px solid #e0e0e0",
+													md: "0px",
+													xs: "1px solid #e0e0e0",
 												},
 											}}
 											width={
@@ -264,14 +145,20 @@ function CourseEnrollmentPage() {
 											direction="column"
 											justifyContent="space-between">
 											<Stack width="100%">
-												<Typography>Total:</Typography>
+												<Typography
+													variant="body1"
+													fontWeight="semibold"
+													sx={{
+														mb: 2,
+														paddingBottom: 1,
+													}}>
+													Total
+												</Typography>
 												<Typography
 													variant="h4"
-													fontWeight="light bold"
+													fontWeight="semibold"
 													sx={{
-														color: "secondary.main",
 														pt: 0,
-
 														mb:
 															window.innerWidth <
 															600
@@ -288,11 +175,16 @@ function CourseEnrollmentPage() {
 												color="primary"
 												size="large"
 												disableElevation
+												endIcon={<Check />}
 												fullWidth
 												disabled={isPendingUser}
 												sx={{
 													// mb: 3,
-													mb: 2,
+													mb:
+														window.innerWidth < 600
+															? 2
+															: 1.5,
+
 													height: 50,
 													fontSize: "1rem",
 													backgroundColor:
