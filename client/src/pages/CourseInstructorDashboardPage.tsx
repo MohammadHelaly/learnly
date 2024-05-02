@@ -17,7 +17,7 @@ import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuar
 import NavigationGuard from "../components/Navigation/NavigationGuard";
 import UpdateCourseChannel from "../components/CourseInstructorDashboardPage/UpdateCourseChannel";
 import { useState } from "react";
-
+import PublishCourse from "../components/CourseInstructorDashboardPage/PublishCourse";
 const CourseInstructorDashboardPage = () => {
 	const [value, setValue] = useState("0");
 
@@ -53,7 +53,8 @@ const CourseInstructorDashboardPage = () => {
 						sx={{
 							backgroundColor: "#f5f5f5",
 							mt: window.innerWidth > 600 ? 8 : 7,
-						}}>
+						}}
+					>
 						<Container maxWidth="lg">
 							<Stack
 								direction={
@@ -67,7 +68,8 @@ const CourseInstructorDashboardPage = () => {
 								sx={{
 									pb: 10,
 									pt: window.innerWidth > 600 ? 10 : 0,
-								}}>
+								}}
+							>
 								{
 									// isError ? (
 									// 	<ErrorWarning />
@@ -84,7 +86,8 @@ const CourseInstructorDashboardPage = () => {
 												flexDirection: "column",
 												display: "flex",
 												gap: 2,
-											}}>
+											}}
+										>
 											<CourseInformationContent
 												name={course?.name}
 												summary={course?.summary}
@@ -126,7 +129,8 @@ const CourseInstructorDashboardPage = () => {
 													window.innerWidth > 600
 														? 0
 														: 4,
-											}}>
+											}}
+										>
 											<CourseImage
 												imageCover={course?.imageCover}
 												name={course?.name}
@@ -158,13 +162,15 @@ const CourseInstructorDashboardPage = () => {
 										sx={{
 											borderBottom: 1,
 											borderColor: "divider",
-										}}>
+										}}
+									>
 										<TabList
 											onChange={handleChange}
 											aria-label="Dashboard Tabs"
 											// centered={window.innerWidth < 600}
 											// variant={window.innerWidth<600?"fullWidth":"scrollable"}
-											variant="scrollable">
+											variant="scrollable"
+										>
 											<Tab
 												label="Course Information"
 												value="0"
@@ -189,6 +195,14 @@ const CourseInstructorDashboardPage = () => {
 													fontWeight: 400,
 												}}
 											/>
+											<Tab
+												label="Course Settings"
+												value="3"
+												sx={{
+													fontSize: "1.2rem",
+													fontWeight: 400,
+												}}
+											/>
 										</TabList>
 									</Box>
 									<TabPanel value="0" sx={{ p: 0, m: 0 }}>
@@ -203,6 +217,9 @@ const CourseInstructorDashboardPage = () => {
 									</TabPanel>
 									<TabPanel value="2" sx={{ p: 0, m: 0 }}>
 										<UpdateCourseChannel />
+									</TabPanel>
+									<TabPanel value="3" sx={{ p: 0, m: 0 }}>
+										<PublishCourse />
 									</TabPanel>
 								</TabContext>
 							</SectionWrapper>
