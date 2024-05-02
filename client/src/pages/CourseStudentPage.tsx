@@ -105,23 +105,23 @@ function CourseStudentPage() {
 									</TabList>
 								</Box>
 								<TabPanel value="0" sx={{ p: 0, m: 0 }}>
-									<Container maxWidth="lg">
-										<CourseHighlights
-											duration={course?.duration}
-											isLoading={isLoading}
-											isError={isError}
-										/>
-										<CourseCategories
-											categories={course?.categories}
-											isLoading={isLoading}
-											isError={isError}
-										/>
-										<CourseDescription
-											description={course?.description}
-											isLoading={isLoading}
-											isError={isError}
-										/>
-									</Container>
+									{/* <Container maxWidth="lg"> */}
+									<CourseHighlights
+										duration={course?.duration}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+									<CourseCategories
+										categories={course?.categories}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+									<CourseDescription
+										description={course?.description}
+										isLoading={isLoading}
+										isError={isError}
+									/>
+									{/* </Container> */}
 								</TabPanel>
 								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
 									<CourseStudentChannel />

@@ -8,7 +8,7 @@ function UpdateCourseChannel() {
 	return (
 		<SectionWrapper>
 			<FormContainer
-				large
+				// large
 				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
 				<SectionWrapper>
 					<SectionHeader
