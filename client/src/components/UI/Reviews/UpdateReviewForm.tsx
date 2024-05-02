@@ -77,7 +77,7 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 	};
 
 	return (
-		<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
+		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
 			<Typography
 				variant="h4"
 				color="common.black"
