@@ -2,11 +2,14 @@ import React from "react";
 import { Button, Stack } from "@mui/material";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import FormContainer from "../UI/PageLayout/FormContainer";
 
 function UpdateCourseChannel() {
 	return (
 		<SectionWrapper>
-			<Stack spacing={12}>
+			<FormContainer
+				large
+				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
 				<SectionWrapper>
 					<SectionHeader
 						heading="Create Channel"
@@ -33,8 +36,7 @@ function UpdateCourseChannel() {
 						fullWidth
 						disableElevation
 						size="large"
-						sx={{ mb: 2 }}
-					>
+						sx={{ mb: 2 }}>
 						Create Channel
 					</Button>
 				</SectionWrapper>
@@ -63,12 +65,11 @@ function UpdateCourseChannel() {
 						variant="contained"
 						fullWidth
 						disableElevation
-						size="large"
-					>
+						size="large">
 						Start Live Stream
 					</Button>
 				</SectionWrapper>
-			</Stack>
+			</FormContainer>
 		</SectionWrapper>
 	);
 }

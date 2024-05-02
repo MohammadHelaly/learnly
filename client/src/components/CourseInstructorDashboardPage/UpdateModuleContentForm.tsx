@@ -9,6 +9,7 @@ import {
 	DialogContent,
 	TextField,
 	SlideProps,
+	IconButton,
 } from "@mui/material";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -115,11 +116,11 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 
 	return (
 		<>
-			<Button
-				sx={{ pl: 3, color: "black" }}
-				startIcon={<EditIcon />}
-				onClick={handleOpenModuleForm}
-			></Button>
+			<IconButton
+				sx={{ mr: 2, color: "black" }}
+				onClick={handleOpenModuleForm}>
+				<EditIcon />
+			</IconButton>
 			<Dialog
 				open={openModuleForm}
 				TransitionComponent={Transition}
@@ -130,8 +131,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 				) => handleCloseModuleForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth
-			>
+				fullWidth>
 				<DialogTitle>
 					<SectionHeader
 						heading="Modify Module Information"
@@ -150,8 +150,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 					<form
 						onSubmit={handleSectionSubmit(onSubmitSection)}
 						autoComplete="off"
-						noValidate
-					>
+						noValidate>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -177,8 +176,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 								disableElevation
 								size="large"
 								type="submit"
-								fullWidth
-							>
+								fullWidth>
 								Update Module
 							</Button>
 						</Stack>

@@ -70,12 +70,11 @@ const ReviewForm = (props: ReviewFormProps) => {
 	};
 
 	return (
-		<FormContainer large sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
+		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : 2 }}>
 			<Typography
 				variant="h4"
 				color="common.black"
-				sx={{ paddingBottom: "1rem" }}
-			>
+				sx={{ paddingBottom: "1rem" }}>
 				Leave a Review?
 			</Typography>
 
@@ -134,8 +133,9 @@ const ReviewForm = (props: ReviewFormProps) => {
 					variant="contained"
 					color="primary"
 					fullWidth
-					sx={{ mt: 2 }}
-				>
+					size="large"
+					disableElevation
+					sx={{ mt: 2 }}>
 					Leave Review
 				</Button>
 			</form>
