@@ -11,6 +11,16 @@ exports.setCourseUserIds = (req, res, next) => {
 	next();
 };
 
+exports.protectReview = async (req, res, next) => {
+	const review = await Review.findById(req.params.id);
+	if (review.user.id !== req.user.id && req.user.role !== "admin") {
+		return next(
+			new AppError("You are not authorized to perform this action.", 403)
+		);
+	}
+	next();
+};
+
 exports.getAllReviews = handlerFactory.getAll(Review);
 
 exports.getReview = handlerFactory.getOne(Review);
