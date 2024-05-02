@@ -147,7 +147,7 @@ function CourseEnrollmentPage() {
 															window.innerWidth >
 															600
 																? "100%"
-																: "92vw",
+																: "92.5vw",
 														height:
 															window.innerWidth >
 															600
