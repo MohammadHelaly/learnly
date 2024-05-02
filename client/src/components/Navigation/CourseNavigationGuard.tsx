@@ -51,50 +51,62 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 	useEffect(() => {
 		if (isCourseLoading || isUserLoading) return;
 
-		if (role === "student") {
-			const fetchUserCourses = async () => {
-				await refetchUserCourses();
-				// if (userCourses === undefined) return;
-				if (!userCourses?.includes(courseId) && !guardWhileEnrolled) {
-					navigate("/dashboard");
-					return;
-				}
+		const handleNavigation = () => {
+			if (role === "student") {
+				const fetchUserCourses = async () => {
+					await refetchUserCourses();
+					if (
+						userCourses &&
+						!userCourses?.includes(courseId) &&
+						!guardWhileEnrolled
+					) {
+						console.log("userCourses", userCourses);
+						navigate("/dashboard");
+						return;
+					}
 
-				if (userCourses?.includes(courseId) && guardWhileEnrolled) {
-					navigate("/dashboard");
-					return;
-				}
-			};
-			fetchUserCourses();
-		} else if (role === "instructor") {
-			const fetchCourse = async () => {
-				await refetchCourse();
-				// if (course === undefined) return;
+					if (
+						userCourses &&
+						userCourses?.includes(courseId) &&
+						guardWhileEnrolled
+					) {
+						navigate("/dashboard");
+						return;
+					}
+				};
+				fetchUserCourses();
+			} else if (role === "instructor") {
+				const fetchCourse = async () => {
+					await refetchCourse();
+					if (
+						course &&
+						!course?.instructors.some(
+							(instructor: Instructor) =>
+								instructor.id === authContext.user?.id
+						) &&
+						!guardWhileEnrolled
+					) {
+						navigate("/dashboard");
+						return;
+					}
 
-				if (
-					!course?.instructors.some(
-						(instructor: Instructor) =>
-							instructor.id === authContext.user?.id
-					) &&
-					!guardWhileEnrolled
-				) {
-					navigate("/dashboard");
-					return;
-				}
+					if (
+						course &&
+						course?.instructors.some(
+							(instructor: Instructor) =>
+								instructor.id === authContext.user?.id
+						) &&
+						guardWhileEnrolled
+					) {
+						navigate("/dashboard");
+						return;
+					}
+				};
+				fetchCourse();
+			}
+		};
 
-				if (
-					course?.instructors.some(
-						(instructor: Instructor) =>
-							instructor.id === authContext.user?.id
-					) &&
-					guardWhileEnrolled
-				) {
-					navigate("/dashboard");
-					return;
-				}
-			};
-			fetchCourse();
-		}
+		handleNavigation();
 	}, [
 		authContext.isLoggedIn,
 		navigate,

@@ -58,8 +58,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 						flexDirection: "row",
 						display: "flex",
 						width: "100%",
-					}}
-				>
+					}}>
 					<Button
 						disableElevation
 						sx={{
@@ -69,6 +68,8 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							zIndex: 2,
 							right: 0,
 							display: open ? "none" : "flex",
+							borderStartEndRadius: 0,
+							borderEndEndRadius: 0,
 						}}
 						variant="contained"
 						onClick={() => {
@@ -77,8 +78,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							} else {
 								setOpen(true);
 							}
-						}}
-					>
+						}}>
 						<ArrowBackIcon sx={{ paddingRight: "0.5rem" }} />
 						Contents
 					</Button>
@@ -107,8 +107,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 
 									// Adjust this value to change the height of the drawer
 								},
-							}}
-						>
+							}}>
 							<Box>
 								{
 									<Box
@@ -121,28 +120,24 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 											borderBottom: 1,
 											borderColor: "divider",
 											p: 2,
-										}}
-									>
+										}}>
 										<Stack
 											direction="row"
 											spacing={1}
 											alignItems="center"
 											justifyContent="space-between"
-											width="100%"
-										>
+											width="100%">
 											<Typography
 												variant="h5"
 												sx={{
 													fontWeight: "400",
-												}}
-											>
+												}}>
 												Course Content
 											</Typography>
 											<IconButton
 												onClick={() => {
 													setOpen(false);
-												}}
-											>
+												}}>
 												<CloseIcon></CloseIcon>
 											</IconButton>
 										</Stack>
