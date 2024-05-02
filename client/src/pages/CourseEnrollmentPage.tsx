@@ -92,140 +92,171 @@ function CourseEnrollmentPage() {
 									xs: "column",
 									md: "row",
 								}}
+								width="100%"
+								sx={{ width: "100%" }}
+								justifyContent="space-between"
+								spacing={2}
 							>
 								{" "}
-								<Box sx={{ width: "100%", mr: 2 }}>
-									<Stack>
-										<Typography
-											variant="body1"
-											fontWeight="light bold"
-											sx={{
-												mb: 2,
-												borderBottom:
-													"1px solid #e0e0e0",
-												paddingBottom: 1,
-											}}
-										>
-											Course
-										</Typography>
-										<Stack
-											direction="row"
-											justifyContent="space-between"
-										>
-											<Stack direction="row" spacing={3}>
-												<Box>
-													<CardMedia
-														component="img"
-														sx={{
-															width:
-																window.innerWidth >
-																600
-																	? "100%"
-																	: "45vw",
-															height:
-																window.innerWidth >
-																600
-																	? 170
-																	: 110,
-														}}
-														image={
-															course?.imageCover
-																.url
-														}
-													/>
-												</Box>
-
-												<Stack direction="column">
-													<Typography fontWeight="bold">
-														{course?.name}
-													</Typography>
-													<Typography
-														fontWeight="light bold"
-														variant="body2"
-													>
-														By{" "}
-														{
-															course
-																?.instructors[0]
-																.name
-														}
-													</Typography>
-													<Stack
-														direction="row"
-														spacing={1}
-													>
-														<Typography
-															color="secondary.main"
-															sx={{ pt: 0.3 }}
-														>
-															{
-																course?.ratingsAverage
-															}
-														</Typography>
-														<Rating
-															name="read-only"
-															value={
-																course?.ratingsAverage
-															}
-															readOnly
-															precision={0.25}
-															size="small"
-															sx={{
-																color: "secondary.main",
-																pt: 0.6,
-															}}
-														/>
-													</Stack>
-													<Typography
-														fontWeight="1"
-														variant="body2"
-													>
-														{course.duration} Hours
-													</Typography>
-													<Typography
-														fontWeight="1"
-														variant="body2"
-													>
-														{course.difficulty}
-													</Typography>
-												</Stack>
-											</Stack>
-											<Box>
-												<Typography>
-													{course.price === 0
-														? "Free"
-														: `E£${course.price}`}
-												</Typography>
-											</Box>
-										</Stack>
-									</Stack>
-								</Box>
-								<Box
-									sx={{
-										borderBottom: "1px solid #e0e0e0",
-
-										width: "22%",
-									}}
-								>
-									<Typography sx={{}}>Total:</Typography>
+								<Stack width="70%">
 									<Typography
-										variant="h4"
+										variant="body1"
 										fontWeight="light bold"
 										sx={{
-											color: "secondary.main",
-											pt: 2,
-											mb: window.innerWidth < 600 ? 2 : 4,
+											mb: 2,
+											borderBottom: "1px solid #e0e0e0",
+											paddingBottom: 1,
+											width:
+												window.innerWidth > 600
+													? "100%"
+													: "92vw",
 										}}
 									>
-										{course.price === 0
-											? "Free"
-											: `E£${course.price}`}
+										Course
 									</Typography>
-									<Box
-										sx={{
-											pt: window.innerWidth < 600 ? 0 : 2,
+									<Stack
+										direction={{
+											xs: "column",
+											md: "row",
 										}}
+										justifyContent="space-between"
 									>
+										<Stack
+											direction={{
+												xs: "column",
+												md: "row",
+											}}
+											spacing={3}
+										>
+											<Box>
+												<CardMedia
+													component="img"
+													sx={{
+														// width:
+														// 	window.innerWidth >
+														// 	600
+														// 		? "100%"
+														// 		: "45vw",
+														// height:
+														// 	window.innerWidth >
+														// 	600
+														// 		? 170
+														// 		: 110,
+														objectFit: "cover",
+														width:
+															window.innerWidth >
+															600
+																? "100%"
+																: "92vw",
+														height:
+															window.innerWidth >
+															600
+																? 300
+																: 200,
+														borderRadius:
+															window.innerWidth >
+															600
+																? "20px"
+																: "0",
+													}}
+													image={
+														course?.imageCover.url
+													}
+												/>
+											</Box>
+
+											<Stack direction="column">
+												<Typography fontWeight="bold">
+													{course?.name}
+												</Typography>
+												<Typography
+													fontWeight="light bold"
+													variant="body2"
+												>
+													By{" "}
+													{
+														course?.instructors[0]
+															.name
+													}
+												</Typography>
+												<Stack
+													direction="row"
+													spacing={1}
+												>
+													<Typography
+														color="secondary.main"
+														sx={{ pt: 0.3 }}
+													>
+														{course?.ratingsAverage}
+													</Typography>
+													<Rating
+														name="read-only"
+														value={
+															course?.ratingsAverage
+														}
+														readOnly
+														precision={0.25}
+														size="small"
+														sx={{
+															color: "secondary.main",
+															pt: 0.6,
+														}}
+													/>
+												</Stack>
+												<Typography
+													fontWeight="1"
+													variant="body2"
+												>
+													{course.duration} Hours
+												</Typography>
+												<Typography
+													fontWeight="1"
+													variant="body2"
+												>
+													{course.difficulty}
+												</Typography>
+											</Stack>
+										</Stack>
+										<Box>
+											<Typography>
+												{course.price === 0
+													? "Free"
+													: `E£${course.price}`}
+											</Typography>
+										</Box>
+									</Stack>
+								</Stack>
+								<Stack
+									sx={{
+										borderBottom: {
+											xs: "0px",
+											md: "1px solid #e0e0e0",
+										},
+									}}
+									width="25%"
+									direction="column"
+									justifyContent="space-between"
+								>
+									<Stack width="100%">
+										<Typography>Total:</Typography>
+										<Typography
+											variant="h4"
+											fontWeight="light bold"
+											sx={{
+												color: "secondary.main",
+												pt: 2,
+												mb:
+													window.innerWidth < 600
+														? 2
+														: 4,
+											}}
+										>
+											{course.price === 0
+												? "Free"
+												: `E£${course.price}`}
+										</Typography>
+									</Stack>
+									<Box>
 										<Button
 											variant="contained"
 											color="primary"
@@ -233,17 +264,20 @@ function CourseEnrollmentPage() {
 											disableElevation
 											disabled={isPendingUser}
 											sx={{
-												width: "100%",
-												mt:
-													window.innerWidth < 600
-														? 1
-														: 4,
-
+												// mb: 3,
+												mb: 2,
+												width: {
+													xs: "50vw",
+													md: "100%",
+												},
+												height: 50,
+												fontSize: "1rem",
 												backgroundColor:
 													"secondary.main",
 												// backgroundColor: "#9c27b0",
 
 												color: "black",
+												// border: "1px solid #00f3b6",
 												"&:hover": {
 													backgroundColor:
 														"primary.main",
@@ -262,18 +296,10 @@ function CourseEnrollmentPage() {
 											}}
 										>
 											{" "}
-											<Typography
-												variant={
-													window.innerWidth < 600
-														? "caption"
-														: "body1"
-												}
-											>
-												Enroll in Course
-											</Typography>
+											Enroll Now
 										</Button>
 									</Box>
-								</Box>
+								</Stack>
 							</Stack>
 						</Container>
 					</SectionWrapper>
