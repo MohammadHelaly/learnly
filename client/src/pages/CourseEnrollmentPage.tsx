@@ -244,7 +244,8 @@ function CourseEnrollmentPage() {
 											fontWeight="light bold"
 											sx={{
 												color: "secondary.main",
-												pt: 2,
+												pt: 0,
+
 												mb:
 													window.innerWidth < 600
 														? 2
