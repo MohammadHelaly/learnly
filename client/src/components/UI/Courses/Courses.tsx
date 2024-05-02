@@ -37,8 +37,7 @@ const Courses = (props: CoursesProps) => {
 			justifyContent="center"
 			alignContent="center"
 			gap={2}
-			sx={sx}
-		>
+			sx={sx}>
 			{isError ? (
 				<ErrorWarning />
 			) : courses?.length === 0 || !courses ? (
@@ -52,17 +51,14 @@ const Courses = (props: CoursesProps) => {
 								<Grid
 									item
 									key={index}
-									xs={
-										// variant === "instructorDashboard"
-										// 	? 12
-										// 	: "auto"
-										"auto"
-									}
-								>
+									width={
+										window.innerWidth > 600
+											? "auto"
+											: "100%"
+									}>
 									<AnimatedCard
 										index={index}
-										animated={cardsAnimated}
-									>
+										animated={cardsAnimated}>
 										{variant === "studentDashboard" ? (
 											<SkeletonStudentDashboardCourseCard />
 										) : variant ===
@@ -85,17 +81,14 @@ const Courses = (props: CoursesProps) => {
 								<Grid
 									item
 									key={index}
-									xs={
-										// variant === "instructorDashboard"
-										// 	? 12
-										// 	: "auto"
-										"auto"
-									}
-								>
+									width={
+										window.innerWidth > 600
+											? "auto"
+											: "100%"
+									}>
 									<AnimatedCard
 										index={index}
-										animated={cardsAnimated}
-									>
+										animated={cardsAnimated}>
 										{variant === "studentDashboard" ? (
 											<StudentDashboardCourseCard
 												{...course}

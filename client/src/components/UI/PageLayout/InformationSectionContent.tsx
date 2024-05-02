@@ -17,7 +17,7 @@ const InformationSectionContent = (props: InformationSectionContentProps) => {
 			ref={elementRef}
 			spacing={2}
 			direction={
-				window.innerWidth < 800
+				window.innerWidth < 900
 					? "column"
 					: index % 2 === 0
 					? "row"

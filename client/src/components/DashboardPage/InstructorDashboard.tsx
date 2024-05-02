@@ -58,8 +58,7 @@ const InstructorDashboard = () => {
 					alignItems: "center",
 					display: "flex",
 					flexDirection: "column",
-				}}
-			>
+				}}>
 				<SectionHeader
 					heading="Create a New Course"
 					headingAlignment="center"
@@ -79,13 +78,11 @@ const InstructorDashboard = () => {
 							width: 60,
 							height: 60,
 							mb: 4,
-						}}
-					>
+						}}>
 						<Add fontSize="large" />
 					</Button>
 				</StyledNavLink>
 			</SectionWrapper>
-
 			<Courses
 				variant="instructorDashboard"
 				courses={courses}

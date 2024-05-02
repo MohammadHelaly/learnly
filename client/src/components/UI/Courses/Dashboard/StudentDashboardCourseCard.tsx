@@ -35,16 +35,15 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: 356,
-				width: window.innerWidth > 380 ? 356 : 328,
+				height: 352,
+				width: window.innerWidth > 600 ? 352 : "100%",
 				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
 				borderBottom: "1px solid #dddddd",
 				boxShadow: "none",
 				p: 0,
-			}}
-		>
+			}}>
 			<CardNavLink to={`/courses/${id}`}>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
@@ -62,16 +61,14 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 					sx={{
 						transition: "all 0.5s ease",
 						py: 1,
-					}}
-				>
+					}}>
 					<Typography
 						variant="h6"
 						color="common.black"
 						sx={{
 							fontWeight: 500,
 							width: "100%",
-						}}
-					>
+						}}>
 						{name?.length > 30
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
@@ -82,8 +79,7 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}
-					>
+						}}>
 						{instructors &&
 						instructors?.length > 0 &&
 						instructors[0]?.name.length > 30
@@ -106,8 +102,7 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"("}
 							{ratingsQuantity}
 							{")"}
@@ -117,16 +112,14 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"Free"}
 						</Typography>
 					) : (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}
-						>
+							sx={{ fontWeight: 400 }}>
 							{"$"}
 							{price}
 						</Typography>
@@ -134,8 +127,7 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 					<Typography
 						variant="body2"
 						color="text.secondary"
-						sx={{ fontWeight: 400 }}
-					>
+						sx={{ fontWeight: 400 }}>
 						{duration}
 						{" Hours"}
 						{" - "}
