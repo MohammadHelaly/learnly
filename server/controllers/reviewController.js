@@ -5,21 +5,23 @@ const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
 
 exports.setCourseUserIds = (req, res, next) => {
-	// Allow nested routes
-	if (!req.body.course) req.body.course = req.params.courseId;
-	if (!req.body.user) req.body.user = req.user.id;
-	next();
+  // Allow nested routes
+  if (!req.body.course) req.body.course = req.params.courseId;
+  if (!req.body.user) req.body.user = req.user.id;
+  next();
 };
 
 exports.protectReview = async (req, res, next) => {
-	const review = await Review.findById(req.params.id);
-	if (review.user.id !== req.user.id && req.user.role !== "admin") {
-		return next(
-			new AppError("You are not authorized to perform this action.", 403)
-		);
-	}
-	next();
+  const review = await Review.findById(req.params.id);
+  if (review.user.id !== req.user.id && req.user.role !== "admin") {
+    return next(
+      new AppError("You are not authorized to perform this action.", 403)
+    );
+  }
+  next();
 };
+
+//TODO: check if user is enrolled in course before creating review
 
 exports.getAllReviews = handlerFactory.getAll(Review);
 
