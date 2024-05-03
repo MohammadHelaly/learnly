@@ -23,6 +23,7 @@ import AboutPage from "./pages/AboutPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
+import NewsletterPage from "./pages/NewsletterPage";
 import "./App.css";
 import EditUserProfilePage from "./pages/EditUserProfilePage";
 
@@ -168,6 +169,10 @@ function App() {
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
 						<Route path="/help" element={<LandingPage />} />
+						<Route
+							path="/newsletter"
+							element={<NewsletterPage />}
+						/>
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
 					</Routes>

@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import {
-	Typography,
-	Stack,
 	Button,
+	Typography,
+	Slide,
+	Stack,
 	Dialog,
 	DialogTitle,
 	DialogContent,
-	DialogActions,
-	Slide,
 	TextField,
+	SlideProps,
 } from "@mui/material";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
-import { AddCircleOutlined, Check } from "@mui/icons-material";
+import { Add, Check } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Popup from "../Popup/Popup";
 
-interface UpdateModulesFormProps {
+interface UpdateModuleContentFormProps {
 	courseId: number | string;
-	sectionId: number | string;
+	title: string | undefined;
+	sectionid: number | string;
+	moduleIndex: number;
+	modules: Module[];
 }
 
 const moduleSchema = z.object({
@@ -43,45 +46,56 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const UpdateModulesForm = (props: UpdateModulesFormProps) => {
-	const { courseId, sectionId } = props;
+function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
+	const { title, sectionid, moduleIndex, modules, courseId } = props;
 
 	const [openModuleForm, setOpenModuleForm] = useState(false);
 
 	const {
-		control: moduleControl,
-		handleSubmit: moduleHandleSubmit,
-		reset: resetModule,
-		formState: { errors: moduleErrors },
+		control: sectionControl,
+		handleSubmit: handleSectionSubmit,
+
+		formState: { errors: sectionErrors },
 	} = useForm<AddModuleSchema>({
 		mode: "onBlur",
 		defaultValues: {
-			title: "",
+			title: title,
 		},
 		resolver: zodResolver(moduleSchema),
 	});
 
 	const queryClient = useQueryClient();
 
-	const handleOpenModuleForm = () => setOpenModuleForm(true);
-	const handleCloseModuleForm = () => {
+	const handleOpenModuleForm = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		event.stopPropagation();
+		setOpenModuleForm(true);
+	};
+
+	const handleCloseModuleForm = (
+		event?: React.MouseEvent<HTMLButtonElement>
+	) => {
+		if (event) {
+			event.stopPropagation();
+		}
 		setOpenModuleForm(false);
-		resetModule();
+		//resetSection();
 	};
 
 	const {
-		mutate: mutateModule,
-		isError: isMutateModuleError,
-		isPending: isPendingModule,
+		mutate: mutateSection,
+		isError: isMutateSectionError,
+		isPending: isPendingSection,
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.put(`/courses/${courseId}/sections/${sectionId}`, {
-				...data,
+			return api.patch(`sections/${sectionid}`, {
+				modules: data,
 			});
 		},
 		onSuccess: (response) => {
-			//alert("Module added successfully");
+			alert("Module updated successfully");
 			queryClient.invalidateQueries({
 				queryKey: ["sections", { courseId }],
 			});
@@ -92,94 +106,86 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		},
 	});
 
-	const onSubmitModule = (data: AddModuleSchema) => {
-		mutateModule(data);
+	const onSubmitSection = (data: AddModuleSchema) => {
+		modules[moduleIndex].title = data.title;
+		mutateSection(modules);
 		handleCloseModuleForm();
 	};
 
 	return (
 		<>
 			<Button
-				disabled={isPendingModule}
-				sx={{ color: "black" }}
-				startIcon={<AddCircleOutlined />}
+				sx={{ pl: 3, color: "black" }}
+				startIcon={<EditIcon />}
 				onClick={handleOpenModuleForm}
-			>
-				<Typography
-					variant="h6"
-					sx={{
-						fontWeight: "400",
-					}}
-				>
-					Add New Module
-				</Typography>
-			</Button>
+			></Button>
 			<Dialog
 				open={openModuleForm}
 				TransitionComponent={Transition}
 				keepMounted
-				onClose={handleCloseModuleForm}
+				onClose={(
+					event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+					reason: "backdropClick" | "escapeKeyDown"
+				) => handleCloseModuleForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Add New Module"
+						heading="Modify Module Information"
 						headingAlignment="left"
-						sx={{
-							mb: 0,
-						}}
+						sx={{ mb: 0 }}
 					/>
 					<SectionHeader
-						heading="Add a new module to this section."
-						headingAlignment="left"
+						heading="Update the Module Title "
 						isSubHeading
 						variant="h6"
-						sx={{
-							mb: 0,
-						}}
+						headingAlignment="left"
+						sx={{ mb: 0 }}
 					/>
 				</DialogTitle>
 				<DialogContent>
 					<form
-						onSubmit={moduleHandleSubmit(onSubmitModule)}
+						onSubmit={handleSectionSubmit(onSubmitSection)}
 						autoComplete="off"
 						noValidate
 					>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
-								control={moduleControl}
+								control={sectionControl}
 								render={({ field }) => (
 									<TextField
 										{...field}
 										id="outlined-basic"
 										label="Module Title"
 										variant="outlined"
-										error={!!moduleErrors.title}
-										helperText={moduleErrors.title?.message}
+										error={!!sectionErrors.title}
+										helperText={
+											sectionErrors.title?.message
+										}
 									/>
 								)}
 							/>
+
 							<Button
 								endIcon={<Check />}
 								color="primary"
 								variant="contained"
 								disableElevation
-								fullWidth
 								size="large"
 								type="submit"
+								fullWidth
 							>
-								Save New Module
+								Update Module
 							</Button>
 						</Stack>
 					</form>
 				</DialogContent>
 			</Dialog>
-			<Popup content="Module created" openPopup={isSuccess} />
 		</>
 	);
-};
+}
 
-export default UpdateModulesForm;
+export default UpdateModuleContentForm;

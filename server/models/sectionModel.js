@@ -47,6 +47,10 @@ const sectionSchema = new mongoose.Schema(
 			minlength: 3,
 			maxlength: 320,
 		},
+		duration: {
+			type: Number,
+			default: 0,
+		},
 		slug: {
 			type: String,
 			lowercase: true,
@@ -72,6 +76,7 @@ const sectionSchema = new mongoose.Schema(
 					url: { type: String },
 					key: { type: String },
 				},
+				duration: { type: Number },
 				free_preview: {
 					type: Boolean,
 					default: false,

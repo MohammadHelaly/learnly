@@ -6,6 +6,7 @@ const CatchAsync = require("../utils/catchAsync");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
 const fs = require("fs");
+const { getVideoDurationInSeconds } = require("get-video-duration");
 
 const awsConfig = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -49,14 +50,6 @@ exports.createSection = CatchAsync(async (req, res, next) => {
 });
 // exports.createSection = handlerFactory.createOne(Section);
 
-exports.getAllSections = handlerFactory.getAll(Section);
-
-exports.getSection = handlerFactory.getOne(Section);
-
-exports.updateSection = handlerFactory.updateOne(Section);
-
-exports.deleteSection = handlerFactory.deleteOne(Section);
-
 exports.addModule = async (req, res) => {
 	const sectionId = req.params.id;
 	const { title } = req.body;
@@ -97,6 +90,8 @@ exports.uploadModuleVideo = async (req, res) => {
 		const receivedVideo = files.video;
 		if (!receivedVideo) return res.status(400).send("No video received");
 
+		const duration = await getVideoDurationInSeconds(receivedVideo.path);
+
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: `${uuid()}.${receivedVideo.type.split("/")[1]}`,
@@ -119,7 +114,13 @@ exports.uploadModuleVideo = async (req, res) => {
 
 		const section = await Section.findByIdAndUpdate(
 			id,
-			{ $set: { [`modules.${moduleNumber}.video`]: video } },
+			{
+				$inc: { duration: Math.round(duration) },
+				$set: {
+					[`modules.${moduleNumber}.video`]: video,
+					[`modules.${moduleNumber}.duration`]: duration,
+				},
+			},
 			{ new: true }
 		);
 
@@ -138,20 +139,44 @@ exports.uploadModuleVideo = async (req, res) => {
 	}
 };
 
-exports.deleteModuleVideo = (req, res) => {
+exports.getVideoKey = async (req, res, next) => {
+	const { id, moduleNumber } = req.params;
+	console.log(req.params);
+	const section = await Section.findById(id);
+
+	if (!section) {
+		throw new Error(`Section with id ${id} not found.`);
+	}
+
+	const videoKey = section.modules[moduleNumber].video.key;
+
+	req.body = section;
+	next();
+};
+
+exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 	try {
-		const key = req.body.key;
+		const key = req.body.modules[req.params.moduleNumber].video.key;
+
+		req.body.duration =
+			req.body.duration -
+			Math.round(req.body.modules[req.params.moduleNumber].duration);
+		req.body.modules[req.params.moduleNumber].video = undefined;
+		req.body.modules[req.params.moduleNumber].duration = undefined;
+
 		const params = {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
 		};
 
-		S3.deleteObject(params, (err, data) => {
+		console.log("Deleting from S3");
+		S3.deleteObject(params, (err) => {
 			if (err) {
 				console.log(err);
 				res.sendStatus(400);
 			}
-			res.send({ ok: true });
+
+			next();
 		});
 	} catch (err) {
 		console.log(err);
@@ -160,4 +185,95 @@ exports.deleteModuleVideo = (req, res) => {
 	// s3 delete
 };
 
+exports.deleteModuleVideo = (req, res) => {
+	try {
+		const key = req.body.modules[req.params.moduleNumber].video.key;
+		req.body.modules[req.params.moduleNumber].video = undefined;
+		req.body.modules[req.params.moduleNumber].duration = undefined;
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		};
+		console.log("Deleting from S3");
+		S3.deleteObject(params, (err) => {
+			if (err) {
+				console.log(err);
+				res.sendStatus(400);
+			}
+			res.sendStatus(200);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+
+	// s3 delete
+};
+
+// Assuming you have a Section model imported
+
+//Delete Section
+
+exports.deleteSection = async (req, res) => {
+	const sectionId = req.params.id;
+
+	try {
+		const sectionToDelete = await Section.findByIdAndDelete(sectionId);
+
+		if (!sectionToDelete) {
+			throw new Error(`Section with id ${sectionId} not found.`);
+		} else {
+			res.status(200).json({
+				status: "success",
+				message: `Section with id ${sectionId} has been deleted.`,
+			});
+		}
+	} catch (error) {
+		console.error(`Error deleting section ${sectionId}: ${error}`);
+		res.status(500).json({
+			status: "error",
+			message: "Internal server error.",
+		});
+	}
+};
+
+//DELETE MODULE
+exports.deleteModule = async (req, res, next) => {
+	const sectionId = req.params.id;
+	const module = req.params.moduleNumber;
+
+	try {
+		// const section = await Section.findByIdAndUpdate(
+		// 	sectionId,
+		// 	{ $pull: { modules: { _id: module } } },
+		// 	{ new: true }
+		// );
+		const section = await Section.findById(sectionId);
+
+		//const module = req.params
+		//   try {
+		//     const section = await Section.findByIdAndDelete(sectionId,
+		//       { $pull: { modules: { _id: module } } },
+		//       { new: true }
+		//       );
+
+		if (!section) {
+			throw new Error(`Section with id ${sectionId} not found.`);
+		} else {
+			section.modules.splice(module, 1);
+			req.body = section;
+			next();
+		}
+	} catch (error) {
+		console.error(
+			`Error deleting module from section ${sectionId}: ${error}`
+		);
+	}
+};
+
 exports.getAllSections = handlerFactory.getAll(Section);
+
+exports.getSection = handlerFactory.getOne(Section);
+
+exports.updateSection = handlerFactory.updateOne(Section);
+
+// exports.deleteSection = handlerFactory.deleteOne(Section);
