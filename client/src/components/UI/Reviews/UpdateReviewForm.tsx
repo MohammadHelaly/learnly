@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../../api";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, Stack } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import FormContainer from "../../UI/PageLayout/FormContainer";
 import AuthContext from "../../../store/auth-context";
@@ -13,6 +13,7 @@ import Popup from "../../Popup/Popup";
 import { useQuery } from "@tanstack/react-query";
 import dummyCourseReviewsData from "../../../assets/data/dummyCourseReviewsData";
 import { useEffect } from "react";
+import DeleteReviewForm from "./DeleteReviewForm";
 interface UpdateReviewFormProps {
 	courseId: string;
 	review: string;
@@ -83,7 +84,7 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 				color="common.black"
 				sx={{ paddingBottom: "1rem" }}
 			>
-				Update Review
+				Your Review
 			</Typography>
 
 			<form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -136,7 +137,7 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 					)}
 				/>
 
-				<Button
+				{/* <Button
 					type="submit"
 					variant="contained"
 					color="primary"
@@ -144,7 +145,39 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 					sx={{ mt: 2 }}
 				>
 					Update Review
-				</Button>
+				</Button> */}
+				<Stack
+					direction="row"
+					spacing={1}
+					justifyContent="space-between"
+					width="100%"
+				>
+					<Button
+						type="submit"
+						size="medium"
+						fullWidth
+						variant="contained"
+						disableElevation
+					>
+						Update Review
+					</Button>
+					{/* <Button
+						fullWidth
+						size="medium"
+						variant="outlined"
+						color="error"
+						disableElevation
+						sx={{
+							"&:hover": {
+								backgroundColor: "error.main",
+								color: "white",
+							},
+						}}
+					>
+						Delete
+					</Button> */}
+					<DeleteReviewForm reviewId={reviewId} />
+				</Stack>
 			</form>
 			<Popup
 				openPopup={isSuccess}

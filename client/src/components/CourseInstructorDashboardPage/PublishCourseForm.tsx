@@ -111,7 +111,6 @@ function PublishVideoForm() {
 							color="error"
 							variant="contained"
 							disabled={isPendingModule}
-							startIcon={<RemoveCircleOutlineIcon />}
 							onClick={handlePublishCourse}
 							sx={{
 								mb: 2,
