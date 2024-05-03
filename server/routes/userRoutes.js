@@ -1,7 +1,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
-
 const router = express.Router();
 
 router.post("/signup", authController.signup);
@@ -29,10 +28,11 @@ router.patch("/updatePassword", authController.updatePassword);
 router.get("/me", userController.getMe, userController.getUser);
 
 router.patch(
-  "/updateMe",
-  // userController.resizeUserPhoto,
-  userController.uploadUserPhoto,
-  userController.updateMe
+	"/updateMe",
+	// userController.resizeUserPhoto,
+	userController.deleteUserphoto,
+	userController.uploadUserPhoto,
+	userController.updateMe
 );
 
 // Different from delete user, this one just sets the active field to false to keep the user's data in the database
