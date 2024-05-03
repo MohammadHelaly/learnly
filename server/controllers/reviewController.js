@@ -23,6 +23,19 @@ exports.protectReview = async (req, res, next) => {
 
 //TODO: check if user is enrolled in course before creating review
 
+exports.checkEnrollment = catchAsync(async (req, res, next) => {
+  const courseId = req.params.courseId;
+  const userId = req.user.id;
+  const enrolledCourse = await Course.findOne({
+    _id: courseId,
+    enrolledUsers: userId,
+  });
+  if (!enrolledCourse) {
+    return next(new AppError("You are not enrolled in this course.", 403));
+  }
+  next();
+});
+
 exports.getAllReviews = handlerFactory.getAll(Review);
 
 exports.getReview = handlerFactory.getOne(Review);
