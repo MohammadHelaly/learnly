@@ -38,19 +38,25 @@ interface DeleteReviewFormProps {
 
 function DeleteReviewForm(props: DeleteReviewFormProps) {
 	const { reviewId } = props;
+
 	const [openPublishForm, setOpenPublishForm] = useState(false);
 
 	const handleOpenDeleteReviewForm = () => {
 		setOpenPublishForm(true);
 	};
+
 	const handleCloseDeleteReviewForm = () => {
 		setOpenPublishForm(false);
 	};
+
 	const navigate = useNavigate();
+
 	const queryClient = useQueryClient();
+
 	const popupFunction = () => {
 		queryClient.invalidateQueries({ queryKey: ["courseReviews"] });
 	};
+
 	const {
 		mutate: deleteReview,
 		isError: isModuleError,
@@ -64,9 +70,11 @@ function DeleteReviewForm(props: DeleteReviewFormProps) {
 			handleCloseDeleteReviewForm();
 		},
 	});
+
 	const handleDeleteReview = async () => {
 		deleteReview();
 	};
+
 	return (
 		<>
 			<Button

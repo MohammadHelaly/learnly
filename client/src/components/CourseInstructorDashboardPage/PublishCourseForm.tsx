@@ -22,7 +22,8 @@ import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
-
+import AuthContext from "../../store/auth-context";
+import { useContext } from "react";
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -32,21 +33,48 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function PublishVideoForm() {
+interface PublishCourseFormProps {
+	courseName: string;
+}
+
+function PublishCourseForm(props: PublishCourseFormProps) {
+	const { courseName } = props;
+	const authContext = useContext(AuthContext);
 	const { courseId } = useParams();
 	const [openPublishForm, setOpenPublishForm] = useState(false);
 
 	const handleOpenPublishForm = () => {
 		setOpenPublishForm(true);
 	};
+
 	const handleClosePublishForm = () => {
 		setOpenPublishForm(false);
 	};
+
 	const navigate = useNavigate();
+
 	const queryClient = useQueryClient();
 	const popupFunction = () => {
 		navigate("/courses");
 	};
+
+	const {
+		mutate: createChannel,
+		isError: isChannelError,
+		isPending: isPendingChannel,
+		isSuccess: isChannelSuccess,
+	} = useMutation({
+		mutationFn: () => {
+			return api.post(`/channels/`, {
+				course: courseId,
+				admins: [authContext.user?.id],
+				isCourseChannel: true,
+				name: courseName,
+			});
+		},
+		onSuccess: () => {},
+	});
+
 	const {
 		mutate: publishCourse,
 		isError: isModuleError,
@@ -60,8 +88,10 @@ function PublishVideoForm() {
 		},
 		onSuccess: () => {
 			handleClosePublishForm();
+			createChannel();
 		},
 	});
+
 	const handlePublishCourse = async () => {
 		publishCourse();
 	};
@@ -128,8 +158,14 @@ function PublishVideoForm() {
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
+			<Popup
+				content="Channel created successfully!"
+				openPopup={isChannelSuccess}
+				buttonText="Great!"
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 }
 
-export default PublishVideoForm;
+export default PublishCourseForm;

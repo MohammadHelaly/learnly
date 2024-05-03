@@ -5,7 +5,13 @@ import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import PublishVideoForm from "./PublishCourseForm";
 import PublishCourseForm from "./PublishCourseForm";
-function PublishCourse() {
+
+interface PublishCourseProps {
+	courseName: string;
+}
+
+function PublishCourse(props: PublishCourseProps) {
+	const { courseName } = props;
 	return (
 		<SectionWrapper>
 			<FormContainer
@@ -43,7 +49,7 @@ function PublishCourse() {
 					>
 						Publish Course
 					</Button> */}
-					<PublishCourseForm />
+					<PublishCourseForm courseName={courseName} />
 				</SectionWrapper>
 			</FormContainer>
 		</SectionWrapper>

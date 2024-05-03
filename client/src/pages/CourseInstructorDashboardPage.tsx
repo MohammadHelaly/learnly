@@ -219,7 +219,9 @@ const CourseInstructorDashboardPage = () => {
 										<UpdateCourseChannel />
 									</TabPanel>
 									<TabPanel value="3" sx={{ p: 0, m: 0 }}>
-										<PublishCourse />
+										<PublishCourse
+											courseName={course?.name}
+										/>
 									</TabPanel>
 								</TabContext>
 							</SectionWrapper>
