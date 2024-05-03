@@ -3,16 +3,37 @@ import { Button, Stack } from "@mui/material";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import FormContainer from "../UI/PageLayout/FormContainer";
-
+import { useQuery } from "@tanstack/react-query";
+import api from "../../api";
+import { useParams } from "react-router-dom";
+import StyledNavLink from "../UI/Links/StyledNavLink";
 function UpdateCourseChannel() {
+	const { courseId } = useParams();
+	const {
+		data, //: course,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["channel", { courseId }],
+		queryFn: async () =>
+			await api.get(`/channels`, {
+				params: {
+					course: courseId,
+				},
+			}),
+		select: (response) => response.data.data.data,
+	});
+	const channelId = data?.[0].id ?? "";
+
 	return (
 		<SectionWrapper>
 			<FormContainer
 				// large
-				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
+				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}
+			>
 				<SectionWrapper>
 					<SectionHeader
-						heading="Create Channel"
+						heading="Course Channel"
 						headingAlignment="left"
 						keepHeadingAlignmentOnSmallScreens
 						headingAnimated={false}
@@ -23,7 +44,7 @@ function UpdateCourseChannel() {
 					<SectionHeader
 						isSubHeading
 						variant="h6"
-						heading="Create a channel to interact with your students."
+						heading="Go to channel to interact with your students."
 						keepHeadingAlignmentOnSmallScreens
 						headingAlignment="left"
 						headingAnimated={false}
@@ -36,8 +57,11 @@ function UpdateCourseChannel() {
 						fullWidth
 						disableElevation
 						size="large"
-						sx={{ mb: 2 }}>
-						Create Channel
+						sx={{ mb: 2 }}
+						component={StyledNavLink}
+						to={`/channels/${channelId}`}
+					>
+						Course Channel
 					</Button>
 				</SectionWrapper>
 				<SectionWrapper>
@@ -65,7 +89,8 @@ function UpdateCourseChannel() {
 						variant="contained"
 						fullWidth
 						disableElevation
-						size="large">
+						size="large"
+					>
 						Start Live Stream
 					</Button>
 				</SectionWrapper>
