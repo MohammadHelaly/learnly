@@ -3,6 +3,8 @@ const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
+const Course = require("../models/courseModel");
+const User = require("../models/userModel");
 
 exports.setCourseUserIds = (req, res, next) => {
   // Allow nested routes
@@ -24,11 +26,11 @@ exports.protectReview = async (req, res, next) => {
 //TODO: check if user is enrolled in course before creating review
 
 exports.checkEnrollment = catchAsync(async (req, res, next) => {
-  const courseId = req.params.courseId;
+  const courseId = req.body.course;
   const userId = req.user.id;
   const enrolledCourse = await Course.findOne({
     _id: courseId,
-    enrolledUsers: userId,
+    students: userId,
   });
   if (!enrolledCourse) {
     return next(new AppError("You are not enrolled in this course.", 403));
