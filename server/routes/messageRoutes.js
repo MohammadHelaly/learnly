@@ -6,11 +6,16 @@ const router = express.Router({ mergeParams: true });
 
 router.use(authController.protect);
 
-router.route("/").get(messageController.getAllMessages).post(
-	// authController.restrictTo("user", "instructor"),
-	messageController.setChannelUserIds,
-	messageController.createMessage
-);
+router
+	.route("/")
+	.get(authController.protect, messageController.getAllMessages)
+	.post(
+		// authController.restrictTo("user", "instructor"),
+		authController.protect,
+		messageController.setChannelUserIds,
+		messageController.protectChannel,
+		messageController.createMessage
+	);
 
 router
 	.route("/:id")
