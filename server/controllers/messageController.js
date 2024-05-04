@@ -12,14 +12,15 @@ exports.setChannelUserIds = (req, res, next) => {
 };
 
 exports.protectChannel = async (req, res, next) => {
-	// console.log(req.body.channel);
 	const channel = await Channel.findById(req.body.channel);
+
 	if (!channel) {
-		next(new AppError("Channel not found", 404));
+		return res.status(404).json({
+			message: "Channel not found",
+		});
 	}
-	console.log(req.user.id);
 	if (channel.admins.includes(req.user.id) || req.user.role === "admin") {
-		next();
+		return next();
 	}
 
 	const courseId = channel.course;
@@ -27,10 +28,11 @@ exports.protectChannel = async (req, res, next) => {
 	const users = enrollments.map((enrollment) => enrollment.user.toString());
 
 	if (!users.includes(req.user.id)) {
-		next(
-			new AppError("You are not authorized to perform this action.", 403)
-		);
+		return res.status(403).json({
+			message: "You are not authorized to perform this action.",
+		});
 	}
+
 	next();
 };
 
