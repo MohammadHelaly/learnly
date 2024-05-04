@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import Peer, { MediaConnection } from 'peerjs';
-import { Button, Grid, Paper, Typography, IconButton, Box, Container } from '@mui/material';
+import { Container, Box, IconButton,Button } from '@mui/material';
 import { Mic, MicOff, Videocam, VideocamOff } from '@mui/icons-material';
 import PageWrapper from '../components/UI/PageLayout/PageWrapper';
+import Livechat from '../components/LiveStream/Livechat';
 
 interface PeersRecord {
   [userId: string]: { call: MediaConnection, video: HTMLVideoElement };
@@ -11,106 +12,125 @@ interface PeersRecord {
 
 const Livestreamdev: React.FC = () => {
   const ENDPOINT = "http://localhost:5000";
-  const roomNumber = 123; // Define the room number here
+  const roomNumber = 123;
   const videoGrid = useRef<HTMLDivElement>(null);
   const myVideo = useRef<HTMLVideoElement>(document.createElement('video'));
   const [peers, setPeers] = useState<PeersRecord>({});
-  const [muted, setMuted] = useState<boolean>(false);
-  const [cameraEnabled, setCameraEnabled] = useState<boolean>(true);
+  const [muted, setMuted] = useState<boolean>(true); // Muted by default
+  const [cameraEnabled, setCameraEnabled] = useState<boolean>(false); // Camera off by default
+  const [init,setInit]  = useState<boolean>(false);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const socket = io(ENDPOINT);
-    myVideo.current.muted = true;
-    navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    }).then(stream => {
-      addVideoStream(myVideo.current, stream);
-
-      const myPeer = new Peer('', {
-        host: '/',
-        port: 3001
-      });
-
-      myPeer.on('open', id => {
-        socket.emit('join-room', roomNumber, id);
-      });
-
-      socket.on('user-connected', userId => {
-        // Prevent duplicate calls
-        if (!peers[userId]) {
-          connectToNewUser(userId, stream, myPeer);
+    const myPeer = new Peer('', {
+      host: '/',
+      port: 3001
+    });
+  
+    socket.emit('get-room-size', roomNumber, (roomMembersCount: number) => {
+      console.log(`Room members count: ${roomMembersCount}`);
+      // Set as initiator if first to join
+      const isInitiator = roomMembersCount === 0;
+      setInit(isInitiator);
+      console.log(isInitiator ? 'i am initiator' : 'not initiator');
+  
+      // Access my own media
+      navigator.mediaDevices.getUserMedia({
+        video: isInitiator,
+        audio: true,
+      }).then(stream => {
+        if (isInitiator) {
+          myVideo.current.srcObject = stream;
+          addVideoStream(myVideo.current, stream);
         }
-      });
-
-      socket.on('user-disconnected', userId => {
-        if (peers[userId]) {
-          peers[userId].video.remove(); // Remove video element
-          peers[userId].call.close();
-          setPeers(prevPeers => {
-            const newPeers = { ...prevPeers };
-            delete newPeers[userId];
-            return newPeers;
+        
+        myPeer.on('open', id => {
+          socket.emit('join-room', roomNumber, id);
+        });
+  
+        // When a new user connects, only initiator sends the stream
+        socket.on('user-connected', userId => {
+          if (isInitiator) {
+            connectToNewUser(userId, stream, myPeer);
+          }
+        });
+  
+        // Handle disconnection
+        socket.on('user-disconnected', userId => {
+          if (peers[userId]) {
+            peers[userId].video.remove();
+            peers[userId].call.close();
+            setPeers(prevPeers => {
+              const newPeers = { ...prevPeers };
+              delete newPeers[userId];
+              return newPeers;
+            });
+          }
+        });
+  
+        // Receive calls
+        myPeer.on('call', call => {
+          call.answer(stream); 
+          const video = document.createElement('video');
+          call.on('stream', userVideoStream => {
+            if (!isInitiator) {
+              addVideoStream(video, userVideoStream);
+            }
           });
-        }
-      });
-
-      myPeer.on('call', call => {
-        call.answer(stream);
-        const video = document.createElement('video');
-        call.on('stream', userVideoStream => {
-          addVideoStream(video, userVideoStream);
         });
       });
     });
-
+  
     return () => {
       socket.close();
-      // Clean up peer connections
       Object.values(peers).forEach(peer => {
         peer.call.close();
         peer.video.remove();
       });
     };
-  }, []); // Remove `peers` from dependency array to avoid re-runs
+  }, [init]); 
 
-  function connectToNewUser(userId: string, stream: MediaStream, myPeer: Peer) {
-    const call = myPeer.call(userId, stream);
+  function connectToNewUser(userId: string, stream: MediaStream | null, myPeer: Peer) {
     const video = document.createElement('video');
-    call.on('stream', userVideoStream => {
-      addVideoStream(video, userVideoStream);
-    });
+  
+    if (stream) {
+      const call = myPeer.call(userId, stream);
+  
+      call.on('stream', userVideoStream => {
+        addVideoStream(video, userVideoStream);
+      });
+  
+      call.on('close', () => {
+        video.remove();
+      });
+  
+      call.on('error', (error: any) => {
+        console.error('Call error with', userId, error);
+      });
+  
+      setPeers(prevPeers => ({
+        ...prevPeers,
+        [userId]: { call, video }
+      }));
+    } else {
 
-    call.on('close', () => {
-      video.remove();
-    });
-
-    call.on('error', (error: any) => {
-      console.error('Call error with', userId, error);
-    });
-
-    setPeers(prevPeers => ({
-      ...prevPeers,
-      [userId]: { call, video }
-    }));
+      console.log("No local stream available to send, waiting for incoming connections.");
+    }
   }
+  
 
   function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
-    video.srcObject = stream;
-   // Mute local user's audio to prevent self-feedback
-  if (stream === myVideo.current.srcObject) {
-    const audioTracks = stream.getAudioTracks();
-    audioTracks.forEach(track => {
-      track.enabled = false;
-    });
-  }
-    video.addEventListener('loadedmetadata', () => {
-      video.play();
-    });
-    video.style.width = '100%';  // Ensures video fills the cell
-    video.style.height = '100%'; // Ensures video fills the cell
-    if (videoGrid.current) {
-      videoGrid.current.append(video);
+    if(video){
+      video.srcObject = stream;
+      video.addEventListener('loadedmetadata', () => {
+        video.play();
+      });
+      video.style.width = '100%'; 
+      video.style.height = '100%'; 
+      if (videoGrid.current) {
+        videoGrid.current.append(video);
+      }
     }
   }
 
@@ -132,29 +152,54 @@ const Livestreamdev: React.FC = () => {
     }
   };
 
+  const shareScreen = () => {
+   console.log("Share screen");
+  };
+
   return (
     <>
-    <div style={{ backdropFilter:'blur(8px)',position:'absolute',zIndex:-1, filter:'brightness(0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width:'100vw' }}/>
+<PageWrapper sx={{ backgroundColor: 'transparent' }}>
+  <Container maxWidth="xl">  
+    <Box sx={{
+      flexGrow: 1,
+      width: '100%'
+    }}>
+      <div ref={videoGrid} id="video-grid" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(500px, 1fr))',  // Adjusted the min-width to 500px
+        gap: '20px',  
+        justifyContent: 'center',
+        padding: '30px',
+        border: '1px solid #ccc',
+        borderRadius: '10px',
+      }}>
+        <Livechat/>
+      </div>
+      
+    </Box>
+  </Container>
+  <style>{`
+    #video-grid video {
+      border-radius: 10px;
+    }
+  `}</style>
+</PageWrapper>
 
-   <PageWrapper sx={{backgroundColor:'transparent'}}>
-   
-    <Container maxWidth="lg">
-    <Box sx={{  display: 'flex', flexDirection:'column', justifyContent: 'center', alignItems: 'center', height: '100%',mt:window.innerWidth>600?8:7 }}>
-        <Box sx={{flexGrow:1,width:'100%' }}>
-          <div ref={videoGrid} id="video-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px', justifyContent: 'center' }} />
-        </Box>
-        </Box>
-    </Container>
-    </PageWrapper>
-    <Box sx={{zIndex:10,backdropFilter:'blur(16px)',mx:'auto',py:4, bottom:0, position:'fixed',width:'100%',display:'flex', flexDirection:'row',justifyContent:'center',alignItems:'center',gap:2,alignContent:'center',justifyItems:'center' }}>
+
+
+    <Box sx={{zIndex:10,mx:'auto',py:4, bottom:0, position:'fixed',width:'100%',display:'flex', flexDirection:'row',justifyContent:'center',alignItems:'center',gap:2,alignContent:'center',justifyItems:'center' }}>
           <IconButton onClick={toggleMute} color="primary" sx={{backgroundColor:'white',borderRadius:'100%'}}>
             {muted ? <Mic /> :<MicOff />}
           </IconButton>
           <IconButton onClick={toggleCamera} color="primary" sx={{backgroundColor:'white',borderRadius:'100%'}}>
             {cameraEnabled ?   <Videocam /> :<VideocamOff />}
           </IconButton>
-        </Box>
+                <Button onClick={shareScreen} color="primary" variant="contained">
+                  Share Screen
+                </Button>
 
+          
+        </Box>
     </>
   );
 };

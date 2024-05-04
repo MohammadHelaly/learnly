@@ -100,4 +100,22 @@ io.on("connection", (socket) => {
 			socket.to(roomId).emit('user-disconnected', userId);
 		});
 	});
+
+	
+	socket.on('get-room-size', (roomId, callback) => {
+		const room = io.sockets.adapter.rooms.get(roomId);
+		const count = room ? room.size : 0;
+		callback(count);
+	});
+
+	socket.on('join-live-chat',(roomId)=>{
+		//join chat room of live meeting
+		socket.join(roomId)
+	})
+
+	socket.on('send-live-chat-msg',(payload)=>{
+		console.log(payload.msg.text,payload.msg.sender,payload.room)
+		socket.broadcast.to(100).emit('receive-msg', payload.msg);
+	})
+
 });
