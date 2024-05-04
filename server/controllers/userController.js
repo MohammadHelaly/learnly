@@ -15,9 +15,6 @@ const awsConfig = {
 };
 const S3 = new AWS.S3(awsConfig);
 
-
-
-
 // const sharp = require("sharp");
 
 // Multer configuration
@@ -35,24 +32,24 @@ const S3 = new AWS.S3(awsConfig);
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb(new Error("Not an image! Please upload only images."), false);
-  }
+	if (file.mimetype.startsWith("image")) {
+		cb(null, true);
+	} else {
+		cb(new Error("Not an image! Please upload only images."), false);
+	}
 };
 
 const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
+	storage: multerStorage,
+	fileFilter: multerFilter,
 });
 
 const filterObj = (obj, ...allowedFields) => {
-  const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
-  });
-  return newObj;
+	const newObj = {};
+	Object.keys(obj).forEach((el) => {
+		if (allowedFields.includes(el)) newObj[el] = obj[el];
+	});
+	return newObj;
 };
 
 // exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
@@ -79,7 +76,7 @@ exports.deleteUserphoto = async (req, res, next) => {
 			throw new AppError("No user found with that ID", 404);
 		}
 
-		if (user.photo === "default.jpg" || !req.body.photo) {
+		if (!req.body.photo || !user.photo.key) {
 			return next();
 		}
 
@@ -139,12 +136,11 @@ exports.uploadUserPhoto = async (req, res, next) => {
 exports.getAllUsers = handlerFactory.getAll(User);
 
 exports.getMe = (req, res, next) => {
-  req.params.id = req.user.id;
-  next();
+	req.params.id = req.user.id;
+	next();
 };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-
 	// 1) Create error if user POSTs password data
 
 	if (req.body.password || req.body.passwordConfirm) {
@@ -176,102 +172,102 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
-  // 1) Find user by id and set active to false
-  const user = await User.findByIdAndUpdate(req.user.id, {
-    active: false,
-  });
+	// 1) Find user by id and set active to false
+	const user = await User.findByIdAndUpdate(req.user.id, {
+		active: false,
+	});
 
-  // 2) Send response
-  res.status(204).json({
-    status: "success",
-    data: null,
-  });
+	// 2) Send response
+	res.status(204).json({
+		status: "success",
+		data: null,
+	});
 });
 
 exports.subscribeNewsletter = (req, res) => {
-  const { email } = req.body;
+	const { email } = req.body;
 
-  // Check if email is provided
-  if (email) {
-    const data = {
-      members: [
-        {
-          email_address: email,
-          status: "pending",
-        },
-      ],
-    };
-    console.log(process.env.MAILCHIMP_API_KEY);
-    console.log(process.env.MAILCHIMP_AUDIENCE);
+	// Check if email is provided
+	if (email) {
+		const data = {
+			members: [
+				{
+					email_address: email,
+					status: "pending",
+				},
+			],
+		};
+		console.log(process.env.MAILCHIMP_API_KEY);
+		console.log(process.env.MAILCHIMP_AUDIENCE);
 
-    const dataPost = JSON.stringify(data);
-    const options = {
-      url: `https://us22.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_AUDIENCE}`,
-      method: "POST",
-      headers: {
-        Authorization: `auth ${process.env.MAILCHIMP_API_KEY}`,
-        "Content-Type": "application/json", // Add Content-Type header
-      },
-      body: dataPost,
-    };
+		const dataPost = JSON.stringify(data);
+		const options = {
+			url: `https://us22.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_AUDIENCE}`,
+			method: "POST",
+			headers: {
+				Authorization: `auth ${process.env.MAILCHIMP_API_KEY}`,
+				"Content-Type": "application/json", // Add Content-Type header
+			},
+			body: dataPost,
+		};
 
-    // Make the request
-    request(options, (err, response, body) => {
-      if (err) {
-        console.error("Error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        console.log("Response:", body);
-        res
-          .status(200)
-          .json({ message: "Successfully subscribed to newsletter" });
-      }
-    });
-  } else {
-    res.status(400).json({ error: "Email address is required" });
-  }
+		// Make the request
+		request(options, (err, response, body) => {
+			if (err) {
+				console.error("Error:", err);
+				res.status(500).json({ error: "Internal Server Error" });
+			} else {
+				console.log("Response:", body);
+				res.status(200).json({
+					message: "Successfully subscribed to newsletter",
+				});
+			}
+		});
+	} else {
+		res.status(400).json({ error: "Email address is required" });
+	}
 };
 
 exports.unsubscribeNewsletter = (req, res) => {
-  const { email } = req.body;
+	const { email } = req.body;
 
-  // Check if email is provided
-  if (email) {
-    const data = {
-      members: [
-        {
-          email_address: email,
-          status: "unsubscribed",
-        },
-      ],
-      update_existing: true,
-    };
-    const dataPost = JSON.stringify(data);
+	// Check if email is provided
+	if (email) {
+		const data = {
+			members: [
+				{
+					email_address: email,
+					status: "unsubscribed",
+				},
+			],
+			update_existing: true,
+		};
+		const dataPost = JSON.stringify(data);
 
-    const options = {
-      url: `https://us22.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_AUDIENCE}`,
-      method: "POST",
-      headers: {
-        Authorization: `auth ${process.env.MAILCHIMP_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: dataPost,
-    };
+		const options = {
+			url: `https://us22.api.mailchimp.com/3.0/lists/${process.env.MAILCHIMP_AUDIENCE}`,
+			method: "POST",
+			headers: {
+				Authorization: `auth ${process.env.MAILCHIMP_API_KEY}`,
+				"Content-Type": "application/json",
+			},
+			body: dataPost,
+		};
 
-    request(options, (err, response, body) => {
-      if (err) {
-        console.error("Error:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        console.log("Response:", body);
-        res
-          .status(200)
-          .json({ message: "Successfully unsubscribed from newsletter" });
-      }
-    });
-  } else {
-    res.status(400).json({ error: "Email address is required" });
-  }
+		request(options, (err, response, body) => {
+			if (err) {
+				console.error("Error:", err);
+				res.status(500).json({ error: "Internal Server Error" });
+			} else {
+				console.log("Response:", body);
+				res.status(200).json({
+					message: "Successfully unsubscribed from newsletter",
+				});
+			}
+		});
+	} else {
+		res.status(400).json({ error: "Email address is required" });
+	}
 };
 
 exports.getUser = handlerFactory.getOne(User);
