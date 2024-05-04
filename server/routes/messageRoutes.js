@@ -8,7 +8,12 @@ router.use(authController.protect);
 
 router
 	.route("/")
-	.get(authController.protect, messageController.getAllMessages)
+	.get(
+		authController.protect,
+		messageController.setChannelUserIds,
+		messageController.protectChannel,
+		messageController.getAllMessages
+	)
 	.post(
 		// authController.restrictTo("user", "instructor"),
 		authController.protect,
