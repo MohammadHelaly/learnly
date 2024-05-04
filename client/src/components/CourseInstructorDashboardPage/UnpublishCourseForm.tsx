@@ -24,6 +24,8 @@ import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
+
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -59,6 +61,23 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 	};
 
 	const {
+		data, //: courses,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["courseEnrollments", { course: courseId }],
+		queryFn: async () =>
+			await api.get("/courseEnrollments", {
+				params: {
+					course: courseId,
+				},
+			}),
+		select: (response: any) => response.data.data.data,
+	});
+
+	const enrolledStudents = data;
+
+	const {
 		mutate: publishCourse,
 		isError: isModuleError,
 		isPending: isPendingModule,
@@ -87,6 +106,7 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 				color="error"
 				sx={{ mb: 2 }}
 				onClick={handleOpenPublishForm}
+				disabled={enrolledStudents?.length > 0}
 			>
 				Unpublish Course
 			</Button>
