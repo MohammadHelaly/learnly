@@ -7,8 +7,16 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import { useParams } from "react-router-dom";
 import StyledNavLink from "../UI/Links/StyledNavLink";
-function UpdateCourseChannel() {
+import CreateChannelForm from "./CreateChannelForm";
+import DeleteChannelForm from "./DeleteChannelForm";
+
+interface UpdateCourseChannelProps {
+	courseName: string;
+}
+
+function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 	const { courseId } = useParams();
+	const { courseName } = props;
 	const {
 		data, //: course,
 		isLoading,
@@ -23,7 +31,8 @@ function UpdateCourseChannel() {
 			}),
 		select: (response) => response.data.data.data,
 	});
-	const channelId = data?.[0].id ?? "";
+
+	//const channelId = data?.[0].id ?? "";
 
 	return (
 		<SectionWrapper>
@@ -32,38 +41,93 @@ function UpdateCourseChannel() {
 				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}
 			>
 				<SectionWrapper>
-					<SectionHeader
-						heading="Course Channel"
-						headingAlignment="left"
-						keepHeadingAlignmentOnSmallScreens
-						headingAnimated={false}
-						sx={{
-							mb: 0,
-						}}
-					/>
-					<SectionHeader
-						isSubHeading
-						variant="h6"
-						heading="Go to channel to interact with your students."
-						keepHeadingAlignmentOnSmallScreens
-						headingAlignment="left"
-						headingAnimated={false}
-						sx={{
-							mb: 2,
-						}}
-					/>
-					<Button
-						variant="contained"
-						fullWidth
-						disableElevation
-						size="large"
-						sx={{ mb: 2 }}
-						component={StyledNavLink}
-						to={`/channels/${channelId}`}
-					>
-						Course Channel
-					</Button>
+					{data?.length !== 0 ? (
+						<>
+							{" "}
+							<SectionHeader
+								heading="Delete Channel"
+								headingAlignment="left"
+								keepHeadingAlignmentOnSmallScreens
+								headingAnimated={false}
+								sx={{
+									mb: 0,
+								}}
+							/>
+							<SectionHeader
+								isSubHeading
+								variant="h6"
+								heading="Remove the course channel forever."
+								keepHeadingAlignmentOnSmallScreens
+								headingAlignment="left"
+								headingAnimated={false}
+								sx={{
+									mb: 2,
+								}}
+							/>
+							<DeleteChannelForm channelId={data?.[0].id} />
+						</>
+					) : (
+						<>
+							<SectionHeader
+								heading="Create Channel"
+								headingAlignment="left"
+								keepHeadingAlignmentOnSmallScreens
+								headingAnimated={false}
+								sx={{
+									mb: 0,
+								}}
+							/>
+							<SectionHeader
+								isSubHeading
+								variant="h6"
+								heading="Create a channel for the course to interact with your students."
+								keepHeadingAlignmentOnSmallScreens
+								headingAlignment="left"
+								headingAnimated={false}
+								sx={{
+									mb: 2,
+								}}
+							/>
+							<CreateChannelForm courseName={courseName} />
+						</>
+					)}
 				</SectionWrapper>
+				{data?.length !== 0 && (
+					<SectionWrapper>
+						<SectionHeader
+							heading="Course Channel"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{
+								mb: 0,
+							}}
+						/>
+						<SectionHeader
+							isSubHeading
+							variant="h6"
+							heading="Go to channel to interact with your students."
+							keepHeadingAlignmentOnSmallScreens
+							headingAlignment="left"
+							headingAnimated={false}
+							sx={{
+								mb: 2,
+							}}
+						/>
+						<Button
+							variant="contained"
+							fullWidth
+							disableElevation
+							size="large"
+							sx={{ mb: 2 }}
+							component={StyledNavLink}
+							to={`/channels/${data?.[0].id}`}
+						>
+							Course Channel
+						</Button>
+					</SectionWrapper>
+				)}
+
 				<SectionWrapper>
 					<SectionHeader
 						heading="Start Live Stream"

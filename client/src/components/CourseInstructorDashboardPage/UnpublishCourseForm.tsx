@@ -37,7 +37,7 @@ interface PublishCourseFormProps {
 	courseName: string;
 }
 
-function PublishCourseForm(props: PublishCourseFormProps) {
+function UnpublishCourseForm(props: PublishCourseFormProps) {
 	const { courseName } = props;
 	const authContext = useContext(AuthContext);
 	const { courseId } = useParams();
@@ -58,23 +58,6 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 		navigate("/courses");
 	};
 
-	// const {
-	// 	mutate: createChannel,
-	// 	isError: isChannelError,
-	// 	isPending: isPendingChannel,
-	// 	isSuccess: isChannelSuccess,
-	// } = useMutation({
-	// 	mutationFn: () => {
-	// 		return api.post(`/channels/`, {
-	// 			course: courseId,
-	// 			admins: [authContext.user?.id],
-	// 			isCourseChannel: true,
-	// 			name: courseName,
-	// 		});
-	// 	},
-	// 	onSuccess: () => {},
-	// });
-
 	const {
 		mutate: publishCourse,
 		isError: isModuleError,
@@ -83,12 +66,11 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 	} = useMutation({
 		mutationFn: () => {
 			return api.patch(`/courses/${courseId}`, {
-				published: true,
+				published: false,
 			});
 		},
 		onSuccess: () => {
 			handleClosePublishForm();
-			// createChannel();
 		},
 	});
 
@@ -106,7 +88,7 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				sx={{ mb: 2 }}
 				onClick={handleOpenPublishForm}
 			>
-				Publish Course
+				Unpublish Course
 			</Button>
 			<Dialog
 				open={openPublishForm}
@@ -119,12 +101,12 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Publish Course"
+						heading="Unpublish Course"
 						headingAlignment="left"
 						sx={{ mb: 0, textAlign: "left" }}
 					/>
 					<SectionHeader
-						heading="Make course publicily available to students."
+						heading="Remove the course from the catalog."
 						headingAlignment="left"
 						variant="h6"
 						isSubHeading
@@ -133,7 +115,7 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				</DialogTitle>
 				<DialogContent>
 					<SectionHeader
-						heading="Note that if you unpublish the course later, enrolled students will still have access to the course content."
+						heading="Note that if a student is currently enrolled in the course, they will still have access to the course content."
 						headingAlignment="left"
 						variant="h6"
 						isSubHeading
@@ -154,13 +136,13 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 								color: "white",
 							}}
 						>
-							Publish Course
+							Are you sure you want to unpublish this Course?
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
 			<Popup
-				content="Course published successfully!"
+				content="Course Unpublished successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
@@ -169,4 +151,4 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 	);
 }
 
-export default PublishCourseForm;
+export default UnpublishCourseForm;

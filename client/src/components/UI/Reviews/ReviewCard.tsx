@@ -36,7 +36,7 @@ const ReviewCard = (props: Review) => {
 				</Box>
 
 				{/* {authContext.user?.id === user.id && <ReviewOptions />} */}
-				<ReviewOptions />
+				{/* <ReviewOptions /> */}
 			</Stack>
 			<Rating
 				name="read-only"

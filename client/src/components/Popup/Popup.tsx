@@ -40,40 +40,38 @@ const Popup = (props: PopupProps) => {
 	};
 
 	return (
-		<Box>
-			<Dialog
-				open={open}
-				TransitionComponent={Transition}
-				keepMounted
-				onClose={handleClose}
-				aria-describedby="success-dialog-slide-description"
-				fullWidth={true} // Allow the dialog to take up the full width of the container
-			>
-				<DialogTitle>
-					<SectionHeader
-						heading="Success!"
-						headingAlignment="left"
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText id="success-dialog-slide-description">
-						{content}
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						color="primary"
-						variant="contained"
-						disableElevation
-						size="large"
-						onClick={handleClose}
-					>
-						{buttonText}
-					</Button>
-				</DialogActions>
-			</Dialog>
-		</Box>
+		<Dialog
+			open={open}
+			TransitionComponent={Transition}
+			keepMounted
+			onClose={handleClose}
+			aria-describedby="success-dialog-slide-description"
+			fullWidth={true} // Allow the dialog to take up the full width of the container
+		>
+			<DialogTitle>
+				<SectionHeader
+					heading="Success!"
+					headingAlignment="left"
+					sx={{ mb: 0, textAlign: "left" }}
+				/>
+			</DialogTitle>
+			<DialogContent>
+				<DialogContentText id="success-dialog-slide-description">
+					{content}
+				</DialogContentText>
+			</DialogContent>
+			<DialogActions>
+				<Button
+					color="primary"
+					variant="contained"
+					disableElevation
+					size="large"
+					onClick={handleClose}
+				>
+					{buttonText}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 };
 

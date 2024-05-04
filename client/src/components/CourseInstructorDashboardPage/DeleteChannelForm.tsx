@@ -33,67 +33,44 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface PublishCourseFormProps {
-	courseName: string;
+interface DeleteChannelFormProps {
+	channelId: string;
 }
 
-function PublishCourseForm(props: PublishCourseFormProps) {
-	const { courseName } = props;
-	const authContext = useContext(AuthContext);
-	const { courseId } = useParams();
-	const [openPublishForm, setOpenPublishForm] = useState(false);
+function DeleteChannelForm(props: DeleteChannelFormProps) {
+	const { channelId } = props;
 
-	const handleOpenPublishForm = () => {
-		setOpenPublishForm(true);
+	const [openDeleteChannelhForm, setOpenDeleteChannelhForm] = useState(false);
+
+	const handleOpenDeleteChannelForm = () => {
+		setOpenDeleteChannelhForm(true);
 	};
 
-	const handleClosePublishForm = () => {
-		setOpenPublishForm(false);
+	const handleCloseDeleteChannelForm = () => {
+		setOpenDeleteChannelhForm(false);
 	};
 
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
-	const popupFunction = () => {
-		navigate("/courses");
-	};
-
-	// const {
-	// 	mutate: createChannel,
-	// 	isError: isChannelError,
-	// 	isPending: isPendingChannel,
-	// 	isSuccess: isChannelSuccess,
-	// } = useMutation({
-	// 	mutationFn: () => {
-	// 		return api.post(`/channels/`, {
-	// 			course: courseId,
-	// 			admins: [authContext.user?.id],
-	// 			isCourseChannel: true,
-	// 			name: courseName,
-	// 		});
-	// 	},
-	// 	onSuccess: () => {},
-	// });
+	const popupFunction = () => {};
 
 	const {
-		mutate: publishCourse,
-		isError: isModuleError,
-		isPending: isPendingModule,
-		isSuccess,
+		mutate: createChannel,
+		isError: isChannelError,
+		isPending: isPendingChannel,
+		isSuccess: isChannelSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.patch(`/courses/${courseId}`, {
-				published: true,
-			});
+			return api.delete(`/channels/${channelId}`);
 		},
 		onSuccess: () => {
-			handleClosePublishForm();
-			// createChannel();
+			handleCloseDeleteChannelForm();
 		},
 	});
 
-	const handlePublishCourse = async () => {
-		publishCourse();
+	const handleDeleteChannel = async () => {
+		createChannel();
 	};
 	return (
 		<>
@@ -104,27 +81,27 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				size="large"
 				color="error"
 				sx={{ mb: 2 }}
-				onClick={handleOpenPublishForm}
+				onClick={handleOpenDeleteChannelForm}
 			>
-				Publish Course
+				Delete Channel
 			</Button>
 			<Dialog
-				open={openPublishForm}
+				open={openDeleteChannelhForm}
 				TransitionComponent={Transition}
 				keepMounted
-				onClose={() => handleClosePublishForm()}
+				onClose={() => handleCloseDeleteChannelForm()}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Publish Course"
+						heading="Delete Course"
 						headingAlignment="left"
 						sx={{ mb: 0, textAlign: "left" }}
 					/>
 					<SectionHeader
-						heading="Make course publicily available to students."
+						heading="Remove this course channel"
 						headingAlignment="left"
 						variant="h6"
 						isSubHeading
@@ -132,13 +109,6 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 					/>
 				</DialogTitle>
 				<DialogContent>
-					<SectionHeader
-						heading="Note that if you unpublish the course later, enrolled students will still have access to the course content."
-						headingAlignment="left"
-						variant="h6"
-						isSubHeading
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
 					<Stack spacing={2} paddingTop={2}>
 						<Button
 							component="label"
@@ -147,21 +117,21 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 							size="large"
 							color="error"
 							variant="contained"
-							disabled={isPendingModule}
-							onClick={handlePublishCourse}
+							disabled={isPendingChannel}
+							onClick={handleDeleteChannel}
 							sx={{
 								mb: 2,
 								color: "white",
 							}}
 						>
-							Publish Course
+							Delete Channel
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
 			<Popup
-				content="Course published successfully!"
-				openPopup={isSuccess}
+				content="Channel deleted successfully!"
+				openPopup={isChannelSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
@@ -169,4 +139,4 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 	);
 }
 
-export default PublishCourseForm;
+export default DeleteChannelForm;

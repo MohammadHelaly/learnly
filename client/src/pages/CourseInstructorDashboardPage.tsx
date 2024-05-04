@@ -18,6 +18,7 @@ import NavigationGuard from "../components/Navigation/NavigationGuard";
 import UpdateCourseChannel from "../components/CourseInstructorDashboardPage/UpdateCourseChannel";
 import { useState } from "react";
 import PublishCourse from "../components/CourseInstructorDashboardPage/PublishCourse";
+import UnpublishCourse from "../components/CourseInstructorDashboardPage/UnpublishCourse";
 const CourseInstructorDashboardPage = () => {
 	const [value, setValue] = useState("0");
 
@@ -216,12 +217,20 @@ const CourseInstructorDashboardPage = () => {
 										/>
 									</TabPanel>
 									<TabPanel value="2" sx={{ p: 0, m: 0 }}>
-										<UpdateCourseChannel />
-									</TabPanel>
-									<TabPanel value="3" sx={{ p: 0, m: 0 }}>
-										<PublishCourse
+										<UpdateCourseChannel
 											courseName={course?.name}
 										/>
+									</TabPanel>
+									<TabPanel value="3" sx={{ p: 0, m: 0 }}>
+										{!course?.published ? (
+											<PublishCourse
+												courseName={course?.name}
+											/>
+										) : (
+											<UnpublishCourse
+												courseName={course?.name}
+											/>
+										)}
 									</TabPanel>
 								</TabContext>
 							</SectionWrapper>

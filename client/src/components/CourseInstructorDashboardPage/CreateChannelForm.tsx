@@ -33,67 +33,50 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface PublishCourseFormProps {
+interface CreateChannelFormProps {
 	courseName: string;
 }
 
-function PublishCourseForm(props: PublishCourseFormProps) {
+function CreateChannelForm(props: CreateChannelFormProps) {
 	const { courseName } = props;
-	const authContext = useContext(AuthContext);
 	const { courseId } = useParams();
-	const [openPublishForm, setOpenPublishForm] = useState(false);
+	const authContext = useContext(AuthContext);
+	const [openCreateChannelhForm, setOpenCreateChannelhForm] = useState(false);
 
-	const handleOpenPublishForm = () => {
-		setOpenPublishForm(true);
+	const handleOpenCreateChannelForm = () => {
+		setOpenCreateChannelhForm(true);
 	};
 
-	const handleClosePublishForm = () => {
-		setOpenPublishForm(false);
+	const handleCloseCreateChannelForm = () => {
+		setOpenCreateChannelhForm(false);
 	};
 
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
-	const popupFunction = () => {
-		navigate("/courses");
-	};
-
-	// const {
-	// 	mutate: createChannel,
-	// 	isError: isChannelError,
-	// 	isPending: isPendingChannel,
-	// 	isSuccess: isChannelSuccess,
-	// } = useMutation({
-	// 	mutationFn: () => {
-	// 		return api.post(`/channels/`, {
-	// 			course: courseId,
-	// 			admins: [authContext.user?.id],
-	// 			isCourseChannel: true,
-	// 			name: courseName,
-	// 		});
-	// 	},
-	// 	onSuccess: () => {},
-	// });
+	const popupFunction = () => {};
 
 	const {
-		mutate: publishCourse,
-		isError: isModuleError,
-		isPending: isPendingModule,
-		isSuccess,
+		mutate: createChannel,
+		isError: isChannelError,
+		isPending: isPendingChannel,
+		isSuccess: isChannelSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.patch(`/courses/${courseId}`, {
-				published: true,
+			return api.post(`/channels/`, {
+				course: courseId,
+				admins: [authContext.user?.id],
+				isCourseChannel: true,
+				name: courseName,
 			});
 		},
 		onSuccess: () => {
-			handleClosePublishForm();
-			// createChannel();
+			handleCloseCreateChannelForm();
 		},
 	});
 
-	const handlePublishCourse = async () => {
-		publishCourse();
+	const handleCreateChannel = async () => {
+		createChannel();
 	};
 	return (
 		<>
@@ -102,29 +85,28 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				fullWidth
 				disableElevation
 				size="large"
-				color="error"
 				sx={{ mb: 2 }}
-				onClick={handleOpenPublishForm}
+				onClick={handleOpenCreateChannelForm}
 			>
-				Publish Course
+				Create Channel
 			</Button>
 			<Dialog
-				open={openPublishForm}
+				open={openCreateChannelhForm}
 				TransitionComponent={Transition}
 				keepMounted
-				onClose={() => handleClosePublishForm()}
+				onClose={() => handleCloseCreateChannelForm()}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
 				fullWidth
 			>
 				<DialogTitle>
 					<SectionHeader
-						heading="Publish Course"
+						heading="Create Channel"
 						headingAlignment="left"
 						sx={{ mb: 0, textAlign: "left" }}
 					/>
 					<SectionHeader
-						heading="Make course publicily available to students."
+						heading="Create a channel for the course to interact with your students."
 						headingAlignment="left"
 						variant="h6"
 						isSubHeading
@@ -132,36 +114,28 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 					/>
 				</DialogTitle>
 				<DialogContent>
-					<SectionHeader
-						heading="Note that if you unpublish the course later, enrolled students will still have access to the course content."
-						headingAlignment="left"
-						variant="h6"
-						isSubHeading
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
 					<Stack spacing={2} paddingTop={2}>
 						<Button
 							component="label"
 							fullWidth
 							disableElevation
 							size="large"
-							color="error"
 							variant="contained"
-							disabled={isPendingModule}
-							onClick={handlePublishCourse}
+							disabled={isPendingChannel}
+							onClick={handleCreateChannel}
 							sx={{
 								mb: 2,
 								color: "white",
 							}}
 						>
-							Publish Course
+							Create Channel
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
 			<Popup
-				content="Course published successfully!"
-				openPopup={isSuccess}
+				content="Channel Created successfully!"
+				openPopup={isChannelSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
@@ -169,4 +143,4 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 	);
 }
 
-export default PublishCourseForm;
+export default CreateChannelForm;
