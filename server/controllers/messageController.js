@@ -9,6 +9,19 @@ exports.setChannelUserIds = (req, res, next) => {
 	next();
 };
 
+exports.protectMessage = async (req, res, next) => {
+	// Allow nested routes
+	const message = await Message.findById(req.params.id);
+
+	if (message.sender.id !== req.user.id) {
+		return res.status(403).json({
+			message: "You are not authorized to perform this action",
+		});
+	}
+
+	next();
+};
+
 exports.getAllMessages = handlerFactory.getAll(Message);
 
 exports.getMessage = handlerFactory.getOne(Message);

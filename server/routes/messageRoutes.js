@@ -16,10 +16,14 @@ router
 	.route("/:id")
 	.get(messageController.getMessage)
 	.patch(
+		authController.protect,
+		messageController.protectMessage,
 		// authController.restrictTo("user", "admin"),
 		messageController.updateMessage
 	)
 	.delete(
+		authController.protect,
+		messageController.protectMessage,
 		// authController.restrictTo("user", "admin"),
 		messageController.deleteMessage
 	);
