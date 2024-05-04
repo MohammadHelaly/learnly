@@ -42,7 +42,7 @@ exports.protectMessage = async (req, res, next) => {
 	const message = await Message.findById(req.params.id);
 
 	if (message.sender.id !== req.user.id) {
-		return next(
+		next(
 			new AppError("You are not authorized to perform this action.", 403)
 		);
 	}
