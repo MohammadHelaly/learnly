@@ -1,16 +1,14 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import Peer, { MediaConnection } from 'peerjs';
 import { IconButton, Box, Container, Drawer, Button,Menu} from '@mui/material';
 import { Mic, MicOff, Videocam, VideocamOff, FiberManualRecord, Stop } from '@mui/icons-material';
-import Livechat from '../components/LiveStream/Livechat';
 
 interface PeersRecord {
   [userId: string]: { call: MediaConnection, video: HTMLVideoElement };
 }
 
-const Livestreamdev: React.FC = () => {
+const ScreenSharing: React.FC = () => {
   const ENDPOINT = "http://localhost:5000";
   const roomNumber = 123;
   const videoGrid = useRef<HTMLDivElement>(null);
@@ -209,7 +207,6 @@ const Livestreamdev: React.FC = () => {
       </Box>
     </Box>
   </Container>
-  <Livechat />
   <Box sx={{
     zIndex: 10,
     mx: 'auto',
@@ -241,5 +238,4 @@ const Livestreamdev: React.FC = () => {
   );
 };
 
-export default Livestreamdev;
-
+export default ScreenSharing;

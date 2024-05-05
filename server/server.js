@@ -93,9 +93,9 @@ io.on("connection", (socket) => {
 
 	
 	socket.on('join-room', (roomId, userId) => {
+		console.log('joined room')
 		socket.join(roomId);
 		socket.to(roomId).emit('user-connected', userId);
-	
 		socket.on('disconnect', () => {
 			socket.to(roomId).emit('user-disconnected', userId);
 		});

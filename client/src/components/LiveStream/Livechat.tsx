@@ -70,7 +70,17 @@ const Livechat: React.FC = () => {
         >
             <div>
                 {Allmsg.map((msg, index) => (
-                    <p key={index}>{msg.name}: {msg.text}</p>
+                    <div key={index} style={{
+                        background: 'white',
+                        margin: '10px auto', // Center the cards horizontally
+                        padding: '10px',
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                        borderRadius: '5px',
+                        width: '100%', // Adjust width here
+                        maxWidth: '600px' // Optional max width
+                    }}>
+                        <p>{msg.name}: {msg.text}</p>
+                    </div>
                 ))}
             </div>
             <TextField
@@ -80,6 +90,7 @@ const Livechat: React.FC = () => {
                 onChange={handleChange}
                 required
             />
+            
             <Button type="submit" variant="contained" color="primary">
                 Send
             </Button>
@@ -94,3 +105,4 @@ function sendData(data: Msg) {
 }
 
 export default Livechat;
+
