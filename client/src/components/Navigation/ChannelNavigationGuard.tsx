@@ -4,15 +4,16 @@ import AuthContext from "../../store/auth-context";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 
-interface ChannelNavigationGuardProps {
+interface NavigationGuardProps {
 	guardWhileEnrolled?: boolean;
 	courseId: string | undefined;
 	children: React.ReactNode;
-	role: "student" | "instructor" | "admin";
+	channelId: string | undefined;
 }
 
-const ChannelNavigationGuard = (props: ChannelNavigationGuardProps) => {
-	const { courseId, children, role, guardWhileEnrolled } = props;
+const ChannelNavigationGuard = (props: NavigationGuardProps) => {
+	const { courseId, children, guardWhileEnrolled, channelId } = props;
+	console.log(courseId, channelId);
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 
@@ -20,24 +21,16 @@ const ChannelNavigationGuard = (props: ChannelNavigationGuardProps) => {
 		data: channel, //: course,
 		isLoading: isChannelLoading,
 		isError: isChannelError,
-		refetch: refetchChannel,
 	} = useQuery({
-		queryKey: ["channels", { courseId }],
-		queryFn: async () =>
-			await api.get(`/channels/`, {
-				params: {
-					course: courseId,
-				},
-			}),
+		queryKey: ["channel", { channelId }],
+		queryFn: async () => await api.get(`/courses/${channelId}`),
 		select: (response) => response.data.data.data,
-		enabled: false,
 	});
 
 	const {
 		data: userCourses, //: course,
 		isLoading: isUserLoading,
 		isError: isUserError,
-		refetch: refetchUserCourses,
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
 		queryFn: async () =>
@@ -50,67 +43,26 @@ const ChannelNavigationGuard = (props: ChannelNavigationGuardProps) => {
 			response.data.data.data.map(
 				(courseEnrollment: any) => courseEnrollment.course.id
 			) ?? [],
-		enabled: false,
 	});
 
 	useEffect(() => {
 		if (isChannelLoading || isUserLoading) return;
 
 		const handleNavigation = () => {
-			if (role === "student") {
-				const fetchUserCourses = async () => {
-					await refetchUserCourses();
-					if (
-						userCourses &&
-						!userCourses?.includes(courseId) &&
-						!guardWhileEnrolled
-					) {
-						console.log("userCourses", userCourses);
-						navigate("/dashboard");
-						return;
-					}
-
-					if (
-						userCourses &&
+			if (
+				!(
+					(userCourses &&
 						userCourses?.includes(courseId) &&
-						guardWhileEnrolled
-					) {
-						navigate("/dashboard");
-						return;
-					}
-				};
-				fetchUserCourses();
-			} else if (role === "instructor") {
-				const fetchCourse = async () => {
-					await refetchChannel();
-					if (
-						channel &&
-						!channel?.admins.some(
-							(instructor: Instructor) =>
-								instructor.id === authContext.user?.id
-						) &&
-						!guardWhileEnrolled
-					) {
-						navigate("/dashboard");
-						return;
-					}
-
-					if (
-						channel &&
-						channel?.admins.some(
-							(instructor: Instructor) =>
-								instructor.id === authContext.user?.id
-						) &&
-						guardWhileEnrolled
-					) {
-						navigate("/dashboard");
-						return;
-					}
-				};
-				fetchCourse();
+						!guardWhileEnrolled) ||
+					(channel &&
+						channel?.admins.includes(authContext.user?.id) &&
+						!guardWhileEnrolled)
+				)
+			) {
+				navigate("/dashboard");
+				return;
 			}
 		};
-
 		handleNavigation();
 	}, [
 		authContext.isLoggedIn,
@@ -120,9 +72,6 @@ const ChannelNavigationGuard = (props: ChannelNavigationGuardProps) => {
 		isUserLoading,
 		userCourses,
 		channel,
-		role,
-		refetchChannel,
-		refetchUserCourses,
 	]);
 
 	return <>{children}</>;
