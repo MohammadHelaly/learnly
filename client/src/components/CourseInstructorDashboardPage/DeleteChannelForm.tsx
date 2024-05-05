@@ -24,6 +24,7 @@ import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
+import DialogForm from "../Popup/DialogForm";
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -39,7 +40,7 @@ interface DeleteChannelFormProps {
 
 function DeleteChannelForm(props: DeleteChannelFormProps) {
 	const { channelId } = props;
-
+	const { courseId } = useParams();
 	const [openDeleteChannelhForm, setOpenDeleteChannelhForm] = useState(false);
 
 	const handleOpenDeleteChannelForm = () => {
@@ -53,10 +54,14 @@ function DeleteChannelForm(props: DeleteChannelFormProps) {
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
-	const popupFunction = () => {};
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["channels", { courseId }],
+		});
+	};
 
 	const {
-		mutate: createChannel,
+		mutate: deleteChannel,
 		isError: isChannelError,
 		isPending: isPendingChannel,
 		isSuccess: isChannelSuccess,
@@ -70,7 +75,7 @@ function DeleteChannelForm(props: DeleteChannelFormProps) {
 	});
 
 	const handleDeleteChannel = async () => {
-		createChannel();
+		deleteChannel();
 	};
 	return (
 		<>
@@ -85,50 +90,13 @@ function DeleteChannelForm(props: DeleteChannelFormProps) {
 			>
 				Delete Channel
 			</Button>
-			<Dialog
-				open={openDeleteChannelhForm}
-				TransitionComponent={Transition}
-				keepMounted
-				onClose={() => handleCloseDeleteChannelForm()}
-				aria-describedby="success-dialog-slide-description"
-				maxWidth="sm"
-				fullWidth
-			>
-				<DialogTitle>
-					<SectionHeader
-						heading="Delete Course"
-						headingAlignment="left"
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-					<SectionHeader
-						heading="Remove this course channel"
-						headingAlignment="left"
-						variant="h6"
-						isSubHeading
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-				</DialogTitle>
-				<DialogContent>
-					<Stack spacing={2} paddingTop={2}>
-						<Button
-							component="label"
-							fullWidth
-							disableElevation
-							size="large"
-							color="error"
-							variant="contained"
-							disabled={isPendingChannel}
-							onClick={handleDeleteChannel}
-							sx={{
-								mb: 2,
-								color: "white",
-							}}
-						>
-							Delete Channel
-						</Button>
-					</Stack>
-				</DialogContent>
-			</Dialog>
+			<DialogForm
+				openDialog={openDeleteChannelhForm}
+				closeDialog={handleCloseDeleteChannelForm}
+				content="Are you sure you want to delete this channel?"
+				heading="Delete Channel"
+				dialogFunction={handleDeleteChannel}
+			/>
 			<Popup
 				content="Channel deleted successfully!"
 				openPopup={isChannelSuccess}

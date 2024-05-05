@@ -54,7 +54,11 @@ function CreateChannelForm(props: CreateChannelFormProps) {
 	const navigate = useNavigate();
 
 	const queryClient = useQueryClient();
-	const popupFunction = () => {};
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["channels", { courseId }],
+		});
+	};
 
 	const {
 		mutate: createChannel,

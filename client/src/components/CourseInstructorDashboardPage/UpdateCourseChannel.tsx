@@ -22,7 +22,7 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["channel", { courseId }],
+		queryKey: ["channels", { courseId }],
 		queryFn: async () =>
 			await api.get(`/channels`, {
 				params: {
