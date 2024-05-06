@@ -79,6 +79,17 @@ interface Testimonial {
 	author: string;
 }
 
+interface TeamMember {
+	name: string;
+	role: string;
+	photo: string;
+	description: string;
+	email: string;
+	linkedIn: string;
+	github?: string;
+	x?: string;
+}
+
 interface Search {
 	name?: string;
 	categories?: { in: string[] };

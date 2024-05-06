@@ -55,7 +55,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 	return (
 		<SectionWrapper
 			sx={{
-				pt: 5,
+				pt: 10, // 5
 				pb: 10,
 				background: variant === "grey" ? "rgb(245, 245, 245)" : "white",
 				display: "flex",

@@ -1,4 +1,4 @@
-import OurTeam from "../components/AboutPage/OurTeam";
+import OurTeam from "../components/AboutPage/OurTeam/OurTeam";
 import ContactUs from "../components/AboutPage/ContactUs";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
