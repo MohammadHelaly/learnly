@@ -29,7 +29,7 @@ const OurTeam = () => {
 					<Stack
 						ref={stack1Ref}
 						spacing={2}
-						direction={window.innerWidth > 800 ? "row" : "column"}
+						direction={window.innerWidth > 900 ? "row" : "column"}
 						alignContent="center"
 						alignItems="center"
 						sx={{
@@ -46,7 +46,7 @@ const OurTeam = () => {
 								variant="h4"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}
 								sx={{
 									mb: 3,
@@ -57,7 +57,7 @@ const OurTeam = () => {
 								variant="h6"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}>
 								Lorem ipsum dolor sit amet, consectetur
 								adipiscing elit. Nulla fringilla ante nec libero
@@ -83,7 +83,7 @@ const OurTeam = () => {
 						ref={stack2Ref}
 						spacing={2}
 						direction={
-							window.innerWidth > 800 ? "row-reverse" : "column"
+							window.innerWidth > 900 ? "row-reverse" : "column"
 						}
 						alignContent="center"
 						alignItems="center"
@@ -101,7 +101,7 @@ const OurTeam = () => {
 								variant="h4"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}
 								sx={{
 									mb: 3,
@@ -112,7 +112,7 @@ const OurTeam = () => {
 								variant="h6"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}>
 								Lorem ipsum dolor sit amet, consectetur
 								adipiscing elit. Nulla fringilla ante nec libero
@@ -137,7 +137,7 @@ const OurTeam = () => {
 					<Stack
 						ref={stack3Ref}
 						spacing={2}
-						direction={window.innerWidth > 800 ? "row" : "column"}
+						direction={window.innerWidth > 900 ? "row" : "column"}
 						alignItems="center"
 						sx={{
 							mb: 10,
@@ -153,7 +153,7 @@ const OurTeam = () => {
 								variant="h4"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}
 								sx={{
 									mb: 3,
@@ -164,7 +164,7 @@ const OurTeam = () => {
 								variant="h6"
 								color="common.black"
 								textAlign={
-									window.innerWidth > 800 ? "left" : "center"
+									window.innerWidth > 900 ? "left" : "center"
 								}>
 								Lorem ipsum dolor sit amet, consectetur
 								adipiscing elit. Nulla fringilla ante nec libero
