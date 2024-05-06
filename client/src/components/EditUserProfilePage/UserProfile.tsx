@@ -1,207 +1,174 @@
-import React from "react";
+import React, {
+	ChangeEvent,
+	useContext,
+	useEffect,
+	useState,
+	useRef,
+} from "react";
 import {
 	Box,
 	Stack,
-	Container,
-	Tab,
 	TextField,
 	Typography,
 	Avatar,
 	IconButton,
 	Button,
-	Link,
 	FormControl,
 } from "@mui/material";
-import NavigationGuard from "../Navigation/NavigationGuard";
-import api from "../../api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import PageWrapper from "../UI/PageLayout/PageWrapper";
+import Clear from "@mui/icons-material/Clear";
+import { useMutation } from "@tanstack/react-query";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import { useState, useContext, ChangeEvent } from "react";
-import AuthContext from "../../store/auth-context";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import FormContainer from "../UI/PageLayout/FormContainer";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller, set } from "react-hook-form";
-import { useEffect } from "react";
-import Clear from "@mui/icons-material/Clear";
+import AuthContext from "../../store/auth-context";
+import api from "../../api";
 import resizeImageFile from "../../helpers/resizeImageFile";
-
 import { z } from "zod";
-import { upload } from "@testing-library/user-event/dist/upload";
 
 const schema = z.object({
 	name: z
 		.string()
-		.max(80, { message: "A  name must be 80 characters or less." })
-		.min(1, { message: "A  name must be 1 characters or more." }),
+		.max(40, { message: "A name must be 80 characters or less." })
+		.min(1, { message: "A name must be 1 character or more." }),
 	bio: z
 		.string()
-		.max(30, { message: "Bio must be less than or equal to 30." })
-		.min(0, { message: "Bio must be greater than or equal to 0." }),
-	photo: z.any(),
+		.max(1500, { message: "Bio must be less than or equal to 1500." })
+		.optional(),
 });
 
 type UserInformationSchemaType = z.infer<typeof schema>;
 
 interface ImageState {
-	preview: File | undefined | string;
+	preview: string | undefined;
 	uploaded: boolean;
 }
-function UserProfile() {
+
+const UserProfile = () => {
 	const authContext = useContext(AuthContext);
-	const [name, setName] = useState(authContext.user?.name);
-	const [bio, setBio] = useState(authContext.user?.bio);
 	const [image, setImage] = useState<ImageState>({
 		preview: authContext.user?.photo?.url,
 		uploaded: false,
 	});
 
-	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-		try {
-			const file = event?.target?.files?.[0];
-			setImage((previousValue) => ({
-				...previousValue,
-				preview: file,
-				uploaded: true,
-			}));
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const {
 		control,
 		handleSubmit,
-		watch,
-		setValue: setValues,
+		formState: { errors, isDirty, dirtyFields },
 		reset,
-		resetField,
-		formState: { errors, dirtyFields, isDirty },
 	} = useForm<UserInformationSchemaType>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
 			name: authContext.user?.name || "",
 			bio: authContext.user?.bio || "",
-			photo: authContext.user?.photo || undefined,
 		},
 	});
-	const { mutate, isError, isPending } = useMutation({
-		mutationFn: (data: Partial<UserInformationSchemaType>) => {
-			return api.patch(`/users/updateMe`, {
-				...data,
-			});
+
+	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event?.target?.files?.[0];
+		if (file) {
+			setImage((prevState) => ({
+				preview: URL.createObjectURL(file),
+				uploaded: true,
+			}));
+		}
+	};
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: (
+			data: Partial<
+				UserInformationSchemaType & { photo: string | File | Blob }
+			>
+		) => {
+			return api.patch(`/users/updateMe`, data);
 		},
 		onSuccess: (response) => {
 			alert("User updated successfully.");
-			if (authContext.user) {
-				if (name) {
-					authContext.user.name = name;
-				}
-				if (bio) {
-					authContext.user.bio = bio;
-				}
-				if (image.preview) {
-					authContext.user.photo = {
-						url: image.preview as string,
-						key: "",
-					};
-				}
-				authContext.update(authContext.user);
-			}
+			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
 		},
 	});
-	const setValueOptions = {
-		shouldDirty: true,
-		shouldValidate: true,
-		shouldTouch: true,
-	};
 
 	const onSubmit = async (data: UserInformationSchemaType) => {
-		if (!isDirty) return;
+		if (!(isDirty || image.uploaded)) return;
 
-		const body = {
-			photo: dirtyFields.photo ? data.photo : undefined,
+		let resizedPhoto: string | undefined = undefined;
+
+		if (image.uploaded && image.preview) {
+			try {
+				const response = await fetch(image.preview);
+				const blob = await response.blob();
+				const resizedBlob = await resizeImageFile(
+					new File([blob], "photo")
+				);
+
+				resizedPhoto = resizedBlob as string;
+			} catch (error) {
+				console.error("Error processing the image file", error);
+			}
+		}
+
+		const requestBody: Partial<
+			UserInformationSchemaType & { photo: string | undefined }
+		> = {
+			photo: image.uploaded ? resizedPhoto : undefined,
 			name: dirtyFields.name ? data.name : undefined,
 			bio: dirtyFields.bio ? data.bio : undefined,
 		};
-		setName(body.name);
-		setBio(body.bio);
-		setImage({ ...image, preview: body.photo });
-		mutate(body);
-	};
-	useEffect(() => {
-		const resizeImage = async () => {
-			if (image.preview && typeof image.preview !== "string") {
-				const resizedImage = await resizeImageFile(
-					image.preview as File
-				);
-				setValues("photo", resizedImage, setValueOptions);
-			} else {
-				resetField("photo");
-			}
-		};
 
-		resizeImage();
-	}, [image.preview]);
+		mutate(requestBody);
+	};
 
 	useEffect(() => {
 		reset({
 			name: authContext.user?.name,
 			bio: authContext.user?.bio,
-			photo: authContext.user?.photo,
 		});
 		setImage({
 			preview: authContext.user?.photo?.url,
 			uploaded: false,
 		});
-	}, [authContext.user]);
+	}, [authContext.user, reset]);
 
-	useEffect(() => {});
+	const clearImageSelection = () => {
+		setImage({
+			preview: authContext.user?.photo?.url,
+			uploaded: false,
+		});
+		if (fileInputRef.current) {
+			fileInputRef.current.value = "";
+		}
+	};
 
 	return (
 		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
 			<form
-				style={{
-					width: "100%",
-
-					marginBottom: 2,
-				}}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+				style={{ width: "100%", marginBottom: 2 }}
+				onSubmit={handleSubmit(onSubmit)}>
 				<Stack
-					alignItems={"center"}
-					display={"flex"}
-					flexDirection={"column"}
-					spacing={8}
-				>
+					alignItems="center"
+					display="flex"
+					flexDirection="column"
+					spacing={8}>
 					<SectionWrapper>
 						<SectionHeader
 							heading="Profile Picture"
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
-							sx={{
-								mb: 4,
-							}}
+							sx={{ mb: 4 }}
 						/>
-						<Stack alignItems={"center"} spacing={2}>
+						<Stack alignItems="center" spacing={2}>
 							<Avatar
 								alt={authContext.user?.name}
-								src={
-									typeof image?.preview === "string"
-										? image.preview
-										: image?.preview
-										? URL.createObjectURL(
-												image?.preview as Blob
-										  )
-										: ""
-									// : URL.createObjectURL(image?.preview as Blob)
-								}
+								src={image.preview || ""}
 								sx={{
 									backgroundColor: "primary.main",
 									width: 100,
@@ -209,20 +176,9 @@ function UserProfile() {
 									mb: 4,
 								}}
 							/>
-							{image?.uploaded && (
+							{image.uploaded && (
 								<Box sx={{ md: 2 }}>
-									<IconButton
-										onClick={() => {
-											setImage({
-												preview:
-													authContext.user?.photo
-														?.url,
-												uploaded: false,
-											});
-											resetField("photo");
-										}}
-										// disabled={!image.uploaded}
-									>
+									<IconButton onClick={clearImageSelection}>
 										<Clear />
 									</IconButton>
 								</Box>
@@ -233,42 +189,35 @@ function UserProfile() {
 								variant="contained"
 								disableElevation
 								size="large"
-								disabled={isPending}
-							>
+								disabled={isPending}>
 								<input
+									ref={fileInputRef}
 									accept="image/*"
 									style={{ display: "none" }}
 									multiple={false}
 									type="file"
-									hidden
-									// value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 								Edit Picture
 							</Button>
 						</Stack>
 					</SectionWrapper>
-
 					<SectionWrapper>
 						<SectionHeader
 							heading="User Name"
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
-							sx={{
-								mb: 4,
-							}}
+							sx={{ mb: 4 }}
 						/>
 						<Stack
 							spacing="1rem"
-							display={"flex"}
-							flexDirection={"column"}
-						>
+							display="flex"
+							flexDirection="column">
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.name}
-							>
+								error={!!errors.name}>
 								<Controller
 									name="name"
 									control={control}
@@ -277,14 +226,12 @@ function UserProfile() {
 											{...field}
 											fullWidth
 											type="text"
-											name="name"
 											label="Name"
 											helperText={
 												errors.name && (
 													<Typography
 														variant="body2"
-														color="error"
-													>
+														color="error">
 														{errors.name.message}
 													</Typography>
 												)
@@ -301,11 +248,9 @@ function UserProfile() {
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
-							sx={{
-								mb: 4,
-							}}
+							sx={{ mb: 4 }}
 						/>
-						<FormControl required fullWidth error={!!errors.name}>
+						<FormControl required fullWidth error={!!errors.bio}>
 							<Controller
 								name="bio"
 								control={control}
@@ -314,15 +259,13 @@ function UserProfile() {
 										{...field}
 										fullWidth
 										type="text"
-										name="bio"
 										label="Bio"
 										helperText={
-											errors.name && (
+											errors.bio && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
-													{errors.name.message}
+													color="error">
+													{errors.bio.message}
 												</Typography>
 											)
 										}
@@ -331,21 +274,19 @@ function UserProfile() {
 							/>
 						</FormControl>
 					</SectionWrapper>
-
 					<Button
 						type="submit"
 						fullWidth
 						variant="contained"
 						disableElevation
 						size="large"
-						disabled={isPending}
-					>
+						disabled={isPending}>
 						Save Changes
 					</Button>
 				</Stack>
 			</form>
 		</FormContainer>
 	);
-}
+};
 
 export default UserProfile;

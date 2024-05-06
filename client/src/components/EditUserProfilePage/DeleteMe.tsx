@@ -4,7 +4,8 @@ import api from "../../api";
 import { useMutation } from "@tanstack/react-query";
 import { useState, useContext, ChangeEvent } from "react";
 import AuthContext from "../../store/auth-context";
-function DeleteMe() {
+
+const DeleteMe = () => {
 	const authContext = useContext(AuthContext);
 	const {
 		mutate: mutateUser,
@@ -35,12 +36,11 @@ function DeleteMe() {
 				onClick={() => {
 					alert("Are you sure you want to delete your account?");
 					mutateUser();
-				}}
-			>
+				}}>
 				Delete Me
 			</Button>
 		</>
 	);
-}
+};
 
 export default DeleteMe;

@@ -1,56 +1,55 @@
-import React from "react";
-import { Stack, TextField, Typography, Button } from "@mui/material";
-import NavigationGuard from "../Navigation/NavigationGuard";
+import { Stack, TextField, Button } from "@mui/material";
 import api from "../../api";
 import { useMutation } from "@tanstack/react-query";
-import PageWrapper from "../UI/PageLayout/PageWrapper";
-import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import { useState, useContext, ChangeEvent } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-import { Delete } from "@mui/icons-material";
 import DeleteMe from "./DeleteMe";
 import FormContainer from "../UI/PageLayout/FormContainer";
 
-function AccountSettings() {
+interface EmailFormValues {
+	email: string;
+}
+
+interface PasswordFormValues {
+	passwordCurrent: string;
+	password: string;
+}
+
+const AccountSettings = () => {
 	const authContext = useContext(AuthContext);
-	const [email, setEmail] = useState(authContext.user?.email);
-	const [oldPassword, setOldPassword] = useState("");
-	const [password, setPassword] = useState("");
-	const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setEmail(event.target.value);
-	};
-
-	const handleOldPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setOldPassword(event.target.value);
-	};
-
-	const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setPassword(event.target.value);
-	};
 
 	const {
-		mutate: mutateUserEmail,
-		isError: isMutateUserEmailError,
-		isPending: isPendingUserEmail,
-		isSuccess: UserEmailSuccess,
-	} = useMutation({
-		mutationFn: (data: any) => {
-			return api.patch(`/users/updateMe`, {
-				email: data,
-			});
+		control: controlEmail,
+		handleSubmit: handleSubmitEmail,
+		formState: { errors: emailErrors },
+	} = useForm<EmailFormValues>({
+		defaultValues: {
+			email: authContext.user?.email || "",
+		},
+	});
+
+	const {
+		control: controlPassword,
+		handleSubmit: handleSubmitPassword,
+		reset: resetPassword,
+		formState: { errors: passwordErrors },
+	} = useForm<PasswordFormValues>({
+		defaultValues: {
+			passwordCurrent: "",
+			password: "",
+		},
+	});
+
+	const { mutate: mutateUserEmail } = useMutation({
+		mutationFn: (data: EmailFormValues) => {
+			return api.patch(`/users/updateMe`, { ...data });
 		},
 		onSuccess: (response) => {
 			alert("User email updated successfully");
-			if (authContext.user) {
-				if (email) {
-					authContext.user.email = email;
-					authContext.update(authContext.user);
-				}
-			}
+			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
 			console.error(error);
@@ -58,37 +57,37 @@ function AccountSettings() {
 		},
 	});
 
-	const {
-		mutate: mutateUserPassword,
-		isError: isMutateUserPasswordError,
-		isPending: isPendingUserPassword,
-		isSuccess: UserPasswordSuccess,
-	} = useMutation({
-		mutationFn: (data: any) => {
+	const { mutate: mutateUserPassword } = useMutation({
+		mutationFn: (data: PasswordFormValues) => {
 			return api.patch(`/users/updatePassword`, {
-				passwordCurrent: data[0],
-				password: data[1],
-				passwordConfirm: data[1],
+				...data,
+				passwordConfirm: data.password,
 			});
 		},
-		onSuccess: (response) => {
+		onSuccess: () => {
 			alert("User password updated successfully");
+			resetPassword();
 		},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
 		},
 	});
+
+	const handleEmailSubmit = (data: EmailFormValues) => {
+		mutateUserEmail(data);
+	};
+
+	const handlePasswordSubmit = (data: PasswordFormValues) => {
+		mutateUserPassword(data);
+	};
+
 	return (
 		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
-			<form
-				style={{
-					width: "100%",
-
-					marginBottom: 2,
-				}}
-			>
-				<Stack spacing={8}>
+			<Stack spacing={8}>
+				<form
+					onSubmit={handleSubmitEmail(handleEmailSubmit)}
+					style={{ width: "100%", marginBottom: 2 }}>
 					<SectionWrapper>
 						<Stack>
 							<SectionHeader
@@ -96,90 +95,118 @@ function AccountSettings() {
 								headingAlignment="left"
 								keepHeadingAlignmentOnSmallScreens
 								headingAnimated={false}
-								sx={{
-									mb: 4,
-								}}
-							/>
-							<TextField
-								onChange={handleEmailChange}
-								value={email}
-								defaultValue={authContext.user?.email}
-								color="primary"
 								sx={{ mb: 4 }}
+							/>
+							<Controller
+								name="email"
+								control={controlEmail}
+								rules={{ required: "Email is required" }}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										label="Email"
+										color="primary"
+										error={!!emailErrors.email}
+										helperText={
+											emailErrors.email
+												? emailErrors.email.message
+												: ""
+										}
+										sx={{ mb: 4 }}
+									/>
+								)}
 							/>
 							<Button
 								fullWidth
 								variant="contained"
 								disableElevation
 								size="large"
-								onClick={() => {
-									mutateUserEmail(email);
-								}}
-							>
+								type="submit">
 								Confirm
 							</Button>
 						</Stack>
 					</SectionWrapper>
-					<SectionWrapper>
-						<SectionHeader
-							heading="Change Password"
-							headingAlignment="left"
-							keepHeadingAlignmentOnSmallScreens
-							headingAnimated={false}
-							sx={{
-								mb: 4,
-							}}
-						/>
-						<Stack
-						// spacing="1rem"
-						// sx={{ paddingTop: "2rem", paddingBottom: "2rem" }}
-						>
-							<TextField
-								onChange={handleOldPasswordChange}
-								value={oldPassword}
-								label="Old Password"
-								color="primary"
-								type="password"
-								sx={{ mb: 2 }}
+				</form>
+				<SectionWrapper>
+					<SectionHeader
+						heading="Change Password"
+						headingAlignment="left"
+						keepHeadingAlignmentOnSmallScreens
+						headingAnimated={false}
+						sx={{ mb: 4 }}
+					/>
+					<form onSubmit={handleSubmitPassword(handlePasswordSubmit)}>
+						<Stack>
+							<Controller
+								name="passwordCurrent"
+								control={controlPassword}
+								rules={{
+									required: "Current password is required",
+								}}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										label="Current Password"
+										type="password"
+										color="primary"
+										error={!!passwordErrors.passwordCurrent}
+										helperText={
+											passwordErrors.passwordCurrent
+												? passwordErrors.passwordCurrent
+														.message
+												: ""
+										}
+										sx={{ mb: 2 }}
+									/>
+								)}
 							/>
-							<TextField
-								onChange={handlePasswordChange}
-								value={password}
-								label="New Password"
-								color="primary"
-								type="password"
-								sx={{ mb: 4 }}
+							<Controller
+								name="password"
+								control={controlPassword}
+								rules={{
+									required: "New password is required",
+								}}
+								render={({ field }) => (
+									<TextField
+										{...field}
+										label="New Password"
+										type="password"
+										color="primary"
+										error={!!passwordErrors.password}
+										helperText={
+											passwordErrors.password
+												? passwordErrors.password
+														.message
+												: ""
+										}
+										sx={{ mb: 4 }}
+									/>
+								)}
 							/>
 							<Button
 								fullWidth
 								variant="contained"
 								disableElevation
 								size="large"
-								onClick={() => {
-									const data = [oldPassword, password];
-									mutateUserPassword(data);
-								}}
-							>
+								type="submit">
 								Confirm
 							</Button>
 						</Stack>
-					</SectionWrapper>
-					<SectionWrapper>
-						<SectionHeader
-							heading="Deactivate Account"
-							headingAlignment="left"
-							keepHeadingAlignmentOnSmallScreens
-							headingAnimated={false}
-							sx={{
-								mb: 4,
-							}}
-						/>
-						<DeleteMe />
-					</SectionWrapper>
-				</Stack>
-			</form>
+					</form>
+				</SectionWrapper>
+				<SectionWrapper>
+					<SectionHeader
+						heading="Deactivate Account"
+						headingAlignment="left"
+						keepHeadingAlignmentOnSmallScreens
+						headingAnimated={false}
+						sx={{ mb: 4 }}
+					/>
+					<DeleteMe />
+				</SectionWrapper>
+			</Stack>
 		</FormContainer>
 	);
-}
+};
 
 export default AccountSettings;
