@@ -138,10 +138,12 @@ const UserProfile = () => {
 	}, [authContext.user, reset]);
 
 	const clearImageSelection = () => {
-		setImage({
-			preview: authContext.user?.photo?.url,
-			uploaded: false,
-		});
+		image.preview
+			? setImage({ preview: undefined, uploaded: false })
+			: setImage({
+					preview: authContext.user?.photo?.url,
+					uploaded: false,
+			  });
 		if (fileInputRef.current) {
 			fileInputRef.current.value = "";
 		}
@@ -166,23 +168,34 @@ const UserProfile = () => {
 							sx={{ mb: 4 }}
 						/>
 						<Stack alignItems="center" spacing={2}>
-							<Avatar
-								alt={authContext.user?.name}
-								src={image.preview || ""}
-								sx={{
-									backgroundColor: "primary.main",
-									width: 100,
-									height: 100,
-									mb: 4,
-								}}
-							/>
-							{image.uploaded && (
-								<Box sx={{ md: 2 }}>
-									<IconButton onClick={clearImageSelection}>
+							<Box sx={{ position: "relative" }}>
+								<Avatar
+									alt={authContext.user?.name}
+									src={image.preview || ""}
+									sx={{
+										backgroundColor: "primary.main",
+										width: 100,
+										height: 100,
+										mb: 4,
+									}}
+								/>
+								{image.preview && (
+									<IconButton
+										sx={{
+											position: "absolute",
+											top: 0,
+											left: 0,
+
+											backgroundColor: "white",
+											"&:hover": {
+												backgroundColor: "white",
+											},
+										}}
+										onClick={clearImageSelection}>
 										<Clear />
 									</IconButton>
-								</Box>
-							)}
+								)}
+							</Box>
 							<Button
 								component="label"
 								fullWidth
