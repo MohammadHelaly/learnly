@@ -204,15 +204,15 @@ const UpdateCourseInformationForm = (
 		setValue("skills", newSkills, setValueOptions);
 	};
 
-	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setValue("paid", value, setValueOptions);
-		resetField("price");
-	};
+	// const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	const value = event.target.value === "true";
+	// 	setValue("paid", value, setValueOptions);
+	// 	resetField("price");
+	// };
 
-	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		setValue("price", parseFloat(event.target.value), setValueOptions);
-	};
+	// const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	setValue("price", parseFloat(event.target.value), setValueOptions);
+	// };
 
 	const removeImage = () => {
 		setImage({
@@ -261,8 +261,10 @@ const UpdateCourseInformationForm = (
 			name: dirtyFields.name ? data.name : undefined,
 			summary: dirtyFields.summary ? data.summary : undefined,
 			description: dirtyFields.description ? data.description : undefined,
-			price: dirtyFields.price ? data.price : undefined,
-			paid: dirtyFields.paid ? data.paid : undefined,
+			// price: dirtyFields.price ? data.price : undefined,
+			price: 0.0,
+			// paid: dirtyFields.paid ? data.paid : undefined,
+			paid: false,
 			categories: dirtyFields.categories ? data.categories : undefined,
 			skills: dirtyFields.skills ? data.skills : undefined,
 			prerequisites: dirtyFields.prerequisites
@@ -765,20 +767,20 @@ const UpdateCourseInformationForm = (
 										row={window.innerWidth > 600}
 										aria-label="Pricing"
 										name="paid"
-										defaultValue="true"
-										onChange={paidChangeHandler}
+										// defaultValue="false"
+										// onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
 										}}>
 										<FormControlLabel
-											value="true"
-											control={<Radio />}
-											label="Paid"
-										/>
-										<FormControlLabel
 											value="false"
 											control={<Radio />}
 											label="Free"
+										/>
+										<FormControlLabel
+											value="true"
+											control={<Radio disabled />}
+											label="Paid - Coming Soon"
 										/>
 									</RadioGroup>
 								)}
@@ -802,7 +804,9 @@ const UpdateCourseInformationForm = (
 												type="number"
 												name="price"
 												label="Price"
-												onChange={priceChangeHandler}
+												// onChange={priceChangeHandler}
+												disabled
+												placeholder="Coming soon!"
 											/>
 										)}
 									/>
