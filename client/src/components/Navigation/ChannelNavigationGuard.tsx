@@ -12,7 +12,7 @@ interface NavigationGuardProps {
 }
 
 const ChannelNavigationGuard = (props: NavigationGuardProps) => {
-	const { courseId, children, guardWhileEnrolled, channelId } = props;
+	const { courseId, children, channelId } = props;
 	console.log(courseId, channelId);
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
@@ -23,7 +23,7 @@ const ChannelNavigationGuard = (props: NavigationGuardProps) => {
 		isError: isChannelError,
 	} = useQuery({
 		queryKey: ["channel", { channelId }],
-		queryFn: async () => await api.get(`/courses/${channelId}`),
+		queryFn: async () => await api.get(`/channels/${channelId}`),
 		select: (response) => response.data.data.data,
 	});
 
@@ -51,12 +51,8 @@ const ChannelNavigationGuard = (props: NavigationGuardProps) => {
 		const handleNavigation = () => {
 			if (
 				!(
-					(userCourses &&
-						userCourses?.includes(courseId) &&
-						!guardWhileEnrolled) ||
-					(channel &&
-						channel?.admins.includes(authContext.user?.id) &&
-						!guardWhileEnrolled)
+					(userCourses && userCourses?.includes(courseId)) ||
+					(channel && channel?.admins.includes(authContext.user?.id))
 				)
 			) {
 				navigate("/dashboard");

@@ -22,7 +22,7 @@ import { z } from "zod";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const schema = z.object({
 	content: z
 		.string()
@@ -85,7 +85,7 @@ const Channel = (props: ChannelProps) => {
 				params: {
 					channel: channelId,
 					page: pageParam,
-					limit: 3,
+					limit: 15,
 					sort: "-createdAt",
 				},
 			});
@@ -93,7 +93,7 @@ const Channel = (props: ChannelProps) => {
 		},
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) => {
-			if (lastPage.length < 3) return undefined;
+			if (lastPage.length < 15) return undefined;
 			return allPages.length + 1;
 		},
 	});
@@ -200,6 +200,35 @@ const Channel = (props: ChannelProps) => {
 		reset();
 	};
 
+	const [isAtBottom, setIsAtBottom] = useState(true);
+
+	const handleScroll = () => {
+		const bottom =
+			Math.ceil(window.innerHeight + window.scrollY) >=
+			document.documentElement.scrollHeight;
+
+		setIsAtBottom(bottom);
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll, {
+			passive: true,
+		});
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (isAtBottom && allMessages.length > 0) {
+			window.scrollTo({
+				top: document.documentElement.scrollHeight,
+				behavior: "smooth",
+			});
+		}
+	}, [allMessages, isAtBottom]);
+
 	return (
 		<PageWrapper
 			sx={{
@@ -237,13 +266,7 @@ const Channel = (props: ChannelProps) => {
 									borderColor: "divider",
 								}}
 							/>
-							<div ref={ref}>
-								{isFetchingNextPageMessages && (
-									<Typography alignContent="center">
-										Loading.....
-									</Typography>
-								)}
-							</div>
+							<Box ref={ref} />
 							<Stack
 								direction="column"
 								justifyContent="flex-start"
@@ -252,8 +275,23 @@ const Channel = (props: ChannelProps) => {
 									minHeight: "100vh",
 									overflowY: "scroll",
 									scrollbarWidth: "none",
+									display: "flex",
 								}}
 							>
+								{isFetchingNextPageMessages && (
+									<Box
+										sx={{
+											width: "100%",
+											alignItems: "center",
+											display: "flex",
+											justifyContent: "center",
+											justifyItems: "center",
+											py: 2,
+										}}
+									>
+										<CircularProgress color="primary" />
+									</Box>
+								)}
 								{allMessages?.map((message) => (
 									<MessageBubble
 										key={message._id}
