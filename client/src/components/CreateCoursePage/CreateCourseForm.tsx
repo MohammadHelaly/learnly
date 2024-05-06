@@ -1,3 +1,4 @@
+import React, { ChangeEvent, useState, useRef } from "react";
 import {
 	Box,
 	Typography,
@@ -7,21 +8,21 @@ import {
 	MenuItem,
 	Stack,
 	FormControl,
-	FormControlLabel,
 	RadioGroup,
 	Radio,
+	FormControlLabel,
 	InputLabel,
 	Select,
 	Checkbox,
 	IconButton,
 } from "@mui/material";
-import { useState, ChangeEvent } from "react";
+import { Clear, Done } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import api from "../../api";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -29,7 +30,6 @@ import categories from "../../assets/data/categories";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
-import { Clear, Done } from "@mui/icons-material";
 
 const schema = z.object({
 	name: z
@@ -43,11 +43,13 @@ const schema = z.object({
 	paid: z.boolean(),
 	skills: z
 		.array(
-			z.string().max(128, {
-				message: "A skill must be 128 characters or less.",
-			})
+			z
+				.string()
+				.max(128, {
+					message: "A skill must be 128 characters or less.",
+				})
 		)
-		.min(1, { message: "Select at least 1 skills." })
+		.min(1, { message: "Select at least one skill." })
 		.max(12, { message: "Select up to 12 skills." }),
 	categories: z
 		.array(z.string())
@@ -66,9 +68,11 @@ const schema = z.object({
 		.min(128, { message: "A description must be 128 characters or more." }),
 	prerequisites: z
 		.array(
-			z.string().max(128, {
-				message: "A prerequisite must be 128 characters or less.",
-			})
+			z
+				.string()
+				.max(128, {
+					message: "A prerequisite must be 128 characters or less.",
+				})
 		)
 		.max(12, { message: "Select up to 12 prerequisites." }),
 	imageCover: z.any(),
@@ -77,17 +81,20 @@ const schema = z.object({
 type CourseFormSchemaType = z.infer<typeof schema>;
 
 interface ImageState {
-	preview: File | undefined | null;
-	uploaded: string | number | readonly string[] | undefined;
+	preview: string | undefined;
+	uploaded: boolean;
 }
 
 const CreateCourseForm = () => {
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
 	const [image, setImage] = useState<ImageState>({
-		preview: null,
-		uploaded: "",
+		preview: undefined,
+		uploaded: false,
 	});
+
+	// Reference for the file input
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const {
 		control,
@@ -114,14 +121,11 @@ const CreateCourseForm = () => {
 
 	const navigate = useNavigate();
 
-	const { mutate, isError, isPending } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: CourseFormSchemaType) => {
-			return api.post("/courses", {
-				...data,
-			});
+			return api.post("/courses", { ...data });
 		},
-		onSuccess: (response) => {
-			// navigate(`/courses/${response.data.data.data.id}`);
+		onSuccess: () => {
 			navigate("/dashboard");
 		},
 		onError: (error) => {
@@ -130,13 +134,10 @@ const CreateCourseForm = () => {
 		},
 	});
 
-	const renderSelectedCategories = (selected: string[]) => {
-		return selected.join(", ");
-	};
+	const renderSelectedCategories = (selected: string[]) =>
+		selected.join(", ");
 
-	const isSelected = (value: string) => {
-		return watch().categories?.includes(value);
-	};
+	const isSelected = (value: string) => watch().categories.includes(value);
 
 	const removeCategory = (selectedCategory: string) => {
 		const newCategories = watch().categories.filter(
@@ -145,13 +146,10 @@ const CreateCourseForm = () => {
 		setValue("categories", newCategories);
 	};
 
-	const prerequisiteChangeHandler = (
-		event: ChangeEvent<HTMLInputElement>
-	) => {
+	const prerequisiteChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setPrerequisite(event.target.value);
-	};
 
-	const addPrequisite = (value: string) => {
+	const addPrerequisite = (value: string) => {
 		setValue("prerequisites", [...watch().prerequisites, value]);
 		setPrerequisite("");
 	};
@@ -163,9 +161,8 @@ const CreateCourseForm = () => {
 		setValue("prerequisites", newPrerequisites);
 	};
 
-	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setSkill(event.target.value);
-	};
 
 	const addSkill = (value: string) => {
 		setValue("skills", [...watch().skills, value]);
@@ -186,33 +183,33 @@ const CreateCourseForm = () => {
 	};
 
 	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		console.log(watch().price);
 		setValue("price", parseFloat(event.target.value));
 	};
 
-	const removeImage = () => {
-		console.log("removed");
-		const data = new FormData();
-		setImage({
-			preview: null,
-			uploaded: "",
-		});
+	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setImage({ preview: URL.createObjectURL(file), uploaded: true });
+		}
 	};
 
-	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-		try {
-			const file = event?.target?.files?.[0];
-			setImage((previousValue) => ({
-				...previousValue,
-				preview: file,
-			}));
-		} catch (err) {
-			console.log(err);
+	const removeImage = () => {
+		setImage({ preview: undefined, uploaded: false });
+		if (fileInputRef.current) {
+			fileInputRef.current.value = "";
 		}
 	};
 
 	const onSubmit = async (data: CourseFormSchemaType) => {
-		const resizedImage = await resizeImageFile(image.preview as File);
+		const resizedImage = image.preview
+			? await resizeImageFile(
+					new File(
+						[await (await fetch(image.preview)).blob()],
+						"imageCover"
+					)
+			  )
+			: undefined;
+
 		setValue("imageCover", resizedImage);
 
 		const body = {
@@ -238,8 +235,7 @@ const CreateCourseForm = () => {
 					width: "100%",
 				}}
 				onSubmit={handleSubmit(onSubmit)}
-				autoComplete="off"
-			>
+				autoComplete="off">
 				<Stack spacing={12}>
 					<SectionWrapper>
 						<SectionHeader
@@ -277,8 +273,7 @@ const CreateCourseForm = () => {
 											errors.name && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.name.message}
 												</Typography>
 											)
@@ -312,8 +307,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.summary}
-						>
+							error={!!errors.summary}>
 							<Controller
 								name="summary"
 								control={control}
@@ -329,8 +323,7 @@ const CreateCourseForm = () => {
 											errors.summary && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.summary.message}
 												</Typography>
 											)
@@ -364,8 +357,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.description}
-						>
+							error={!!errors.description}>
 							<Controller
 								name="description"
 								control={control}
@@ -381,8 +373,7 @@ const CreateCourseForm = () => {
 											errors.description && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.description.message}
 												</Typography>
 											)
@@ -416,8 +407,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.categories}
-						>
+							error={!!errors.categories}>
 							<InputLabel id="categories-select-label">
 								Categories
 							</InputLabel>
@@ -433,13 +423,11 @@ const CreateCourseForm = () => {
 										label="Categories"
 										renderValue={renderSelectedCategories}
 										variant="outlined"
-										fullWidth
-									>
+										fullWidth>
 										{categories.sort().map((category) => (
 											<MenuItem
 												key={category}
-												value={category}
-											>
+												value={category}>
 												<Checkbox
 													checked={isSelected(
 														category
@@ -494,8 +482,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.difficulty}
-						>
+							error={!!errors.difficulty}>
 							<Controller
 								name="difficulty"
 								control={control}
@@ -505,8 +492,7 @@ const CreateCourseForm = () => {
 										row={window.innerWidth > 600}
 										aria-label="Difficulty"
 										name="difficulty"
-										defaultValue="Beginner"
-									>
+										defaultValue="Beginner">
 										<FormControlLabel
 											value="Beginner"
 											control={<Radio />}
@@ -556,8 +542,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.prerequisites}
-						>
+							error={!!errors.prerequisites}>
 							<TextField
 								name="prerequisite"
 								value={prerequisite}
@@ -576,11 +561,10 @@ const CreateCourseForm = () => {
 									prerequisite.length === 0 ||
 									isPending
 								}
-								onClick={() => addPrequisite(prerequisite)}
+								onClick={() => addPrerequisite(prerequisite)}
 								sx={{
 									my: 2,
-								}}
-							>
+								}}>
 								Add Prerequisite
 							</Button>
 						</FormControl>
@@ -595,16 +579,14 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left"
-							>
+								justifyContent="left">
 								{watch().prerequisites.map(
 									(prerequisite, index) => (
 										<Grid
 											item
 											xs={12}
 											sm={6}
-											key={index + "prerequisite"}
-										>
+											key={index + "prerequisite"}>
 											<CheckListItem
 												item={prerequisite}
 												editable
@@ -663,8 +645,7 @@ const CreateCourseForm = () => {
 								onClick={() => addSkill(skill)}
 								sx={{
 									my: 2,
-								}}
-							>
+								}}>
 								Add Skill
 							</Button>
 						</FormControl>
@@ -679,15 +660,13 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left"
-							>
+								justifyContent="left">
 								{watch().skills.map((skill, index) => (
 									<Grid
 										item
 										xs={12}
 										sm={6}
-										key={index + "skill"}
-									>
+										key={index + "skill"}>
 										<CheckListItem
 											item={skill}
 											editable
@@ -722,8 +701,7 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.paid}
-						>
+							error={!!errors.paid}>
 							<Controller
 								name="paid"
 								control={control}
@@ -737,8 +715,7 @@ const CreateCourseForm = () => {
 										onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
-										}}
-									>
+										}}>
 										<FormControlLabel
 											value="true"
 											control={<Radio />}
@@ -809,30 +786,23 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.imageCover}
-						>
+							error={!!errors.imageCover}>
 							<Button
 								component="label"
 								fullWidth
 								variant="contained"
 								disableElevation
 								size="large"
-								disabled={isPending}
-								sx={{
-									mb: 2,
-								}}
-							>
-								{image?.preview
+								sx={{ mb: 2 }}>
+								{image.preview
 									? "Change Image"
 									: "Upload Image"}
 								<input
-									disabled={isPending}
+									ref={fileInputRef}
 									accept="image/*"
 									style={{ display: "none" }}
 									multiple={false}
 									type="file"
-									hidden
-									value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 							</Button>
@@ -842,14 +812,13 @@ const CreateCourseForm = () => {
 								"Please upload a valid image for your course."
 							</Typography>
 						)}
-						{image?.preview && (
+						{image.preview && (
 							<Box
 								sx={{
 									width: "100%",
 									borderRadius: 12,
 									position: "relative",
-								}}
-							>
+								}}>
 								<IconButton
 									onClick={removeImage}
 									sx={{
@@ -861,13 +830,12 @@ const CreateCourseForm = () => {
 										"&:hover": {
 											backgroundColor: "white",
 										},
-									}}
-								>
+									}}>
 									<Clear />
 								</IconButton>
 								<img
-									src={URL.createObjectURL(image?.preview)}
-									alt={image?.preview?.name}
+									src={image.preview}
+									alt="Course cover"
 									style={{
 										width: "100%",
 										height: "auto",
@@ -875,7 +843,7 @@ const CreateCourseForm = () => {
 										objectFit: "cover",
 										objectPosition: "center",
 									}}
-								></img>
+								/>
 							</Box>
 						)}
 					</SectionWrapper>
@@ -907,8 +875,7 @@ const CreateCourseForm = () => {
 							fullWidth
 							disableElevation
 							size="large"
-							endIcon={<Done />}
-						>
+							endIcon={<Done />}>
 							Save and Continue
 						</Button>
 					</SectionWrapper>
