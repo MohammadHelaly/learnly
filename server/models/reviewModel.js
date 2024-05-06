@@ -75,18 +75,33 @@ reviewSchema.statics.calculateAverageRatings = async function (courseId) {
   }
 };
 
-// reviewSchema.post("save", async function () {
-//   // this points to current review
-//   this.constructor.calculateAverageRatings(this.course);
-// });
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// reviewSchema.statics.calculateAverageRatingsForInstructors = async function () {
+//   try {
+//     const courses = await Course.find({ instructors: instructorId });
+//     if (courses.length === 0) {
+//       return 0;
+//     }
+//     let totalRatingSum = 0;
+//     let totalRatingCount = 0;
+//     for (const course of courses) {
+//       totalRatingSum += course.ratingsAverage * course.ratingsQuantity;
+//       totalRatingCount += course.ratingsQuantity;
+//     }
+//     const instructorAverageRating = totalRatingSum / totalRatingCount;
+//     return Math.round(instructorAverageRating * 10) / 10;
+//   } catch (error) {
+//     console.error("Error calculating average rating of instructor:", error);
+//     return 0;
+//   }
+// };
 
 reviewSchema.pre("save", async function (next) {
   if (!this.isModified("rating")) return next();
   try {
     const courseId = this.course;
+    //const instructorId = this.course.instructor;
     await this.constructor.calculateAverageRatings(courseId);
+    //await this.constructor.calculateAverageRatingsForInstructor(instructorId);
     next();
   } catch (err) {
     next(err);
@@ -97,7 +112,9 @@ reviewSchema.pre("save", async function (next) {
 reviewSchema.pre("remove", async function (next) {
   try {
     const courseId = this.course;
+    //const instructorId = this.course.instructor;
     await this.constructor.calculateAverageRatings(courseId);
+    // await this.constructor.calculateAverageRatingsForInstructor(instructorId);
     next();
   } catch (err) {
     next(err);
@@ -107,7 +124,9 @@ reviewSchema.pre("remove", async function (next) {
 reviewSchema.post(/^findOneAnd/, async function (doc, next) {
   if (doc) {
     const courseId = doc.course;
+    //const instructorId = doc.course.instructor;
     await doc.constructor.calculateAverageRatings(courseId);
+    //await doc.constructor.calculateAverageRatingsForInstructor(instructorId);
   }
   next();
 });
