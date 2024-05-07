@@ -241,7 +241,7 @@ const NavBar = () => {
 					</Box>
 					{authContext.isLoggedIn ? (
 						<Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
-							<ButtonGroup>
+							{/* <ButtonGroup>
 								<Button
 									variant="text"
 									color="primary"
@@ -274,12 +274,25 @@ const NavBar = () => {
 									}}>
 									<ShoppingCartOutlined />
 								</Button>
-							</ButtonGroup>
+							</ButtonGroup> */}
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Open User Menu">
 									<IconButton
 										onClick={handleOpenRightDrawer}
-										sx={{ p: 0 }}>
+										sx={{
+											p: 0,
+											gap: 1,
+											borderRadius: 12,
+											paddingInlineStart: 2,
+										}}>
+										<Menu
+											sx={{
+												transition: "all 0.5s ease",
+												color: scrolled
+													? "primary.main"
+													: "white",
+											}}
+										/>
 										<Avatar
 											alt={authContext.user?.name}
 											src={authContext.user?.photo?.url}
