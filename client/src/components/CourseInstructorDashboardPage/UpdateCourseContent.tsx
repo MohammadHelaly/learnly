@@ -13,10 +13,10 @@ const UpdateCourseContent = (props: UpdateCourseContentProps) => {
 	return (
 		<PageWrapper sx={{ mt: 0 }}>
 			<SectionWrapper>
-				<SectionHeader
+				{/* <SectionHeader
 					heading="Course Contents"
 					headingAlignment="left"
-				/>
+				/> */}
 				<UpdateCourseContentForm courseId={courseId as string} />
 			</SectionWrapper>
 		</PageWrapper>

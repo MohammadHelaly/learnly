@@ -43,6 +43,7 @@ const CatalogSection = () => {
 		queryFn: async () =>
 			await api.get("/courses", {
 				params: {
+					published: true,
 					page,
 					limit,
 					...search,

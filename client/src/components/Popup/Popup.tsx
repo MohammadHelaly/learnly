@@ -8,10 +8,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
+import Box from "@mui/material/Box";
 
 interface PopupProps {
 	content: string;
 	openPopup: boolean;
+	buttonText: string;
+	popupFunction: (type: any) => void;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -24,7 +27,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const Popup = (props: PopupProps) => {
-	const { content, openPopup } = props;
+	const { content, openPopup, buttonText, popupFunction } = props;
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -33,6 +36,7 @@ const Popup = (props: PopupProps) => {
 
 	const handleClose = () => {
 		setOpen(false);
+		popupFunction(null);
 	};
 
 	return (
@@ -42,6 +46,7 @@ const Popup = (props: PopupProps) => {
 			keepMounted
 			onClose={handleClose}
 			aria-describedby="success-dialog-slide-description"
+			fullWidth={true} // Allow the dialog to take up the full width of the container
 		>
 			<DialogTitle>
 				<SectionHeader
@@ -52,7 +57,7 @@ const Popup = (props: PopupProps) => {
 			</DialogTitle>
 			<DialogContent>
 				<DialogContentText id="success-dialog-slide-description">
-					{content} successfully!
+					{content}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
@@ -63,7 +68,7 @@ const Popup = (props: PopupProps) => {
 					size="large"
 					onClick={handleClose}
 				>
-					Great!
+					{buttonText}
 				</Button>
 			</DialogActions>
 		</Dialog>

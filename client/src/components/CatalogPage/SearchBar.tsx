@@ -92,8 +92,8 @@ const SearchBar = (props: SearchBarProps) => {
 									size="small"
 									fullWidth
 									sx={{
-										maxWidth:
-											window.innerWidth > 600 ? 350 : 250,
+										maxWidth: 350,
+										flexGrow: 1,
 										backgroundColor: "transparent",
 									}}
 									InputProps={{

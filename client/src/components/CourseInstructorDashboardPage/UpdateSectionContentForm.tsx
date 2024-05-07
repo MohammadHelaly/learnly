@@ -15,7 +15,7 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
-import { Add, Check } from "@mui/icons-material";
+import { Add, Check, Edit } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 
 interface UpdateSectionContentFormProps {
@@ -115,13 +115,17 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 
 	return (
 		<>
-			<Button onClick={handleOpenSectionForm}>
+			<Button
+				sx={{
+					color: "common.black",
+				}}
+				endIcon={<Edit />}
+				onClick={handleOpenSectionForm}>
 				<Typography
 					variant="h5"
 					sx={{
 						fontWeight: "400",
-					}}
-				>
+					}}>
 					{title}
 				</Typography>
 			</Button>
@@ -135,8 +139,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 				) => handleCloseSectionForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth
-			>
+				fullWidth>
 				<DialogTitle>
 					<SectionHeader
 						heading="Modify Section Information"
@@ -155,8 +158,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 					<form
 						onSubmit={handleSectionSubmit(onSubmitSection)}
 						autoComplete="off"
-						noValidate
-					>
+						noValidate>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -199,8 +201,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 								disableElevation
 								size="large"
 								type="submit"
-								fullWidth
-							>
+								fullWidth>
 								Update Section
 							</Button>
 						</Stack>

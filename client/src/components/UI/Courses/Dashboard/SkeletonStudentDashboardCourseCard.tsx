@@ -6,8 +6,8 @@ const SkeletonCourseCard = () => {
 			sx={{
 				display: "flex",
 				flexDirection: "column",
-				height: 356,
-				width: window.innerWidth > 380 ? 356 : 328,
+				height: 352,
+				width: window.innerWidth > 600 ? 352 : "100%",
 				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
 				backgroundColor: "transparent",

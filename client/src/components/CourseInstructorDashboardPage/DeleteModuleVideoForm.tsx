@@ -13,7 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-
+import Popup from "../Popup/Popup";
 interface DeleteModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -31,7 +31,11 @@ const Transition = React.forwardRef(function Transition(
 
 const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 	const { courseId, sectionId, moduleNumber } = props;
-
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const [openModuleForm, setOpenModuleForm] = useState(false);
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
@@ -49,14 +53,11 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 	} = useMutation({
 		mutationFn: () => {
 			return api.patch(
-				`/sections/${sectionId}/modules/${moduleNumber}/video`
+				`/courses/${courseId}/sections/${sectionId}/modules/${moduleNumber}/video`
 			);
 		},
 		onSuccess: () => {
-			alert("Video deleted successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenModuleForm(false);
 		},
 	});
 
@@ -116,6 +117,12 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 					</Stack>
 				</DialogContent>
 			</Dialog>
+			<Popup
+				content="Video deleted successfully!"
+				openPopup={isModuleSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

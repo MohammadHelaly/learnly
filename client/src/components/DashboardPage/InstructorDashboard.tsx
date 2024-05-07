@@ -2,14 +2,15 @@ import { useState, useContext, ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import AuthContext from "../../store/auth-context";
-import { Pagination } from "@mui/material";
+import { Pagination, Box } from "@mui/material";
 import Courses from "../UI/Courses/Courses";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import StyledNavLink from "../UI/Links/StyledNavLink";
 import { Button } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, CastForEducation, People } from "@mui/icons-material";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import InstructorStats from "../UI/Instructors/InstructorStats";
 
 const InstructorDashboard = () => {
 	const [page, setPage] = useState(1);
@@ -59,6 +60,14 @@ const InstructorDashboard = () => {
 					display: "flex",
 					flexDirection: "column",
 				}}>
+				<Box mb={8}>
+					<InstructorStats
+						ratingsAverage={user?.ratingsAverage ?? 0}
+						ratingsQuantity={user?.ratingsQuantity ?? 0}
+						students={user?.students ?? 0}
+						courses={user?.coursesCreated?.length ?? 0}
+					/>
+				</Box>
 				<SectionHeader
 					heading="Create a New Course"
 					headingAlignment="center"

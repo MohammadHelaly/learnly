@@ -10,9 +10,11 @@ interface HomeSectionProps {
 	buttonText?: string;
 	buttonLink?: string;
 	buttonOnClick?: () => void;
+	buttonArrow?: boolean;
 	secondButtonOnClick?: () => void;
 	secondButtonText?: string;
 	secondButtonLink?: string;
+	secondButtonArrow?: boolean;
 }
 
 const HomeSection = (props: HomeSectionProps) => {
@@ -23,9 +25,11 @@ const HomeSection = (props: HomeSectionProps) => {
 		buttonText,
 		buttonLink,
 		buttonOnClick,
+		buttonArrow,
 		secondButtonText,
 		secondButtonLink,
 		secondButtonOnClick,
+		secondButtonArrow,
 	} = props;
 	const titleRef = useAnimate("animate", false);
 	const descriptionRef = useAnimate("animate", false);
@@ -80,7 +84,7 @@ const HomeSection = (props: HomeSectionProps) => {
 									color="secondary"
 									disableElevation
 									onClick={buttonOnClick}
-									endIcon={!landing && <ArrowForward />}
+									endIcon={buttonArrow && <ArrowForward />}
 									sx={{
 										height: "100%",
 										color: "#000000",
@@ -106,6 +110,11 @@ const HomeSection = (props: HomeSectionProps) => {
 											color="secondary"
 											disableElevation
 											onClick={secondButtonOnClick}
+											endIcon={
+												secondButtonArrow && (
+													<ArrowForward />
+												)
+											}
 											sx={{
 												height: "100%",
 												color: "secondary.main",

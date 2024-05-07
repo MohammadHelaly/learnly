@@ -31,6 +31,9 @@ import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
 
+import { Clear, Done } from "@mui/icons-material";
+import Popup from "../Popup/Popup";
+        
 const schema = z.object({
 	name: z
 		.string()
@@ -121,12 +124,17 @@ const CreateCourseForm = () => {
 
 	const navigate = useNavigate();
 
-	const { mutate, isPending } = useMutation({
+	const popupFunction = () => {
+		navigate("/dashboard");
+	};
+
+	const { mutate, isError, isPending, isSuccess } = useMutation({
 		mutationFn: (data: CourseFormSchemaType) => {
 			return api.post("/courses", { ...data });
 		},
-		onSuccess: () => {
-			navigate("/dashboard");
+
+		onSuccess: (response) => {
+			// navigate(`/courses/${response.data.data.data.id}`);
 		},
 		onError: (error) => {
 			console.error(error);
@@ -176,15 +184,17 @@ const CreateCourseForm = () => {
 		setValue("skills", newSkills);
 	};
 
-	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setValue("paid", value);
-		setValue("price", 0);
-	};
+	// const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	const value = event.target.value === "true";
+	// 	setValue("paid", value);
+	// 	setValue("price", 0);
+	// };
 
-	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		setValue("price", parseFloat(event.target.value));
-	};
+
+	// const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	console.log(watch().price);
+	// 	setValue("price", parseFloat(event.target.value));
+	// };
 
 	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
@@ -216,8 +226,10 @@ const CreateCourseForm = () => {
 			name: data.name,
 			summary: data.summary,
 			description: data.description,
-			price: data.price,
-			paid: data.paid,
+			// price: data.price,
+			price: 0.0,
+			// paid: data.paid,
+			paid: false,
 			categories: data.categories,
 			skills: data.skills,
 			prerequisites: data.prerequisites,
@@ -711,20 +723,21 @@ const CreateCourseForm = () => {
 										row={window.innerWidth > 600}
 										aria-label="Pricing"
 										name="paid"
-										defaultValue="true"
-										onChange={paidChangeHandler}
+										defaultValue="false"
+										// onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
 										}}>
-										<FormControlLabel
-											value="true"
-											control={<Radio />}
-											label="Paid"
-										/>
+
 										<FormControlLabel
 											value="false"
 											control={<Radio />}
 											label="Free"
+										/>
+										<FormControlLabel
+											value="true"
+											control={<Radio disabled />}
+											label="Paid - Coming Soon"
 										/>
 									</RadioGroup>
 								)}
@@ -748,7 +761,9 @@ const CreateCourseForm = () => {
 												type="number"
 												name="price"
 												label="Price"
-												onChange={priceChangeHandler}
+												// onChange={priceChangeHandler}
+												disabled
+												placeholder="Coming Soon!"
 											/>
 										)}
 									/>
@@ -793,8 +808,11 @@ const CreateCourseForm = () => {
 								variant="contained"
 								disableElevation
 								size="large"
-								sx={{ mb: 2 }}>
-								{image.preview
+								disabled={isPending}
+								sx={{
+									mb: 2,
+								}}>
+								{image?.preview
 									? "Change Image"
 									: "Upload Image"}
 								<input
@@ -881,6 +899,12 @@ const CreateCourseForm = () => {
 					</SectionWrapper>
 				</Stack>
 			</form>
+			<Popup
+				content={"Course created Successfully!"}
+				openPopup={isSuccess}
+				buttonText={"Go to Dashboard"}
+				popupFunction={popupFunction}
+			/>
 		</FormContainer>
 	);
 };

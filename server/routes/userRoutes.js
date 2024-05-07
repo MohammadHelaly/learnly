@@ -38,15 +38,17 @@ router.patch(
 // Different from delete user, this one just sets the active field to false to keep the user's data in the database
 router.delete("/deleteMe", userController.deleteMe);
 
-// Restrict all routes after this middleware to admin only
-router.use(authController.restrictTo("admin"));
+// // Restrict all routes after this middleware to admin only
+// router.use(authController.restrictTo("admin"));
 
-router.route("/").get(userController.getAllUsers);
+router
+	.route("/")
+	.get(authController.restrictTo("admin"), userController.getAllUsers);
 
 router
 	.route("/:id")
 	.get(userController.getUser)
-	.patch(userController.updateUser)
-	.delete(userController.deleteUser);
+	.patch(authController.restrictTo("admin"), userController.updateUser)
+	.delete(authController.restrictTo("admin"), userController.deleteUser);
 
 module.exports = router;

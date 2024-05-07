@@ -54,7 +54,11 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	};
 
 	const queryClient = useQueryClient();
-
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const {
 		mutate: deleteSection,
 		isError: isModuleError,
@@ -62,13 +66,10 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(`sections/${sectionId}`);
+			return api.delete(`/courses/${courseId}/sections/${sectionId}`);
 		},
 		onSuccess: () => {
-			alert("Section Removed");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenSectionForm(false);
 		},
 	});
 
@@ -76,7 +77,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		section?.modules?.forEach(async (modules, index) => {
 			if (modules?.video?.url) {
 				await api.delete(
-					`sections/${sectionId}/modules/${index}/video`
+					`/courses/${courseId}/sections/${sectionId}/modules/${index}/video`
 				);
 			}
 		});
@@ -86,9 +87,8 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	return (
 		<>
 			<IconButton
-				sx={{ color: "primary.main", mx: 2 }}
-				onClick={handleOpenSectionForm}
-			>
+				sx={{ color: "common.black", ml: 2 }}
+				onClick={handleOpenSectionForm}>
 				<RemoveCircleOutlineIcon />
 			</IconButton>
 			<Dialog
@@ -101,8 +101,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 				) => handleCloseSectionForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth
-			>
+				fullWidth>
 				<DialogTitle>
 					<SectionHeader
 						heading="Delete Section"
@@ -132,14 +131,18 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 							sx={{
 								mb: 2,
 								color: "white",
-							}}
-						>
+							}}>
 							Are you sure you want to remove this Section?
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
-			{/* <Popup content="Section Removed" openPopup={isSuccess} /> */}
+			<Popup
+				content="Section removed successfully!"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

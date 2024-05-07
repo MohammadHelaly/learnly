@@ -6,8 +6,7 @@ const SkeletonInstructorDashboardCourseCard = () => {
 			sx={{
 				display: "flex",
 				flexDirection: window.innerWidth > 600 ? "row" : "column",
-				gap: 2,
-				// height: 356,
+				height: window.innerWidth < 600 ? 356 : 204,
 				width: "100%",
 				transition: `all 0.6s ease-in-out`,
 				borderRadius: 0,
@@ -15,21 +14,24 @@ const SkeletonInstructorDashboardCourseCard = () => {
 				borderBottom: "1px solid #dddddd",
 				boxShadow: "none",
 				px: 0,
-				py: 1,
+				py: window.innerWidth < 600 ? 0 : 1,
 			}}>
 			<Skeleton
 				variant="rectangular"
 				animation="wave"
 				sx={{
 					height: 200,
-					width: 356,
+					minWidth: window.innerWidth > 600 ? 356 : "100%",
+					maxWidth: window.innerWidth > 600 ? 356 : "100%",
 					borderRadius: "12px",
 				}}
 			/>
 			<Box
 				sx={{
+					flexGrow: 1,
 					transition: "all 0.5s ease",
-					width: "60%",
+					py: 1,
+					px: window.innerWidth > 600 ? 2 : 0,
 				}}>
 				<Skeleton
 					variant="text"

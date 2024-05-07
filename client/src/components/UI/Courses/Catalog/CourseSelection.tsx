@@ -10,6 +10,7 @@ import SectionWrapper from "../../PageLayout/SectionWrapper";
 
 interface CourseSelectionProps {
 	query: {
+		key?: string;
 		url: string;
 		config?: AxiosRequestConfig;
 	};
@@ -29,7 +30,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 		headingAnimated,
 		cardsAnimated,
 	} = props;
-	const { url, config } = query;
+	const { key, url, config } = query;
 
 	const dummyCourses = dummyCoursesData.slice(0, 3);
 
@@ -38,12 +39,13 @@ const CourseSelection = (props: CourseSelectionProps) => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["courses", { ...config?.params }], // TODO: Look into this
+		queryKey: [key ?? "courses", { ...config?.params }], // TODO: Look into this
 		queryFn: async () =>
 			await api.get(url, {
 				params: {
 					sort: "-ratingsQuantity",
 					limit: 3,
+					published: true,
 					...config?.params,
 				},
 			}),
@@ -55,7 +57,7 @@ const CourseSelection = (props: CourseSelectionProps) => {
 	return (
 		<SectionWrapper
 			sx={{
-				pt: 5,
+				pt: 10, // 5
 				pb: 10,
 				background: variant === "grey" ? "rgb(245, 245, 245)" : "white",
 				display: "flex",

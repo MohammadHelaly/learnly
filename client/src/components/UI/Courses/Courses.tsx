@@ -51,10 +51,10 @@ const Courses = (props: CoursesProps) => {
 								<Grid
 									item
 									key={index}
-									xs={
-										variant === "instructorDashboard"
-											? 12
-											: "auto"
+									width={
+										window.innerWidth > 600
+											? "auto"
+											: "100%"
 									}>
 									<AnimatedCard
 										index={index}
@@ -81,10 +81,11 @@ const Courses = (props: CoursesProps) => {
 								<Grid
 									item
 									key={index}
-									xs={
-										variant === "instructorDashboard"
-											? 12
-											: "auto"
+									width={
+										window.innerWidth > 600 &&
+										variant !== "instructorDashboard"
+											? "auto"
+											: "100%"
 									}>
 									<AnimatedCard
 										index={index}

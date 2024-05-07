@@ -12,7 +12,8 @@ import { Check, CloudUpload } from "@mui/icons-material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-
+import Popup from "../Popup/Popup";
+import { set } from "react-hook-form";
 interface UploadModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -33,6 +34,12 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 
 	const [video, setVideo] = useState<File | undefined>(undefined);
 	const [openModuleForm, setOpenModuleForm] = useState(false);
+
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
 	const handleCloseModuleForm = () => {
@@ -65,12 +72,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 			);
 		},
 		onSuccess: (response) => {
-			alert("Module added successfully");
-			console.log("Sent!");
-
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenModuleForm(false);
 		},
 		onError: (error) => {
 			console.error(error);
@@ -167,6 +169,12 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 					</Stack>
 				</DialogContent>
 			</Dialog>
+			<Popup
+				content="video uploaded successfully!"
+				openPopup={isModuleSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

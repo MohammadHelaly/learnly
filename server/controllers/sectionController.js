@@ -6,6 +6,7 @@ const CatchAsync = require("../utils/catchAsync");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
 const fs = require("fs");
+const catchAsync = require("../utils/catchAsync");
 const { getVideoDurationInSeconds } = require("get-video-duration");
 
 const awsConfig = {
@@ -269,6 +270,25 @@ exports.deleteModule = async (req, res, next) => {
 		);
 	}
 };
+
+//protect Course from forbidded editing
+exports.protectCourse = catchAsync(async (req, res, next) => {
+	const instructorId = req.user.id;
+
+	const course = await Course.findById(req.params.courseId);
+
+	const courseInstructorsIds = course.instructors.map(
+		(instructor) => instructor.id
+	);
+
+	if (!courseInstructorsIds.includes(instructorId)) {
+		return res
+			.status(403)
+			.json({ message: "You are not authorized to perform this action" });
+	} else {
+		next();
+	}
+});
 
 exports.getAllSections = handlerFactory.getAll(Section);
 

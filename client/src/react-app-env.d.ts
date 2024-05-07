@@ -79,6 +79,17 @@ interface Testimonial {
 	author: string;
 }
 
+interface TeamMember {
+	name: string;
+	role: string;
+	photo: string;
+	description: string;
+	email?: string;
+	linkedIn?: string;
+	github?: string;
+	x?: string;
+}
+
 interface Search {
 	name?: string;
 	categories?: { in: string[] };
@@ -106,4 +117,15 @@ interface Message {
 	createdAt: string | Date;
 	edited: boolean;
 	deleted: boolean;
+}
+
+interface LegalAndPrivacy {
+	heading: string;
+	entries: { primary: string; secondary: string | React.ReactNode }[];
+}
+
+interface HelpAndFaqs {
+	category: string;
+	description: string;
+	faqs: { question: string; answer: string }[];
 }

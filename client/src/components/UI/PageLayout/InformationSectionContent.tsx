@@ -17,7 +17,7 @@ const InformationSectionContent = (props: InformationSectionContentProps) => {
 			ref={elementRef}
 			spacing={2}
 			direction={
-				window.innerWidth < 800
+				window.innerWidth < 900
 					? "column"
 					: index % 2 === 0
 					? "row"
@@ -36,7 +36,7 @@ const InformationSectionContent = (props: InformationSectionContentProps) => {
 				}}>
 				<Typography
 					variant="h4"
-					textAlign={window.innerWidth > 800 ? "left" : "center"}
+					textAlign={window.innerWidth > 900 ? "left" : "center"}
 					sx={{
 						mb: 2,
 					}}>
@@ -44,7 +44,7 @@ const InformationSectionContent = (props: InformationSectionContentProps) => {
 				</Typography>
 				<Typography
 					variant="h6"
-					textAlign={window.innerWidth > 800 ? "left" : "center"}>
+					textAlign={window.innerWidth > 900 ? "left" : "center"}>
 					{description}
 				</Typography>
 			</Box>
@@ -58,7 +58,7 @@ const InformationSectionContent = (props: InformationSectionContentProps) => {
 						alt="information"
 						style={{
 							height: "100%",
-							borderRadius: "10%",
+							borderRadius: window.innerWidth > 600 ? 24 : 0,
 							backdropFilter: "blur(10px)",
 						}}
 					/>

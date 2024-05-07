@@ -1,4 +1,4 @@
-import { useState, useContext, ChangeEvent } from "react";
+import { useState, useContext, ChangeEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import AuthContext from "../../store/auth-context";
@@ -13,6 +13,7 @@ const StudentDashboard = () => {
 
 	const authContext = useContext(AuthContext);
 	const { user } = authContext;
+
 	const coursesEnrolled = user?.coursesEnrolled.length
 		? user?.coursesEnrolled
 		: [user?.id]; // This is a hack to prevent the API from returning all courses when the user has not enrolled in any courses, axios removes empty arrays from the query params, look into a better solution
@@ -26,21 +27,19 @@ const StudentDashboard = () => {
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ["userCourses", { page, coursesEnrolled }],
+		queryKey: ["courseEnrollments", { user: authContext.user?.id, page }],
 		queryFn: async () =>
-			await api.get("/courses", {
+			await api.get("/courseEnrollments", {
 				params: {
 					page,
 					limit,
-					_id: {
-						in: coursesEnrolled,
-					},
+					user: authContext.user?.id ?? null,
 				},
 			}),
 		select: (response) => response.data,
 	});
 
-	const courses = data?.data?.data;
+	const courses = data?.data?.data.map((course: any) => course.course) ?? [];
 
 	const count = data?.count ?? 1;
 
