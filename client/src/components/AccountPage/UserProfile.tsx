@@ -26,6 +26,7 @@ import AuthContext from "../../store/auth-context";
 import api from "../../api";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import { z } from "zod";
+import { NavLink } from "react-router-dom";
 
 const schema = z.object({
 	name: z
@@ -161,7 +162,15 @@ const UserProfile = () => {
 					spacing={8}>
 					<SectionWrapper>
 						<SectionHeader
-							heading="Profile Picture"
+							heading="Your Photo"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{ mb: 0 }}
+						/>
+						<SectionHeader
+							isSubHeading
+							heading="Upload a profile picture."
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
@@ -217,7 +226,15 @@ const UserProfile = () => {
 					</SectionWrapper>
 					<SectionWrapper>
 						<SectionHeader
-							heading="User Name"
+							heading="Your Name"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{ mb: 0 }}
+						/>
+						<SectionHeader
+							isSubHeading
+							heading="What should we call you?"
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
@@ -257,7 +274,15 @@ const UserProfile = () => {
 					</SectionWrapper>
 					<SectionWrapper>
 						<SectionHeader
-							heading="User Bio"
+							heading="Your Bio"
+							headingAlignment="left"
+							keepHeadingAlignmentOnSmallScreens
+							headingAnimated={false}
+							sx={{ mb: 0 }}
+						/>
+						<SectionHeader
+							isSubHeading
+							heading="Tell us about yourself."
 							headingAlignment="left"
 							keepHeadingAlignmentOnSmallScreens
 							headingAnimated={false}
@@ -298,6 +323,32 @@ const UserProfile = () => {
 					</Button>
 				</Stack>
 			</form>
+			<SectionWrapper sx={{ mt: 8 }}>
+				<SectionHeader
+					heading="View Your Profile"
+					headingAlignment="left"
+					keepHeadingAlignmentOnSmallScreens
+					headingAnimated={false}
+					sx={{ mb: 0 }}
+				/>
+				<SectionHeader
+					isSubHeading
+					heading="View your profile as others see it."
+					headingAlignment="left"
+					keepHeadingAlignmentOnSmallScreens
+					headingAnimated={false}
+					sx={{ mb: 4 }}
+				/>
+				<NavLink to={`/users/${authContext.user?.id}`}>
+					<Button
+						fullWidth
+						variant="contained"
+						size="large"
+						disableElevation>
+						View Profile
+					</Button>
+				</NavLink>
+			</SectionWrapper>
 		</FormContainer>
 	);
 };

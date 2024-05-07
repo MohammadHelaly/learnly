@@ -25,7 +25,7 @@ import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
 import "./App.css";
-import EditUserProfilePage from "./pages/EditUserProfilePage";
+import AccountPage from "./pages/AccountPage";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -114,8 +114,7 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}
-					>
+						location={useLocation()}>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -141,10 +140,6 @@ function App() {
 							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route
-							path="/users/account"
-							element={<LandingPage />}
-						/>
-						<Route
 							path="/users/:userId"
 							element={<LandingPage />}
 						/>
@@ -162,10 +157,7 @@ function App() {
 							path="/channels/:channelId"
 							element={<ChannelPage />}
 						/>
-						<Route
-							path="/account"
-							element={<EditUserProfilePage />}
-						/>
+						<Route path="/account" element={<AccountPage />} />
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
 						<Route path="/help" element={<LandingPage />} />

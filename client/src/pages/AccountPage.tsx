@@ -7,10 +7,10 @@ import Footer from "../components/Footer/Footer";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { useState } from "react";
 import SectionHeader from "../components/UI/PageLayout/SectionHeader";
-import UserProfile from "../components/EditUserProfilePage/UserProfile";
-import AccountSettings from "../components/EditUserProfilePage/AccountSettings";
+import UserProfile from "../components/AccountPage/UserProfile";
+import AccountSettings from "../components/AccountPage/AccountSettings";
 
-const EditUserProfilePage = () => {
+const AccountPage = () => {
 	const [value, setValue] = useState("0");
 
 	const handleChange = (
@@ -30,8 +30,7 @@ const EditUserProfilePage = () => {
 								// backgroundColor: "#f5f5f5",
 								// mt: window.innerWidth > 600 ? 8 : 7,
 							}
-						}
-					>
+						}>
 						<Container maxWidth="lg">
 							<SectionHeader
 								heading="Your Account"
@@ -43,13 +42,11 @@ const EditUserProfilePage = () => {
 									sx={{
 										borderBottom: 1,
 										borderColor: "divider",
-									}}
-								>
+									}}>
 									<TabList
 										onChange={handleChange}
 										aria-label="Dashboard Tabs"
-										centered={window.innerWidth < 600}
-									>
+										centered={window.innerWidth < 600}>
 										<Tab
 											label="Your Profile"
 											value="0"
@@ -88,4 +85,4 @@ const EditUserProfilePage = () => {
 	);
 };
 
-export default EditUserProfilePage;
+export default AccountPage;
