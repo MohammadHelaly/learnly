@@ -1,29 +1,39 @@
-import React from "react";
-import {
-	Box,
-	Card,
-	CardContent,
-	CardMedia,
-	Typography,
-	Stack,
-} from "@mui/material";
+import { Box, Card, Typography, Stack } from "@mui/material";
 import { EmailOutlined, X, GitHub, LinkedIn } from "@mui/icons-material";
 import CardNavLink from "../../UI/Links/CardNavLink";
+import useAnimate from "../../../hooks/use-animate";
 
-interface TeamMemberCardProps extends TeamMember {}
+interface TeamMemberCardProps extends TeamMember {
+	index: number;
+}
 
 const TeamMemberCard = (props: TeamMemberCardProps) => {
-	const { name, role, photo, description, email, linkedIn, github, x } =
-		props;
+	const {
+		name,
+		role,
+		photo,
+		description,
+		email,
+		linkedIn,
+		github,
+		x,
+		index,
+	} = props;
+	const elementRef = useAnimate("animate", false);
+	const delay = index * 0.2;
+
 	return (
 		<Card
+			ref={elementRef}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "space-between",
 				alignItems: "center",
 				width: window.innerWidth > 600 ? 352 : "100%",
-				transition: `all 0.6s ease-in-out`,
+				opacity: 0,
+				transform: "translateX(-50%)",
+				transition: `all 0.6s ease-in-out ${delay}s`,
 				borderRadius: 0,
 				backgroundColor: "transparent",
 				borderBottom: "1px solid #dddddd",
@@ -76,36 +86,51 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
 					sx={{
 						mt: 2,
 					}}>
-					<CardNavLink to={`mailto:${email}`}>
-						<EmailOutlined
-							sx={{
-								height: 36,
-								width: 36,
-								transform: "scale(0.95)",
-								transition: "all 0.5s ease",
-								"&:hover": {
-									transform: "translateY(-10%) scale(0.95)",
-									opacity: 0.7,
-								},
-							}}
-						/>
-					</CardNavLink>
-					<CardNavLink to={linkedIn}>
-						<LinkedIn
-							sx={{
-								height: 32,
-								width: 32,
-								transform: "scale(1.1)",
-								transition: "all 0.5s ease",
-								"&:hover": {
-									transform: "translateY(-10%) scale(1.1)",
-									opacity: 0.7,
-								},
-							}}
-						/>
-					</CardNavLink>
+					{email && (
+						<CardNavLink
+							to={`mailto:${email}`}
+							rel="noopener noreferrer"
+							target="_blank">
+							<EmailOutlined
+								sx={{
+									height: 36,
+									width: 36,
+									transform: "scale(0.95)",
+									transition: "all 0.5s ease",
+									"&:hover": {
+										transform:
+											"translateY(-10%) scale(0.95)",
+										opacity: 0.7,
+									},
+								}}
+							/>
+						</CardNavLink>
+					)}
+					{linkedIn && (
+						<CardNavLink
+							to={linkedIn}
+							rel="noopener noreferrer"
+							target="_blank">
+							<LinkedIn
+								sx={{
+									height: 32,
+									width: 32,
+									transform: "scale(1.1)",
+									transition: "all 0.5s ease",
+									"&:hover": {
+										transform:
+											"translateY(-10%) scale(1.1)",
+										opacity: 0.7,
+									},
+								}}
+							/>
+						</CardNavLink>
+					)}
 					{github && (
-						<CardNavLink to={github}>
+						<CardNavLink
+							to={github}
+							rel="noopener noreferrer"
+							target="_blank">
 							<GitHub
 								sx={{
 									height: 32,
@@ -122,7 +147,10 @@ const TeamMemberCard = (props: TeamMemberCardProps) => {
 						</CardNavLink>
 					)}
 					{x && (
-						<CardNavLink to={x}>
+						<CardNavLink
+							to={x}
+							rel="noopener noreferrer"
+							target="_blank">
 							<X
 								sx={{
 									height: 32,

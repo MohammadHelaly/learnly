@@ -30,8 +30,12 @@ const OurTeam = () => {
 						alignItems="stretch"
 						flexWrap="wrap"
 						gap={4}>
-						{teamMembers.map((member) => (
-							<TeamMemberCard key={member.name} {...member} />
+						{teamMembers.map((member, index) => (
+							<TeamMemberCard
+								key={member.name}
+								index={index}
+								{...member}
+							/>
 						))}
 					</Stack>
 				</Stack>

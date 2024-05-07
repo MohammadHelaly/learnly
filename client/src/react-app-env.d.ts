@@ -84,8 +84,8 @@ interface TeamMember {
 	role: string;
 	photo: string;
 	description: string;
-	email: string;
-	linkedIn: string;
+	email?: string;
+	linkedIn?: string;
 	github?: string;
 	x?: string;
 }
