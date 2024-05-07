@@ -47,7 +47,7 @@ reviewSchema.pre(/^find/, function (next) {
 	next();
 });
 
-// Note: modify this to update instructor's ratingsAverage and ratingsQuantity as well
+// TODO: Refactor this implementation
 reviewSchema.statics.calculateAverageRatings = async function (courseId, doc) {
 	let stats;
 	if (doc) {
@@ -126,8 +126,8 @@ reviewSchema.statics.calculateAverageRatingsForInstructors = async function (
 		let totalRatingCount = 0;
 
 		for (const course of courses) {
-			let courseRatingSum = 0;
-			let courseRatingCount = 0;
+			courseRatingSum = 0;
+			courseRatingCount = 0;
 			const courseId = course.id;
 			const courseReviews = await Review.find({ course: courseId });
 			for (const review of courseReviews) {
@@ -137,6 +137,7 @@ reviewSchema.statics.calculateAverageRatingsForInstructors = async function (
 			totalRatingSum += courseRatingSum;
 			totalRatingCount += courseRatingCount;
 		}
+
 		if (totalRatingCount !== 0) {
 			const instructorAverageRating = totalRatingSum / totalRatingCount;
 			const instructor = await User.findByIdAndUpdate(instructorId, {

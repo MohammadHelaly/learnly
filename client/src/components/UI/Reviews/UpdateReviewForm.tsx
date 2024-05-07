@@ -39,7 +39,12 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 	const queryClient = useQueryClient();
 
 	const PopupFunction = () => {
-		queryClient.invalidateQueries({ queryKey: ["courseReviews"] });
+		queryClient.invalidateQueries({
+			queryKey: ["courseReviews", { courseId }],
+		});
+		queryClient.invalidateQueries({
+			queryKey: ["courses", { courseId }],
+		});
 	};
 
 	const {

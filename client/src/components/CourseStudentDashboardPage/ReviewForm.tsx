@@ -32,7 +32,12 @@ const ReviewForm = (props: ReviewFormProps) => {
 	const authContext = useContext(AuthContext);
 	const queryClient = useQueryClient();
 	const PopupFunction = () => {
-		queryClient.invalidateQueries({ queryKey: ["courseReviews"] });
+		queryClient.invalidateQueries({
+			queryKey: ["courseReviews", { courseId }],
+		});
+		queryClient.invalidateQueries({
+			queryKey: ["courses", { courseId }],
+		});
 	};
 	const {
 		control,
@@ -74,7 +79,8 @@ const ReviewForm = (props: ReviewFormProps) => {
 			<Typography
 				variant="h4"
 				color="common.black"
-				sx={{ paddingBottom: "1rem" }}>
+				sx={{ paddingBottom: "1rem" }}
+			>
 				Leave a Review?
 			</Typography>
 
@@ -135,7 +141,8 @@ const ReviewForm = (props: ReviewFormProps) => {
 					fullWidth
 					size="large"
 					disableElevation
-					sx={{ mt: 2 }}>
+					sx={{ mt: 2 }}
+				>
 					Leave Review
 				</Button>
 			</form>
