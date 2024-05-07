@@ -1,8 +1,8 @@
 import { Container, Stack, Box } from "@mui/material";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import SkeletonUserInformationContent from "./SkeletonUserInformationContent";
-import UserInformationContent from "./UserInformationContent";
+import SkeletonUserInformationContent from "../UI/Users/SkeletonUserInformationContent";
+import UserInformationContent from "../UI/Users/UserInformationContent";
 
 interface UserInformationProps
 	extends Pick<
