@@ -118,3 +118,14 @@ interface Message {
 	edited: boolean;
 	deleted: boolean;
 }
+
+interface LegalAndPrivacy {
+	heading: string;
+	entries: { primary: string; secondary: string | React.ReactNode }[];
+}
+
+interface HelpAndFaqs {
+	category: string;
+	description: string;
+	faqs: { question: string; answer: string }[];
+}
