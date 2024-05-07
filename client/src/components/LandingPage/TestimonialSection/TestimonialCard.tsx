@@ -36,7 +36,7 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 				"&:hover": {
 					borderRadius: 1,
 				},
-				width: window.innerWidth > 380 ? 290 : 262,
+				width: 290,
 			}}>
 			<Typography
 				variant="h6"

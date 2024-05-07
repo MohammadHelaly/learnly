@@ -1,5 +1,5 @@
 import OurTeam from "../components/AboutPage/OurTeam/OurTeam";
-import ContactUs from "../components/AboutPage/ContactUs";
+import ContactUs from "../components/AboutPage/ContactUs/ContactUs";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import HomeSection from "../components/UI/PageLayout/HomeSection";
