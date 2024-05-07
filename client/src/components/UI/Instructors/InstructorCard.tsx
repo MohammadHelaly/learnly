@@ -76,10 +76,10 @@ const InstructorCard = (props: Instructor) => {
 					</Stack>
 
 					<Typography variant="body2" color="text.secondary">
-						{students + " Students"}
+						{students + " Student(s)"}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						{coursesCreated?.length + " Courses"}
+						{coursesCreated?.length + " Course(s)"}
 					</Typography>
 				</Stack>
 			</Stack>

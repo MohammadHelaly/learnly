@@ -30,6 +30,7 @@ import LegalPage from "./pages/LegalPage";
 import HelpPage from "./pages/HelpPage";
 import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
 import "./App.css";
+import UserProfilePage from "./pages/UserProfilePage";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -146,7 +147,7 @@ function App() {
 						/>
 						<Route
 							path="/users/:userId"
-							element={<LandingPage />}
+							element={<UserProfilePage />}
 						/>
 						<Route path="/courses" element={<CatalogPage />} />
 						<Route

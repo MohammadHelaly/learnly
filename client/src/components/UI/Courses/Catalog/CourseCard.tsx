@@ -47,7 +47,7 @@ const CourseCard = (props: CourseCardProps) => {
 				}}>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
-						src={imageCover.url}
+						src={imageCover?.url}
 						alt="course"
 						style={{
 							objectFit: "cover",
