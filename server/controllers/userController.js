@@ -3,7 +3,18 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
 const multer = require("multer");
+const AWS = require("aws-sdk");
+const uuid = require("uuid").v4;
+const fs = require("fs");
 const request = require("request");
+
+const awsConfig = {
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+	region: process.env.AWS_REGION,
+};
+const S3 = new AWS.S3(awsConfig);
+
 // const sharp = require("sharp");
 
 // Multer configuration
@@ -55,7 +66,72 @@ const filterObj = (obj, ...allowedFields) => {
 // 	next();
 // });
 
-exports.uploadUserPhoto = upload.single("photo");
+exports.deleteUserphoto = async (req, res, next) => {
+	const user_id = req.user.id;
+
+	try {
+		const user = await User.findById(user_id);
+
+		if (!user) {
+			throw new AppError("No user found with that ID", 404);
+		}
+
+		if (!req.body.photo || !user.photo.key) {
+			return next();
+		}
+
+		const key = user.photo.key;
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		};
+
+		const data = await S3.deleteObject(params).promise();
+	} catch (err) {
+		console.log(err);
+		return next(err);
+	}
+	next();
+};
+
+exports.uploadUserPhoto = async (req, res, next) => {
+	const imageCover = req.body.photo;
+	try {
+		if (!imageCover) {
+			return next();
+		}
+
+		const base64Data = new Buffer.from(
+			imageCover.replace(/^data:image\/\w+;base64,/, ""),
+			"base64"
+		);
+
+		const type = imageCover.split(";")[0].split("/")[1];
+
+		const params = {
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: `${uuid()}.${type}`,
+			Body: base64Data,
+			ACL: "public-read",
+			ContentEncoding: "base64",
+			ContentType: `image/${type}`,
+		};
+
+		const stored = await S3.upload(params).promise();
+
+		req.body.photo = {
+			url: stored.Location,
+			key: stored.Key,
+		};
+	} catch (err) {
+		console.log(err);
+		return next(err);
+	}
+	next();
+};
+
+// exports.uploadUserPhoto = upload.single("photo");
 
 exports.getAllUsers = handlerFactory.getAll(User);
 
@@ -76,13 +152,9 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 	}
 
 	// 2) Filtered out unwanted fields names that are not allowed to be updated
-	const filteredBody = filterObj(
-		req.body,
-		"name",
-		"email",
-		"coursesEnrolled"
-	);
-	if (req.file) filteredBody.photo = req.file.filename;
+	const filteredBody = filterObj(req.body, "name", "email", "bio", "photo");
+	// if (req.file) filteredBody.photo = req.file.filename;
+
 
 	// 3) Update user document
 	const user = await User.findByIdAndUpdate(req.user.id, filteredBody, {

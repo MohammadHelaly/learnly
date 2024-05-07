@@ -16,7 +16,7 @@ import {
 	IconButton,
 } from "@mui/material";
 import { Done, Clear } from "@mui/icons-material";
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -47,7 +47,7 @@ const schema = z.object({
 				message: "A skill must be 128 characters or less.",
 			})
 		)
-		.min(1, { message: "Select at least 1 skills." })
+		.min(1, { message: "Select at least one skill." })
 		.max(12, { message: "Select up to 12 skills." }),
 	categories: z
 		.array(z.string())
@@ -111,6 +111,9 @@ const UpdateCourseInformationForm = (
 		uploaded: "",
 	});
 
+	// Reference for the file input
+	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const {
 		control,
 		handleSubmit,
@@ -133,11 +136,9 @@ const UpdateCourseInformationForm = (
 		shouldTouch: true,
 	};
 
-	const { mutate, isError, isPending } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: Partial<CourseInformationSchemaType>) => {
-			return api.patch(`/courses/${courseId}`, {
-				...data,
-			});
+			return api.patch(`/courses/${courseId}`, { ...data });
 		},
 		onSuccess: (response) => {
 			alert("Course updated successfully.");
@@ -151,13 +152,10 @@ const UpdateCourseInformationForm = (
 		},
 	});
 
-	const renderSelectedCategories = (selected: string[]) => {
-		return selected.join(", ");
-	};
+	const renderSelectedCategories = (selected: string[]) =>
+		selected.join(", ");
 
-	const isSelected = (value: string) => {
-		return watch().categories?.includes(value);
-	};
+	const isSelected = (value: string) => watch().categories?.includes(value);
 
 	const removeCategory = (selectedCategory: string) => {
 		const newCategories = watch().categories.filter(
@@ -166,13 +164,10 @@ const UpdateCourseInformationForm = (
 		setValue("categories", newCategories, setValueOptions);
 	};
 
-	const prerequisiteChangeHandler = (
-		event: ChangeEvent<HTMLInputElement>
-	) => {
+	const prerequisiteChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setPrerequisite(event.target.value);
-	};
 
-	const addPrequisite = (value: string) => {
+	const addPrerequisite = (value: string) => {
 		setValue(
 			"prerequisites",
 			[...watch().prerequisites, value],
@@ -188,9 +183,8 @@ const UpdateCourseInformationForm = (
 		setValue("prerequisites", newPrerequisites, setValueOptions);
 	};
 
-	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setSkill(event.target.value);
-	};
 
 	const addSkill = (value: string) => {
 		setValue("skills", [...watch().skills, value], setValueOptions);
@@ -215,35 +209,28 @@ const UpdateCourseInformationForm = (
 	// };
 
 	const removeImage = () => {
-		setImage({
-			preview: undefined,
-			uploaded: "",
-		});
+		setImage({ preview: undefined, uploaded: "" });
+		if (fileInputRef.current) {
+			fileInputRef.current.value = ""; // Reset the file input value to allow for re-selection
+		}
 	};
 
 	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-		try {
-			const file = event?.target?.files?.[0];
-			setImage((previousValue) => ({
-				...previousValue,
-				preview: file,
-			}));
-		} catch (err) {
-			console.log(err);
+		const file = event?.target?.files?.[0];
+		if (file) {
+			setImage({ preview: URL.createObjectURL(file), uploaded: "" });
 		}
 	};
 
 	useEffect(() => {
-		reset({
-			...props,
-		});
+		reset({ ...props });
 	}, [props]);
 
 	useEffect(() => {
 		const resizeImage = async () => {
 			if (image.preview && typeof image.preview !== "string") {
 				const resizedImage = await resizeImageFile(
-					image.preview as File
+					new File([image.preview], "imageCover")
 				);
 				setValue("imageCover", resizedImage, setValueOptions);
 			} else {
@@ -278,6 +265,7 @@ const UpdateCourseInformationForm = (
 	};
 
 	return (
+
 		// <PageWrapper sx={{ mt: 0, pb: 0 }}>
 		// 	<FormContainer large>
 		<FormContainer
@@ -384,6 +372,7 @@ const UpdateCourseInformationForm = (
 										}
 									/>
 								)}
+
 							/>
 						</FormControl>
 					</SectionWrapper>
@@ -435,6 +424,7 @@ const UpdateCourseInformationForm = (
 									/>
 								)}
 							/>
+
 						</FormControl>
 					</SectionWrapper>
 					<SectionWrapper>
@@ -494,6 +484,7 @@ const UpdateCourseInformationForm = (
 											))}
 									</Select>
 								)}
+
 							/>
 						</FormControl>
 						{errors.categories && (
@@ -512,6 +503,7 @@ const UpdateCourseInformationForm = (
 								editable
 								onEdit={removeCategory}
 							/>
+
 						)}
 					</SectionWrapper>
 					<SectionWrapper>
@@ -606,6 +598,7 @@ const UpdateCourseInformationForm = (
 								// fullWidth
 								type="text"
 								label="Prerequisites"
+
 							/>
 							<Button
 								size="large"
@@ -619,6 +612,7 @@ const UpdateCourseInformationForm = (
 								}
 								onClick={() => addPrequisite(prerequisite)}
 								sx={{
+
 									my: 2,
 								}}>
 								Add Prerequisite
@@ -638,11 +632,14 @@ const UpdateCourseInformationForm = (
 								justifyContent="left">
 								{watch().prerequisites.map(
 									(prerequisite, index) => (
+
 										<Grid
 											item
 											xs={12}
 											sm={6}
+
 											key={index + "prerequisite"}>
+
 											<CheckListItem
 												item={prerequisite}
 												editable
@@ -700,6 +697,7 @@ const UpdateCourseInformationForm = (
 								}
 								onClick={() => addSkill(skill)}
 								sx={{
+
 									my: 2,
 								}}>
 								Add Skill
@@ -784,6 +782,7 @@ const UpdateCourseInformationForm = (
 										/>
 									</RadioGroup>
 								)}
+
 							/>
 						</FormControl>
 						{errors.paid && (
@@ -850,6 +849,7 @@ const UpdateCourseInformationForm = (
 								variant="contained"
 								disableElevation
 								size="large"
+
 								disabled={isPending}
 								sx={{
 									mb: 2,
@@ -867,6 +867,7 @@ const UpdateCourseInformationForm = (
 									value={image.uploaded}
 									onChange={handleImageChange}
 								/>
+
 							</Button>
 						</FormControl>
 						{errors.imageCover && (

@@ -31,6 +31,8 @@ import HelpPage from "./pages/HelpPage";
 import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
 import "./App.css";
 import UserProfilePage from "./pages/UserProfilePage";
+import AccountPage from "./pages/AccountPage";
+
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -142,10 +144,6 @@ function App() {
 							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route
-							path="/users/account"
-							element={<LandingPage />}
-						/>
-						<Route
 							path="/users/:userId"
 							element={<UserProfilePage />}
 						/>
@@ -163,6 +161,7 @@ function App() {
 							path="/channels/:channelId"
 							element={<ChannelPage />}
 						/>
+						<Route path="/account" element={<AccountPage />} />
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
 						<Route path="/help" element={<HelpPage />} />

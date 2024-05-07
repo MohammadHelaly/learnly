@@ -1,7 +1,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
-
 const router = express.Router();
 
 router.post("/signup", authController.signup);
@@ -16,9 +15,9 @@ router.post("/forgotPassword", authController.forgotPassword);
 
 router.patch("/resetPassword/:token", authController.resetPassword);
 
-router.route("/newsletter-subscribe").post(userController.subscribeNewsletter);
+router.route("/newsletterSubscribe").post(userController.subscribeNewsletter);
 router
-	.route("/newsletter-unsubscribe")
+	.route("/newsletterUnsubscribe")
 	.post(userController.unsubscribeNewsletter);
 
 // Protect all routes after this middleware
@@ -31,6 +30,7 @@ router.get("/me", userController.getMe, userController.getUser);
 router.patch(
 	"/updateMe",
 	// userController.resizeUserPhoto,
+	userController.deleteUserphoto,
 	userController.uploadUserPhoto,
 	userController.updateMe
 );

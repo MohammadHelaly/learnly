@@ -16,8 +16,8 @@ const NewsletterPage = () => {
 			<PageWrapper>
 				<FormContainer>
 					<Stack spacing={6}>
-						<NewsletterForm variant="subscribe" />
-						<NewsletterForm variant="unsubscribe" />
+						<NewsletterForm variant="Subscribe" />
+						<NewsletterForm variant="Unsubscribe" />
 					</Stack>
 				</FormContainer>
 			</PageWrapper>
