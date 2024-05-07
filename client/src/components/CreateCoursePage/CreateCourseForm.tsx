@@ -31,9 +31,8 @@ import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
 
-import { Clear, Done } from "@mui/icons-material";
 import Popup from "../Popup/Popup";
-        
+
 const schema = z.object({
 	name: z
 		.string()
@@ -46,11 +45,9 @@ const schema = z.object({
 	paid: z.boolean(),
 	skills: z
 		.array(
-			z
-				.string()
-				.max(128, {
-					message: "A skill must be 128 characters or less.",
-				})
+			z.string().max(128, {
+				message: "A skill must be 128 characters or less.",
+			})
 		)
 		.min(1, { message: "Select at least one skill." })
 		.max(12, { message: "Select up to 12 skills." }),
@@ -71,11 +68,9 @@ const schema = z.object({
 		.min(128, { message: "A description must be 128 characters or more." }),
 	prerequisites: z
 		.array(
-			z
-				.string()
-				.max(128, {
-					message: "A prerequisite must be 128 characters or less.",
-				})
+			z.string().max(128, {
+				message: "A prerequisite must be 128 characters or less.",
+			})
 		)
 		.max(12, { message: "Select up to 12 prerequisites." }),
 	imageCover: z.any(),
@@ -190,7 +185,6 @@ const CreateCourseForm = () => {
 	// 	setValue("price", 0);
 	// };
 
-
 	// const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
 	// 	console.log(watch().price);
 	// 	setValue("price", parseFloat(event.target.value));
@@ -247,7 +241,8 @@ const CreateCourseForm = () => {
 					width: "100%",
 				}}
 				onSubmit={handleSubmit(onSubmit)}
-				autoComplete="off">
+				autoComplete="off"
+			>
 				<Stack spacing={12}>
 					<SectionWrapper>
 						<SectionHeader
@@ -285,7 +280,8 @@ const CreateCourseForm = () => {
 											errors.name && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.name.message}
 												</Typography>
 											)
@@ -319,7 +315,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.summary}>
+							error={!!errors.summary}
+						>
 							<Controller
 								name="summary"
 								control={control}
@@ -335,7 +332,8 @@ const CreateCourseForm = () => {
 											errors.summary && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.summary.message}
 												</Typography>
 											)
@@ -369,7 +367,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.description}>
+							error={!!errors.description}
+						>
 							<Controller
 								name="description"
 								control={control}
@@ -385,7 +384,8 @@ const CreateCourseForm = () => {
 											errors.description && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.description.message}
 												</Typography>
 											)
@@ -419,7 +419,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.categories}>
+							error={!!errors.categories}
+						>
 							<InputLabel id="categories-select-label">
 								Categories
 							</InputLabel>
@@ -435,11 +436,13 @@ const CreateCourseForm = () => {
 										label="Categories"
 										renderValue={renderSelectedCategories}
 										variant="outlined"
-										fullWidth>
+										fullWidth
+									>
 										{categories.sort().map((category) => (
 											<MenuItem
 												key={category}
-												value={category}>
+												value={category}
+											>
 												<Checkbox
 													checked={isSelected(
 														category
@@ -494,7 +497,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.difficulty}>
+							error={!!errors.difficulty}
+						>
 							<Controller
 								name="difficulty"
 								control={control}
@@ -504,7 +508,8 @@ const CreateCourseForm = () => {
 										row={window.innerWidth > 600}
 										aria-label="Difficulty"
 										name="difficulty"
-										defaultValue="Beginner">
+										defaultValue="Beginner"
+									>
 										<FormControlLabel
 											value="Beginner"
 											control={<Radio />}
@@ -554,7 +559,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.prerequisites}>
+							error={!!errors.prerequisites}
+						>
 							<TextField
 								name="prerequisite"
 								value={prerequisite}
@@ -576,7 +582,8 @@ const CreateCourseForm = () => {
 								onClick={() => addPrerequisite(prerequisite)}
 								sx={{
 									my: 2,
-								}}>
+								}}
+							>
 								Add Prerequisite
 							</Button>
 						</FormControl>
@@ -591,14 +598,16 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left">
+								justifyContent="left"
+							>
 								{watch().prerequisites.map(
 									(prerequisite, index) => (
 										<Grid
 											item
 											xs={12}
 											sm={6}
-											key={index + "prerequisite"}>
+											key={index + "prerequisite"}
+										>
 											<CheckListItem
 												item={prerequisite}
 												editable
@@ -657,7 +666,8 @@ const CreateCourseForm = () => {
 								onClick={() => addSkill(skill)}
 								sx={{
 									my: 2,
-								}}>
+								}}
+							>
 								Add Skill
 							</Button>
 						</FormControl>
@@ -672,13 +682,15 @@ const CreateCourseForm = () => {
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left">
+								justifyContent="left"
+							>
 								{watch().skills.map((skill, index) => (
 									<Grid
 										item
 										xs={12}
 										sm={6}
-										key={index + "skill"}>
+										key={index + "skill"}
+									>
 										<CheckListItem
 											item={skill}
 											editable
@@ -713,7 +725,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.paid}>
+							error={!!errors.paid}
+						>
 							<Controller
 								name="paid"
 								control={control}
@@ -727,8 +740,8 @@ const CreateCourseForm = () => {
 										// onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
-										}}>
-
+										}}
+									>
 										<FormControlLabel
 											value="false"
 											control={<Radio />}
@@ -801,7 +814,8 @@ const CreateCourseForm = () => {
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.imageCover}>
+							error={!!errors.imageCover}
+						>
 							<Button
 								component="label"
 								fullWidth
@@ -811,7 +825,8 @@ const CreateCourseForm = () => {
 								disabled={isPending}
 								sx={{
 									mb: 2,
-								}}>
+								}}
+							>
 								{image?.preview
 									? "Change Image"
 									: "Upload Image"}
@@ -836,7 +851,8 @@ const CreateCourseForm = () => {
 									width: "100%",
 									borderRadius: 12,
 									position: "relative",
-								}}>
+								}}
+							>
 								<IconButton
 									onClick={removeImage}
 									sx={{
@@ -848,7 +864,8 @@ const CreateCourseForm = () => {
 										"&:hover": {
 											backgroundColor: "white",
 										},
-									}}>
+									}}
+								>
 									<Clear />
 								</IconButton>
 								<img
@@ -893,7 +910,8 @@ const CreateCourseForm = () => {
 							fullWidth
 							disableElevation
 							size="large"
-							endIcon={<Done />}>
+							endIcon={<Done />}
+						>
 							Save and Continue
 						</Button>
 					</SectionWrapper>

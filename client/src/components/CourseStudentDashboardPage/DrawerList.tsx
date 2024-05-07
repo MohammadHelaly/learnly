@@ -110,8 +110,9 @@ function DrawerList(props: DrawerListProps) {
 												: "#fff",
 									}}
 								>
-									<Checkbox />
+									{/* <Checkbox /> */}
 									<Button
+										sx={{ color: "black" }}
 										onClick={() => {
 											if (module.video) {
 												setVideo(module.video.url);

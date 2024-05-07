@@ -58,7 +58,8 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 						flexDirection: "row",
 						display: "flex",
 						width: "100%",
-					}}>
+					}}
+				>
 					<Button
 						disableElevation
 						sx={{
@@ -78,79 +79,83 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 							} else {
 								setOpen(true);
 							}
-						}}>
+						}}
+					>
 						<ArrowBackIcon sx={{ paddingRight: "0.5rem" }} />
 						Contents
 					</Button>
-					<Box>
-						<Drawer
-							open={open}
-							onClose={toggleDrawer(false)}
-							anchor="right"
-							variant="persistent"
-							// sx={{ overflowY: "auto" }}
-
-							PaperProps={{
-								sx: {
-									"::-webkit-scrollbar": {
-										display: "none",
-									},
-									// Hide scrollbar for Firefox
-									"-ms-overflow-style": "none", // IE and Edge
-									scrollbarWidth: "none", // Firefox
-									// top: "8.75%", // Adjust this value to move the drawer down the page
-									mt: window.innerWidth > 600 ? 8 : 7,
-									overflowY: "scroll",
-									overflowX: "hidden",
-									// height: "91.25%",
-									minWidth: "25%",
-
-									// Adjust this value to change the height of the drawer
+					{/* <Box > */}
+					<Drawer
+						open={open}
+						onClose={toggleDrawer(false)}
+						anchor="right"
+						variant="persistent"
+						sx={{
+							overflowY: "auto",
+						}}
+						PaperProps={{
+							sx: {
+								"::-webkit-scrollbar": {
+									display: "none",
 								},
-							}}>
-							<Box>
-								{
-									<Box
-										sx={{
-											backgroundColor: "#f5f5f5",
-											// width: "100%",
-											boxShadow: "none !important",
-											overflow: "hidden",
-											border: 1,
-											borderBottom: 1,
-											borderColor: "divider",
-											p: 2,
-										}}>
-										<Stack
-											direction="row"
-											spacing={1}
-											alignItems="center"
-											justifyContent="space-between"
-											width="100%">
-											<Typography
-												variant="h5"
-												sx={{
-													fontWeight: "400",
-												}}>
-												Course Content
-											</Typography>
-											<IconButton
-												onClick={() => {
-													setOpen(false);
-												}}>
-												<CloseIcon></CloseIcon>
-											</IconButton>
-										</Stack>
-									</Box>
-								}
 
-								<DrawerList
-									sections={selectedSections}
-									setVideo={setVideo}
-								/>
-							</Box>
-						</Drawer>
-					</Box>
+								// mt: window.innerWidth > 600 ? 8 : 7,
+								"-ms-overflow-style": "none",
+								scrollbarWidth: "none",
+
+								overflowY: "scroll",
+								overflowX: "hidden",
+								minWidth: "25%",
+							},
+						}}
+					>
+						<Box>
+							{
+								<Box
+									sx={{
+										backgroundColor: "#f5f5f5",
+										// width: "100%",
+										boxShadow: "none !important",
+										overflow: "hidden",
+										border: 1,
+										borderBottom: 1,
+										borderColor: "divider",
+										p: 2,
+									}}
+								>
+									<Stack
+										direction="row"
+										spacing={1}
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+									>
+										<Typography
+											variant="h5"
+											sx={{
+												fontWeight: "400",
+											}}
+										>
+											Course Content
+										</Typography>
+										<IconButton
+											onClick={() => {
+												setOpen(false);
+											}}
+										>
+											<CloseIcon></CloseIcon>
+										</IconButton>
+									</Stack>
+								</Box>
+							}
+
+							<DrawerList
+								sections={selectedSections}
+								setVideo={setVideo}
+							/>
+						</Box>
+					</Drawer>
+					{/* </Box> */}
 					<CardMedia
 						component="video"
 						controls
