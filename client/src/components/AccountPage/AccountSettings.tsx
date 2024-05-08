@@ -8,6 +8,7 @@ import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import DeleteMe from "./DeleteMe";
 import FormContainer from "../UI/PageLayout/FormContainer";
+import Popup from "../Popup/Popup";
 
 interface EmailFormValues {
 	email: string;
@@ -43,12 +44,12 @@ const AccountSettings = () => {
 		},
 	});
 
-	const { mutate: mutateUserEmail } = useMutation({
+	const { mutate: mutateUserEmail, isSuccess: isEmailSuccess } = useMutation({
 		mutationFn: (data: EmailFormValues) => {
 			return api.patch(`/users/updateMe`, { ...data });
 		},
 		onSuccess: (response) => {
-			alert("User email updated successfully");
+			//alert("User email updated successfully");
 			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
@@ -57,22 +58,27 @@ const AccountSettings = () => {
 		},
 	});
 
-	const { mutate: mutateUserPassword } = useMutation({
-		mutationFn: (data: PasswordFormValues) => {
-			return api.patch(`/users/updatePassword`, {
-				...data,
-				passwordConfirm: data.password,
-			});
-		},
-		onSuccess: () => {
-			alert("User password updated successfully");
-			resetPassword();
-		},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
-	});
+	const { mutate: mutateUserPassword, isSuccess: isPasswordSucess } =
+		useMutation({
+			mutationFn: (data: PasswordFormValues) => {
+				return api.patch(`/users/updatePassword`, {
+					...data,
+					passwordConfirm: data.password,
+				});
+			},
+			onSuccess: () => {
+				//alert("User password updated successfully");
+				resetPassword();
+			},
+			onError: (error) => {
+				console.error(error);
+				alert("An error occurred. Please try again.");
+			},
+		});
+
+	const EmailPopupfunction = () => {};
+
+	const PasswordPopupfunction = () => {};
 
 	const handleEmailSubmit = (data: EmailFormValues) => {
 		mutateUserEmail(data);
@@ -87,7 +93,8 @@ const AccountSettings = () => {
 			<Stack spacing={8}>
 				<form
 					onSubmit={handleSubmitEmail(handleEmailSubmit)}
-					style={{ width: "100%", marginBottom: 2 }}>
+					style={{ width: "100%", marginBottom: 2 }}
+				>
 					<SectionWrapper>
 						<Stack>
 							<SectionHeader
@@ -121,7 +128,8 @@ const AccountSettings = () => {
 								variant="contained"
 								disableElevation
 								size="large"
-								type="submit">
+								type="submit"
+							>
 								Confirm
 							</Button>
 						</Stack>
@@ -188,7 +196,8 @@ const AccountSettings = () => {
 								variant="contained"
 								disableElevation
 								size="large"
-								type="submit">
+								type="submit"
+							>
 								Confirm
 							</Button>
 						</Stack>
@@ -205,6 +214,18 @@ const AccountSettings = () => {
 					<DeleteMe />
 				</SectionWrapper>
 			</Stack>
+			<Popup
+				openPopup={isEmailSuccess}
+				content="Email updated Successfully!"
+				buttonText="Great!"
+				popupFunction={EmailPopupfunction}
+			/>
+			<Popup
+				openPopup={isPasswordSucess}
+				content="Password updated Successfully!"
+				buttonText="Great!"
+				popupFunction={PasswordPopupfunction}
+			/>
 		</FormContainer>
 	);
 };

@@ -27,6 +27,7 @@ import api from "../../api";
 import resizeImageFile from "../../helpers/resizeImageFile";
 import { z } from "zod";
 import { NavLink } from "react-router-dom";
+import Popup from "../Popup/Popup";
 
 const schema = z.object({
 	name: z
@@ -79,7 +80,7 @@ const UserProfile = () => {
 		}
 	};
 
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, isSuccess } = useMutation({
 		mutationFn: (
 			data: Partial<
 				UserInformationSchemaType & { photo: string | File | Blob }
@@ -88,7 +89,6 @@ const UserProfile = () => {
 			return api.patch(`/users/updateMe`, data);
 		},
 		onSuccess: (response) => {
-			alert("User updated successfully.");
 			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
@@ -154,12 +154,14 @@ const UserProfile = () => {
 		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
 			<form
 				style={{ width: "100%", marginBottom: 2 }}
-				onSubmit={handleSubmit(onSubmit)}>
+				onSubmit={handleSubmit(onSubmit)}
+			>
 				<Stack
 					alignItems="center"
 					display="flex"
 					flexDirection="column"
-					spacing={8}>
+					spacing={8}
+				>
 					<SectionWrapper>
 						<SectionHeader
 							heading="Your Photo"
@@ -200,7 +202,8 @@ const UserProfile = () => {
 												backgroundColor: "white",
 											},
 										}}
-										onClick={clearImageSelection}>
+										onClick={clearImageSelection}
+									>
 										<Clear />
 									</IconButton>
 								)}
@@ -211,7 +214,8 @@ const UserProfile = () => {
 								variant="contained"
 								disableElevation
 								size="large"
-								disabled={isPending}>
+								disabled={isPending}
+							>
 								<input
 									ref={fileInputRef}
 									accept="image/*"
@@ -243,11 +247,13 @@ const UserProfile = () => {
 						<Stack
 							spacing="1rem"
 							display="flex"
-							flexDirection="column">
+							flexDirection="column"
+						>
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.name}>
+								error={!!errors.name}
+							>
 								<Controller
 									name="name"
 									control={control}
@@ -261,7 +267,8 @@ const UserProfile = () => {
 												errors.name && (
 													<Typography
 														variant="body2"
-														color="error">
+														color="error"
+													>
 														{errors.name.message}
 													</Typography>
 												)
@@ -302,7 +309,8 @@ const UserProfile = () => {
 											errors.bio && (
 												<Typography
 													variant="body2"
-													color="error">
+													color="error"
+												>
 													{errors.bio.message}
 												</Typography>
 											)
@@ -318,9 +326,16 @@ const UserProfile = () => {
 						variant="contained"
 						disableElevation
 						size="large"
-						disabled={isPending}>
+						disabled={isPending}
+					>
 						Save Changes
 					</Button>
+					<Popup
+						openPopup={isSuccess}
+						buttonText="Great!"
+						content="User updated successfully!"
+						popupFunction={() => {}}
+					/>
 				</Stack>
 			</form>
 			<SectionWrapper sx={{ mt: 8 }}>
@@ -344,7 +359,8 @@ const UserProfile = () => {
 						fullWidth
 						variant="contained"
 						size="large"
-						disableElevation>
+						disableElevation
+					>
 						View Profile
 					</Button>
 				</NavLink>
