@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Container, Typography } from "@mui/material";
-import CourseSelection from "../components/UI/Courses/Catalog/CourseSelection";
 import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 import ErrorWarning from "../components/UI/Messages/ErrorWarning";
 import api from "../api";
 import UserInformation from "../components/UserProfilePage/UserInformation";
+import UserCoursesEnrolled from "../components/UserProfilePage/UserCoursesEnrolled";
+import UserCoursesCreated from "../components/UserProfilePage/UserCoursesCreated";
 
 const UserProfilePage = () => {
 	const { userId } = useParams();
@@ -35,44 +35,14 @@ const UserProfilePage = () => {
 				) : (
 					<>
 						{user?.role === "instructor" && (
-							<CourseSelection
-								heading={
-									"Courses " +
-									user?.name.split(" ")[0] +
-									" Created"
-								}
-								headingAlignment="left"
-								headingAnimated={false}
-								variant="white"
-								query={{
-									url: "/courses",
-									config: {
-										params: {
-											instructors: { in: [userId] },
-											sort: "-ratingsQuantity",
-										},
-									},
-								}}
+							<UserCoursesCreated
+								userId={userId as string}
+								userName={user?.name}
 							/>
 						)}
-						<CourseSelection
-							heading={
-								"Courses " +
-								user?.name.split(" ")[0] +
-								" Enrolled In"
-							}
-							headingAlignment="left"
-							headingAnimated={false}
-							variant="white"
-							query={{
-								key: "courseEnrollments",
-								url: "/courseEnrollments",
-								config: {
-									params: {
-										user: userId,
-									},
-								},
-							}}
+						<UserCoursesEnrolled
+							userId={userId as string}
+							userName={user?.name}
 						/>
 					</>
 				)}

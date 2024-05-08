@@ -60,14 +60,16 @@ const InstructorDashboard = () => {
 					display: "flex",
 					flexDirection: "column",
 				}}>
-				<Box mb={8}>
-					<InstructorStats
-						ratingsAverage={user?.ratingsAverage ?? 0}
-						ratingsQuantity={user?.ratingsQuantity ?? 0}
-						students={user?.students ?? 0}
-						courses={user?.coursesCreated?.length ?? 0}
-					/>
-				</Box>
+				{user?.role === "instructor" && (
+					<Box mb={8}>
+						<InstructorStats
+							ratingsAverage={user?.ratingsAverage ?? 0}
+							ratingsQuantity={user?.ratingsQuantity ?? 0}
+							students={user?.students ?? 0}
+							courses={user?.coursesCreated?.length ?? 0}
+						/>
+					</Box>
+				)}
 				<SectionHeader
 					heading="Create a New Course"
 					headingAlignment="center"
