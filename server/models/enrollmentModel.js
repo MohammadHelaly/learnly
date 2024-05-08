@@ -4,7 +4,7 @@ const User = require("./userModel");
 const Course = require("./courseModel");
 const catchAsync = require("../utils/catchAsync");
 
-const courseEnrollmentSchema = new mongoose.Schema({
+const enrollmentSchema = new mongoose.Schema({
 	user: {
 		type: mongoose.Schema.ObjectId,
 		ref: "User",
@@ -21,9 +21,9 @@ const courseEnrollmentSchema = new mongoose.Schema({
 	},
 });
 
-courseEnrollmentSchema.index({ user: 1, course: 1 }, { unique: true });
+enrollmentSchema.index({ user: 1, course: 1 }, { unique: true });
 
-// courseEnrollmentSchema.pre(/^find/, function (next) {
+// enrollmentSchema.pre(/^find/, function (next) {
 // 	this.populate({
 // 		path: "user",
 // 		select: "-__v",
@@ -31,7 +31,7 @@ courseEnrollmentSchema.index({ user: 1, course: 1 }, { unique: true });
 // 	next();
 // });
 
-courseEnrollmentSchema.pre(/^find/, function (next) {
+enrollmentSchema.pre(/^find/, function (next) {
 	this.populate({
 		path: "course",
 		select: "-__v",
@@ -42,12 +42,12 @@ courseEnrollmentSchema.pre(/^find/, function (next) {
 // Middleware:
 // - with every enrollment number of course students should increase
 
-courseEnrollmentSchema.post("save", async function (req, next) {
+enrollmentSchema.post("save", async function (req, next) {
 	try {
 		const courseId = req.course;
 		console.log(courseId);
 		if (courseId) {
-			const enrollmentCount = await CourseEnrollment.countDocuments({
+			const enrollmentCount = await Enrollment.countDocuments({
 				course: courseId,
 			});
 
@@ -66,7 +66,7 @@ courseEnrollmentSchema.post("save", async function (req, next) {
 });
 
 // - ⁠with every enrollment number of students of every course instructor should increase
-courseEnrollmentSchema.post("save", async function (req, next) {
+enrollmentSchema.post("save", async function (req, next) {
 	try {
 		const courseId = req.course;
 		if (courseId) {
@@ -90,9 +90,6 @@ courseEnrollmentSchema.post("save", async function (req, next) {
 	}
 });
 
-const CourseEnrollment = mongoose.model(
-	"CourseEnrollment",
-	courseEnrollmentSchema
-);
+const Enrollment = mongoose.model("Enrollment", enrollmentSchema);
 
-module.exports = CourseEnrollment;
+module.exports = Enrollment;

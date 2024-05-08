@@ -24,7 +24,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
-import CourseStudentPage from "./pages/CourseStudentPage";
+import CourseStudentDashboardPage from "./pages/CourseStudentDashboardPage";
 import CourseEnrollmentPage from "./pages/CourseEnrollmentPage";
 import LegalPage from "./pages/LegalPage";
 import HelpPage from "./pages/HelpPage";
@@ -32,7 +32,6 @@ import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
 import "./App.css";
 import UserProfilePage from "./pages/UserProfilePage";
 import AccountPage from "./pages/AccountPage";
-
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -175,7 +174,7 @@ function App() {
 						/>
 						<Route
 							path="/dashboard/learn/courses/:courseId"
-							element={<CourseStudentPage />}
+							element={<CourseStudentDashboardPage />}
 						/>
 						<Route
 							path="/courses/:courseId/enroll"

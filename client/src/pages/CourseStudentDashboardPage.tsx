@@ -24,7 +24,8 @@ import NavigationGuard from "../components/Navigation/NavigationGuard";
 import ReviewForm from "../components/CourseStudentDashboardPage/ReviewForm";
 import StudentCourseReviews from "../components/UI/Reviews/StudentCourseReviews";
 import CourseStudentChannel from "../components/CourseStudentDashboardPage/CourseStudentChannel";
-function CourseStudentPage() {
+
+function CourseStudentDashboardPage() {
 	const { courseId } = useParams();
 	const [value, setValue] = useState("0");
 	const handleChange = (
@@ -73,14 +74,12 @@ function CourseStudentPage() {
 									sx={{
 										borderBottom: 1,
 										borderColor: "divider",
-									}}
-								>
+									}}>
 									<TabList
 										onChange={handleChange}
 										aria-label="Dashboard Tabs"
 										// centered={window.innerWidth < 600}
-										variant="scrollable"
-									>
+										variant="scrollable">
 										<Tab
 											label="Course Information"
 											value="0"
@@ -137,8 +136,7 @@ function CourseStudentPage() {
 										// display: "flex",
 										// justifyContent: "center",
 										// alignItems: "center",
-									}}
-								>
+									}}>
 									<StudentCourseReviews
 										courseId={courseId || ""}
 										course={course}
@@ -167,4 +165,4 @@ function CourseStudentPage() {
 	);
 }
 
-export default CourseStudentPage;
+export default CourseStudentDashboardPage;

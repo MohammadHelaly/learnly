@@ -4,6 +4,7 @@ const authController = require("../controllers/authController");
 const reviewRouter = require("./reviewRoutes");
 const channelRouter = require("./channelRoutes");
 const sectionRouter = require("./sectionRoutes");
+const enrollmentRouter = require("./enrollmentRoutes");
 
 const router = express.Router();
 
@@ -12,6 +13,8 @@ router.use("/:courseId/reviews", reviewRouter);
 router.use("/:courseId/channels", channelRouter);
 
 router.use("/:courseId/sections", sectionRouter);
+
+router.use("/:courseId/enrollments", enrollmentRouter);
 
 router.route("/").get(courseController.getAllCourses).post(
 	authController.protect,

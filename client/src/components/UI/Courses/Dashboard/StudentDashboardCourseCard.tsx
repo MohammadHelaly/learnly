@@ -36,7 +36,7 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 				sx={{
 					display: "flex",
 					flexDirection: "column",
-					height: 352,
+					height: "auto",
 					width: window.innerWidth > 600 ? 352 : "100%",
 					transition: `all 0.6s ease-in-out`,
 					borderRadius: 0,
@@ -108,22 +108,6 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 							{")"}
 						</Typography>
 					</Stack>
-					{!paid || price === 0 ? (
-						<Typography
-							variant="h6"
-							color="common.black"
-							sx={{ fontWeight: 400 }}>
-							{"Free"}
-						</Typography>
-					) : (
-						<Typography
-							variant="h6"
-							color="common.black"
-							sx={{ fontWeight: 400 }}>
-							{"$"}
-							{price}
-						</Typography>
-					)}
 					<Typography
 						variant="body2"
 						color="text.secondary"

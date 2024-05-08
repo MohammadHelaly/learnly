@@ -1,4 +1,5 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
+import { Check, Close, People } from "@mui/icons-material";
 import CardNavLink from "../../Links/CardNavLink";
 
 interface InstructorDashboardCourseCardProps
@@ -13,6 +14,9 @@ interface InstructorDashboardCourseCardProps
 		| "ratingsQuantity"
 		| "difficulty"
 		| "duration"
+		| "published"
+		| "students"
+		| "channel"
 	> {}
 
 const InstructorDashboardCourseCard = (
@@ -28,6 +32,9 @@ const InstructorDashboardCourseCard = (
 		ratingsQuantity,
 		difficulty,
 		duration,
+		published,
+		students,
+		channel,
 	} = props;
 
 	return (
@@ -36,7 +43,7 @@ const InstructorDashboardCourseCard = (
 				sx={{
 					display: "flex",
 					flexDirection: window.innerWidth > 600 ? "row" : "column",
-					height: window.innerWidth < 600 ? 356 : 204,
+					height: window.innerWidth < 600 ? "auto" : 204,
 					width: "100%",
 					transition: `all 0.6s ease-in-out`,
 					borderRadius: 0,
@@ -69,6 +76,8 @@ const InstructorDashboardCourseCard = (
 						transition: "all 0.5s ease",
 						py: 1,
 						px: window.innerWidth > 600 ? 2 : 0,
+						display: "flex",
+						flexDirection: "column",
 					}}>
 					<Typography
 						variant="h6"
@@ -136,6 +145,85 @@ const InstructorDashboardCourseCard = (
 							difficulty?.slice(1)}
 						{" Level"}
 					</Typography>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						<People />
+						<Typography variant="body1">
+							{students + " Student(s)"}
+						</Typography>
+					</Stack>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						{published ? (
+							<Check
+								sx={{
+									color: "secondary.main",
+								}}
+							/>
+						) : (
+							<Close
+								sx={{
+									color: "error.main",
+								}}
+							/>
+						)}
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								fontWeight: 400,
+								color: published
+									? "secondary.main"
+									: "error.main",
+							}}>
+							{published ? "Published" : "Unpublished"}
+						</Typography>
+					</Stack>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						{channel ? (
+							<Check
+								sx={{
+									color: "secondary.main",
+								}}
+							/>
+						) : (
+							<Close
+								sx={{
+									color: "error.main",
+								}}
+							/>
+						)}
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								fontWeight: 400,
+								color: channel
+									? "secondary.main"
+									: "error.main",
+							}}>
+							{channel ? "Channel Live" : "No Channel"}
+						</Typography>
+					</Stack>
 				</Box>
 			</Card>
 		</CardNavLink>

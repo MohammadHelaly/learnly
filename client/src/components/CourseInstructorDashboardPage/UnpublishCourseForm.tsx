@@ -67,7 +67,7 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { course: courseId }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					course: courseId,
 				},

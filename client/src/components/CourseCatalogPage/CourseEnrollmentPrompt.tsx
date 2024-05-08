@@ -22,7 +22,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					user: authContext.user?.id ?? null,
 				},
@@ -45,8 +45,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 				py: 2,
 				borderBottom:
 					window.innerWidth > 600 ? "1px solid #dddddd" : "none",
-			}}
-		>
+			}}>
 			{isLoading ? (
 				<Skeleton
 					animation="wave"
@@ -61,8 +60,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 						textAlign: window.innerWidth > 600 ? "left" : "center",
 						// fontWeight: "bold",
 						// color: "#9c27b0",
-					}}
-				>
+					}}>
 					{!paid || price === 0 ? "Free!" : "$" + price}
 				</Typography>
 			)}
@@ -91,8 +89,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 							// border: "1px solid #9c27b0",
 						},
 					}}
-					endIcon={<ArrowForward />}
-				>
+					endIcon={<ArrowForward />}>
 					Go to course
 				</Button>
 			) : (
@@ -120,8 +117,7 @@ const CourseEnrollmentPrompt = (props: CourseEnrollmentPromptProps) => {
 							// border: "1px solid #9c27b0",
 						},
 					}}
-					endIcon={<ArrowForward />}
-				>
+					endIcon={<ArrowForward />}>
 					Enroll now
 				</Button>
 			)}

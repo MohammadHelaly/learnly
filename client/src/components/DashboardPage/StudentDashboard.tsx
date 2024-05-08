@@ -29,7 +29,7 @@ const StudentDashboard = () => {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id, page }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					page,
 					limit,

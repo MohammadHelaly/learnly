@@ -57,6 +57,9 @@ interface Course {
 	priceDiscount?: number;
 	sections?: Section[];
 	channel?: string | number;
+	published?: boolean;
+	students?: number;
+	channel?: string;
 }
 
 interface Section {

@@ -30,7 +30,7 @@ const UserCoursesEnrolled = (props: UserCoursesEnrolledProps) => {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: userId, page }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					page,
 					limit,

@@ -5,7 +5,7 @@ const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
 const Course = require("../models/courseModel");
 const User = require("../models/userModel");
-const CourseEnrollment = require("../models/courseEnrollmentModel");
+const Enrollment = require("../models/enrollmentModel");
 
 exports.setCourseUserIds = (req, res, next) => {
 	// Allow nested routes
@@ -29,7 +29,7 @@ exports.protectReview = async (req, res, next) => {
 exports.checkEnrollment = catchAsync(async (req, res, next) => {
 	const courseId = req.body.course;
 	const userId = req.user.id;
-	const enrolledCourse = await CourseEnrollment.findOne({
+	const enrolledCourse = await Enrollment.findOne({
 		course: courseId,
 		user: userId,
 	});

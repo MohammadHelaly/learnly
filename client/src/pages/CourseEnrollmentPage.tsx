@@ -49,18 +49,17 @@ function CourseEnrollmentPage() {
 	const course = data ?? dummyCourse;
 
 	const {
-		mutate: mutateUser,
-		isError: isMutateSectionError,
-		isPending: isPendingUser,
+		mutate,
+		isError: isMutateError,
+		isPending,
 		isSuccess,
 	} = useMutation({
-		mutationFn: (data: any) => {
-			return api.post(`/courseEnrollments/${courseId}`, {
-				user: data,
-			});
+		mutationFn: () => {
+			return api.post(`/courses/${courseId}/enrollments`);
 		},
 		onSuccess: (response) => {
 			if (authContext.user && courseId) {
+				// Look into this
 				authContext.user.coursesEnrolled = [
 					...authContext.user.coursesEnrolled,
 					courseId,
@@ -177,7 +176,7 @@ function CourseEnrollmentPage() {
 												disableElevation
 												endIcon={<Check />}
 												fullWidth
-												disabled={isPendingUser}
+												disabled={isPending}
 												sx={{
 													// mb: 3,
 													mb:
@@ -201,11 +200,7 @@ function CourseEnrollmentPage() {
 													},
 												}}
 												onClick={() => {
-													if (authContext.user) {
-														mutateUser(
-															authContext.user.id
-														);
-													}
+													mutate();
 												}}>
 												{" "}
 												Enroll Now
