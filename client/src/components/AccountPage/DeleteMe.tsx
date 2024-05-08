@@ -4,9 +4,30 @@ import api from "../../api";
 import { useMutation } from "@tanstack/react-query";
 import { useState, useContext, ChangeEvent } from "react";
 import AuthContext from "../../store/auth-context";
+import Popup from "../Popup/Popup";
+import DialogForm from "../Popup/DialogForm";
 
 const DeleteMe = () => {
 	const authContext = useContext(AuthContext);
+
+	const [openDialog, setOpenDialog] = useState(false);
+
+	const openDialogFunction = () => {
+		setOpenDialog(true);
+	};
+
+	const closeDialogFunction = () => {
+		setOpenDialog(false);
+	};
+
+	const popupFunction = () => {
+		authContext.logout();
+	};
+
+	const dialogFunction = () => {
+		mutateUser();
+	};
+
 	const {
 		mutate: mutateUser,
 		isError: isMutateUserError,
@@ -16,10 +37,7 @@ const DeleteMe = () => {
 		mutationFn: () => {
 			return api.delete(`/users/deleteMe`);
 		},
-		onSuccess: (response) => {
-			alert("User deleted successfully");
-			authContext.logout();
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -34,11 +52,24 @@ const DeleteMe = () => {
 				size="large"
 				color="error"
 				onClick={() => {
-					alert("Are you sure you want to delete your account?");
-					mutateUser();
-				}}>
+					openDialogFunction();
+				}}
+			>
 				Delete Me
 			</Button>
+			<DialogForm
+				heading="Delete User Account"
+				content="Are you sure you want to delete your account?"
+				openDialog={openDialog}
+				closeDialog={closeDialogFunction}
+				dialogFunction={dialogFunction}
+			/>
+			<Popup
+				openPopup={UserSuccess}
+				content="User account deleted Successfully!"
+				buttonText="Close"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };
