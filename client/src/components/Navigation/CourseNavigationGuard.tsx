@@ -36,7 +36,7 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					user: authContext.user?.id ?? null,
 				},

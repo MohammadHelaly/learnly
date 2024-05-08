@@ -30,7 +30,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 	} = useQuery({
 		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
 		queryFn: async () =>
-			await api.get("/courseEnrollments", {
+			await api.get("/enrollments", {
 				params: {
 					user: authContext.user?.id ?? null,
 				},
@@ -76,21 +76,18 @@ const CourseBanner = (props: CourseBannerProps) => {
 				py: window.innerWidth > 600 ? 3 : 1,
 				zIndex: scrolled ? 2 : -2,
 				transform: scrolled ? "none" : "translateY(-100%)",
-			}}
-		>
+			}}>
 			<Container maxWidth="lg">
 				<Stack
 					direction="row"
 					justifyContent="space-between"
 					alignContent="center"
 					alignItems="center"
-					spacing={2}
-				>
+					spacing={2}>
 					<Stack
 						direction="column"
 						alignItems="left"
-						justifyContent="left"
-					>
+						justifyContent="left">
 						{isLoading ? (
 							<Skeleton
 								animation="wave"
@@ -105,8 +102,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 								}
 								sx={{
 									fontWeight: 500,
-								}}
-							>
+								}}>
 								{name}
 							</Typography>
 						)}
@@ -138,8 +134,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 									color: "white",
 								},
 							}}
-							endIcon={<ArrowForward />}
-						>
+							endIcon={<ArrowForward />}>
 							Go to course
 						</Button>
 					) : (
@@ -162,8 +157,7 @@ const CourseBanner = (props: CourseBannerProps) => {
 									color: "white",
 								},
 							}}
-							endIcon={<ArrowForward />}
-						>
+							endIcon={<ArrowForward />}>
 							Enroll now
 						</Button>
 					)}

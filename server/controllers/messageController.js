@@ -1,8 +1,9 @@
 const Message = require("../models/messageModel");
 const handlerFactory = require("./handlerFactory");
-const courseEnrollment = require("../models/courseEnrollmentModel");
+const Enrollment = require("../models/enrollmentModel");
 const Channel = require("../models/channelModel");
 const AppError = require("../utils/appError");
+
 exports.setChannelUserIds = (req, res, next) => {
 	// Allow nested routes
 	if (!req.body.channel) req.body.channel = req.params.channelId;
@@ -24,7 +25,7 @@ exports.protectChannel = async (req, res, next) => {
 	}
 
 	const courseId = channel.course;
-	const enrollments = await courseEnrollment.find({ course: courseId });
+	const enrollments = await Enrollment.find({ course: courseId });
 	const users = enrollments.map((enrollment) => enrollment.user.toString());
 
 	if (!users.includes(req.user.id)) {

@@ -6,7 +6,7 @@ const reviewRouter = require("./routes/reviewRoutes");
 const channelRouter = require("./routes/channelRoutes");
 const messageRouter = require("./routes/messageRoutes");
 const sectionRouter = require("./routes/sectionRoutes");
-const courseEnrollmentRouter = require("./routes/courseEnrollmentRoutes");
+const enrollmentRouter = require("./routes/enrollmentRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 const rateLimit = require("express-rate-limit");
@@ -101,10 +101,10 @@ app.use(
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/sections", sectionRouter);
+app.use("/api/v1/enrollments", enrollmentRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/channels", channelRouter);
 app.use("/api/v1/messages", messageRouter);
-app.use("/api/v1/courseEnrollments", courseEnrollmentRouter);
 
 app.all("*", (req, res, next) => {
 	next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
