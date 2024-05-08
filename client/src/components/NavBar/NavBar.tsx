@@ -289,7 +289,7 @@ const NavBar = () => {
 											sx={{
 												transition: "all 0.5s ease",
 												color: scrolled
-													? "primary.main"
+													? "black"
 													: "white",
 											}}
 										/>
