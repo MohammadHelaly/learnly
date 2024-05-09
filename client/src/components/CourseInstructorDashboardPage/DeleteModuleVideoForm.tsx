@@ -14,6 +14,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
+import DialogForm from "../Popup/DialogForm";
+
 interface DeleteModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -70,7 +72,7 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 			>
 				Remove Module Video
 			</Button>
-			<Dialog
+			{/* <Dialog
 				open={openModuleForm}
 				TransitionComponent={Transition}
 				keepMounted
@@ -116,7 +118,14 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 						</Button>
 					</Stack>
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
+			<DialogForm
+				heading="Delete Module Video"
+				content="Are you sure you want to delete this video?"
+				openDialog={openModuleForm}
+				closeDialog={handleCloseModuleForm}
+				dialogFunction={deleteVideo}
+			/>
 			<Popup
 				heading="Success!"
 				content="Video deleted successfully!"
