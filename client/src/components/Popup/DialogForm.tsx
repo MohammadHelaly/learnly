@@ -24,7 +24,7 @@ import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
-import CancelIcon from "@mui/icons-material/Cancel";
+import CloseIcon from "@mui/icons-material/Close";
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -39,7 +39,6 @@ interface DialogFormProps {
 	closeDialog: () => void;
 	content: string;
 	heading: string;
-
 	dialogFunction: () => void;
 }
 
@@ -89,7 +88,7 @@ function DialogForm(props: DialogFormProps) {
 							onClick={() => handleCloseDialogForm()}
 							sx={{ float: "right" }}
 						>
-							<CancelIcon />
+							<CloseIcon />
 						</IconButton>
 					</Stack>
 					<SectionHeader
