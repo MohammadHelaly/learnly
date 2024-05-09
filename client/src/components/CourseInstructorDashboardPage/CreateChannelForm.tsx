@@ -105,6 +105,7 @@ function CreateChannelForm(props: CreateChannelFormProps) {
 				dialogFunction={handleCreateChannel}
 			/>
 			<Popup
+				heading="Success!"
 				content="Channel Created successfully!"
 				openPopup={isChannelSuccess}
 				buttonText="Great!"

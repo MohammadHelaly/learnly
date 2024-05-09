@@ -331,6 +331,7 @@ const UserProfile = () => {
 						Save Changes
 					</Button>
 					<Popup
+						heading="Success!"
 						openPopup={isSuccess}
 						buttonText="Great!"
 						content="User updated successfully!"

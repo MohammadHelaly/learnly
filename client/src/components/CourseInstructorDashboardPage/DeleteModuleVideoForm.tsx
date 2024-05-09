@@ -118,6 +118,7 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Video deleted successfully!"
 				openPopup={isModuleSuccess}
 				buttonText="Great!"

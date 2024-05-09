@@ -65,6 +65,7 @@ const DeleteMe = () => {
 				dialogFunction={dialogFunction}
 			/>
 			<Popup
+				heading="Success!"
 				openPopup={UserSuccess}
 				content="User account deleted Successfully!"
 				buttonText="Close"

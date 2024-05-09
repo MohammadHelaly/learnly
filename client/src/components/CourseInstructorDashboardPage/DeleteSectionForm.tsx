@@ -88,7 +88,8 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		<>
 			<IconButton
 				sx={{ color: "common.black", ml: 2 }}
-				onClick={handleOpenSectionForm}>
+				onClick={handleOpenSectionForm}
+			>
 				<RemoveCircleOutlineIcon />
 			</IconButton>
 			<Dialog
@@ -101,7 +102,8 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 				) => handleCloseSectionForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Delete Section"
@@ -131,13 +133,15 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 							sx={{
 								mb: 2,
 								color: "white",
-							}}>
+							}}
+						>
 							Are you sure you want to remove this Section?
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Section removed successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"

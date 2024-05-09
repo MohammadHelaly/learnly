@@ -179,6 +179,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Module created successfully"
 				openPopup={isSuccess}
 				buttonText="Great!"

@@ -138,6 +138,7 @@ function DeleteReviewForm(props: DeleteReviewFormProps) {
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Review deleted successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"

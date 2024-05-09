@@ -117,7 +117,8 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 				onClose={() => handleClosePublishForm()}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Unpublish Course"
@@ -153,13 +154,15 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 							sx={{
 								mb: 2,
 								color: "white",
-							}}>
+							}}
+						>
 							Are you sure you want to unpublish this Course?
 						</Button>
 					</Stack>
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Course Unpublished successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"

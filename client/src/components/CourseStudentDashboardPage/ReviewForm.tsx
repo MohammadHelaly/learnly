@@ -147,6 +147,7 @@ const ReviewForm = (props: ReviewFormProps) => {
 				</Button>
 			</form>
 			<Popup
+				heading="Success!"
 				openPopup={isSuccess}
 				content="Review submitted successfully!"
 				buttonText="Great!"
