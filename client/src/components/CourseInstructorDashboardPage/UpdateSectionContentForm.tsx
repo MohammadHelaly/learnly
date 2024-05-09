@@ -17,6 +17,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
 import { Add, Check, Edit } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
+import Popup from "../Popup/Popup";
 
 interface UpdateSectionContentFormProps {
 	title: string | undefined;
@@ -68,6 +69,12 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 
 	const queryClient = useQueryClient();
 
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
+
 	const handleOpenSectionForm = (
 		event: React.MouseEvent<HTMLButtonElement>
 	) => {
@@ -96,12 +103,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 				...data,
 			});
 		},
-		onSuccess: (response) => {
-			alert("Section updated successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -120,12 +122,14 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 					color: "common.black",
 				}}
 				endIcon={<Edit />}
-				onClick={handleOpenSectionForm}>
+				onClick={handleOpenSectionForm}
+			>
 				<Typography
 					variant="h5"
 					sx={{
 						fontWeight: "400",
-					}}>
+					}}
+				>
 					{title}
 				</Typography>
 			</Button>
@@ -139,7 +143,8 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 				) => handleCloseSectionForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Modify Section Information"
@@ -158,7 +163,8 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 					<form
 						onSubmit={handleSectionSubmit(onSubmitSection)}
 						autoComplete="off"
-						noValidate>
+						noValidate
+					>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -201,13 +207,21 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 								disableElevation
 								size="large"
 								type="submit"
-								fullWidth>
+								fullWidth
+							>
 								Update Section
 							</Button>
 						</Stack>
 					</form>
 				</DialogContent>
 			</Dialog>
+			<Popup
+				openPopup={isSuccess}
+				heading="Success!"
+				content="Section updated successfully"
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 }
