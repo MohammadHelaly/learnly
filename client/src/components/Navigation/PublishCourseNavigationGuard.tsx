@@ -68,6 +68,16 @@ const PublishCourseNavigationGuard = (props: NavigationGuardProps) => {
 		course,
 	]);
 
+	if (isCourseLoading || isUserLoading) return null;
+
+	if (
+		userCourses &&
+		course &&
+		course.published === false &&
+		!userCourses?.includes(courseId)
+	)
+		return null;
+
 	return <>{children}</>;
 };
 

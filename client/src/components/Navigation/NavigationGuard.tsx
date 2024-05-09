@@ -30,6 +30,10 @@ const NavigationGuard = (props: NavigationGuardProps) => {
 		};
 	}, [authContext.isLoggedIn, navigate, guardWhileSignedIn]);
 
+	if (guardWhileSignedIn && authContext.isLoggedIn) return null;
+
+	if (!guardWhileSignedIn && !authContext.isLoggedIn) return null;
+
 	return <>{children}</>;
 };
 

@@ -60,7 +60,6 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 						!userCourses?.includes(courseId) &&
 						!guardWhileEnrolled
 					) {
-						console.log("userCourses", userCourses);
 						navigate("/dashboard");
 						return;
 					}
@@ -119,6 +118,62 @@ const CourseNavigationGuard = (props: NavigationGuardProps) => {
 		refetchCourse,
 		refetchUserCourses,
 	]);
+
+	if (isCourseLoading || isUserLoading) return null;
+
+	if (isCourseError || isUserError) return null;
+
+	if (
+		role === "student" &&
+		userCourses &&
+		!userCourses?.includes(courseId) &&
+		!guardWhileEnrolled
+	)
+		return null;
+
+	if (
+		role === "student" &&
+		userCourses &&
+		userCourses?.includes(courseId) &&
+		guardWhileEnrolled
+	)
+		return null;
+
+	if (
+		role === "instructor" &&
+		course &&
+		!course?.instructors.some(
+			(instructor: Instructor) => instructor.id === authContext.user?.id
+		) &&
+		!guardWhileEnrolled
+	)
+		return null;
+
+	if (
+		role === "student" &&
+		guardWhileEnrolled &&
+		userCourses?.includes(courseId)
+	)
+		return null;
+
+	if (
+		role === "instructor" &&
+		guardWhileEnrolled &&
+		course?.instructors.some(
+			(instructor: Instructor) => instructor.id === authContext.user?.id
+		)
+	)
+		return null;
+
+	if (
+		role === "instructor" &&
+		course &&
+		course?.instructors.some(
+			(instructor: Instructor) => instructor.id === authContext.user?.id
+		) &&
+		guardWhileEnrolled
+	)
+		return null;
 
 	return <>{children}</>;
 };

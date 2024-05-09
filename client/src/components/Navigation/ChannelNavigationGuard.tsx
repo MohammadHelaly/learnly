@@ -70,6 +70,16 @@ const ChannelNavigationGuard = (props: NavigationGuardProps) => {
 		channel,
 	]);
 
+	if (isChannelLoading || isUserLoading) return null;
+
+	if (
+		!(
+			(userCourses && userCourses?.includes(courseId)) ||
+			(channel && channel?.admins.includes(authContext.user?.id))
+		)
+	)
+		return null;
+
 	return <>{children}</>;
 };
 
