@@ -4,9 +4,9 @@ import AnimatedPage from "./AnimatedPage";
 import Footer from "../components/Footer/Footer";
 import HomeSection from "../components/UI/PageLayout/HomeSection";
 import InformationSection from "../components/UI/PageLayout/InformationSection";
-import makeLearningAccessiblePhoto from "../assets/images/make-learning-accessible.jpg";
-import lifelongLearningPhoto from "../assets/images/lifelong-learning.jpg";
-import learnlyDifferencePhoto from "../assets/images/learnly-difference.jpg";
+import makeLearningAccessiblePhoto from "../assets/images/make-learning-accessible.png";
+import lifelongLearningPhoto from "../assets/images/lifelong-learning.png";
+import learnlyDifferencePhoto from "../assets/images/learnly-difference.png";
 
 const AboutPage = () => {
 	const scrollToContact = () => {

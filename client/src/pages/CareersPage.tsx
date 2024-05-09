@@ -3,9 +3,9 @@ import CallToAction from "../components/UI/PageLayout/CallToAction";
 import Footer from "../components/Footer/Footer";
 import HomeSection from "../components/UI/PageLayout/HomeSection";
 import InformationSection from "../components/UI/PageLayout/InformationSection";
-import buildYourCareerPhoto from "../assets/images/build-your-career.jpg";
-import globalCommunityOfLearnersPhoto from "../assets/images/global-community-of-learners.jpg";
-import yourSuccessIsOurSuccessPhoto from "../assets/images/your-success-is-our-success.jpg";
+import buildYourCareerPhoto from "../assets/images/build-your-career.png";
+import globalCommunityOfLearnersPhoto from "../assets/images/global-community-of-learners.png";
+import yourSuccessIsOurSuccessPhoto from "../assets/images/your-success-is-our-success.png";
 
 const CareersPage = () => {
 	return (

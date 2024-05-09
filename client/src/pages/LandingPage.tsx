@@ -5,9 +5,9 @@ import CallToAction from "../components/UI/PageLayout/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";
 import Footer from "../components/Footer/Footer";
 import AnimatedPage from "./AnimatedPage";
-import levelUpPhoto from "../assets/images/level-up.jpg";
-import worldClassInstructorsPhoto from "../assets/images/world-class-instructors.jpg";
-import vastArrayOfSpecializationsPhoto from "../assets/images/vast-array-of-specializations.jpg";
+import levelUpPhoto from "../assets/images/level-up.png";
+import worldClassInstructorsPhoto from "../assets/images/world-class-instructors.png";
+import vastArrayOfSpecializationsPhoto from "../assets/images/vast-array-of-specializations.png";
 
 const LandingPage = () => {
 	return (

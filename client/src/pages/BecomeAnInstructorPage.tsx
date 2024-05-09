@@ -3,9 +3,9 @@ import HomeSection from "../components/UI/PageLayout/HomeSection";
 import InformationSection from "../components/UI/PageLayout/InformationSection";
 import CallToAction from "../components/UI/PageLayout/CallToAction";
 import Footer from "../components/Footer/Footer";
-import createACoursePhoto from "../assets/images/create-a-course.jpg";
-import interactWithStudentsPhoto from "../assets/images/interact-with-students.jpg";
-import buildYourBrandPhoto from "../assets/images/build-your-brand.jpg";
+import createACoursePhoto from "../assets/images/create-a-course.png";
+import interactWithStudentsPhoto from "../assets/images/interact-with-students.png";
+import buildYourBrandPhoto from "../assets/images/build-your-brand.png";
 
 const BecomeAnInstructorPage = () => {
 	return (
