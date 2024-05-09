@@ -24,6 +24,8 @@ import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
+import DialogForm from "../Popup/DialogForm";
+
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -92,6 +94,9 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 		},
 	});
 
+	const publishCourseContent =
+		"Make course publicily available to students.Note that if you unpublish the course later, enrolled students will still have access to the course content.Are you sure you want to publish this Course?";
+
 	const handlePublishCourse = async () => {
 		publishCourse();
 	};
@@ -108,7 +113,7 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 			>
 				Publish Course
 			</Button>
-			<Dialog
+			{/* <Dialog
 				open={openPublishForm}
 				TransitionComponent={Transition}
 				keepMounted
@@ -158,7 +163,14 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 						</Button>
 					</Stack>
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
+			<DialogForm
+				openDialog={openPublishForm}
+				closeDialog={handleClosePublishForm}
+				heading="Publish Course"
+				content={publishCourseContent}
+				dialogFunction={handlePublishCourse}
+			/>
 			<Popup
 				heading="Success!"
 				content="Course published successfully!"
