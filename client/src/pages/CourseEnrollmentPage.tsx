@@ -27,6 +27,8 @@ import NavigationGuard from "../components/Navigation/NavigationGuard";
 import CourseNavigationGuard from "../components/Navigation/CourseNavigationGuard";
 import EnrollmentCourseCard from "../components/UI/Courses/Catalog/EnrollmentCourseCard";
 import { Check } from "@mui/icons-material";
+import { useState } from "react";
+import DialogForm from "../components/Popup/DialogForm";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
@@ -35,6 +37,16 @@ function CourseEnrollmentPage() {
 	const authContext = useContext(AuthContext);
 	const popupFunction = () => {
 		navigate("/dashboard");
+	};
+
+	const [openDialog, setOpenDialog] = useState(false);
+
+	const handleOpenDialog = () => {
+		setOpenDialog(true);
+	};
+
+	const handleCloseDialog = () => {
+		setOpenDialog(false);
 	};
 
 	const dummyCourse = dummyCoursesData.find(
@@ -207,7 +219,7 @@ function CourseEnrollmentPage() {
 													},
 												}}
 												onClick={() => {
-													mutate();
+													handleOpenDialog();
 												}}
 											>
 												{" "}
@@ -237,6 +249,13 @@ function CourseEnrollmentPage() {
 						/>
 					</PageWrapper>
 					<Footer />
+					<DialogForm
+						heading="Course Enrollment"
+						content="Are you sure you want to enroll in this course?"
+						openDialog={openDialog}
+						closeDialog={handleCloseDialog}
+						dialogFunction={mutate}
+					/>
 					<Popup
 						heading="Success!"
 						content="Course enrolled successfully!"
