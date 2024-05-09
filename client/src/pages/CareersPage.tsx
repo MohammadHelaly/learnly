@@ -21,7 +21,7 @@ const CareersPage = () => {
 				// secondButtonArrow
 			/>
 			<InformationSection
-				variant="grey"
+				variant="white" // "grey"
 				cardsContent={[
 					{
 						title: "Build Your Career with Learnly",
