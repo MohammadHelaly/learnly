@@ -116,6 +116,10 @@ const UserProfile = () => {
 			}
 		}
 
+		if (!image.preview && image.uploaded) {
+			resizedPhoto = "default.jpg";
+		}
+
 		const requestBody: Partial<
 			UserInformationSchemaType & { photo: string | undefined }
 		> = {
@@ -140,11 +144,12 @@ const UserProfile = () => {
 
 	const clearImageSelection = () => {
 		image.preview
-			? setImage({ preview: undefined, uploaded: false })
+			? setImage({ preview: undefined, uploaded: true })
 			: setImage({
 					preview: authContext.user?.photo?.url,
 					uploaded: false,
 			  });
+
 		if (fileInputRef.current) {
 			fileInputRef.current.value = "";
 		}
