@@ -29,6 +29,7 @@ import EnrollmentCourseCard from "../components/UI/Courses/Catalog/EnrollmentCou
 import { Check } from "@mui/icons-material";
 import { useState } from "react";
 import DialogForm from "../components/Popup/DialogForm";
+import PublishCourseNavigationGuard from "../components/Navigation/PublishCourseNavigationGuard";
 
 function CourseEnrollmentPage() {
 	const { courseId } = useParams();
@@ -91,179 +92,187 @@ function CourseEnrollmentPage() {
 				role="student"
 				guardWhileEnrolled
 			>
-				<AnimatedPage>
-					<PageWrapper>
-						{!isLoading ? (
-							<SectionWrapper>
-								<Container>
-									<SectionHeader
-										heading="Enrollment"
-										headingAlignment="left"
-										keepHeadingAlignmentOnSmallScreens
-										headingAnimated={false}
-										sx={{
-											mb: 0,
-											pb: 4,
-										}}
-									/>
-									<Stack
-										display="flex"
-										flexDirection={{
-											xs: "column",
-											md: "row",
-										}}
-										width="100%"
-										justifyContent="space-between"
-										spacing={4}
-									>
-										<Stack
-											width={
-												window.innerWidth > 600
-													? "70%"
-													: "100%"
-											}
-										>
-											<Typography
-												variant="body1"
-												fontWeight="light bold"
-												sx={{
-													mb: 2,
-													borderBottom:
-														"1px solid #e0e0e0",
-													paddingBottom: 1,
-													width:
-														window.innerWidth > 600
-															? "100%"
-															: "92vw",
-												}}
-											>
-												Course
-											</Typography>
-											<EnrollmentCourseCard {...course} />
-										</Stack>
-										<Stack
+				<PublishCourseNavigationGuard courseId={courseId}>
+					<AnimatedPage>
+						<PageWrapper>
+							{!isLoading ? (
+								<SectionWrapper>
+									<Container>
+										<SectionHeader
+											heading="Enrollment"
+											headingAlignment="left"
+											keepHeadingAlignmentOnSmallScreens
+											headingAnimated={false}
 											sx={{
-												mt:
-													window.innerWidth > 600
-														? "0px !important"
-														: 4,
-												borderBottom: {
-													md: "0px",
-													xs: "1px solid #e0e0e0",
-												},
+												mb: 0,
+												pb: 4,
 											}}
-											width={
-												window.innerWidth > 600
-													? "25%"
-													: "100%"
-											}
-											direction="column"
+										/>
+										<Stack
+											display="flex"
+											flexDirection={{
+												xs: "column",
+												md: "row",
+											}}
+											width="100%"
 											justifyContent="space-between"
+											spacing={4}
 										>
-											<Stack width="100%">
+											<Stack
+												width={
+													window.innerWidth > 600
+														? "70%"
+														: "100%"
+												}
+											>
 												<Typography
 													variant="body1"
-													fontWeight="semibold"
+													fontWeight="light bold"
 													sx={{
 														mb: 2,
+														borderBottom:
+															"1px solid #e0e0e0",
 														paddingBottom: 1,
+														width:
+															window.innerWidth >
+															600
+																? "100%"
+																: "92vw",
 													}}
 												>
-													Total
+													Course
 												</Typography>
-												<Typography
-													variant="h4"
-													fontWeight="semibold"
+												<EnrollmentCourseCard
+													{...course}
+												/>
+											</Stack>
+											<Stack
+												sx={{
+													mt:
+														window.innerWidth > 600
+															? "0px !important"
+															: 4,
+													borderBottom: {
+														md: "0px",
+														xs: "1px solid #e0e0e0",
+													},
+												}}
+												width={
+													window.innerWidth > 600
+														? "25%"
+														: "100%"
+												}
+												direction="column"
+												justifyContent="space-between"
+											>
+												<Stack width="100%">
+													<Typography
+														variant="body1"
+														fontWeight="semibold"
+														sx={{
+															mb: 2,
+															paddingBottom: 1,
+														}}
+													>
+														Total
+													</Typography>
+													<Typography
+														variant="h4"
+														fontWeight="semibold"
+														sx={{
+															pt: 0,
+															mb:
+																window.innerWidth <
+																600
+																	? 2
+																	: 4,
+														}}
+													>
+														{course.price === 0
+															? "Free"
+															: `E£${course.price}`}
+													</Typography>
+												</Stack>
+												<Button
+													variant="contained"
+													color="primary"
+													size="large"
+													disableElevation
+													endIcon={<Check />}
+													fullWidth
+													disabled={isPending}
 													sx={{
-														pt: 0,
+														// mb: 3,
 														mb:
 															window.innerWidth <
 															600
 																? 2
-																: 4,
+																: 1.5,
+
+														height: 50,
+														fontSize: "1rem",
+														backgroundColor:
+															"secondary.main",
+														color: "black",
+														// border: "1px solid #00f3b6",
+														"&:hover": {
+															backgroundColor:
+																"primary.main",
+															color: "white",
+															// backgroundColor: "transparent",
+															// color: "#9c27b0",
+															// border: "1px solid #9c27b0",
+														},
+													}}
+													onClick={() => {
+														handleOpenDialog();
 													}}
 												>
-													{course.price === 0
-														? "Free"
-														: `E£${course.price}`}
-												</Typography>
+													{" "}
+													Enroll Now
+												</Button>
 											</Stack>
-											<Button
-												variant="contained"
-												color="primary"
-												size="large"
-												disableElevation
-												endIcon={<Check />}
-												fullWidth
-												disabled={isPending}
-												sx={{
-													// mb: 3,
-													mb:
-														window.innerWidth < 600
-															? 2
-															: 1.5,
-
-													height: 50,
-													fontSize: "1rem",
-													backgroundColor:
-														"secondary.main",
-													color: "black",
-													// border: "1px solid #00f3b6",
-													"&:hover": {
-														backgroundColor:
-															"primary.main",
-														color: "white",
-														// backgroundColor: "transparent",
-														// color: "#9c27b0",
-														// border: "1px solid #9c27b0",
-													},
-												}}
-												onClick={() => {
-													handleOpenDialog();
-												}}
-											>
-												{" "}
-												Enroll Now
-											</Button>
 										</Stack>
-									</Stack>
-								</Container>
-							</SectionWrapper>
-						) : (
-							<Typography>Loading...</Typography>
-						)}
-						<CourseSelection
-							heading="See Some Similar Courses"
-							headingAlignment="left"
-							headingAnimated={false}
-							variant="white"
-							query={{
-								url: "/courses",
-								config: {
-									params: {
-										categories: { in: course?.categories }, // Look into adding $ here instead of in regex in the backend
-										_id: { ne: courseId },
+									</Container>
+								</SectionWrapper>
+							) : (
+								<Typography>Loading...</Typography>
+							)}
+							<CourseSelection
+								heading="See Some Similar Courses"
+								headingAlignment="left"
+								headingAnimated={false}
+								variant="white"
+								query={{
+									url: "/courses",
+									config: {
+										params: {
+											categories: {
+												in: course?.categories,
+											}, // Look into adding $ here instead of in regex in the backend
+											_id: { ne: courseId },
+										},
 									},
-								},
-							}}
+								}}
+							/>
+						</PageWrapper>
+						<Footer />
+						<DialogForm
+							heading="Course Enrollment"
+							content="Are you sure you want to enroll in this course?"
+							openDialog={openDialog}
+							closeDialog={handleCloseDialog}
+							dialogFunction={mutate}
 						/>
-					</PageWrapper>
-					<Footer />
-					<DialogForm
-						heading="Course Enrollment"
-						content="Are you sure you want to enroll in this course?"
-						openDialog={openDialog}
-						closeDialog={handleCloseDialog}
-						dialogFunction={mutate}
-					/>
-					<Popup
-						heading="Success!"
-						content="Course enrolled successfully!"
-						openPopup={isSuccess}
-						buttonText="Great!"
-						popupFunction={popupFunction}
-					/>
-				</AnimatedPage>
+						<Popup
+							heading="Success!"
+							content="Course enrolled successfully!"
+							openPopup={isSuccess}
+							buttonText="Great!"
+							popupFunction={popupFunction}
+						/>
+					</AnimatedPage>
+				</PublishCourseNavigationGuard>
 			</CourseNavigationGuard>
 		</NavigationGuard>
 	);

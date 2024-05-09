@@ -144,12 +144,14 @@ const UserProfile = () => {
 
 	const clearImageSelection = () => {
 		image.preview
-			? setImage({ preview: undefined, uploaded: true })
+			? setImage({ preview: undefined, uploaded: false })
 			: setImage({
 					preview: authContext.user?.photo?.url,
 					uploaded: false,
 			  });
-
+		if (image.preview === authContext.user?.photo?.url) {
+			setImage({ preview: undefined, uploaded: true });
+		}
 		if (fileInputRef.current) {
 			fileInputRef.current.value = "";
 		}
