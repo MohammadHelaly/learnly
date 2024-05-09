@@ -20,6 +20,12 @@ exports.enrollUser = async (req, res) => {
 			message: "Course not found!",
 		});
 	}
+	if (courseObj.published === false) {
+		return res.status(400).json({
+			status: "fail",
+			message: "Course not published yet!",
+		});
+	}
 
 	try {
 		// const courseEnrollment = await Enrollment.findOneAndUpdate(

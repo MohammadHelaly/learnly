@@ -22,6 +22,7 @@ import api from "../../../api";
 import SectionHeader from "../../UI/PageLayout/SectionHeader";
 import Popup from "../../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
+import DialogForm from "../../Popup/DialogForm";
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
@@ -39,14 +40,14 @@ interface DeleteReviewFormProps {
 function DeleteReviewForm(props: DeleteReviewFormProps) {
 	const { reviewId } = props;
 
-	const [openPublishForm, setOpenPublishForm] = useState(false);
+	const [openReviewForm, setOpenReviewForm] = useState(false);
 
 	const handleOpenDeleteReviewForm = () => {
-		setOpenPublishForm(true);
+		setOpenReviewForm(true);
 	};
 
 	const handleCloseDeleteReviewForm = () => {
-		setOpenPublishForm(false);
+		setOpenReviewForm(false);
 	};
 
 	const navigate = useNavigate();
@@ -93,50 +94,13 @@ function DeleteReviewForm(props: DeleteReviewFormProps) {
 			>
 				Delete Review
 			</Button>
-			<Dialog
-				open={openPublishForm}
-				TransitionComponent={Transition}
-				keepMounted
-				onClose={() => handleCloseDeleteReviewForm()}
-				aria-describedby="success-dialog-slide-description"
-				maxWidth="sm"
-				fullWidth
-			>
-				<DialogTitle>
-					<SectionHeader
-						heading="Delete Review"
-						headingAlignment="left"
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-					<SectionHeader
-						heading=""
-						headingAlignment="left"
-						variant="h6"
-						isSubHeading
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-				</DialogTitle>
-				<DialogContent>
-					<Stack spacing={2} paddingTop={2}>
-						<Button
-							component="label"
-							fullWidth
-							disableElevation
-							size="large"
-							color="error"
-							variant="contained"
-							disabled={isPendingModule}
-							onClick={handleDeleteReview}
-							sx={{
-								mb: 2,
-								color: "white",
-							}}
-						>
-							Are you sure you want to delete this review?
-						</Button>
-					</Stack>
-				</DialogContent>
-			</Dialog>
+			<DialogForm
+				heading="Delete Review"
+				content="Are you sure you want to delete this review?"
+				openDialog={openReviewForm}
+				closeDialog={handleCloseDeleteReviewForm}
+				dialogFunction={handleDeleteReview}
+			/>
 			<Popup
 				heading="Success!"
 				content="Review deleted successfully!"

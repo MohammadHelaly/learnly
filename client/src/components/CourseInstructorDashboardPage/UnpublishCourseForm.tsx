@@ -25,6 +25,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
+import DialogForm from "../Popup/DialogForm";
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
@@ -93,7 +94,10 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 		},
 	});
 
-	const handlePublishCourse = async () => {
+	const unpublishCourseContent =
+		"Remove the course from the catalog.Note that if a student is currently enrolled in the course, they will still have access to the course content.\nAre you sure you want to unpublish this Course?";
+
+	const handleUnpublishCourse = async () => {
 		publishCourse();
 	};
 	return (
@@ -110,7 +114,7 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 			>
 				Unpublish Course
 			</Button>
-			<Dialog
+			{/* <Dialog
 				open={openPublishForm}
 				TransitionComponent={Transition}
 				keepMounted
@@ -160,7 +164,14 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 						</Button>
 					</Stack>
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
+			<DialogForm
+				openDialog={openPublishForm}
+				closeDialog={handleClosePublishForm}
+				heading="Unpublish Course"
+				content={unpublishCourseContent}
+				dialogFunction={handleUnpublishCourse}
+			/>
 			<Popup
 				heading="Success!"
 				content="Course Unpublished successfully!"

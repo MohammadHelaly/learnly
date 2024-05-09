@@ -16,6 +16,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
+import DialogForm from "../Popup/DialogForm";
+
 interface DeleteSectionFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -44,6 +46,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		}
 		setOpenSectionForm(true);
 	};
+
 	const handleCloseSectionForm = (
 		event?: React.MouseEvent<HTMLButtonElement>
 	) => {
@@ -92,7 +95,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 			>
 				<RemoveCircleOutlineIcon />
 			</IconButton>
-			<Dialog
+			{/* <Dialog
 				open={openSectionForm}
 				TransitionComponent={Transition}
 				keepMounted
@@ -139,7 +142,14 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 						</Button>
 					</Stack>
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
+			<DialogForm
+				heading="Delete Section"
+				content="Are you sure you want to delete this Section?"
+				openDialog={openSectionForm}
+				closeDialog={handleCloseSectionForm}
+				dialogFunction={handleDeleteSection}
+			/>
 			<Popup
 				heading="Success!"
 				content="Section removed successfully!"

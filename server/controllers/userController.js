@@ -101,6 +101,9 @@ exports.uploadUserPhoto = async (req, res, next) => {
 		if (!imageCover) {
 			return next();
 		}
+		if (imageCover === "default.jpg") {
+			return next();
+		}
 
 		const base64Data = new Buffer.from(
 			imageCover.replace(/^data:image\/\w+;base64,/, ""),
@@ -154,7 +157,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 	// 2) Filtered out unwanted fields names that are not allowed to be updated
 	const filteredBody = filterObj(req.body, "name", "email", "bio", "photo");
 	// if (req.file) filteredBody.photo = req.file.filename;
-
 
 	// 3) Update user document
 	const user = await User.findByIdAndUpdate(req.user.id, filteredBody, {
