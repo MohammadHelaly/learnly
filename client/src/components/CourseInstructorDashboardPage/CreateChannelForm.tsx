@@ -24,6 +24,8 @@ import Popup from "../Popup/Popup";
 import { useNavigate, useParams } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { useContext } from "react";
+import DialogForm from "../Popup/DialogForm";
+
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -94,49 +96,14 @@ function CreateChannelForm(props: CreateChannelFormProps) {
 			>
 				Create Channel
 			</Button>
-			<Dialog
-				open={openCreateChannelhForm}
-				TransitionComponent={Transition}
-				keepMounted
-				onClose={() => handleCloseCreateChannelForm()}
-				aria-describedby="success-dialog-slide-description"
-				maxWidth="sm"
-				fullWidth
-			>
-				<DialogTitle>
-					<SectionHeader
-						heading="Create Channel"
-						headingAlignment="left"
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-					<SectionHeader
-						heading="Create a channel for the course to interact with your students."
-						headingAlignment="left"
-						variant="h6"
-						isSubHeading
-						sx={{ mb: 0, textAlign: "left" }}
-					/>
-				</DialogTitle>
-				<DialogContent>
-					<Stack spacing={2} paddingTop={2}>
-						<Button
-							component="label"
-							fullWidth
-							disableElevation
-							size="large"
-							variant="contained"
-							disabled={isPendingChannel}
-							onClick={handleCreateChannel}
-							sx={{
-								mb: 2,
-								color: "white",
-							}}
-						>
-							Create Channel
-						</Button>
-					</Stack>
-				</DialogContent>
-			</Dialog>
+
+			<DialogForm
+				heading="Create Channel"
+				content="Create a channel for the course to interact with your students."
+				openDialog={openCreateChannelhForm}
+				closeDialog={handleCloseCreateChannelForm}
+				dialogFunction={handleCreateChannel}
+			/>
 			<Popup
 				content="Channel Created successfully!"
 				openPopup={isChannelSuccess}
