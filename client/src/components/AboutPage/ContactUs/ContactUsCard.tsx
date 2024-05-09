@@ -23,10 +23,11 @@ const ContactUsCard = (props: ContactUsCardProps) => {
 				backgroundColor: "rgb(245, 245, 245)",
 				boxShadow: "none",
 				border: "solid 1px rgba(200, 200, 200, 0.8)",
+				borderRadius: 0,
 				borderEndStartRadius: 70,
 				borderTopRightRadius: 70,
 				"&:hover": {
-					borderRadius: 1,
+					borderRadius: 0, // 2
 				},
 				p: 4,
 				opacity: 0,

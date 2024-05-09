@@ -36,8 +36,9 @@ const NavBar = () => {
 	const currentPath = useLocation().pathname;
 	const navigate = useNavigate();
 	const authContext = useContext(AuthContext);
-
 	const queryClient = useQueryClient();
+
+	const isCourseCatalogPage = currentPath.split("/")[1] === "courses";
 
 	// TODO: Look into using React Query to manage loading and error states
 	const {
@@ -101,12 +102,9 @@ const NavBar = () => {
 			position="fixed"
 			sx={{
 				backgroundColor: scrolled ? "#ffffff" : "transparent",
-				boxShadow:
-					scrolled && !currentPath.includes("/courses")
-						? "auto"
-						: "none",
+				boxShadow: scrolled && !isCourseCatalogPage ? "auto" : "none",
 				borderBottom:
-					scrolled && currentPath.includes("/courses")
+					scrolled && isCourseCatalogPage
 						? "1px solid #eeeeee"
 						: "none",
 				transition: "all 0.5s ease",
