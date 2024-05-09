@@ -77,7 +77,8 @@ function CourseEnrollmentPage() {
 			<CourseNavigationGuard
 				courseId={courseId}
 				role="student"
-				guardWhileEnrolled>
+				guardWhileEnrolled
+			>
 				<AnimatedPage>
 					<PageWrapper>
 						{!isLoading ? (
@@ -101,13 +102,15 @@ function CourseEnrollmentPage() {
 										}}
 										width="100%"
 										justifyContent="space-between"
-										spacing={4}>
+										spacing={4}
+									>
 										<Stack
 											width={
 												window.innerWidth > 600
 													? "70%"
 													: "100%"
-											}>
+											}
+										>
 											<Typography
 												variant="body1"
 												fontWeight="light bold"
@@ -120,7 +123,8 @@ function CourseEnrollmentPage() {
 														window.innerWidth > 600
 															? "100%"
 															: "92vw",
-												}}>
+												}}
+											>
 												Course
 											</Typography>
 											<EnrollmentCourseCard {...course} />
@@ -142,7 +146,8 @@ function CourseEnrollmentPage() {
 													: "100%"
 											}
 											direction="column"
-											justifyContent="space-between">
+											justifyContent="space-between"
+										>
 											<Stack width="100%">
 												<Typography
 													variant="body1"
@@ -150,7 +155,8 @@ function CourseEnrollmentPage() {
 													sx={{
 														mb: 2,
 														paddingBottom: 1,
-													}}>
+													}}
+												>
 													Total
 												</Typography>
 												<Typography
@@ -163,7 +169,8 @@ function CourseEnrollmentPage() {
 															600
 																? 2
 																: 4,
-													}}>
+													}}
+												>
 													{course.price === 0
 														? "Free"
 														: `E£${course.price}`}
@@ -201,7 +208,8 @@ function CourseEnrollmentPage() {
 												}}
 												onClick={() => {
 													mutate();
-												}}>
+												}}
+											>
 												{" "}
 												Enroll Now
 											</Button>
@@ -230,6 +238,7 @@ function CourseEnrollmentPage() {
 					</PageWrapper>
 					<Footer />
 					<Popup
+						heading="Success!"
 						content="Course enrolled successfully!"
 						openPopup={isSuccess}
 						buttonText="Great!"

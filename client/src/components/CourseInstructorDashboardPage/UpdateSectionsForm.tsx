@@ -206,6 +206,7 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 			</Dialog>
 
 			<Popup
+				heading="Success!"
 				content="Section created"
 				openPopup={isSuccess}
 				buttonText="Great!"

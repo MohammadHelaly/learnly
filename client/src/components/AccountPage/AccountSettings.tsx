@@ -215,12 +215,14 @@ const AccountSettings = () => {
 				</SectionWrapper>
 			</Stack>
 			<Popup
+				heading="Success!"
 				openPopup={isEmailSuccess}
 				content="Email updated Successfully!"
 				buttonText="Great!"
 				popupFunction={EmailPopupfunction}
 			/>
 			<Popup
+				heading="Success!"
 				openPopup={isPasswordSucess}
 				content="Password updated Successfully!"
 				buttonText="Great!"

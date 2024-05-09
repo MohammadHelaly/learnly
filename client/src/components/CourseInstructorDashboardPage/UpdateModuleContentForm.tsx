@@ -118,7 +118,8 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 		<>
 			<IconButton
 				sx={{ mr: 2, color: "black" }}
-				onClick={handleOpenModuleForm}>
+				onClick={handleOpenModuleForm}
+			>
 				<EditIcon />
 			</IconButton>
 			<Dialog
@@ -131,7 +132,8 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 				) => handleCloseModuleForm(event)}
 				aria-describedby="success-dialog-slide-description"
 				maxWidth="sm"
-				fullWidth>
+				fullWidth
+			>
 				<DialogTitle>
 					<SectionHeader
 						heading="Modify Module Information"
@@ -150,7 +152,8 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 					<form
 						onSubmit={handleSectionSubmit(onSubmitSection)}
 						autoComplete="off"
-						noValidate>
+						noValidate
+					>
 						<Stack spacing={2} paddingTop={2}>
 							<Controller
 								name="title"
@@ -176,13 +179,15 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 								disableElevation
 								size="large"
 								type="submit"
-								fullWidth>
+								fullWidth
+							>
 								Update Module
 							</Button>
 						</Stack>
 					</form>
 				</DialogContent>
 				<Popup
+					heading="Success!"
 					content="Module updated successfully!"
 					openPopup={isSuccess}
 					buttonText="Great!"

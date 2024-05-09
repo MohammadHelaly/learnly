@@ -214,6 +214,7 @@ const SignUpForm = () => {
 				</Button>
 			</form>
 			<Popup
+				heading="Error!"
 				content={"Email already exists"}
 				openPopup={isError}
 				buttonText={"Close"}

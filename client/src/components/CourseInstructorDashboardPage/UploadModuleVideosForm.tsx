@@ -170,6 +170,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="video uploaded successfully!"
 				openPopup={isModuleSuccess}
 				buttonText="Great!"

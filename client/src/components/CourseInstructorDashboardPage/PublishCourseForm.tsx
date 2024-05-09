@@ -160,6 +160,7 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				</DialogContent>
 			</Dialog>
 			<Popup
+				heading="Success!"
 				content="Course published successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"

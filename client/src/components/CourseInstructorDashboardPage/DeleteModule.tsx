@@ -39,10 +39,12 @@ function DeleteModule(props: DeleteModuleProps) {
 		<>
 			<IconButton
 				sx={{ color: "common.black", ml: 2 }}
-				onClick={handleDeleteModule}>
+				onClick={handleDeleteModule}
+			>
 				<HighlightOffIcon />
 			</IconButton>
 			<Popup
+				heading="Success!"
 				content="Module removed successfully!"
 				openPopup={isSuccess}
 				buttonText="Great!"

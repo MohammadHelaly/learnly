@@ -30,6 +30,7 @@ import resizeImageFile from "../../helpers/resizeImageFile";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import categoriesArray from "../../assets/data/categories";
+import Popup from "../Popup/Popup";
 
 const schema = z.object({
 	name: z
@@ -114,6 +115,12 @@ const UpdateCourseInformationForm = (
 	// Reference for the file input
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["courses", { courseId }],
+		});
+	};
+
 	const {
 		control,
 		handleSubmit,
@@ -136,16 +143,11 @@ const UpdateCourseInformationForm = (
 		shouldTouch: true,
 	};
 
-	const { mutate, isPending } = useMutation({
+	const { mutate, isPending, isSuccess } = useMutation({
 		mutationFn: (data: Partial<CourseInformationSchemaType>) => {
 			return api.patch(`/courses/${courseId}`, { ...data });
 		},
-		onSuccess: (response) => {
-			alert("Course updated successfully.");
-			queryClient.invalidateQueries({
-				queryKey: ["courses", { courseId }],
-			});
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -963,6 +965,13 @@ const UpdateCourseInformationForm = (
 					</SectionWrapper>
 				</Stack>
 			</form>
+			<Popup
+				openPopup={isSuccess}
+				heading="Success!"
+				content="Course updated successfully"
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</FormContainer>
 		// </PageWrapper>
 	);

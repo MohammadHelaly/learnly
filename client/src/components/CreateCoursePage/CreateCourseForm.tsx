@@ -918,6 +918,7 @@ const CreateCourseForm = () => {
 				</Stack>
 			</form>
 			<Popup
+				heading="Success!"
 				content={"Course created Successfully!"}
 				openPopup={isSuccess}
 				buttonText={"Go to Dashboard"}

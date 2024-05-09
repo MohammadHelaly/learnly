@@ -11,6 +11,7 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Box from "@mui/material/Box";
 
 interface PopupProps {
+	heading: string;
 	content: string;
 	openPopup: boolean;
 	buttonText: string;
@@ -27,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const Popup = (props: PopupProps) => {
-	const { content, openPopup, buttonText, popupFunction } = props;
+	const { heading, content, openPopup, buttonText, popupFunction } = props;
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -50,7 +51,7 @@ const Popup = (props: PopupProps) => {
 		>
 			<DialogTitle>
 				<SectionHeader
-					heading="Success!"
+					heading={heading}
 					headingAlignment="left"
 					sx={{ mb: 0, textAlign: "left" }}
 				/>

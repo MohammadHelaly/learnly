@@ -98,6 +98,7 @@ function DeleteChannelForm(props: DeleteChannelFormProps) {
 				dialogFunction={handleDeleteChannel}
 			/>
 			<Popup
+				heading="Success!"
 				content="Channel deleted successfully!"
 				openPopup={isChannelSuccess}
 				buttonText="Great!"

@@ -185,6 +185,7 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 				</Stack>
 			</form>
 			<Popup
+				heading="Success!"
 				openPopup={isSuccess}
 				content="Review updated successfully!"
 				buttonText="Great!"
