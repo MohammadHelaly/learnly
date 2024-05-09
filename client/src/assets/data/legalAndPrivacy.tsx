@@ -194,6 +194,11 @@ const legalAndPrivacy: LegalAndPrivacy[] = [
 			// 	secondary:
 			// 		"Users and contributors can join Learnly's community forums or Slack channel for support and discussion. We encourage sharing knowledge, providing feedback, and building a thriving learning environment.",
 			// },
+			{
+				primary: "5.6. Attribution",
+				secondary:
+					"Images used on this website are sourced from Vecteezy and Storyset on Freepik. We appreciate the talented designers, photographers and artists who share their work with the world.",
+			},
 		],
 	},
 	{

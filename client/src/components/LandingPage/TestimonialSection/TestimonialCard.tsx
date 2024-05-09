@@ -31,11 +31,11 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 				transition: `opacity 0.75s ease-in-out ${delay}s, transform 0.75s ease-in-out ${delay}s, border-radius 0.5s ease-in-out 0s`,
 				opacity: 0,
 				transform: "translateX(-100%)",
-				borderRadius: 0,
+				borderRadius: 1,
 				borderEndStartRadius: 70,
 				borderTopRightRadius: 70,
 				"&:hover": {
-					borderRadius: 0, // 2
+					borderRadius: 1,
 				},
 				width: 290,
 			}}>

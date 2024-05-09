@@ -3,7 +3,9 @@ import CallToAction from "../components/UI/PageLayout/CallToAction";
 import Footer from "../components/Footer/Footer";
 import HomeSection from "../components/UI/PageLayout/HomeSection";
 import InformationSection from "../components/UI/PageLayout/InformationSection";
-import photo from "../assets/images/shot-data-center-multiple-rows-260nw-1394052911.png";
+import buildYourCareerPhoto from "../assets/images/build-your-career.jpg";
+import globalCommunityOfLearnersPhoto from "../assets/images/global-community-of-learners.jpg";
+import yourSuccessIsOurSuccessPhoto from "../assets/images/your-success-is-our-success.jpg";
 
 const CareersPage = () => {
 	return (
@@ -25,19 +27,19 @@ const CareersPage = () => {
 						title: "Build Your Career with Learnly",
 						description:
 							"Opportunities for growth and development are endless at Learnly. You can build your career and make a difference in the lives of others.",
-						image: photo,
+						image: buildYourCareerPhoto,
 					},
 					{
 						title: "Connect with a Global Community of Learners",
 						description:
 							"Join a diverse community of learners and instructors from around the world. Share your knowledge and learn from others.",
-						image: photo,
+						image: globalCommunityOfLearnersPhoto,
 					},
 					{
 						title: "Your Success is Our Success",
 						description:
 							"We are committed to helping you succeed. Our platform is designed to help you reach your goals and achieve your dreams.",
-						image: photo,
+						image: yourSuccessIsOurSuccessPhoto,
 					},
 				]}
 			/>

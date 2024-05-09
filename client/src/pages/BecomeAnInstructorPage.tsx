@@ -3,7 +3,9 @@ import HomeSection from "../components/UI/PageLayout/HomeSection";
 import InformationSection from "../components/UI/PageLayout/InformationSection";
 import CallToAction from "../components/UI/PageLayout/CallToAction";
 import Footer from "../components/Footer/Footer";
-import photo from "../assets/images/shot-data-center-multiple-rows-260nw-1394052911.png";
+import createACoursePhoto from "../assets/images/create-a-course.jpg";
+import interactWithStudentsPhoto from "../assets/images/interact-with-students.jpg";
+import buildYourBrandPhoto from "../assets/images/build-your-brand.jpg";
 
 const BecomeAnInstructorPage = () => {
 	return (
@@ -22,19 +24,19 @@ const BecomeAnInstructorPage = () => {
 						title: "Create a Course",
 						description:
 							"Share your expertise with the world. Create a course and reach millions of learners. Our Dashboard makes it easy to get started, customize your course, and publish it.",
-						image: photo,
+						image: createACoursePhoto,
 					},
 					{
 						title: "Interact with Students",
 						description:
 							"Engage with students and answer their questions. Our platform allows you to interact with learners, provide feedback, and support their learning journey.",
-						image: photo,
+						image: interactWithStudentsPhoto,
 					},
 					{
 						title: "Build Your Brand",
 						description:
 							"Build your brand and credibility. Add an endearing bio and upload a nice photo of yourself to make your profile stand out!",
-						image: photo,
+						image: buildYourBrandPhoto,
 					},
 				]}
 			/>

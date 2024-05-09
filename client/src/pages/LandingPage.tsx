@@ -5,7 +5,9 @@ import CallToAction from "../components/UI/PageLayout/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";
 import Footer from "../components/Footer/Footer";
 import AnimatedPage from "./AnimatedPage";
-import photo from "../assets/images/shot-data-center-multiple-rows-260nw-1394052911.png";
+import levelUpPhoto from "../assets/images/level-up.jpg";
+import worldClassInstructorsPhoto from "../assets/images/world-class-instructors.jpg";
+import vastArrayOfSpecializationsPhoto from "../assets/images/vast-array-of-specializations.jpg";
 
 const LandingPage = () => {
 	return (
@@ -36,19 +38,19 @@ const LandingPage = () => {
 						title: "Level Up with Lifetime Access to Courses",
 						description:
 							"Our courses are designed to help you learn and grow at your own pace. Gain lifetime access to all course materials and content.",
-						image: photo,
+						image: levelUpPhoto,
 					},
 					{
 						title: "Get in Touch with World Class Instructors",
 						description:
 							"Learn from the best! Our instructors are experts in their fields and are here to help you succeed.",
-						image: photo,
+						image: worldClassInstructorsPhoto,
 					},
 					{
 						title: "Explore a Vast Array of Specializations",
 						description:
 							"Choose from a wide range of courses and specializations. Whether you're a beginner or an expert, we have something for everyone.",
-						image: photo,
+						image: vastArrayOfSpecializationsPhoto,
 					},
 				]}
 			/>
