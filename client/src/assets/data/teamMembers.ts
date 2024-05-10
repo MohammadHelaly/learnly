@@ -17,7 +17,7 @@ const teamMembers: TeamMember[] = [
 		role: "Full Stack Developer",
 		photo: moustafaDaebis,
 		description:
-			"The technical genius behind our platform. He leveraged his expertise in frontend and backend development to create Learnly and provide a seamless learning experience for students and instructors worldwide.He's dedicated to making learning accessible to all.",
+			"The technical architect behind our platform. He contributed to both the frontend and backend development of Learnly, ensuring a seamless user experience. He's passionate about building scalable applications that make a difference.",
 		email: "moustafa.daebis@outlook.com",
 		linkedIn: "https://www.linkedin.com/in/moustafa-daebis-3a302b216/",
 		github: "https://github.com/Moustafa-Daebis",

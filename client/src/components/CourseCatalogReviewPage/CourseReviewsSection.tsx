@@ -8,6 +8,7 @@ import Reviews from "../UI/Reviews/Reviews";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
+import formatNumber from "../../helpers/formatNumber";
 
 interface CourseReviewsSectionProps {
 	courseId: string | number;
@@ -88,7 +89,7 @@ const CourseReviewsSection = (props: CourseReviewsSectionProps) => {
 									<StarRateIcon fontSize="medium" />
 									{course?.ratingsAverage} out of 5 stars
 									{" ("}
-									{course?.ratingsQuantity}
+									{formatNumber(course?.ratingsQuantity)}
 									{" ratings)"}
 								</>
 							}

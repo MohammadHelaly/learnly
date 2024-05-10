@@ -1,5 +1,6 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import CardNavLink from "../../Links/CardNavLink";
+import formatNumber from "../../../../helpers/formatNumber";
 
 interface StudentDashboardCourseCardProps
 	extends Pick<
@@ -104,7 +105,7 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 							color="text.secondary"
 							sx={{ fontWeight: 400 }}>
 							{"("}
-							{ratingsQuantity}
+							{formatNumber(ratingsQuantity)}
 							{")"}
 						</Typography>
 					</Stack>

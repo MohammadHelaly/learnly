@@ -1,5 +1,6 @@
 import { Box, Stack, Typography, Avatar, Rating } from "@mui/material";
 import { People, CastForEducation } from "@mui/icons-material";
+import formatNumber from "../../../helpers/formatNumber";
 
 interface UserInformationContentProps
 	extends Pick<
@@ -77,7 +78,7 @@ const UserInformationContent = (props: UserInformationContentProps) => {
 								/>
 								<Typography variant="h5" color="text.primary">
 									{"("}
-									{ratingsQuantity}
+									{formatNumber(ratingsQuantity)}
 									{")"}
 								</Typography>
 							</Stack>
@@ -93,7 +94,8 @@ const UserInformationContent = (props: UserInformationContentProps) => {
 								alignItems="center">
 								<CastForEducation />
 								<Typography variant="h5">
-									{coursesCreated?.length} Course(s)
+									{formatNumber(coursesCreated?.length)}{" "}
+									Course(s)
 								</Typography>
 							</Stack>
 							<Stack
@@ -108,7 +110,7 @@ const UserInformationContent = (props: UserInformationContentProps) => {
 								alignItems="center">
 								<People />
 								<Typography variant="h5">
-									{students} Student(s)
+									{formatNumber(students)} Student(s)
 								</Typography>
 							</Stack>
 						</>

@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { Rating } from "@mui/material";
 import { CastForEducation, People } from "@mui/icons-material";
+import formatNumber from "../../../helpers/formatNumber";
 
 interface InstructorStatsProps {
 	ratingsAverage: number;
@@ -30,7 +31,7 @@ const InstructorStats = (props: InstructorStatsProps) => {
 				/>
 				<Typography variant="h5" color="text.primary">
 					{"("}
-					{ratingsQuantity}
+					{formatNumber(ratingsQuantity)}
 					{")"}
 				</Typography>
 			</Stack>
@@ -43,7 +44,9 @@ const InstructorStats = (props: InstructorStatsProps) => {
 				alignContent="center"
 				alignItems="center">
 				<CastForEducation />
-				<Typography variant="h5">{courses} Course(s)</Typography>
+				<Typography variant="h5">
+					{formatNumber(courses)} Course(s)
+				</Typography>
 			</Stack>
 			<Stack
 				direction="row"
@@ -54,7 +57,9 @@ const InstructorStats = (props: InstructorStatsProps) => {
 				alignContent="center"
 				alignItems="center">
 				<People />
-				<Typography variant="h5">{students} Student(s)</Typography>
+				<Typography variant="h5">
+					{formatNumber(students) + " Student(s)"}
+				</Typography>
 			</Stack>
 		</Stack>
 	);

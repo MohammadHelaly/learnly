@@ -1,7 +1,7 @@
 import React from "react";
 import PageWrapper from "../PageLayout/PageWrapper";
 import ReviewForm from "../../CourseStudentDashboardPage/ReviewForm";
-import CourseReviews from "../../CourseCatalogPage/CourseReviews";
+import CourseReviews from "./CourseReviews";
 import dummyCourseReviewsData from "../../../assets/data/dummyCourseReviewsData";
 import { useQuery } from "@tanstack/react-query";
 import UpdateReviewForm from "./UpdateReviewForm";

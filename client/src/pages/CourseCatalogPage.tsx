@@ -6,7 +6,7 @@ import CourseBanner from "../components/UI/Courses/Catalog/CourseBanner";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CoursePrerequisitesAndSkills from "../components/CourseCatalogPage/CoursePrerequisitesAndSkills";
 import CourseDescription from "../components/CourseCatalogPage/CourseDescription";
-import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
+import CourseReviews from "../components/UI/Reviews/CourseReviews";
 import CourseContents from "../components/UI/Courses/CourseContents";
 import CourseInstructors from "../components/CourseCatalogPage/CourseInstructors";
 import CourseInformation from "../components/CourseCatalogPage/CourseInformation";

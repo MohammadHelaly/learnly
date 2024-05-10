@@ -15,7 +15,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import CourseReviews from "../components/CourseCatalogPage/CourseReviews";
+import CourseReviews from "../components/UI/Reviews/CourseReviews";
 import CourseHighlights from "../components/CourseCatalogPage/CourseHighlights";
 import CourseCategories from "../components/UI/Courses/CourseCategories";
 import { Typography } from "@mui/material";

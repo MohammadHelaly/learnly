@@ -1,4 +1,5 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
+import formatNumber from "../../../../helpers/formatNumber";
 
 interface EnrollmentCourseCardProps
 	extends Pick<
@@ -102,7 +103,7 @@ const EnrollmentCourseCard = (props: EnrollmentCourseCardProps) => {
 						color="text.secondary"
 						sx={{ fontWeight: 400 }}>
 						{"("}
-						{ratingsQuantity}
+						{formatNumber(ratingsQuantity)}
 						{")"}
 					</Typography>
 				</Stack>
