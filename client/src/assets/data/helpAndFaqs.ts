@@ -6,15 +6,15 @@ const helpAndFaqs: HelpAndFaqs[] = [
 		faqs: [
 			{
 				question: "How do I reset my password?",
-				answer: "To reset your password, click on 'Forgot Password' on the login page, enter your registered email address, and follow the instructions in the email we send you.",
+				answer: "To reset your password, click on 'Forgot Password' on the login page, enter your registered email address, and follow the instructions in the email we send you. Alternatively, if you still have your old password and just wish to change it, you can go to the 'Account' page, select 'Account Settings' then fill out and submit the 'Change Password' form.",
 			},
 			{
 				question: "Can I change my username after registration?",
-				answer: "Yes, you can change your username by visiting the 'Account' page and selecting the 'Edit Profile' option. Remember to save your changes after updating your username.",
+				answer: "Yes, you can change your username by visiting the 'Account' page and selecting 'Your Profile'. Remember to save your changes after updating your username.",
 			},
 			{
 				question: "How do I deactivate or delete my account?",
-				answer: "To deactivate or delete your account, please navigate to the 'Account Settings' page and select the appropriate option. If you encounter issues, reach out to support for guidance.",
+				answer: "To deactivate or delete your account, please navigate to the 'Account' page, select 'Account Settings' then press the 'Deactivate Account' button. If you encounter issues, reach out to support for guidance.",
 			},
 			{
 				question:
@@ -65,7 +65,7 @@ const helpAndFaqs: HelpAndFaqs[] = [
 		faqs: [
 			{
 				question: "How do I access course materials?",
-				answer: "After enrolling, course materials are available under 'Your Learning' on your dashboard. You can access the course sections and modules directly from there.",
+				answer: "After enrolling, course materials are available under 'Your Learning' on your dashboard. You can click on the course, go to the course page and access the course sections and modules directly from there.",
 			},
 			{
 				question: "Can I take multiple courses simultaneously?",
@@ -100,7 +100,7 @@ const helpAndFaqs: HelpAndFaqs[] = [
 			// },
 			{
 				question: "Is there a community for students to interact?",
-				answer: "Yes, students can join course-based discussion forums and topic-specific groups where they can interact, share resources, and collaborate on projects.",
+				answer: "Yes, students can join any course's channel where they can interact, share resources, and collaborate on projects.",
 			},
 			{
 				question:
@@ -114,13 +114,13 @@ const helpAndFaqs: HelpAndFaqs[] = [
 		description:
 			"Understand how Learnly protects your data, manages compliance, and maintains a secure environment.",
 		faqs: [
-			{
-				question: "How does Learnly handle personal data privacy?",
-				answer: "We are committed to safeguarding your data. Learnly complies with GDPR, CCPA, and other data privacy regulations. Please refer to our Privacy Policy for details on data collection, storage, and usage.",
-			},
+			// {
+			// 	question: "How does Learnly handle personal data privacy?",
+			// 	answer: "We are committed to safeguarding your data. Learnly complies with GDPR, CCPA, and other data privacy regulations. Please refer to our Privacy Policy for details on data collection, storage, and usage.",
+			// },
 			{
 				question: "How does Learnly ensure my account is secure?",
-				answer: "We use industry-standard encryption and security practices. Users are encouraged to enable two-factor authentication and use strong, unique passwords.",
+				answer: "We use industry-standard security practices. Users are encouraged to use strong, unique passwords.",
 			},
 			// {
 			// 	question: "Is my payment information secure?",
@@ -163,21 +163,21 @@ const helpAndFaqs: HelpAndFaqs[] = [
 		faqs: [
 			{
 				question: "How do I search for courses on Learnly?",
-				answer: "Use the search bar at the top of the homepage. Enter course titles, topics, or keywords, and you'll see a list of relevant courses.",
+				answer: "Use the search bar at the top of the 'Catalog' page. Enter course titles, topics, or keywords, and you'll see a list of relevant courses.",
 			},
 			{
 				question: "Where can I see my enrolled courses?",
-				answer: "Enrolled courses appear under 'Your Learning' on your dashboard, where you can access individual modules, track progress, and resume where you left off.",
+				answer: "Enrolled courses appear under 'Your Learning' on your dashboard, where you can access individual sections, modules and resume where you left off.",
 			},
-			{
-				question: "Can I customize my dashboard?",
-				answer: "You can personalize your dashboard by marking preferred courses as favorites and arranging them for quick access. Additionally, you can use filters to sort courses by progress or relevance.",
-			},
-			{
-				question:
-					"What accessibility features are available on Learnly?",
-				answer: "Learnly provides screen reader compatibility, keyboard navigation, and video captions. We continually update our platform to meet accessibility standards.",
-			},
+			// {
+			// 	question: "Can I customize my dashboard?",
+			// 	answer: "You can personalize your dashboard by marking preferred courses as favorites and arranging them for quick access. Additionally, you can use filters to sort courses by progress or relevance.",
+			// },
+			// {
+			// 	question:
+			// 		"What accessibility features are available on Learnly?",
+			// 	answer: "Learnly provides screen reader compatibility, keyboard navigation, and video captions. We continually update our platform to meet accessibility standards.",
+			// },
 		],
 	},
 	{
@@ -187,21 +187,21 @@ const helpAndFaqs: HelpAndFaqs[] = [
 		faqs: [
 			{
 				question: "How do I create and manage my courses?",
-				answer: "Instructors can create and manage courses through the 'Instructor Dashboard,' where you can upload materials, set up assignments, and monitor student progress.",
+				answer: "Instructors can create and manage courses through the instructor dashboard, where you can upload materials, set up assignments, and monitor student progress.",
 			},
 			{
 				question: "How do I communicate with my students?",
-				answer: "Use the course messaging system to send announcements, respond to questions, and provide feedback. The discussion forum is also useful for group interactions.",
+				answer: "Use the course channel to send announcements, respond to questions, and provide feedback. The channel is also useful for group interactions.",
 			},
 			{
 				question: "Can I customize my course structure?",
-				answer: "Yes, you can design your courses to suit your teaching style by adding modules, creating quizzes, and setting assignment deadlines.",
+				answer: "Yes, you can design your courses to suit your teaching style by adding sections and modules. You can also rearrange content and update any course details as needed.",
 			},
-			{
-				question:
-					"Are there resources for improving my course quality?",
-				answer: "We provide a library of resources and best practices to help you develop engaging, high-quality courses. Reach out to our support team if you need personalized guidance.",
-			},
+			// {
+			// 	question:
+			// 		"Are there resources for improving my course quality?",
+			// 	answer: "We provide a library of resources and best practices to help you develop engaging, high-quality courses. Reach out to our support team if you need personalized guidance.",
+			// },
 		],
 	},
 ];
