@@ -25,7 +25,7 @@ import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
 import "./App.css";
-import Livestreamdev from "./pages/Livestreamdev";
+import LivestreamPage from "./pages/LivestreamPage";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -170,8 +170,10 @@ function App() {
 						/>
 						<Route path="/legal" element={<LandingPage />} />
 						<Route path="*" element={<LandingPage />} />
-						<Route path="/livestreamdev" element={<Livestreamdev />} />
-
+						<Route
+							path="/livestream"
+							element={<LivestreamPage />}
+						/>
 					</Routes>
 				</AnimatePresence>
 			</Box>

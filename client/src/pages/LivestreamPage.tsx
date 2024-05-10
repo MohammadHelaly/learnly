@@ -18,8 +18,8 @@ import {
 	FiberManualRecord,
 	Stop,
 } from "@mui/icons-material";
-import Livechat from "../components/LiveStream/Livechat";
-import DrawerList from "../components/LiveStream/DrawerList";
+import Livechat from "../components/LiveStreamPage/Livechat";
+import DrawerList from "../components/LiveStreamPage/DrawerList";
 import PageWrapper from "../components/UI/PageLayout/PageWrapper";
 import SectionWrapper from "../components/UI/PageLayout/SectionWrapper";
 import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
@@ -239,15 +239,13 @@ const Livestreamdev: React.FC = () => {
 					maxHeight: "100vh",
 					mt: 0,
 					mb: 0,
-				}}
-			>
+				}}>
 				<Stack
 					direction="column"
 					spacing={0.1}
 					display="flex"
 					justifyContent="flex-start"
-					sx={{ mt: 8, mb: 0, pb: 0 }}
-				>
+					sx={{ mt: 8, mb: 0, pb: 0 }}>
 					{/* <Container maxWidth="lg"> */}
 					<Box
 						sx={{
@@ -256,14 +254,12 @@ const Livestreamdev: React.FC = () => {
 							justifyContent: "flex-end", // Align elements to the far right
 							height: "100%",
 							mt: window.innerWidth > 600 ? 8 : 7,
-						}}
-					>
+						}}>
 						<Box
 							sx={{
 								height: "200hv",
 								width: "100mv",
-							}}
-						>
+							}}>
 							<div
 								ref={videoGrid}
 								id="video-grid"
@@ -296,16 +292,14 @@ const Livestreamdev: React.FC = () => {
 							gap: 2,
 							alignContent: "center",
 							justifyItems: "center",
-						}}
-					>
+						}}>
 						<IconButton
 							onClick={toggleMute}
 							color="primary"
 							sx={{
 								backgroundColor: "white",
 								borderRadius: "100%",
-							}}
-						>
+							}}>
 							{muted ? <MicOff /> : <Mic />}
 						</IconButton>
 						<IconButton
@@ -314,8 +308,7 @@ const Livestreamdev: React.FC = () => {
 							sx={{
 								backgroundColor: "white",
 								borderRadius: "100%",
-							}}
-						>
+							}}>
 							{cameraEnabled ? <VideocamOff /> : <Videocam />}
 						</IconButton>
 						<IconButton
@@ -324,8 +317,7 @@ const Livestreamdev: React.FC = () => {
 							sx={{
 								backgroundColor: "white",
 								borderRadius: "100%",
-							}}
-						>
+							}}>
 							{recording ? <Stop /> : <FiberManualRecord />}
 						</IconButton>
 						<IconButton
@@ -334,8 +326,7 @@ const Livestreamdev: React.FC = () => {
 								backgroundColor: "white",
 								borderRadius: "100%",
 							}}
-							onClick={toggleDrawer()}
-						>
+							onClick={toggleDrawer()}>
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
@@ -347,8 +338,7 @@ const Livestreamdev: React.FC = () => {
 									backgroundColor: "red",
 									color: "white",
 								},
-							}}
-						>
+							}}>
 							<CallEndRoundedIcon />
 						</IconButton>
 					</Box>
