@@ -24,7 +24,7 @@ const teamMembers: TeamMember[] = [
   },
   {
     name: "Mohamed Shamarka",
-    role: "Back-end Developer",
+    role: "Back-End Developer",
     photo: Shamarka,
     description:
       "The backbone of its technical foundation. His Knowledge and dedication have been vital in shaping Learnly into a dynamic and efficient platform for educational growth.",
