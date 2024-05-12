@@ -115,7 +115,7 @@ io.on("connection", (socket) => {
 
 	socket.on('send-live-chat-msg',(payload)=>{
 		console.log(payload.msg.text,payload.msg.sender,payload.room)
-		socket.broadcast.to(100).emit('receive-msg', payload.msg);
+		socket.broadcast.to(payload.room).emit('receive-msg', payload.msg);
 	})
 
 });

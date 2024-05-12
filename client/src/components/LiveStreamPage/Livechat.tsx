@@ -94,19 +94,6 @@ const Livechat: React.FC = () => {
 						</div>
 					))}
 				</div>
-				{/* <Box sx={{ pt: 6 }}>
-					<div></div>
-				</Box> */}
-				{/* <Box
-						sx={{
-							
-							overflow: "hidden",
-							border: 1,
-							borderBottom: 1,
-							borderColor: "divider",
-							p: 2,
-						}}
-					></Box> */}
 				<Stack
 					direction="row"
 					spacing={3}
@@ -116,12 +103,11 @@ const Livechat: React.FC = () => {
 						bottom: 0,
 						left: 1151,
 						backgroundColor: "#f5f5f5",
-						// width: "100%",
 						border: 1,
 						borderTop: 1,
 						borderColor: "divider",
-						p: 2,
-						pr: 4,
+						padding:"16px",
+					
 						overflow: "hidden",
 						boxShadow: "none !important",
 					}}>
