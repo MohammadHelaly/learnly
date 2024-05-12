@@ -30,7 +30,7 @@ const teamMembers: TeamMember[] = [
       "The backbone of its technical foundation. His Knowledge and dedication have been vital in shaping Learnly into a dynamic and efficient platform for educational growth.",
     email: "mohamed.shamarka30@gmail.com",
     linkedIn: "https://www.linkedin.com/in/mohamed-shamarka",
-    github: "https://wwww.github.com/Shamarka",
+    github: "https://github.com/Shamarka",
   },
   {
     name: "Mohammad Helaly",
