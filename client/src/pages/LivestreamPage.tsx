@@ -26,6 +26,7 @@ import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
 import PhoneEnabledRoundedIcon from "@mui/icons-material/PhoneEnabledRounded";
 import { CardMedia } from "@mui/material";
 import CallEndRoundedIcon from "@mui/icons-material/CallEndRounded";
+import { NavLink } from "react-router-dom";
 
 interface PeersRecord {
 	[userId: string]: { call: MediaConnection; video: HTMLVideoElement };
@@ -230,6 +231,7 @@ const Livestreamdev: React.FC = () => {
 		}
 	};
 	return (
+<<<<<<< HEAD
 <>
     <DrawerList toggleDrawerFlag={openDrawer} />
     <PageWrapper
@@ -281,6 +283,59 @@ const Livestreamdev: React.FC = () => {
                     />
                 </Box>
             </Box>
+=======
+		<>
+			<DrawerList toggleDrawerFlag={openDrawer} />
+			<PageWrapper
+				sx={{
+					backdropFilter: "blur(8px)",
+					backgroundColor: "transparent",
+					color: "transparent",
+					maxHeight: "100vh",
+					mt: 0,
+					mb: 0,
+				}}
+			>
+				<Stack
+					direction="column"
+					spacing={0.1}
+					display="flex"
+					justifyContent="flex-start"
+					sx={{ mt: 8, mb: 0, pb: 0 }}
+				>
+					{/* <Container maxWidth="lg"> */}
+					<Box
+						sx={{
+							display: "flex",
+							flexDirection: "row", // Ensure elements are laid out horizontally
+							justifyContent: "flex-end", // Align elements to the far right
+							height: "100%",
+							mt: window.innerWidth > 600 ? 8 : 7,
+						}}
+					>
+						<Box
+							sx={{
+								height: "200hv",
+								width: "100mv",
+							}}
+						>
+							<div
+								ref={videoGrid}
+								id="video-grid"
+								style={{
+									display: "grid",
+									gridTemplateColumns:
+										"repeat(auto-fill, minmax(1000px, 1fr))",
+									gridAutoRows: "550px",
+									gap: "20px",
+									justifyContent: "start",
+									// padding: "10px",
+								}}
+							/>
+						</Box>
+					</Box>
+					{/* </Container> */}
+>>>>>>> 338e0834ff7009b87e5d069803f9519ac5c1b713
 
             <Box
                 sx={{
@@ -328,6 +383,7 @@ const Livestreamdev: React.FC = () => {
 						onClick={recording ? stopRecording : startRecording}
 						color="primary"
 						sx={{
+<<<<<<< HEAD
 							backgroundColor: "white",
 							borderRadius: "100%",
 						}}>
@@ -364,6 +420,82 @@ const Livestreamdev: React.FC = () => {
     </PageWrapper>
 </>
 
+=======
+							zIndex: 10,
+							mx: "auto",
+							pt: 3,
+							bottom: 0,
+							//position: "fixed",
+							width: "100%",
+							display: "flex",
+							flexDirection: "row",
+							justifyContent: "center",
+							alignItems: "center",
+							gap: 2,
+							alignContent: "center",
+							justifyItems: "center",
+						}}
+					>
+						<IconButton
+							onClick={toggleMute}
+							color="primary"
+							sx={{
+								backgroundColor: "white",
+								borderRadius: "100%",
+							}}
+						>
+							{muted ? <MicOff /> : <Mic />}
+						</IconButton>
+						<IconButton
+							onClick={toggleCamera}
+							color="primary"
+							sx={{
+								backgroundColor: "white",
+								borderRadius: "100%",
+							}}
+						>
+							{cameraEnabled ? <VideocamOff /> : <Videocam />}
+						</IconButton>
+						<IconButton
+							onClick={recording ? stopRecording : startRecording}
+							color="primary"
+							sx={{
+								backgroundColor: "white",
+								borderRadius: "100%",
+							}}
+						>
+							{recording ? <Stop /> : <FiberManualRecord />}
+						</IconButton>
+						<IconButton
+							color="primary"
+							sx={{
+								backgroundColor: "white",
+								borderRadius: "100%",
+							}}
+							onClick={toggleDrawer()}
+						>
+							<ChatRoundedIcon />
+						</IconButton>
+						<IconButton
+							sx={{
+								color: "white",
+								backgroundColor: "red",
+								borderRadius: "100%",
+								"&:hover": {
+									backgroundColor: "rgb(255, 0, 0, 0.8)",
+									color: "white",
+								},
+							}}
+							component={NavLink}
+							to={`/dashboard`}
+						>
+							<CallEndRoundedIcon />
+						</IconButton>
+					</Box>
+				</Stack>
+			</PageWrapper>
+		</>
+>>>>>>> 338e0834ff7009b87e5d069803f9519ac5c1b713
 	);
 };
 
