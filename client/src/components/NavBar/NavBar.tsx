@@ -109,7 +109,8 @@ const NavBar = () => {
 						: "none",
 				transition: "all 0.5s ease",
 				zIndex: 3,
-			}}>
+			}}
+		>
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<Typography
@@ -122,10 +123,12 @@ const NavBar = () => {
 							letterSpacing: ".1rem",
 							color: "inherit",
 							textDecoration: "none",
-						}}>
+						}}
+					>
 						<StyledNavLink
 							to="/"
-							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
+							sx={{ color: scrolled ? "#000000" : "#ffffff" }}
+						>
 							Learnly
 						</StyledNavLink>
 					</Typography>
@@ -133,7 +136,8 @@ const NavBar = () => {
 						sx={{
 							flexGrow: 1,
 							display: { xs: "flex", md: "none" },
-						}}>
+						}}
+					>
 						<IconButton
 							size="large"
 							edge="start"
@@ -142,19 +146,22 @@ const NavBar = () => {
 							aria-controls="menu-appbar"
 							aria-haspopup="true"
 							onClick={handleOpenLeftDrawer}
-							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
+							sx={{ color: scrolled ? "#000000" : "#ffffff" }}
+						>
 							<Menu />
 						</IconButton>
 						<SwipeableDrawer
 							anchor="left"
 							open={isLeftDrawerOpen}
 							onOpen={handleOpenLeftDrawer}
-							onClose={handleCloseLeftDrawer}>
+							onClose={handleCloseLeftDrawer}
+						>
 							<Box
 								p={2}
 								width="250px"
 								textAlign="center"
-								role="presentation">
+								role="presentation"
+							>
 								<Typography
 									variant="h6"
 									onClick={handleCloseLeftDrawer}
@@ -167,12 +174,14 @@ const NavBar = () => {
 										color: "#000000",
 										textDecoration: "none",
 										paddingBottom: 2,
-									}}>
+									}}
+								>
 									<StyledNavLink
 										to="/"
 										sx={{
 											color: "inherit",
-										}}>
+										}}
+									>
 										Learnly
 									</StyledNavLink>
 								</Typography>
@@ -184,7 +193,8 @@ const NavBar = () => {
 												? "courses"
 												: page.toLowerCase()
 										}`}
-										onClick={handleCloseLeftDrawer}>
+										onClick={handleCloseLeftDrawer}
+									>
 										<MenuItem>
 											<Typography textAlign="center">
 												{page}
@@ -206,10 +216,12 @@ const NavBar = () => {
 							letterSpacing: ".1rem",
 							color: "inherit",
 							textDecoration: "none",
-						}}>
+						}}
+					>
 						<StyledNavLink
 							to="/"
-							sx={{ color: scrolled ? "#000000" : "#ffffff" }}>
+							sx={{ color: scrolled ? "#000000" : "#ffffff" }}
+						>
 							Learnly
 						</StyledNavLink>
 					</Typography>
@@ -217,7 +229,8 @@ const NavBar = () => {
 						sx={{
 							flexGrow: 1,
 							display: { xs: "none", md: "flex" },
-						}}>
+						}}
+					>
 						{leftDrawerPages.map((page) => (
 							<StyledNavLink
 								key={page}
@@ -225,13 +238,15 @@ const NavBar = () => {
 									page === "Catalog"
 										? "courses"
 										: page.toLowerCase()
-								}`}>
+								}`}
+							>
 								<Button
 									onClick={handleCloseLeftDrawer}
 									color="inherit"
 									sx={{
 										color: scrolled ? "#000000" : "#ffffff",
-									}}>
+									}}
+								>
 									{page}
 								</Button>
 							</StyledNavLink>
@@ -253,7 +268,8 @@ const NavBar = () => {
 											backgroundColor: "primary.main",
 											color: "#ffffff",
 										},
-									}}>
+									}}
+								>
 									<FavoriteBorderOutlined />
 								</Button>
 								<Button
@@ -269,7 +285,8 @@ const NavBar = () => {
 											backgroundColor: "primary.main",
 											color: "#ffffff",
 										},
-									}}>
+									}}
+								>
 									<ShoppingCartOutlined />
 								</Button>
 							</ButtonGroup> */}
@@ -296,6 +313,7 @@ const NavBar = () => {
 											src={authContext.user?.photo?.url}
 											sx={{
 												backgroundColor: "primary.main",
+												zIndex: 3,
 											}}
 										/>
 									</IconButton>
@@ -305,12 +323,14 @@ const NavBar = () => {
 									anchor="right"
 									open={isRightDrawerOpen}
 									onOpen={handleOpenRightDrawer}
-									onClose={handleCloseRightDrawer}>
+									onClose={handleCloseRightDrawer}
+								>
 									<Box
 										p={2}
 										width="250px"
 										textAlign="center"
-										role="presentation">
+										role="presentation"
+									>
 										<Typography
 											variant="h6"
 											noWrap
@@ -324,16 +344,16 @@ const NavBar = () => {
 												color: "#000000",
 												textDecoration: "none",
 												paddingBottom: 2,
-											}}>
+											}}
+										>
 											Your Account
 										</Typography>
 										{rightDrawerPages.map((page) => (
 											<StyledNavLink
 												key={page}
 												to={`/${page.toLowerCase()}`}
-												onClick={
-													handleCloseRightDrawer
-												}>
+												onClick={handleCloseRightDrawer}
+											>
 												<MenuItem>
 													<Typography textAlign="center">
 														{page}
@@ -347,7 +367,8 @@ const NavBar = () => {
 											sx={{
 												color: "red",
 												fontWeight: 700,
-											}}>
+											}}
+										>
 											<Typography textAlign="center">
 												Logout
 											</Typography>
@@ -375,7 +396,8 @@ const NavBar = () => {
 											borderColor: "primary.main",
 											color: "#ffffff",
 										},
-									}}>
+									}}
+								>
 									Log in
 								</Button>
 							</StyledNavLink>
@@ -396,7 +418,8 @@ const NavBar = () => {
 											borderColor: "primary.main",
 											color: "primary.main",
 										},
-									}}>
+									}}
+								>
 									Sign up
 								</Button>
 							</StyledNavLink>

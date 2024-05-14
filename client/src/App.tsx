@@ -30,6 +30,7 @@ import LegalPage from "./pages/LegalPage";
 import HelpPage from "./pages/HelpPage";
 import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
 import "./App.css";
+import LivestreamPage from "./pages/LivestreamPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import AccountPage from "./pages/AccountPage";
 
@@ -182,6 +183,10 @@ function App() {
 						/>
 						<Route path="/legal" element={<LegalPage />} />
 						<Route path="*" element={<LandingPage />} />
+						<Route
+							path="/livestream"
+							element={<LivestreamPage />}
+						/>
 					</Routes>
 				</AnimatePresence>
 			</Box>

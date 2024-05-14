@@ -90,4 +90,32 @@ io.on("connection", (socket) => {
 				.emit("new edited message", newContent);
 		}
 	});
+
+	
+	socket.on('join-room', (roomId, userId) => {
+		console.log('joined room')
+		socket.join(roomId);
+		socket.to(roomId).emit('user-connected', userId);
+		socket.on('disconnect', () => {
+			socket.to(roomId).emit('user-disconnected', userId);
+		});
+	});
+
+	
+	socket.on('get-room-size', (roomId, callback) => {
+		const room = io.sockets.adapter.rooms.get(roomId);
+		const count = room ? room.size : 0;
+		callback(count);
+	});
+
+	socket.on('join-live-chat',(roomId)=>{
+		//join chat room of live meeting
+		socket.join(roomId)
+	})
+
+	socket.on('send-live-chat-msg',(payload)=>{
+		console.log(payload.msg.text,payload.msg.sender,payload.room)
+		socket.broadcast.to(payload.room).emit('receive-msg', payload.msg);
+	})
+
 });
