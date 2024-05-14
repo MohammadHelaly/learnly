@@ -1,5 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-import { Button, Box, Stack, TextField, Container } from "@mui/material";
+import {
+	Button,
+	Box,
+	Stack,
+	TextField,
+	Container,
+	Typography,
+} from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import AuthContext from "../../store/auth-context";
@@ -9,11 +16,13 @@ import MessageBubble from "../ChannelPage/MessageBubble";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import api from "../../api";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const schema = z.object({
 	content: z
 		.string()
@@ -62,6 +71,40 @@ const Channel = (props: ChannelProps) => {
 		queryFn: async () => await api.get(`/channels/${channelId}`),
 		select: (response) => response.data.data.data,
 	});
+
+	const {
+		data: messages,
+		error: messagesError,
+		status: messagesLoading,
+		fetchNextPage: fetchNextPageMessages,
+		isFetchingNextPage: isFetchingNextPageMessages,
+	} = useInfiniteQuery({
+		queryKey: ["channelmessages", { channelId }],
+		queryFn: async ({ pageParam = 0 }) => {
+			const response = await api.get(`/channels/${channelId}/messages`, {
+				params: {
+					channel: channelId,
+					page: pageParam,
+					limit: 15,
+					sort: "-createdAt",
+				},
+			});
+			return response.data.data.data;
+		},
+		initialPageParam: 1,
+		getNextPageParam: (lastPage, allPages) => {
+			if (lastPage.length < 15) return undefined;
+			return allPages.length + 1;
+		},
+	});
+
+	const { ref, inView } = useInView();
+
+	useEffect(() => {
+		if (inView) {
+			fetchNextPageMessages();
+		}
+	}, [fetchNextPageMessages, inView]);
 
 	const {
 		mutate: sendMessage,
@@ -131,8 +174,13 @@ const Channel = (props: ChannelProps) => {
 	}, [socket, allMessages]);
 
 	useEffect(() => {
-		setAllMessages(channel?.messages);
-	}, [channel]);
+		if (messages) {
+			const newMessages =
+				messages?.pages?.[messages?.pages?.length - 1].reverse();
+			const msgs = [...newMessages, ...allMessages];
+			setAllMessages(msgs);
+		}
+	}, [messages]);
 
 	const editMessage = (message: Partial<Message>) => {
 		const updatedMessages = allMessages?.map((existingMessage) => {
@@ -152,23 +200,60 @@ const Channel = (props: ChannelProps) => {
 		reset();
 	};
 
+	const [isAtBottom, setIsAtBottom] = useState(true);
+
+	const handleScroll = () => {
+		const bottom =
+			Math.ceil(window.innerHeight + window.scrollY) >=
+			document.documentElement.scrollHeight;
+
+		setIsAtBottom(bottom);
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll, {
+			passive: true,
+		});
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (isAtBottom && allMessages.length > 0) {
+			window.scrollTo({
+				top: document.documentElement.scrollHeight,
+				behavior: "smooth",
+			});
+		}
+	}, [allMessages, isAtBottom]);
+
 	return (
 		<PageWrapper
 			sx={{
 				backgroundColor: "#f5f5f5",
-			}}>
+			}}
+		>
 			<SectionWrapper sx={{ pb: 8 }}>
 				<Container maxWidth="lg">
-					{channelLoading ? (
-						<Stack
-							direction="column"
-							justifyContent="flex-start"
-							sx={{
-								minHeight: "100vh",
-								overflowY: "scroll",
-								scrollbarWidth: "none",
-							}}></Stack>
-					) : channelError || !channel ? (
+					{messagesLoading === "pending" || channelLoading ? (
+						<>
+							<Stack
+								direction="column"
+								justifyContent="flex-start"
+								sx={{
+									minHeight: "100vh",
+									overflowY: "scroll",
+									scrollbarWidth: "none",
+								}}
+							></Stack>
+						</>
+					) : messagesLoading === "error" ||
+					  channelError ||
+					  !channel ||
+					  messagesError ||
+					  !messages ? (
 						<ErrorWarning />
 					) : (
 						<>
@@ -181,6 +266,7 @@ const Channel = (props: ChannelProps) => {
 									borderColor: "divider",
 								}}
 							/>
+							<Box ref={ref} />
 							<Stack
 								direction="column"
 								justifyContent="flex-start"
@@ -189,7 +275,23 @@ const Channel = (props: ChannelProps) => {
 									minHeight: "100vh",
 									overflowY: "scroll",
 									scrollbarWidth: "none",
-								}}>
+									display: "flex",
+								}}
+							>
+								{isFetchingNextPageMessages && (
+									<Box
+										sx={{
+											width: "100%",
+											alignItems: "center",
+											display: "flex",
+											justifyContent: "center",
+											justifyItems: "center",
+											py: 2,
+										}}
+									>
+										<CircularProgress color="primary" />
+									</Box>
+								)}
 								{allMessages?.map((message) => (
 									<MessageBubble
 										key={message._id}
@@ -202,6 +304,7 @@ const Channel = (props: ChannelProps) => {
 					)}
 				</Container>
 			</SectionWrapper>
+
 			<Box
 				display="flex"
 				justifyContent="center"
@@ -216,13 +319,15 @@ const Channel = (props: ChannelProps) => {
 					boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.25)",
 					transition: "all 0.5s ease-in-out",
 					zIndex: 2,
-				}}>
+				}}
+			>
 				<Container maxWidth="lg">
 					<form onSubmit={handleSubmit(onSubmit)} noValidate>
 						<Stack
 							direction="row"
 							justifyContent="center"
-							spacing={2}>
+							spacing={2}
+						>
 							<Controller
 								name="content"
 								control={control}
@@ -270,7 +375,8 @@ const Channel = (props: ChannelProps) => {
 										backgroundColor: "primary.main",
 										color: "white",
 									},
-								}}>
+								}}
+							>
 								Send
 							</Button>
 						</Stack>

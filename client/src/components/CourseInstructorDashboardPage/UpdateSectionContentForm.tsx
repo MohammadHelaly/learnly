@@ -15,8 +15,9 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import { TransitionProps } from "@mui/material/transitions";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import api from "../../api";
-import { Add, Check } from "@mui/icons-material";
+import { Add, Check, Edit } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
+import Popup from "../Popup/Popup";
 
 interface UpdateSectionContentFormProps {
 	title: string | undefined;
@@ -68,6 +69,12 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 
 	const queryClient = useQueryClient();
 
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
+
 	const handleOpenSectionForm = (
 		event: React.MouseEvent<HTMLButtonElement>
 	) => {
@@ -96,12 +103,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 				...data,
 			});
 		},
-		onSuccess: (response) => {
-			alert("Section updated successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -115,7 +117,13 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 
 	return (
 		<>
-			<Button onClick={handleOpenSectionForm}>
+			<Button
+				sx={{
+					color: "common.black",
+				}}
+				endIcon={<Edit />}
+				onClick={handleOpenSectionForm}
+			>
 				<Typography
 					variant="h5"
 					sx={{
@@ -207,6 +215,13 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 					</form>
 				</DialogContent>
 			</Dialog>
+			<Popup
+				openPopup={isSuccess}
+				heading="Success!"
+				content="Section updated successfully"
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 }

@@ -8,7 +8,11 @@ import {
 	Skeleton,
 } from "@mui/material";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-
+import { useQuery } from "@tanstack/react-query";
+import api from "../../../../api";
+import AuthContext from "../../../../store/auth-context";
+import { useContext } from "react";
+import StyledNavLink from "../../Links/StyledNavLink";
 interface CourseBannerProps extends Pick<Course, "id" | "name" | "price"> {
 	isLoading: boolean;
 	isError: boolean;
@@ -16,8 +20,26 @@ interface CourseBannerProps extends Pick<Course, "id" | "name" | "price"> {
 
 const CourseBanner = (props: CourseBannerProps) => {
 	const { id, name, price, isLoading, isError } = props;
-
+	const authContext = useContext(AuthContext);
 	const [scrolled, setScrolled] = useState(false);
+
+	const {
+		data, //: courses,
+		isLoading: isLoadingCourses,
+		isError: isErrorCourses,
+	} = useQuery({
+		queryKey: ["courseEnrollments", { user: authContext.user?.id }],
+		queryFn: async () =>
+			await api.get("/enrollments", {
+				params: {
+					user: authContext.user?.id ?? null,
+				},
+			}),
+		select: (response) => response.data,
+	});
+
+	const courses_ids =
+		data?.data?.data.map((course: any) => course.course._id) ?? [];
 
 	const scrollValue = window.innerWidth > 600 ? 400 : 600;
 
@@ -84,30 +106,61 @@ const CourseBanner = (props: CourseBannerProps) => {
 								{name}
 							</Typography>
 						)}
-						<Typography variant="body2">
-							Enroll now and get full lifetime access!
-						</Typography>
+						{courses_ids.includes(authContext.user?.id) ? (
+							<Typography variant="body2">
+								Enroll now and get full lifetime access!
+							</Typography>
+						) : (
+							<></>
+						)}
 					</Stack>
-					<Button
-						variant="contained"
-						size="large"
-						disableElevation
-						sx={{
-							minWidth: window.innerWidth > 600 ? 250 : 145,
-
-							height: 50,
-							// fontSize:
-							// 	window.innerWidth > 600 ? "1rem" : "0.65rem",
-							backgroundColor: "secondary.main",
-							color: "black",
-							"&:hover": {
-								backgroundColor: "primary.main",
-								color: "white",
-							},
-						}}
-						endIcon={<ArrowForward />}>
-						Enroll now
-					</Button>
+					{!courses_ids.includes(authContext.user?.id) ? (
+						<Button
+							variant="contained"
+							size="large"
+							disableElevation
+							component={StyledNavLink}
+							to={`/dashboard/learn/courses/${id}`}
+							sx={{
+								// mb: 3,
+								minWidth: window.innerWidth > 600 ? 250 : 145,
+								height: 50,
+								// fontSize:
+								// 	window.innerWidth > 600 ? "1rem" : "0.65rem",
+								backgroundColor: "secondary.main",
+								color: "black",
+								"&:hover": {
+									backgroundColor: "primary.main",
+									color: "white",
+								},
+							}}
+							endIcon={<ArrowForward />}>
+							Go to course
+						</Button>
+					) : (
+						<Button
+							variant="contained"
+							size="large"
+							component={StyledNavLink}
+							to={`/courses/${id}/enroll`}
+							disableElevation
+							sx={{
+								// mb: 3,
+								minWidth: window.innerWidth > 600 ? 250 : 145,
+								height: 50,
+								// fontSize:
+								// 	window.innerWidth > 600 ? "1rem" : "0.65rem",
+								backgroundColor: "secondary.main",
+								color: "black",
+								"&:hover": {
+									backgroundColor: "primary.main",
+									color: "white",
+								},
+							}}
+							endIcon={<ArrowForward />}>
+							Enroll now
+						</Button>
+					)}
 				</Stack>
 			</Container>
 		</Box>

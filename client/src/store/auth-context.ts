@@ -5,6 +5,7 @@ interface AuthContextType {
 	user: User | null;
 	login: (parsedUser: User) => void;
 	logout: () => void;
+	update: (parsedUser: User) => void;
 }
 
 const defaultAuthContextValue: AuthContextType = {
@@ -12,6 +13,7 @@ const defaultAuthContextValue: AuthContextType = {
 	user: null,
 	login: () => {},
 	logout: () => {},
+	update: () => {},
 };
 
 const AuthContext = createContext<AuthContextType>(defaultAuthContextValue);

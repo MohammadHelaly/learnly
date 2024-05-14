@@ -36,8 +36,9 @@ const NavBar = () => {
 	const currentPath = useLocation().pathname;
 	const navigate = useNavigate();
 	const authContext = useContext(AuthContext);
-
 	const queryClient = useQueryClient();
+
+	const isCourseCatalogPage = currentPath.split("/")[1] === "courses";
 
 	// TODO: Look into using React Query to manage loading and error states
 	const {
@@ -101,12 +102,9 @@ const NavBar = () => {
 			position="fixed"
 			sx={{
 				backgroundColor: scrolled ? "#ffffff" : "transparent",
-				boxShadow:
-					scrolled && !currentPath.includes("/courses")
-						? "auto"
-						: "none",
+				boxShadow: scrolled && !isCourseCatalogPage ? "auto" : "none",
 				borderBottom:
-					scrolled && currentPath.includes("/courses")
+					scrolled && isCourseCatalogPage
 						? "1px solid #eeeeee"
 						: "none",
 				transition: "all 0.5s ease",
@@ -256,7 +254,7 @@ const NavBar = () => {
 					</Box>
 					{authContext.isLoggedIn ? (
 						<Stack direction="row" spacing={2} sx={{ flexGrow: 0 }}>
-							<ButtonGroup>
+							{/* <ButtonGroup>
 								<Button
 									variant="text"
 									color="primary"
@@ -291,13 +289,25 @@ const NavBar = () => {
 								>
 									<ShoppingCartOutlined />
 								</Button>
-							</ButtonGroup>
+							</ButtonGroup> */}
 							<Box sx={{ flexGrow: 0 }}>
 								<Tooltip title="Open User Menu">
 									<IconButton
 										onClick={handleOpenRightDrawer}
-										sx={{ p: 0 }}
-									>
+										sx={{
+											p: 0,
+											gap: 1,
+											borderRadius: 12,
+											paddingInlineStart: 2,
+										}}>
+										<Menu
+											sx={{
+												transition: "all 0.5s ease",
+												color: scrolled
+													? "black"
+													: "white",
+											}}
+										/>
 										<Avatar
 											alt={authContext.user?.name}
 											src={authContext.user?.photo?.url}

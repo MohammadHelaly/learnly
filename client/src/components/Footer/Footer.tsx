@@ -2,6 +2,7 @@ import { Box, Container, Grid, Typography, Stack } from "@mui/material";
 import { Facebook, GitHub, Instagram, LinkedIn } from "@mui/icons-material";
 import SmallList from "../../components/UI/PageLayout/SmallList";
 import TextNavLink from "../UI/Links/TextNavLink";
+import CardNavLink from "../UI/Links/CardNavLink";
 
 const Footer = () => {
 	const currentYear = new Date().getFullYear();
@@ -113,45 +114,65 @@ const Footer = () => {
 					alignItems="center"
 					spacing={1}
 					sx={{ mt: 6, mb: 0, py: 0 }}>
-					<GitHub
-						sx={{
-							transform: "scale(0.95)",
-							transition: "all 0.5s ease",
-							"&:hover": {
-								transform: "translateY(-10%) scale(0.95)",
-								opacity: 0.7,
-							},
-						}}
-					/>
-					<LinkedIn
-						sx={{
-							transform: "scale(1.1)",
-							transition: "all 0.5s ease",
-							"&:hover": {
-								transform: "translateY(-10%) scale(1.1)",
-								opacity: 0.7,
-							},
-						}}
-					/>
-					<Facebook
-						sx={{
-							transform: "scale(1.1)",
-							transition: "all 0.5s ease",
-							"&:hover": {
-								transform: "translateY(-10%) scale(1.1)",
-								opacity: 0.7,
-							},
-						}}
-					/>
-					<Instagram
-						sx={{
-							transition: "all 0.5s ease",
-							"&:hover": {
-								transform: "translateY(-10%) ",
-								opacity: 0.7,
-							},
-						}}
-					/>
+					<CardNavLink
+						to="https://github.com/MohammadHelaly/learnly"
+						rel="noopener noreferrer"
+						target="_blank">
+						<GitHub
+							sx={{
+								transform: "scale(0.95)",
+								transition: "all 0.5s ease",
+								"&:hover": {
+									transform: "translateY(-10%) scale(0.95)",
+									opacity: 0.7,
+								},
+							}}
+						/>
+					</CardNavLink>
+					<CardNavLink
+						to=""
+						rel="noopener noreferrer"
+						target="_blank">
+						<LinkedIn
+							sx={{
+								transform: "scale(1.1)",
+								transition: "all 0.5s ease",
+								"&:hover": {
+									transform: "translateY(-10%) scale(1.1)",
+									opacity: 0.7,
+								},
+							}}
+						/>
+					</CardNavLink>
+					<CardNavLink
+						to=""
+						rel="noopener noreferrer"
+						target="_blank">
+						<Facebook
+							sx={{
+								transform: "scale(1.1)",
+								transition: "all 0.5s ease",
+								"&:hover": {
+									transform: "translateY(-10%) scale(1.1)",
+									opacity: 0.7,
+								},
+							}}
+						/>
+					</CardNavLink>
+					<CardNavLink
+						to=""
+						rel="noopener noreferrer"
+						target="_blank">
+						<Instagram
+							sx={{
+								transition: "all 0.5s ease",
+								"&:hover": {
+									transform: "translateY(-10%) ",
+									opacity: 0.7,
+								},
+							}}
+						/>
+					</CardNavLink>
 				</Stack>
 				{/* <Grid item xs={12} sm={4}>
 						<Typography

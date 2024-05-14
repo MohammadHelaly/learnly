@@ -16,6 +16,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
+import DialogForm from "../Popup/DialogForm";
+
 interface DeleteSectionFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -44,6 +46,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		}
 		setOpenSectionForm(true);
 	};
+
 	const handleCloseSectionForm = (
 		event?: React.MouseEvent<HTMLButtonElement>
 	) => {
@@ -54,7 +57,11 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	};
 
 	const queryClient = useQueryClient();
-
+	const popupFunction = (type: any) => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const {
 		mutate: deleteSection,
 		isError: isModuleError,
@@ -62,13 +69,10 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
-			return api.delete(`sections/${sectionId}`);
+			return api.delete(`/courses/${courseId}/sections/${sectionId}`);
 		},
 		onSuccess: () => {
-			alert("Section Removed");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenSectionForm(false);
 		},
 	});
 
@@ -76,7 +80,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 		section?.modules?.forEach(async (modules, index) => {
 			if (modules?.video?.url) {
 				await api.delete(
-					`sections/${sectionId}/modules/${index}/video`
+					`/courses/${courseId}/sections/${sectionId}/modules/${index}/video`
 				);
 			}
 		});
@@ -86,12 +90,12 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	return (
 		<>
 			<IconButton
-				sx={{ color: "primary.main", mx: 2 }}
+				sx={{ color: "common.black", ml: 2 }}
 				onClick={handleOpenSectionForm}
 			>
 				<RemoveCircleOutlineIcon />
 			</IconButton>
-			<Dialog
+			{/* <Dialog
 				open={openSectionForm}
 				TransitionComponent={Transition}
 				keepMounted
@@ -138,8 +142,21 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 						</Button>
 					</Stack>
 				</DialogContent>
-			</Dialog>
-			{/* <Popup content="Section Removed" openPopup={isSuccess} /> */}
+			</Dialog> */}
+			<DialogForm
+				heading="Delete Section"
+				content="Are you sure you want to delete this Section?"
+				openDialog={openSectionForm}
+				closeDialog={handleCloseSectionForm}
+				dialogFunction={handleDeleteSection}
+			/>
+			<Popup
+				heading="Success!"
+				content="Section removed successfully!"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

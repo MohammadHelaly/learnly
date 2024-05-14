@@ -20,6 +20,10 @@ const AuthProvider = (props: AuthProviderProps) => {
 		setUser(null);
 		localStorage.removeItem("user");
 	};
+	const update = (parsedUser: User) => {
+		setUser(parsedUser);
+		localStorage.setItem("user", JSON.stringify(parsedUser));
+	};
 
 	return (
 		<AuthContext.Provider
@@ -28,7 +32,9 @@ const AuthProvider = (props: AuthProviderProps) => {
 				user: user,
 				login: loginHandler,
 				logout: logoutHandler,
-			}}>
+				update: update,
+			}}
+		>
 			{props.children}
 		</AuthContext.Provider>
 	);

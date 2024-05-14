@@ -24,18 +24,20 @@ const TestimonialCard = (props: TestimonialCardProps) => {
 				justifyContent: "space-between",
 				p: 4,
 				background: "white",
-				height: 200,
+				minHeight: 200,
+				flexGrow: 1,
 				boxShadow: "none",
 				border: "solid 1px rgba(200, 200, 200, 0.8)",
 				transition: `opacity 0.75s ease-in-out ${delay}s, transform 0.75s ease-in-out ${delay}s, border-radius 0.5s ease-in-out 0s`,
 				opacity: 0,
 				transform: "translateX(-100%)",
+				borderRadius: 1,
 				borderEndStartRadius: 70,
 				borderTopRightRadius: 70,
 				"&:hover": {
 					borderRadius: 1,
 				},
-				width: window.innerWidth > 380 ? 290 : 262,
+				width: 290,
 			}}>
 			<Typography
 				variant="h6"

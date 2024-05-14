@@ -9,6 +9,7 @@ import {
 	DialogContent,
 	TextField,
 	SlideProps,
+	IconButton,
 } from "@mui/material";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +20,7 @@ import api from "../../api";
 import { Add, Check } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useForm, Controller } from "react-hook-form";
-
+import Popup from "../Popup/Popup";
 interface UpdateModuleContentFormProps {
 	courseId: number | string;
 	title: string | undefined;
@@ -50,6 +51,12 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 	const { title, sectionid, moduleIndex, modules, courseId } = props;
 
 	const [openModuleForm, setOpenModuleForm] = useState(false);
+
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 
 	const {
 		control: sectionControl,
@@ -90,16 +97,11 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 		isSuccess,
 	} = useMutation({
 		mutationFn: (data: any) => {
-			return api.patch(`sections/${sectionid}`, {
+			return api.patch(`/courses/${courseId}/sections/${sectionid}`, {
 				modules: data,
 			});
 		},
-		onSuccess: (response) => {
-			alert("Module updated successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
-		},
+		onSuccess: (response) => {},
 		onError: (error) => {
 			console.error(error);
 			alert("An error occurred. Please try again.");
@@ -114,11 +116,12 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 
 	return (
 		<>
-			<Button
-				sx={{ pl: 3, color: "black" }}
-				startIcon={<EditIcon />}
+			<IconButton
+				sx={{ mr: 2, color: "black" }}
 				onClick={handleOpenModuleForm}
-			></Button>
+			>
+				<EditIcon />
+			</IconButton>
 			<Dialog
 				open={openModuleForm}
 				TransitionComponent={Transition}
@@ -183,6 +186,13 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 						</Stack>
 					</form>
 				</DialogContent>
+				<Popup
+					heading="Success!"
+					content="Module updated successfully!"
+					openPopup={isSuccess}
+					buttonText="Great!"
+					popupFunction={popupFunction}
+				/>
 			</Dialog>
 		</>
 	);

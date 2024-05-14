@@ -9,6 +9,7 @@ import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import TextNavLink from "../UI/Links/TextNavLink";
+import Popup from "../Popup/Popup";
 
 const schema = z
 	.object({
@@ -77,7 +78,8 @@ const SignUpForm = () => {
 				color="common.black"
 				sx={{
 					mb: 4,
-				}}>
+				}}
+			>
 				Already have an account?{" "}
 				<TextNavLink to="/log-in">Log in</TextNavLink>
 			</Typography>
@@ -86,20 +88,22 @@ const SignUpForm = () => {
 				color="text.secondary"
 				sx={{
 					fontWeight: 300,
-				}}>
+				}}
+			>
 				Join a community of lifelong learners who share your passion.
 				<br />
 				Learnly is for everyone, everywhere.
 			</Typography>
-			{isError && (
+			{/* {isError && (
 				<Typography variant="body1" color="error" sx={{ mt: 2 }}>
 					Something went wrong. Please try again.
 				</Typography>
-			)}
+			)} */}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				noValidate
-				autoComplete="off">
+				autoComplete="off"
+			>
 				<Controller
 					name="name"
 					control={control}
@@ -191,7 +195,8 @@ const SignUpForm = () => {
 					color="common.black"
 					sx={{
 						fontSize: "0.75rem",
-					}}>
+					}}
+				>
 					By clicking "Sign up", you agree to Learnly's{" "}
 					<TextNavLink to="/legal">
 						Terms of Service and Privacy Policy
@@ -203,10 +208,18 @@ const SignUpForm = () => {
 					color="primary"
 					size="large"
 					disableElevation
-					sx={{ width: "100%", mt: 2 }}>
+					sx={{ width: "100%", mt: 2 }}
+				>
 					Sign up
 				</Button>
 			</form>
+			<Popup
+				heading="Error!"
+				content={"Email already exists"}
+				openPopup={isError}
+				buttonText={"Close"}
+				popupFunction={() => {}}
+			/>
 		</FormContainer>
 	);
 };

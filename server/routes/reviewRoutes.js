@@ -4,27 +4,25 @@ const authController = require("../controllers/authController");
 
 const router = express.Router({ mergeParams: true });
 
-router
-	.route("/")
-	.get(reviewController.getAllReviews)
-	.post(
-		authController.protect,
-		authController.restrictTo("user", "instructor"),
-		reviewController.setCourseUserIds,
-		reviewController.createReview
-	);
+router.route("/").get(reviewController.getAllReviews).post(
+	authController.protect,
+	//TODO: Middleware to check if user is enrolled in course before adding review
+	reviewController.checkEnrollment,
+	reviewController.setCourseUserIds,
+	reviewController.createReview
+);
 
 router
 	.route("/:id")
 	.get(reviewController.getReview)
 	.patch(
 		authController.protect,
-		authController.restrictTo("user", "admin"),
+		reviewController.protectReview,
 		reviewController.updateReview
 	)
 	.delete(
 		authController.protect,
-		authController.restrictTo("user", "admin"),
+		reviewController.protectReview,
 		reviewController.deleteReview
 	);
 

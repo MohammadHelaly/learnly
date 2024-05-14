@@ -1,5 +1,7 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
+import { Check, Close, People } from "@mui/icons-material";
 import CardNavLink from "../../Links/CardNavLink";
+import formatNumber from "../../../../helpers/formatNumber";
 
 interface InstructorDashboardCourseCardProps
 	extends Pick<
@@ -13,6 +15,9 @@ interface InstructorDashboardCourseCardProps
 		| "ratingsQuantity"
 		| "difficulty"
 		| "duration"
+		| "published"
+		| "students"
+		| "channel"
 	> {}
 
 const InstructorDashboardCourseCard = (
@@ -28,6 +33,9 @@ const InstructorDashboardCourseCard = (
 		ratingsQuantity,
 		difficulty,
 		duration,
+		published,
+		students,
+		channel,
 	} = props;
 
 	return (
@@ -36,8 +44,7 @@ const InstructorDashboardCourseCard = (
 				sx={{
 					display: "flex",
 					flexDirection: window.innerWidth > 600 ? "row" : "column",
-					gap: 2,
-					// height: 356,
+					height: window.innerWidth < 600 ? "auto" : 204,
 					width: "100%",
 					transition: `all 0.6s ease-in-out`,
 					borderRadius: 0,
@@ -45,9 +52,14 @@ const InstructorDashboardCourseCard = (
 					borderBottom: "1px solid #dddddd",
 					boxShadow: "none",
 					px: 0,
-					py: 1,
+					py: window.innerWidth < 600 ? 0 : 1,
 				}}>
-				<Box sx={{ height: 200, width: 356 }}>
+				<Box
+					sx={{
+						height: 200,
+						minWidth: window.innerWidth > 600 ? 356 : "100%",
+						maxWidth: window.innerWidth > 600 ? 356 : "100%",
+					}}>
 					<img
 						src={imageCover.url}
 						alt="course"
@@ -61,7 +73,12 @@ const InstructorDashboardCourseCard = (
 				</Box>
 				<Box
 					sx={{
+						flexGrow: 1,
 						transition: "all 0.5s ease",
+						py: 1,
+						px: window.innerWidth > 600 ? 2 : 0,
+						display: "flex",
+						flexDirection: "column",
 					}}>
 					<Typography
 						variant="h6"
@@ -70,7 +87,7 @@ const InstructorDashboardCourseCard = (
 							fontWeight: 500,
 							width: "100%",
 						}}>
-						{name?.length > 30 && window.innerWidth < 600
+						{name?.length > 30
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
 					</Typography>
@@ -98,7 +115,7 @@ const InstructorDashboardCourseCard = (
 							color="text.secondary"
 							sx={{ fontWeight: 400 }}>
 							{"("}
-							{ratingsQuantity}
+							{formatNumber(ratingsQuantity)}
 							{")"}
 						</Typography>
 					</Stack>
@@ -129,6 +146,85 @@ const InstructorDashboardCourseCard = (
 							difficulty?.slice(1)}
 						{" Level"}
 					</Typography>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						<People />
+						<Typography variant="body1">
+							{formatNumber(students as number) + " Student(s)"}
+						</Typography>
+					</Stack>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						{published ? (
+							<Check
+								sx={{
+									color: "secondary.main",
+								}}
+							/>
+						) : (
+							<Close
+								sx={{
+									color: "error.main",
+								}}
+							/>
+						)}
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								fontWeight: 400,
+								color: published
+									? "secondary.main"
+									: "error.main",
+							}}>
+							{published ? "Published" : "Unpublished"}
+						</Typography>
+					</Stack>
+					<Stack
+						direction="row"
+						justifyContent="flex-start"
+						alignItems="center"
+						sx={{
+							width: "100%",
+							gap: 1,
+						}}>
+						{channel ? (
+							<Check
+								sx={{
+									color: "secondary.main",
+								}}
+							/>
+						) : (
+							<Close
+								sx={{
+									color: "error.main",
+								}}
+							/>
+						)}
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								fontWeight: 400,
+								color: channel
+									? "secondary.main"
+									: "error.main",
+							}}>
+							{channel ? "Channel Live" : "No Channel"}
+						</Typography>
+					</Stack>
 				</Box>
 			</Card>
 		</CardNavLink>

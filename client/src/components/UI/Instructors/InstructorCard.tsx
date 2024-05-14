@@ -1,5 +1,6 @@
 import { Card, Stack, Typography, Rating, Avatar } from "@mui/material";
 import TextNavLink from "../Links/TextNavLink";
+import formatNumber from "../../../helpers/formatNumber";
 
 const InstructorCard = (props: Instructor) => {
 	const {
@@ -70,16 +71,16 @@ const InstructorCard = (props: Instructor) => {
 						/>
 						<Typography variant="body2" color="text.secondary">
 							{"("}
-							{ratingsQuantity}
+							{formatNumber(ratingsQuantity)}
 							{")"}
 						</Typography>
 					</Stack>
 
 					<Typography variant="body2" color="text.secondary">
-						{students + " Students"}
+						{formatNumber(students) + " Student(s)"}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						{coursesCreated?.length + " Courses"}
+						{formatNumber(coursesCreated?.length) + " Course(s)"}
 					</Typography>
 				</Stack>
 			</Stack>

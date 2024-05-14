@@ -14,7 +14,7 @@ import { z } from "zod";
 import api from "../../api";
 
 interface NewsletterFormProps {
-	variant: "subscribe" | "unsubscribe";
+	variant: "Subscribe" | "Unsubscribe";
 }
 
 const schema = z.object({
@@ -39,7 +39,7 @@ const NewsletterForm = (props: NewsletterFormProps) => {
 
 	const { mutate, isError, isPending } = useMutation({
 		mutationFn: (data: NewsletterSchemaType) => {
-			return api.post(`/users/newsletter-${variant}`, {
+			return api.post(`/users/newsletter${variant}`, {
 				...data,
 			});
 		},
@@ -65,7 +65,7 @@ const NewsletterForm = (props: NewsletterFormProps) => {
 			<SectionWrapper>
 				<SectionHeader
 					heading={
-						variant === "subscribe"
+						variant === "Subscribe"
 							? "Subscribe to the Newsletter"
 							: "Unsubscribe from the Newsletter"
 					}
@@ -80,7 +80,7 @@ const NewsletterForm = (props: NewsletterFormProps) => {
 					isSubHeading
 					variant="h6"
 					heading={
-						variant === "subscribe"
+						variant === "Subscribe"
 							? "Subscribe to our newsletter and become part of the Learnly community. Get the latest updates, news, and more."
 							: "Unsubscribe from our newsletter and leave the Learnly community. We'll miss you!"
 					}

@@ -24,8 +24,15 @@ import DashboardPage from "./pages/DashboardPage";
 import CreateCoursePage from "./pages/CreateCoursePage";
 import CourseInstructorDashboardPage from "./pages/CourseInstructorDashboardPage";
 import NewsletterPage from "./pages/NewsletterPage";
+import CourseStudentDashboardPage from "./pages/CourseStudentDashboardPage";
+import CourseEnrollmentPage from "./pages/CourseEnrollmentPage";
+import LegalPage from "./pages/LegalPage";
+import HelpPage from "./pages/HelpPage";
+import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
 import "./App.css";
 import LivestreamPage from "./pages/LivestreamPage";
+import UserProfilePage from "./pages/UserProfilePage";
+import AccountPage from "./pages/AccountPage";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -127,10 +134,7 @@ function App() {
 							element={<ResetPasswordPage />}
 						/>
 						<Route path="/dashboard" element={<DashboardPage />} />
-						<Route
-							path="/dashboard/learn/courses/:courseId"
-							element={<LandingPage />}
-						/>
+
 						<Route
 							path="/dashboard/teach/courses/create"
 							element={<CreateCoursePage />}
@@ -140,12 +144,8 @@ function App() {
 							element={<CourseInstructorDashboardPage />}
 						/>
 						<Route
-							path="/users/account"
-							element={<LandingPage />}
-						/>
-						<Route
 							path="/users/:userId"
-							element={<LandingPage />}
+							element={<UserProfilePage />}
 						/>
 						<Route path="/courses" element={<CatalogPage />} />
 						<Route
@@ -156,19 +156,32 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						<Route path="/channels" element={<LandingPage />} />
+						{/* <Route path="/channels" element={<LandingPage />} /> */}
 						<Route
 							path="/channels/:channelId"
 							element={<ChannelPage />}
 						/>
+						<Route path="/account" element={<AccountPage />} />
 						<Route path="/careers" element={<CareersPage />} />
 						<Route path="/about" element={<AboutPage />} />
-						<Route path="/help" element={<LandingPage />} />
+						<Route path="/help" element={<HelpPage />} />
+						<Route
+							path="/become-an-instructor"
+							element={<BecomeAnInstructorPage />}
+						/>
 						<Route
 							path="/newsletter"
 							element={<NewsletterPage />}
 						/>
-						<Route path="/legal" element={<LandingPage />} />
+						<Route
+							path="/dashboard/learn/courses/:courseId"
+							element={<CourseStudentDashboardPage />}
+						/>
+						<Route
+							path="/courses/:courseId/enroll"
+							element={<CourseEnrollmentPage />}
+						/>
+						<Route path="/legal" element={<LegalPage />} />
 						<Route path="*" element={<LandingPage />} />
 						<Route
 							path="/livestream"

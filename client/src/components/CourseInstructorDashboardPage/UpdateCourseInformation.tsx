@@ -5,6 +5,7 @@ import PageWrapper from "../UI/PageLayout/PageWrapper";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import UpdateCourseInformationForm from "./UpdateCourseInformationForm";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
+import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 
 interface UpdateCourseInformationProps {
 	courseId: Pick<Course, "id"> | string | number | undefined;
@@ -31,19 +32,21 @@ const UpdateCourseInformation = (props: UpdateCourseInformationProps) => {
 
 	return (
 		<PageWrapper sx={{ mt: 0, pb: 0 }}>
-			<FormContainer
+			{/* <FormContainer
 				sx={{
 					mt: 0,
 					p: 0,
 					mb: 16,
 				}}
-				large>
+				large> */}
+			<SectionWrapper>
 				{isError ? (
 					<ErrorWarning />
 				) : isLoading ? null : (
 					<UpdateCourseInformationForm {...course} />
 				)}
-			</FormContainer>
+			</SectionWrapper>
+			{/* </FormContainer> */}
 		</PageWrapper>
 	);
 };

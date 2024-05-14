@@ -14,10 +14,10 @@ const NewsletterPage = () => {
 				description="Subscribe to our newsletter to get the latest updates, news, and more."
 			/>
 			<PageWrapper>
-				<FormContainer large>
+				<FormContainer>
 					<Stack spacing={6}>
-						<NewsletterForm variant="subscribe" />
-						<NewsletterForm variant="unsubscribe" />
+						<NewsletterForm variant="Subscribe" />
+						<NewsletterForm variant="Unsubscribe" />
 					</Stack>
 				</FormContainer>
 			</PageWrapper>

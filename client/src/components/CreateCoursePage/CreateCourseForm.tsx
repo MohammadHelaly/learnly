@@ -1,3 +1,4 @@
+import React, { ChangeEvent, useState, useRef } from "react";
 import {
 	Box,
 	Typography,
@@ -7,21 +8,21 @@ import {
 	MenuItem,
 	Stack,
 	FormControl,
-	FormControlLabel,
 	RadioGroup,
 	Radio,
+	FormControlLabel,
 	InputLabel,
 	Select,
 	Checkbox,
 	IconButton,
 } from "@mui/material";
-import { useState, ChangeEvent } from "react";
+import { Clear, Done } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import api from "../../api";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
@@ -29,7 +30,8 @@ import categories from "../../assets/data/categories";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
-import { Clear, Done } from "@mui/icons-material";
+
+import Popup from "../Popup/Popup";
 
 const schema = z.object({
 	name: z
@@ -47,7 +49,7 @@ const schema = z.object({
 				message: "A skill must be 128 characters or less.",
 			})
 		)
-		.min(1, { message: "Select at least 1 skills." })
+		.min(1, { message: "Select at least one skill." })
 		.max(12, { message: "Select up to 12 skills." }),
 	categories: z
 		.array(z.string())
@@ -77,17 +79,20 @@ const schema = z.object({
 type CourseFormSchemaType = z.infer<typeof schema>;
 
 interface ImageState {
-	preview: File | undefined | null;
-	uploaded: string | number | readonly string[] | undefined;
+	preview: string | undefined;
+	uploaded: boolean;
 }
 
 const CreateCourseForm = () => {
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
 	const [image, setImage] = useState<ImageState>({
-		preview: null,
-		uploaded: "",
+		preview: undefined,
+		uploaded: false,
 	});
+
+	// Reference for the file input
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const {
 		control,
@@ -114,15 +119,17 @@ const CreateCourseForm = () => {
 
 	const navigate = useNavigate();
 
-	const { mutate, isError, isPending } = useMutation({
+	const popupFunction = () => {
+		navigate("/dashboard");
+	};
+
+	const { mutate, isError, isPending, isSuccess } = useMutation({
 		mutationFn: (data: CourseFormSchemaType) => {
-			return api.post("/courses", {
-				...data,
-			});
+			return api.post("/courses", { ...data });
 		},
+
 		onSuccess: (response) => {
 			// navigate(`/courses/${response.data.data.data.id}`);
-			navigate("/dashboard");
 		},
 		onError: (error) => {
 			console.error(error);
@@ -130,13 +137,10 @@ const CreateCourseForm = () => {
 		},
 	});
 
-	const renderSelectedCategories = (selected: string[]) => {
-		return selected.join(", ");
-	};
+	const renderSelectedCategories = (selected: string[]) =>
+		selected.join(", ");
 
-	const isSelected = (value: string) => {
-		return watch().categories?.includes(value);
-	};
+	const isSelected = (value: string) => watch().categories.includes(value);
 
 	const removeCategory = (selectedCategory: string) => {
 		const newCategories = watch().categories.filter(
@@ -145,13 +149,10 @@ const CreateCourseForm = () => {
 		setValue("categories", newCategories);
 	};
 
-	const prerequisiteChangeHandler = (
-		event: ChangeEvent<HTMLInputElement>
-	) => {
+	const prerequisiteChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setPrerequisite(event.target.value);
-	};
 
-	const addPrequisite = (value: string) => {
+	const addPrerequisite = (value: string) => {
 		setValue("prerequisites", [...watch().prerequisites, value]);
 		setPrerequisite("");
 	};
@@ -163,9 +164,8 @@ const CreateCourseForm = () => {
 		setValue("prerequisites", newPrerequisites);
 	};
 
-	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	const skillChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>
 		setSkill(event.target.value);
-	};
 
 	const addSkill = (value: string) => {
 		setValue("skills", [...watch().skills, value]);
@@ -179,48 +179,51 @@ const CreateCourseForm = () => {
 		setValue("skills", newSkills);
 	};
 
-	const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		const value = event.target.value === "true";
-		setValue("paid", value);
-		setValue("price", 0);
-	};
+	// const paidChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	const value = event.target.value === "true";
+	// 	setValue("paid", value);
+	// 	setValue("price", 0);
+	// };
 
-	const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-		console.log(watch().price);
-		setValue("price", parseFloat(event.target.value));
+	// const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+	// 	console.log(watch().price);
+	// 	setValue("price", parseFloat(event.target.value));
+	// };
+
+	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setImage({ preview: URL.createObjectURL(file), uploaded: true });
+		}
 	};
 
 	const removeImage = () => {
-		console.log("removed");
-		const data = new FormData();
-		setImage({
-			preview: null,
-			uploaded: "",
-		});
-	};
-
-	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
-		try {
-			const file = event?.target?.files?.[0];
-			setImage((previousValue) => ({
-				...previousValue,
-				preview: file,
-			}));
-		} catch (err) {
-			console.log(err);
+		setImage({ preview: undefined, uploaded: false });
+		if (fileInputRef.current) {
+			fileInputRef.current.value = "";
 		}
 	};
 
 	const onSubmit = async (data: CourseFormSchemaType) => {
-		const resizedImage = await resizeImageFile(image.preview as File);
+		const resizedImage = image.preview
+			? await resizeImageFile(
+					new File(
+						[await (await fetch(image.preview)).blob()],
+						"imageCover"
+					)
+			  )
+			: undefined;
+
 		setValue("imageCover", resizedImage);
 
 		const body = {
 			name: data.name,
 			summary: data.summary,
 			description: data.description,
-			price: data.price,
-			paid: data.paid,
+			// price: data.price,
+			price: 0.0,
+			// paid: data.paid,
+			paid: false,
 			categories: data.categories,
 			skills: data.skills,
 			prerequisites: data.prerequisites,
@@ -576,7 +579,7 @@ const CreateCourseForm = () => {
 									prerequisite.length === 0 ||
 									isPending
 								}
-								onClick={() => addPrequisite(prerequisite)}
+								onClick={() => addPrerequisite(prerequisite)}
 								sx={{
 									my: 2,
 								}}
@@ -733,21 +736,21 @@ const CreateCourseForm = () => {
 										row={window.innerWidth > 600}
 										aria-label="Pricing"
 										name="paid"
-										defaultValue="true"
-										onChange={paidChangeHandler}
+										defaultValue="false"
+										// onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
 										}}
 									>
 										<FormControlLabel
-											value="true"
-											control={<Radio />}
-											label="Paid"
-										/>
-										<FormControlLabel
 											value="false"
 											control={<Radio />}
 											label="Free"
+										/>
+										<FormControlLabel
+											value="true"
+											control={<Radio disabled />}
+											label="Paid - Coming Soon"
 										/>
 									</RadioGroup>
 								)}
@@ -771,7 +774,9 @@ const CreateCourseForm = () => {
 												type="number"
 												name="price"
 												label="Price"
-												onChange={priceChangeHandler}
+												// onChange={priceChangeHandler}
+												disabled
+												placeholder="Coming Soon!"
 											/>
 										)}
 									/>
@@ -826,13 +831,11 @@ const CreateCourseForm = () => {
 									? "Change Image"
 									: "Upload Image"}
 								<input
-									disabled={isPending}
+									ref={fileInputRef}
 									accept="image/*"
 									style={{ display: "none" }}
 									multiple={false}
 									type="file"
-									hidden
-									value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 							</Button>
@@ -842,7 +845,7 @@ const CreateCourseForm = () => {
 								"Please upload a valid image for your course."
 							</Typography>
 						)}
-						{image?.preview && (
+						{image.preview && (
 							<Box
 								sx={{
 									width: "100%",
@@ -866,8 +869,8 @@ const CreateCourseForm = () => {
 									<Clear />
 								</IconButton>
 								<img
-									src={URL.createObjectURL(image?.preview)}
-									alt={image?.preview?.name}
+									src={image.preview}
+									alt="Course cover"
 									style={{
 										width: "100%",
 										height: "auto",
@@ -875,7 +878,7 @@ const CreateCourseForm = () => {
 										objectFit: "cover",
 										objectPosition: "center",
 									}}
-								></img>
+								/>
 							</Box>
 						)}
 					</SectionWrapper>
@@ -914,6 +917,13 @@ const CreateCourseForm = () => {
 					</SectionWrapper>
 				</Stack>
 			</form>
+			<Popup
+				heading="Success!"
+				content={"Course created Successfully!"}
+				openPopup={isSuccess}
+				buttonText={"Go to Dashboard"}
+				popupFunction={popupFunction}
+			/>
 		</FormContainer>
 	);
 };

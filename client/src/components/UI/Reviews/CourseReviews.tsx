@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../../api";
+import api from "../../../api";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import Reviews from "../UI/Reviews/Reviews";
-import BottomTextLink from "../UI/Links/BottomTextLink";
-import dummyCourseReviewsData from "../../assets/data/dummyCourseReviewsData";
-import SectionHeader from "../UI/PageLayout/SectionHeader";
-import SectionWrapper from "../UI/PageLayout/SectionWrapper";
+import Reviews from "./Reviews";
+import BottomTextLink from "../Links/BottomTextLink";
+import dummyCourseReviewsData from "../../../assets/data/dummyCourseReviewsData";
+import SectionHeader from "../PageLayout/SectionHeader";
+import SectionWrapper from "../PageLayout/SectionWrapper";
+import formatNumber from "../../../helpers/formatNumber";
 
 interface CourseReviewsProps
 	extends Pick<Course, "id" | "ratingsAverage" | "ratingsQuantity"> {
@@ -29,12 +30,11 @@ const CourseReviews = (props: CourseReviewsProps) => {
 			await api.get(`/courses/${id}/reviews`, {
 				params: {
 					limit: 3,
-					fields: "name,price,ratingsAverage,ratingsQuantity",
+					fields: "name,price,ratingsAverage,ratingsQuantity,rating,createdAt,review",
 				},
 			}),
 		select: (response) => response.data.data.data,
 	});
-
 	const courseReviews = data ?? dummyReviews;
 
 	return (
@@ -52,7 +52,7 @@ const CourseReviews = (props: CourseReviewsProps) => {
 					<>
 						<StarRateIcon fontSize="medium" />
 						{ratingsAverage} out of 5 stars {" ("}
-						{ratingsQuantity} {" ratings)"}
+						{formatNumber(ratingsQuantity)} {" ratings)"}
 					</>
 				}
 				headingAlignment="left"

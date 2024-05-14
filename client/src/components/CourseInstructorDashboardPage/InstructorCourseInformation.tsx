@@ -3,7 +3,7 @@ import ErrorWarning from "../UI/Messages/ErrorWarning";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import InstructorCourseEnrollmentPrompt from "./InstructorCourseEnrollmentPrompt";
 import CourseImage from "../UI/Courses/Catalog/CourseImage";
-import CourseInformationContent from "../CourseCatalogPage/CourseInformationContent";
+import CourseInformationContent from "../UI/Courses/CourseInformationContent";
 
 interface CourseInformationProps
 	extends Pick<

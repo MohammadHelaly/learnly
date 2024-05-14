@@ -1,6 +1,7 @@
 import { Stack, Typography, Skeleton, Rating } from "@mui/material";
-import CourseDurationAndDifficulty from "./CourseDurationAndDifficulty";
-import TextNavLink from "../UI/Links/TextNavLink";
+import CourseDurationAndDifficulty from "../../CourseCatalogPage/CourseDurationAndDifficulty";
+import TextNavLink from "../Links/TextNavLink";
+import formatNumber from "../../../helpers/formatNumber";
 
 interface CourseInformationContentProps
 	extends Pick<
@@ -133,7 +134,7 @@ const CourseInformationContent = (props: CourseInformationContentProps) => {
 											? "left"
 											: "center",
 								}}>
-								{"(" + ratingsQuantity + ")"}
+								{"(" + formatNumber(ratingsQuantity) + ")"}
 							</Typography>
 						</Stack>
 					</Stack>

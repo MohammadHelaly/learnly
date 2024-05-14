@@ -1,13 +1,13 @@
 import { Card } from "@mui/material";
 import useAnimate from "../../../hooks/use-animate";
 
-interface CourseCardProps {
+interface AnimatedCardProps {
 	index: number;
 	animated?: boolean;
 	children: React.ReactNode;
 }
 
-const CourseCard = (props: CourseCardProps) => {
+const AnimatedCard = (props: AnimatedCardProps) => {
 	const { index, animated, children } = props;
 
 	const elementRef = useAnimate("animate", false);
@@ -32,4 +32,4 @@ const CourseCard = (props: CourseCardProps) => {
 	);
 };
 
-export default CourseCard;
+export default AnimatedCard;

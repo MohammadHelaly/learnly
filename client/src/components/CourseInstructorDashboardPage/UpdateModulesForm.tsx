@@ -62,7 +62,11 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 	});
 
 	const queryClient = useQueryClient();
-
+	const popupFunction = () => {
+		queryClient.invalidateQueries({
+			queryKey: ["sections", { courseId }],
+		});
+	};
 	const handleOpenModuleForm = () => setOpenModuleForm(true);
 	const handleCloseModuleForm = () => {
 		setOpenModuleForm(false);
@@ -81,10 +85,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 			});
 		},
 		onSuccess: (response) => {
-			//alert("Module added successfully");
-			queryClient.invalidateQueries({
-				queryKey: ["sections", { courseId }],
-			});
+			setOpenModuleForm(false);
 		},
 		onError: (error) => {
 			console.error(error);
@@ -177,7 +178,13 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 					</form>
 				</DialogContent>
 			</Dialog>
-			<Popup content="Module created" openPopup={isSuccess} />
+			<Popup
+				heading="Success!"
+				content="Module created successfully"
+				openPopup={isSuccess}
+				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
 		</>
 	);
 };

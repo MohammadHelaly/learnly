@@ -5,6 +5,9 @@ import CallToAction from "../components/UI/PageLayout/CallToAction";
 import TestimonialSection from "../components/LandingPage/TestimonialSection/TestimonialSection";
 import Footer from "../components/Footer/Footer";
 import AnimatedPage from "./AnimatedPage";
+import levelUpPhoto from "../assets/images/level-up.png";
+import worldClassInstructorsPhoto from "../assets/images/world-class-instructors.png";
+import vastArrayOfSpecializationsPhoto from "../assets/images/vast-array-of-specializations.png";
 
 const LandingPage = () => {
 	return (
@@ -28,7 +31,29 @@ const LandingPage = () => {
 					url: "/courses",
 				}}
 			/>
-			<InformationSection variant="transparent" />
+			<InformationSection
+				variant="transparent"
+				cardsContent={[
+					{
+						title: "Level Up with Lifetime Access to Courses",
+						description:
+							"Our courses are designed to help you learn and grow at your own pace. Gain lifetime access to all course materials and content.",
+						image: levelUpPhoto,
+					},
+					{
+						title: "Get in Touch with World Class Instructors",
+						description:
+							"Learn from the best! Our instructors are experts in their fields and are here to help you succeed.",
+						image: worldClassInstructorsPhoto,
+					},
+					{
+						title: "Explore a Vast Array of Specializations",
+						description:
+							"Choose from a wide range of courses and specializations. Whether you're a beginner or an expert, we have something for everyone.",
+						image: vastArrayOfSpecializationsPhoto,
+					},
+				]}
+			/>
 			<TestimonialSection />
 			<CallToAction
 				question="Ready to start improving?"
