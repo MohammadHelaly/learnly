@@ -32,7 +32,7 @@ interface PeersRecord {
 	[userId: string]: { call: MediaConnection; video: HTMLVideoElement };
 }
 
-const Livestreamdev: React.FC = () => {
+const LivestreamPage: React.FC = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const [roomCount, setRoomCount] = useState<number>(0); // Room count variable
 
@@ -99,7 +99,7 @@ const Livestreamdev: React.FC = () => {
 	useEffect(() => {
 		const socket = io(ENDPOINT);
 		myVideo.current.muted = true;
-	
+
 		navigator.mediaDevices
 			.getUserMedia({
 				video: true,
@@ -109,12 +109,12 @@ const Livestreamdev: React.FC = () => {
 				if (videoGrid.current) {
 					addVideoStream(myVideo.current, stream);
 				}
-	
+
 				const myPeer = new Peer("", {
 					host: "/",
 					port: 3001,
 				});
-	
+
 				myPeer.on("open", (id) => {
 					socket.emit(
 						"get-room-size",
@@ -127,14 +127,14 @@ const Livestreamdev: React.FC = () => {
 						}
 					);
 				});
-	
+
 				socket.on("user-connected", (userId) => {
 					if (isInitiator && !peers[userId]) {
 						connectToNewUser(userId, stream, myPeer);
 					}
 					setRoomCount((prev) => prev + 1); // Increment room count
 				});
-	
+
 				socket.on("user-disconnected", (userId) => {
 					if (peers[userId]) {
 						peers[userId].video.remove();
@@ -147,23 +147,23 @@ const Livestreamdev: React.FC = () => {
 					}
 					setRoomCount((prev) => prev - 1); // Decrement room count
 				});
-	
+
 				myPeer.on("call", (call) => {
 					const video = document.createElement("video");
 					call.on("stream", (userVideoStream) => {
 						addVideoStream(video, userVideoStream);
 					});
-				
+
 					call.on("close", () => {
 						video.remove();
 					});
-				
+
 					call.on("error", (error: any) => {
 						console.error("Call error:", error);
 					});
 				});
 			});
-	
+
 		return () => {
 			socket.close();
 			Object.values(peers).forEach((peer) => {
@@ -172,7 +172,7 @@ const Livestreamdev: React.FC = () => {
 			});
 		};
 	}, [isInitiator]);
-	
+
 	function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
 		video.srcObject = stream;
 		video.addEventListener("loadedmetadata", () => {
@@ -182,35 +182,39 @@ const Livestreamdev: React.FC = () => {
 		video.style.height = "100%"; // Ensures video fills the cell
 		video.style.borderRadius = "20px";
 		video.style.objectFit = "cover";
-		if (videoGrid.current && videoGrid.current.children.length === 0) { // Only add video if none is displayed
+		if (videoGrid.current && videoGrid.current.children.length === 0) {
+			// Only add video if none is displayed
 			videoGrid.current.append(video);
 		}
 	}
-	
-	function connectToNewUser(userId: string, stream: MediaStream, myPeer: Peer) {
+
+	function connectToNewUser(
+		userId: string,
+		stream: MediaStream,
+		myPeer: Peer
+	) {
 		const call = myPeer.call(userId, stream);
 		const video = document.createElement("video");
 		call.on("stream", (userVideoStream) => {
-			if (!peers[userId]) { // Prevent adding if already there
+			if (!peers[userId]) {
+				// Prevent adding if already there
 				addVideoStream(video, userVideoStream);
 			}
 		});
-	
+
 		call.on("close", () => {
 			video.remove();
 		});
-	
+
 		call.on("error", (error: any) => {
 			console.error("Call error with", userId, error);
 		});
-	
+
 		setPeers((prevPeers) => ({
 			...prevPeers,
 			[userId]: { call, video },
 		}));
 	}
-
-
 
 	const toggleMute = () => {
 		if (myVideo.current) {
@@ -231,59 +235,6 @@ const Livestreamdev: React.FC = () => {
 		}
 	};
 	return (
-<<<<<<< HEAD
-<>
-    <DrawerList toggleDrawerFlag={openDrawer} />
-    <PageWrapper
-        sx={{
-            backdropFilter: "blur(8px)",
-            backgroundColor: "transparent",
-            color: "transparent",
-            maxHeight: "100vh",
-            mt: 0,
-            mb: 0,
-        }}>
-        <Stack
-            direction="column"
-            spacing={0.1}
-            display="flex"
-            justifyContent="flex-start"
-            sx={{ mt: 8, mb: 0, pb: 0 }}>
-            <Box
-                sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center", // Center the entire grid
-                    height: "100%",
-                    mt: window.innerWidth > 600 ? 8 : 7,
-                }}>
-                <Box
-                    sx={{
-                        overflowX: "auto", // Allows horizontal scrolling
-                        width: "100%", // Occupy full width
-                        maxWidth: "90%", // Prevents grid from stretching fully
-                        display: "flex",
-                        justifyContent: "center", // Center grid content
-                        height: "100%",
-                    }}>
-                    <div
-                        ref={videoGrid}
-                        id="video-grid"
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns:
-                                roomCount >= 2
-                                    ? "repeat(1, 1fr)" // Adjust columns count
-                                    : "repeat(1, 1fr)",
-                            gridAutoRows: roomCount >= 2 ? "560px" : "560px",
-                            gap: "20px",
-                            padding: "0 20px", // Padding to ensure grid is centered
-                            justifyItems: "center", // Center individual items in the grid
-                        }}
-                    />
-                </Box>
-            </Box>
-=======
 		<>
 			<DrawerList toggleDrawerFlag={openDrawer} />
 			<PageWrapper
@@ -303,20 +254,23 @@ const Livestreamdev: React.FC = () => {
 					justifyContent="flex-start"
 					sx={{ mt: 8, mb: 0, pb: 0 }}
 				>
-					{/* <Container maxWidth="lg"> */}
 					<Box
 						sx={{
 							display: "flex",
-							flexDirection: "row", // Ensure elements are laid out horizontally
-							justifyContent: "flex-end", // Align elements to the far right
+							flexDirection: "row",
+							justifyContent: "center", // Center the entire grid
 							height: "100%",
 							mt: window.innerWidth > 600 ? 8 : 7,
 						}}
 					>
 						<Box
 							sx={{
-								height: "200hv",
-								width: "100mv",
+								overflowX: "auto", // Allows horizontal scrolling
+								width: "100%", // Occupy full width
+								maxWidth: "90%", // Prevents grid from stretching fully
+								display: "flex",
+								justifyContent: "center", // Center grid content
+								height: "100%",
 							}}
 						>
 							<div
@@ -325,107 +279,25 @@ const Livestreamdev: React.FC = () => {
 								style={{
 									display: "grid",
 									gridTemplateColumns:
-										"repeat(auto-fill, minmax(1000px, 1fr))",
-									gridAutoRows: "550px",
+										roomCount >= 2
+											? "repeat(1, 1fr)" // Adjust columns count
+											: "repeat(1, 1fr)",
+									gridAutoRows:
+										roomCount >= 2 ? "560px" : "560px",
 									gap: "20px",
-									justifyContent: "start",
-									// padding: "10px",
+									padding: "0 20px", // Padding to ensure grid is centered
+									justifyItems: "center", // Center individual items in the grid
 								}}
 							/>
 						</Box>
 					</Box>
-					{/* </Container> */}
->>>>>>> 338e0834ff7009b87e5d069803f9519ac5c1b713
 
-            <Box
-                sx={{
-                    zIndex: 10,
-                    mx: "auto",
-                    pt: 3,
-                    bottom: 0,
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 2,
-                    alignContent: "center",
-                    justifyItems: "center",
-                }}>
-				{isInitiator && (
-				<>
-					<IconButton
-                    onClick={toggleMute}
-                    color="primary"
-                    sx={{
-                        backgroundColor: "white",
-                        borderRadius: "100%",
-                    }}>
-                    {muted ? <MicOff /> : <Mic />}
-                </IconButton>
-                <IconButton
-                    onClick={toggleCamera}
-                    color="primary"
-                    sx={{
-                        backgroundColor: "white",
-                        borderRadius: "100%",
-                    }}>
-                    {cameraEnabled ?   <Videocam />:<VideocamOff />}
-                </IconButton>
-				
-				</>
-				)}
-                
-
-				{isInitiator && (
-				<>
-					<IconButton
-						onClick={recording ? stopRecording : startRecording}
-						color="primary"
+					<Box
 						sx={{
-<<<<<<< HEAD
-							backgroundColor: "white",
-							borderRadius: "100%",
-						}}>
-						{recording ? <Stop /> : <FiberManualRecord />}
-					</IconButton>
-
-					
-					</>
-				)}
-				<IconButton
-						color="primary"
-						sx={{
-							backgroundColor: "white",
-							borderRadius: "100%",
-						}}
-						onClick={toggleDrawer}>
-						<ChatRoundedIcon />
-					</IconButton>
-					<IconButton
-						sx={{
-							color: "white",
-							backgroundColor: "red",
-							borderRadius: "100%",
-							"&:hover": {
-								backgroundColor: "red",
-								color: "white",
-							},
-						}}>
-						<CallEndRoundedIcon />
-					</IconButton>
-				
-            </Box>
-        </Stack>
-    </PageWrapper>
-</>
-
-=======
 							zIndex: 10,
 							mx: "auto",
 							pt: 3,
 							bottom: 0,
-							//position: "fixed",
 							width: "100%",
 							display: "flex",
 							flexDirection: "row",
@@ -436,43 +308,64 @@ const Livestreamdev: React.FC = () => {
 							justifyItems: "center",
 						}}
 					>
+						{isInitiator && (
+							<>
+								<IconButton
+									onClick={toggleMute}
+									color="primary"
+									sx={{
+										backgroundColor: "white",
+										borderRadius: "100%",
+									}}
+								>
+									{muted ? <MicOff /> : <Mic />}
+								</IconButton>
+								<IconButton
+									onClick={toggleCamera}
+									color="primary"
+									sx={{
+										backgroundColor: "white",
+										borderRadius: "100%",
+									}}
+								>
+									{cameraEnabled ? (
+										<Videocam />
+									) : (
+										<VideocamOff />
+									)}
+								</IconButton>
+							</>
+						)}
+
+						{isInitiator && (
+							<>
+								<IconButton
+									onClick={
+										recording
+											? stopRecording
+											: startRecording
+									}
+									color="primary"
+									sx={{
+										backgroundColor: "white",
+										borderRadius: "100%",
+									}}
+								>
+									{recording ? (
+										<Stop />
+									) : (
+										<FiberManualRecord />
+									)}
+								</IconButton>
+							</>
+						)}
 						<IconButton
-							onClick={toggleMute}
 							color="primary"
 							sx={{
 								backgroundColor: "white",
 								borderRadius: "100%",
 							}}
-						>
-							{muted ? <MicOff /> : <Mic />}
-						</IconButton>
-						<IconButton
-							onClick={toggleCamera}
-							color="primary"
-							sx={{
-								backgroundColor: "white",
-								borderRadius: "100%",
-							}}
-						>
-							{cameraEnabled ? <VideocamOff /> : <Videocam />}
-						</IconButton>
-						<IconButton
-							onClick={recording ? stopRecording : startRecording}
-							color="primary"
-							sx={{
-								backgroundColor: "white",
-								borderRadius: "100%",
-							}}
-						>
-							{recording ? <Stop /> : <FiberManualRecord />}
-						</IconButton>
-						<IconButton
-							color="primary"
-							sx={{
-								backgroundColor: "white",
-								borderRadius: "100%",
-							}}
-							onClick={toggleDrawer()}
+							onClick={toggleDrawer}
 						>
 							<ChatRoundedIcon />
 						</IconButton>
@@ -482,12 +375,10 @@ const Livestreamdev: React.FC = () => {
 								backgroundColor: "red",
 								borderRadius: "100%",
 								"&:hover": {
-									backgroundColor: "rgb(255, 0, 0, 0.8)",
+									backgroundColor: "red",
 									color: "white",
 								},
 							}}
-							component={NavLink}
-							to={`/dashboard`}
 						>
 							<CallEndRoundedIcon />
 						</IconButton>
@@ -495,8 +386,7 @@ const Livestreamdev: React.FC = () => {
 				</Stack>
 			</PageWrapper>
 		</>
->>>>>>> 338e0834ff7009b87e5d069803f9519ac5c1b713
 	);
 };
 
-export default Livestreamdev;
+export default LivestreamPage;
