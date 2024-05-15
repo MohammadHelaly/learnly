@@ -154,6 +154,8 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 						fullWidth
 						disableElevation
 						size="large"
+						component={StyledNavLink}
+						to={`/LiveStream`}
 					>
 						Start Live Stream
 					</Button>
