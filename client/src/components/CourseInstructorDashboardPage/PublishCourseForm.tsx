@@ -79,8 +79,8 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 
 	const {
 		mutate: publishCourse,
-		isError: isModuleError,
-		isPending: isPendingModule,
+		isError: isPublishError,
+		isPending: isPendingPublish,
 		isSuccess,
 	} = useMutation({
 		mutationFn: () => {
@@ -177,6 +177,13 @@ function PublishCourseForm(props: PublishCourseFormProps) {
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isPublishError}
+				buttonText="OK!"
+				popupFunction={() => {}}
 			/>
 		</>
 	);
