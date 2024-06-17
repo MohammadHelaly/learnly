@@ -111,6 +111,13 @@ function CreateChannelForm(props: CreateChannelFormProps) {
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isChannelError}
+				buttonText="Ok!"
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 }

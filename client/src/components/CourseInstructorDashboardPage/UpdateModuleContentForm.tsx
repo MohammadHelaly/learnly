@@ -92,7 +92,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 
 	const {
 		mutate: mutateSection,
-		isError: isMutateSectionError,
+		isError: isMutateModuleError,
 		isPending: isPendingSection,
 		isSuccess,
 	} = useMutation({
@@ -102,10 +102,7 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 			});
 		},
 		onSuccess: (response) => {},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
+		onError: (error) => {},
 	});
 
 	const onSubmitSection = (data: AddModuleSchema) => {
@@ -192,6 +189,13 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 					openPopup={isSuccess}
 					buttonText="Great!"
 					popupFunction={popupFunction}
+				/>
+				<Popup
+					heading="Errpr!"
+					content="An error occurred. Please try again."
+					openPopup={isMutateModuleError}
+					buttonText="ok!"
+					popupFunction={() => {}}
 				/>
 			</Dialog>
 		</>

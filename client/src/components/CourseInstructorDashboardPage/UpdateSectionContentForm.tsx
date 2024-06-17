@@ -104,10 +104,7 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 			});
 		},
 		onSuccess: (response) => {},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
+		onError: (error) => {},
 	});
 
 	const onSubmitSection = (data: AddSectionSchema) => {
@@ -221,6 +218,13 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 				content="Section updated successfully"
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				openPopup={isMutateSectionError}
+				heading="Error!"
+				content="Error occurred. Please try again."
+				buttonText="ok!"
+				popupFunction={() => {}}
 			/>
 		</>
 	);

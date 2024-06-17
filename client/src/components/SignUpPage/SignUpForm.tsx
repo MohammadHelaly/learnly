@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { z } from "zod";
@@ -10,6 +10,8 @@ import AuthContext from "../../store/auth-context";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import TextNavLink from "../UI/Links/TextNavLink";
 import Popup from "../Popup/Popup";
+import { error } from "console";
+import { useState } from "react";
 
 const schema = z
 	.object({
@@ -32,6 +34,7 @@ type SignUpSchemaType = z.infer<typeof schema>;
 const SignUpForm = () => {
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const {
 		control,
@@ -54,7 +57,11 @@ const SignUpForm = () => {
 			navigate("/catalog");
 		},
 		onError: (error) => {
-			console.error(error);
+			if (error.message === "Request failed with status code 500") {
+				setErrorMessage("Duplicate email address.");
+			} else {
+				setErrorMessage("Something went wrong. Please try again.");
+			}
 		},
 	});
 
@@ -215,7 +222,7 @@ const SignUpForm = () => {
 			</form>
 			<Popup
 				heading="Error!"
-				content={"Email already exists"}
+				content={errorMessage}
 				openPopup={isError}
 				buttonText={"Close"}
 				popupFunction={() => {}}

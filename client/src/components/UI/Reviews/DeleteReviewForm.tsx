@@ -60,7 +60,7 @@ function DeleteReviewForm(props: DeleteReviewFormProps) {
 
 	const {
 		mutate: deleteReview,
-		isError: isModuleError,
+		isError,
 		isPending: isPendingModule,
 		isSuccess,
 	} = useMutation({
@@ -107,6 +107,13 @@ function DeleteReviewForm(props: DeleteReviewFormProps) {
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				openPopup={isError}
+				content="An error occurred while deleting the review. Please try again."
+				buttonText="ok"
+				popupFunction={() => {}}
 			/>
 		</>
 	);

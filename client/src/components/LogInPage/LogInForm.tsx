@@ -9,6 +9,7 @@ import api from "../../api";
 import { Button, TextField, Typography } from "@mui/material";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import TextNavLink from "../UI/Links/TextNavLink";
+import Popup from "../Popup/Popup";
 
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
@@ -67,7 +68,8 @@ const LogInForm = () => {
 				color="common.black"
 				sx={{
 					mb: 4,
-				}}>
+				}}
+			>
 				Don't have an account?{" "}
 				<TextNavLink to="/sign-up">Sign up</TextNavLink>
 			</Typography>
@@ -76,7 +78,8 @@ const LogInForm = () => {
 				color="text.secondary"
 				sx={{
 					fontWeight: 300,
-				}}>
+				}}
+			>
 				Develop your skills and share your knowledge with others.
 				<br />
 				Learn and teach anywhere, anytime.
@@ -127,7 +130,8 @@ const LogInForm = () => {
 									{errors.password && (
 										<Typography
 											variant="body2"
-											color="error">
+											color="error"
+										>
 											{errors.password.message}
 										</Typography>
 									)}
@@ -147,7 +151,8 @@ const LogInForm = () => {
 					color="common.black"
 					sx={{
 						fontSize: "0.75rem",
-					}}>
+					}}
+				>
 					By clicking "Log in", you agree to Learnly's{" "}
 					<TextNavLink to="/legal">
 						Terms of Service and Privacy Policy
@@ -160,10 +165,18 @@ const LogInForm = () => {
 					size="large"
 					disableElevation
 					disabled={isPending}
-					sx={{ width: "100%", mt: 2 }}>
+					sx={{ width: "100%", mt: 2 }}
+				>
 					Log in
 				</Button>
 			</form>
+			<Popup
+				heading="Error!"
+				content="Incorrect email or password. Please try again."
+				openPopup={isError}
+				buttonText="ok!"
+				popupFunction={() => {}}
+			/>
 		</FormContainer>
 	);
 };

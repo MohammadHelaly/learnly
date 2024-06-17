@@ -64,7 +64,7 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 	};
 	const {
 		mutate: deleteSection,
-		isError: isModuleError,
+		isError: isSectionError,
 		isPending: isPendingModule,
 		isSuccess,
 	} = useMutation({
@@ -156,6 +156,13 @@ const DeleteSectionForm = (props: DeleteSectionFormProps) => {
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isSectionError}
+				buttonText="ok!"
+				popupFunction={() => {}}
 			/>
 		</>
 	);

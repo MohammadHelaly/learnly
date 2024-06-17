@@ -179,6 +179,13 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isError}
+				buttonText="Ok!"
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 }

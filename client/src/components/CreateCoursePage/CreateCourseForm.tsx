@@ -30,7 +30,6 @@ import categories from "../../assets/data/categories";
 import CourseCategories from "../UI/Courses/CourseCategories";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import resizeImageFile from "../../helpers/resizeImageFile";
-
 import Popup from "../Popup/Popup";
 
 const schema = z.object({
@@ -86,6 +85,7 @@ interface ImageState {
 const CreateCourseForm = () => {
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
+	const [errorMessage, setErrorMessage] = useState("");
 	const [image, setImage] = useState<ImageState>({
 		preview: undefined,
 		uploaded: false,
@@ -132,8 +132,12 @@ const CreateCourseForm = () => {
 			// navigate(`/courses/${response.data.data.data.id}`);
 		},
 		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
+			if (error.message === "Request failed with status code 500") {
+				setErrorMessage("Duplicate Course Name");
+			} else
+				setErrorMessage(
+					"Something went wrong. Please try again later."
+				);
 		},
 	});
 
@@ -923,6 +927,13 @@ const CreateCourseForm = () => {
 				openPopup={isSuccess}
 				buttonText={"Go to Dashboard"}
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content={errorMessage}
+				openPopup={isError}
+				buttonText={"ok"}
+				popupFunction={() => {}}
 			/>
 		</FormContainer>
 	);

@@ -37,7 +37,7 @@ interface ChannelProps {
 	channelId: string | number;
 }
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = process.env.REACT_APP_END_POINT as string;
 
 const Channel = (props: ChannelProps) => {
 	const { courseId, channelId } = props;

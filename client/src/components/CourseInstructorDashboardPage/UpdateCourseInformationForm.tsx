@@ -102,7 +102,7 @@ const UpdateCourseInformationForm = (
 	props: UpdateCourseInformationFormProps
 ) => {
 	const { id: courseId, imageCover } = props;
-
+	const [errorMessage, setErrorMessage] = useState("");
 	const queryClient = useQueryClient();
 
 	const [prerequisite, setPrerequisite] = useState("");
@@ -143,14 +143,17 @@ const UpdateCourseInformationForm = (
 		shouldTouch: true,
 	};
 
-	const { mutate, isPending, isSuccess } = useMutation({
+	const { mutate, isPending, isSuccess, isError } = useMutation({
 		mutationFn: (data: Partial<CourseInformationSchemaType>) => {
 			return api.patch(`/courses/${courseId}`, { ...data });
 		},
 		onSuccess: (response) => {},
 		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
+			if (error.message === "Request failed with status code 500") {
+				setErrorMessage("Duplicate Course Name. Please try again.");
+			} else {
+				setErrorMessage("An error occurred. Please try again.");
+			}
 		},
 	});
 
@@ -970,6 +973,13 @@ const UpdateCourseInformationForm = (
 				heading="Success!"
 				content="Course updated successfully"
 				buttonText="Great!"
+				popupFunction={popupFunction}
+			/>
+			<Popup
+				openPopup={isError}
+				heading="Error!"
+				content={errorMessage}
+				buttonText="OK!"
 				popupFunction={popupFunction}
 			/>
 		</FormContainer>

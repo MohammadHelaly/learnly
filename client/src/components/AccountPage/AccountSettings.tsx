@@ -1,7 +1,7 @@
 import { Stack, TextField, Button } from "@mui/material";
 import api from "../../api";
 import { useMutation } from "@tanstack/react-query";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { useContext } from "react";
 import AuthContext from "../../store/auth-context";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
@@ -9,6 +9,7 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import DeleteMe from "./DeleteMe";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import Popup from "../Popup/Popup";
+import { useState } from "react";
 
 interface EmailFormValues {
 	email: string;
@@ -21,6 +22,7 @@ interface PasswordFormValues {
 
 const AccountSettings = () => {
 	const authContext = useContext(AuthContext);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const {
 		control: controlEmail,
@@ -44,7 +46,11 @@ const AccountSettings = () => {
 		},
 	});
 
-	const { mutate: mutateUserEmail, isSuccess: isEmailSuccess } = useMutation({
+	const {
+		mutate: mutateUserEmail,
+		isSuccess: isEmailSuccess,
+		isError: isEmailError,
+	} = useMutation({
 		mutationFn: (data: EmailFormValues) => {
 			return api.patch(`/users/updateMe`, { ...data });
 		},
@@ -53,28 +59,36 @@ const AccountSettings = () => {
 			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
+			if (error.message === "Request failed with status code 500") {
+				setErrorMessage("Email already exists!");
+			} else {
+				setErrorMessage("Something went wrong. Please try again.");
+			}
 		},
 	});
 
-	const { mutate: mutateUserPassword, isSuccess: isPasswordSucess } =
-		useMutation({
-			mutationFn: (data: PasswordFormValues) => {
-				return api.patch(`/users/updatePassword`, {
-					...data,
-					passwordConfirm: data.password,
-				});
-			},
-			onSuccess: () => {
-				//alert("User password updated successfully");
-				resetPassword();
-			},
-			onError: (error) => {
-				console.error(error);
-				alert("An error occurred. Please try again.");
-			},
-		});
+	const {
+		mutate: mutateUserPassword,
+		isSuccess: isPasswordSucess,
+		isError: isPasswordError,
+	} = useMutation({
+		mutationFn: (data: PasswordFormValues) => {
+			return api.patch(`/users/updatePassword`, {
+				...data,
+				passwordConfirm: data.password,
+			});
+		},
+		onSuccess: () => {
+			resetPassword();
+		},
+		onError: (error) => {
+			if (error.message === "Request failed with status code 500") {
+				setErrorMessage("Old Password is incorrect!");
+			} else {
+				setErrorMessage("Something went wrong. Please try again.");
+			}
+		},
+	});
 
 	const EmailPopupfunction = () => {};
 
@@ -227,6 +241,13 @@ const AccountSettings = () => {
 				content="Password updated Successfully!"
 				buttonText="Great!"
 				popupFunction={PasswordPopupfunction}
+			/>
+			<Popup
+				heading="Error!"
+				openPopup={isEmailError || isPasswordError}
+				content={errorMessage}
+				buttonText="ok"
+				popupFunction={() => {}}
 			/>
 		</FormContainer>
 	);

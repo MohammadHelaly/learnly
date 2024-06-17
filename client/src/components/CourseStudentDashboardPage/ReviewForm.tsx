@@ -153,6 +153,13 @@ const ReviewForm = (props: ReviewFormProps) => {
 				buttonText="Great!"
 				popupFunction={PopupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				openPopup={isError}
+				content="An error occurred while submitting the review. Please try again."
+				buttonText="ok"
+				popupFunction={() => {}}
+			/>
 		</FormContainer>
 	);
 };
