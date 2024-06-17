@@ -10,7 +10,7 @@ type Msg = {
 };
 
 const roomNumber = 100;
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = process.env.REACT_APP_END_POINT as string;
 const socket = io(ENDPOINT);
 
 const Livechat: React.FC = () => {
@@ -69,12 +69,14 @@ const Livechat: React.FC = () => {
 			sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
 			noValidate
 			autoComplete="off"
-			onSubmit={handleSubmit}>
+			onSubmit={handleSubmit}
+		>
 			<Stack
 				direction="column"
 				display="flex"
 				justifyContent="space-between"
-				spacing={2}>
+				spacing={2}
+			>
 				<div>
 					{Allmsg.map((msg, index) => (
 						<div
@@ -87,7 +89,8 @@ const Livechat: React.FC = () => {
 								borderRadius: "5px",
 								width: "100%", // Adjust width here
 								maxWidth: "600px", // Optional max width
-							}}>
+							}}
+						>
 							<p>
 								{msg.name}: {msg.text}
 							</p>
@@ -106,11 +109,12 @@ const Livechat: React.FC = () => {
 						border: 1,
 						borderTop: 1,
 						borderColor: "divider",
-						padding:"16px",
-					
+						padding: "16px",
+
 						overflow: "hidden",
 						boxShadow: "none !important",
-					}}>
+					}}
+				>
 					<TextField
 						label="Message"
 						variant="outlined"
@@ -122,7 +126,8 @@ const Livechat: React.FC = () => {
 						type="submit"
 						variant="contained"
 						color="primary"
-						sx={{ width: "5%" }}>
+						sx={{ width: "5%" }}
+					>
 						Send
 					</Button>
 				</Stack>

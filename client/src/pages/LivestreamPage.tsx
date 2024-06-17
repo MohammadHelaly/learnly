@@ -40,7 +40,7 @@ const LivestreamPage: React.FC = () => {
 		setOpenDrawer(!openDrawer);
 	};
 
-	const ENDPOINT = "http://localhost:5000";
+	const ENDPOINT = process.env.REACT_APP_END_POINT as string;
 	const roomNumber = 123;
 	const videoGrid = useRef<HTMLDivElement>(null);
 	const myVideo = useRef<HTMLVideoElement>(document.createElement("video"));
@@ -112,7 +112,7 @@ const LivestreamPage: React.FC = () => {
 
 				const myPeer = new Peer("", {
 					host: "/",
-					port: 3001,
+					port: Number(process.env.REACT_APP_PEERJS_PORT as string),
 				});
 
 				myPeer.on("open", (id) => {
