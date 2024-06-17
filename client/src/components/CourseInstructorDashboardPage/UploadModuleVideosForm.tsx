@@ -177,10 +177,11 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 				popupFunction={popupFunction}
 			/>
 			<Popup
-				heading="Error!"
-				content="An error occurred. Please try again."
+				heading="Something went wrong..."
+				content="A problem occurred while processing your request. Please try again."
 				openPopup={isModuleError}
-				buttonText="ok"
+				buttonText="Close"
+				error={true}
 				popupFunction={() => {}}
 			/>
 		</>
