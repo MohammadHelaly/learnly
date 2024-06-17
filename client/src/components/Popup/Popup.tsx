@@ -15,6 +15,7 @@ interface PopupProps {
 	content: string;
 	openPopup: boolean;
 	buttonText: string;
+	error?: boolean;
 	popupFunction: (type: any) => void;
 }
 
@@ -28,7 +29,8 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const Popup = (props: PopupProps) => {
-	const { heading, content, openPopup, buttonText, popupFunction } = props;
+	const { heading, content, openPopup, buttonText, popupFunction, error } =
+		props;
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -63,7 +65,7 @@ const Popup = (props: PopupProps) => {
 			</DialogContent>
 			<DialogActions>
 				<Button
-					color="primary"
+					color={error ? "error" : "primary"}
 					variant="contained"
 					disableElevation
 					size="large"

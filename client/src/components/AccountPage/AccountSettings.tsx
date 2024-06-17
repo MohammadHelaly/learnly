@@ -23,6 +23,7 @@ interface PasswordFormValues {
 const AccountSettings = () => {
 	const authContext = useContext(AuthContext);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [errorHeading, setErrorHeading] = useState("");
 
 	const {
 		control: controlEmail,
@@ -60,9 +61,15 @@ const AccountSettings = () => {
 		},
 		onError: (error) => {
 			if (error.message === "Request failed with status code 500") {
-				setErrorMessage("Email already exists!");
+				setErrorHeading("Email already taken");
+				setErrorMessage(
+					"A user with this email already exists. Please choose another email."
+				);
 			} else {
-				setErrorMessage("Something went wrong. Please try again.");
+				setErrorHeading("Something went wrong...");
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
 			}
 		},
 	});
@@ -83,9 +90,15 @@ const AccountSettings = () => {
 		},
 		onError: (error) => {
 			if (error.message === "Request failed with status code 500") {
-				setErrorMessage("Old Password is incorrect!");
+				setErrorHeading("Incorrect password");
+				setErrorMessage(
+					"The password you entered is incorrect. Please try again."
+				);
 			} else {
-				setErrorMessage("Something went wrong. Please try again.");
+				setErrorHeading("Something went wrong...");
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
 			}
 		},
 	});
@@ -243,9 +256,10 @@ const AccountSettings = () => {
 				popupFunction={PasswordPopupfunction}
 			/>
 			<Popup
-				heading="Error!"
+				heading={errorHeading}
 				openPopup={isEmailError || isPasswordError}
 				content={errorMessage}
+				error={true}
 				buttonText="ok"
 				popupFunction={() => {}}
 			/>

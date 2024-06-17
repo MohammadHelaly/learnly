@@ -73,9 +73,9 @@ const DeleteMe = () => {
 				popupFunction={popupFunction}
 			/>
 			<Popup
-				heading="Error!"
+				heading="Something went wrong..."
 				openPopup={isError}
-				content="An error occurred. Please try again."
+				content="A problem occurred while processing your request. Please try again."
 				buttonText="Close"
 				popupFunction={() => {}}
 			/>
