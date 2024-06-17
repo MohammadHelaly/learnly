@@ -133,6 +133,13 @@ const DeleteModuleVideoForm = (props: DeleteModuleVideosFormProps) => {
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred while deleting the video.Please try again."
+				openPopup={isModuleError}
+				buttonText="ok!"
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 };

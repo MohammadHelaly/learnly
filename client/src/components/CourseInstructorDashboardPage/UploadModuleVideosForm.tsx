@@ -76,7 +76,7 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 		},
 		onError: (error) => {
 			console.error(error);
-			alert("An error occurred. Please try again.");
+			//alert("An error occurred. Please try again.");
 		},
 	});
 
@@ -175,6 +175,13 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 				openPopup={isModuleSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isModuleError}
+				buttonText="ok"
+				popupFunction={() => {}}
 			/>
 		</>
 	);
