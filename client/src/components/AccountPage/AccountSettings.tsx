@@ -260,7 +260,7 @@ const AccountSettings = () => {
 				openPopup={isEmailError || isPasswordError}
 				content={errorMessage}
 				error={true}
-				buttonText="ok"
+				buttonText="Close"
 				popupFunction={() => {}}
 			/>
 		</FormContainer>
