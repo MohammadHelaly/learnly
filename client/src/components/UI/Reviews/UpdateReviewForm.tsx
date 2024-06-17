@@ -192,10 +192,11 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 				popupFunction={PopupFunction}
 			/>
 			<Popup
-				heading="Error!"
+				heading="Something went wrong..."
+				content="A problem occurred while processing your request. Please try again."
 				openPopup={isError}
-				content="An error occurred while updating the review. Please try again."
-				buttonText="ok"
+				error={true}
+				buttonText="Close"
 				popupFunction={() => {}}
 			/>
 		</FormContainer>
