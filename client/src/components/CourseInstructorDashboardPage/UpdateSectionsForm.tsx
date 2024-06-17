@@ -95,10 +95,7 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 			// 	queryKey: ["sections", { courseId }],
 			// });
 		},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
+		onError: (error) => {},
 	});
 
 	const onSubmitSection = (data: AddSectionSchema) => {
@@ -211,6 +208,13 @@ const UpdateSectionsForm = (props: UpdateSectionsFormProps) => {
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isMutateSectionError}
+				buttonText="ok!"
+				popupFunction={() => {}}
 			/>
 		</>
 	);

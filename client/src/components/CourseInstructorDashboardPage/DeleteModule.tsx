@@ -50,6 +50,13 @@ function DeleteModule(props: DeleteModuleProps) {
 				buttonText="Great!"
 				popupFunction={popupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isModuleError}
+				buttonText="ok!"
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 }

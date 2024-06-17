@@ -87,10 +87,7 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 		onSuccess: (response) => {
 			setOpenModuleForm(false);
 		},
-		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
-		},
+		onError: (error) => {},
 	});
 
 	const onSubmitModule = (data: AddModuleSchema) => {
@@ -184,6 +181,13 @@ const UpdateModulesForm = (props: UpdateModulesFormProps) => {
 				openPopup={isSuccess}
 				buttonText="Great!"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				content="An error occurred. Please try again."
+				openPopup={isMutateModuleError}
+				buttonText="ok!"
+				popupFunction={() => {}}
 			/>
 		</>
 	);
