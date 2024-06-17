@@ -191,6 +191,13 @@ const UpdateReviewForm = (props: UpdateReviewFormProps) => {
 				buttonText="Great!"
 				popupFunction={PopupFunction}
 			/>
+			<Popup
+				heading="Error!"
+				openPopup={isError}
+				content="An error occurred while updating the review. Please try again."
+				buttonText="ok"
+				popupFunction={() => {}}
+			/>
 		</FormContainer>
 	);
 };
