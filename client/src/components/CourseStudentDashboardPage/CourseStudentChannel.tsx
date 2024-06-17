@@ -118,6 +118,8 @@ function CourseStudentChannel() {
 					fullWidth
 					disableElevation
 					size="large"
+					component={StyledNavLink}
+					to={`/LiveStream`}
 				>
 					Join Live Stream
 				</Button>
