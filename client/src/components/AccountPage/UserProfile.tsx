@@ -80,7 +80,12 @@ const UserProfile = () => {
 		}
 	};
 
-	const { mutate, isPending, isSuccess } = useMutation({
+	const {
+		mutate,
+		isPending,
+		isSuccess,
+		isError: UpdateError,
+	} = useMutation({
 		mutationFn: (
 			data: Partial<
 				UserInformationSchemaType & { photo: string | File | Blob }
@@ -92,8 +97,8 @@ const UserProfile = () => {
 			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
+			// console.error(error);
+			// alert("An error occurred. Please try again.");
 		},
 	});
 
@@ -342,6 +347,13 @@ const UserProfile = () => {
 						openPopup={isSuccess}
 						buttonText="Great!"
 						content="User updated successfully!"
+						popupFunction={() => {}}
+					/>
+					<Popup
+						heading="Error!"
+						content="Something went wrong. Please try again."
+						openPopup={UpdateError}
+						buttonText="ok!"
 						popupFunction={() => {}}
 					/>
 				</Stack>

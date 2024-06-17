@@ -33,14 +33,15 @@ const DeleteMe = () => {
 		isError: isMutateUserError,
 		isPending: isPendingUser,
 		isSuccess: UserSuccess,
+		isError,
 	} = useMutation({
 		mutationFn: () => {
 			return api.delete(`/users/deleteMe`);
 		},
 		onSuccess: (response) => {},
 		onError: (error) => {
-			console.error(error);
-			alert("An error occurred. Please try again.");
+			// console.error(error);
+			// alert("An error occurred. Please try again.");
 		},
 	});
 	return (
@@ -70,6 +71,13 @@ const DeleteMe = () => {
 				content="User account deleted Successfully!"
 				buttonText="Close"
 				popupFunction={popupFunction}
+			/>
+			<Popup
+				heading="Error!"
+				openPopup={isError}
+				content="An error occurred. Please try again."
+				buttonText="Close"
+				popupFunction={() => {}}
 			/>
 		</>
 	);
