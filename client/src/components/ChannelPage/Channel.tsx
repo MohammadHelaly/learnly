@@ -37,7 +37,10 @@ interface ChannelProps {
 	channelId: string | number;
 }
 
-const ENDPOINT = process.env.REACT_APP_END_POINT as string;
+const ENDPOINT =
+	process.env.NODE_ENV === "development"
+		? (process.env.REACT_APP_DEVELOPMENT_END_POINT as string)
+		: (process.env.REACT_APP_END_POINT as string);
 
 const Channel = (props: ChannelProps) => {
 	const { courseId, channelId } = props;
@@ -233,8 +236,7 @@ const Channel = (props: ChannelProps) => {
 		<PageWrapper
 			sx={{
 				backgroundColor: "#f5f5f5",
-			}}
-		>
+			}}>
 			<SectionWrapper sx={{ pb: 8 }}>
 				<Container maxWidth="lg">
 					{messagesLoading === "pending" || channelLoading ? (
@@ -246,8 +248,7 @@ const Channel = (props: ChannelProps) => {
 									minHeight: "100vh",
 									overflowY: "scroll",
 									scrollbarWidth: "none",
-								}}
-							></Stack>
+								}}></Stack>
 						</>
 					) : messagesLoading === "error" ||
 					  channelError ||
@@ -276,8 +277,7 @@ const Channel = (props: ChannelProps) => {
 									overflowY: "scroll",
 									scrollbarWidth: "none",
 									display: "flex",
-								}}
-							>
+								}}>
 								{isFetchingNextPageMessages && (
 									<Box
 										sx={{
@@ -287,8 +287,7 @@ const Channel = (props: ChannelProps) => {
 											justifyContent: "center",
 											justifyItems: "center",
 											py: 2,
-										}}
-									>
+										}}>
 										<CircularProgress color="primary" />
 									</Box>
 								)}
@@ -319,15 +318,13 @@ const Channel = (props: ChannelProps) => {
 					boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.25)",
 					transition: "all 0.5s ease-in-out",
 					zIndex: 2,
-				}}
-			>
+				}}>
 				<Container maxWidth="lg">
 					<form onSubmit={handleSubmit(onSubmit)} noValidate>
 						<Stack
 							direction="row"
 							justifyContent="center"
-							spacing={2}
-						>
+							spacing={2}>
 							<Controller
 								name="content"
 								control={control}
@@ -375,8 +372,7 @@ const Channel = (props: ChannelProps) => {
 										backgroundColor: "primary.main",
 										color: "white",
 									},
-								}}
-							>
+								}}>
 								Send
 							</Button>
 						</Stack>

@@ -23,7 +23,10 @@ interface PeersRecord {
 }
 
 const ScreenSharing: React.FC = () => {
-	const ENDPOINT = process.env.REACT_APP_END_POINT as string;
+	const ENDPOINT =
+		process.env.NODE_ENV === "development"
+			? (process.env.REACT_APP_DEVELOPMENT_END_POINT as string)
+			: (process.env.REACT_APP_END_POINT as string);
 	const roomNumber = 123;
 	const videoGrid = useRef<HTMLDivElement>(null);
 	const myVideo = useRef<HTMLVideoElement>(document.createElement("video"));
@@ -217,14 +220,12 @@ const ScreenSharing: React.FC = () => {
 						justifyContent: "flex-end", // Align elements to the far right
 						height: "100%",
 						mt: window.innerWidth > 600 ? 8 : 7,
-					}}
-				>
+					}}>
 					<Box
 						sx={{
 							width: "100%", // This controls the width of the video grid container
 							maxWidth: "80%", // Add a maxWidth to ensure it does not expand unexpectedly
-						}}
-					>
+						}}>
 						<div
 							ref={videoGrid}
 							id="video-grid"
@@ -256,27 +257,23 @@ const ScreenSharing: React.FC = () => {
 					gap: 2,
 					alignContent: "center",
 					justifyItems: "center",
-				}}
-			>
+				}}>
 				<IconButton
 					onClick={toggleMute}
 					color="primary"
-					sx={{ backgroundColor: "white", borderRadius: "100%" }}
-				>
+					sx={{ backgroundColor: "white", borderRadius: "100%" }}>
 					{muted ? <MicOff /> : <Mic />}
 				</IconButton>
 				<IconButton
 					onClick={toggleCamera}
 					color="primary"
-					sx={{ backgroundColor: "white", borderRadius: "100%" }}
-				>
+					sx={{ backgroundColor: "white", borderRadius: "100%" }}>
 					{cameraEnabled ? <VideocamOff /> : <Videocam />}
 				</IconButton>
 				<IconButton
 					onClick={recording ? stopRecording : startRecording}
 					color="primary"
-					sx={{ backgroundColor: "white", borderRadius: "100%" }}
-				>
+					sx={{ backgroundColor: "white", borderRadius: "100%" }}>
 					{recording ? <Stop /> : <FiberManualRecord />}
 				</IconButton>
 			</Box>

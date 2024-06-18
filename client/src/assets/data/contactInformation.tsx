@@ -13,8 +13,10 @@ const contactInformation = [
 	{
 		icon: <Email sx={{ height: 52, width: 52 }} />,
 		title: "Email",
-		content: "info@learnly.com",
-		link: "mailto:info@learnly.com",
+		// content: "info@learnly.com",
+		content: "mohammad.helaly@gmail.com",
+		// link: "mailto:info@learnly.com",
+		link: "mailto:mohammad.helaly@gmail.com",
 	},
 	// {
 	// 	icon: <Phone sx={{ height: 52, width: 52 }} />,

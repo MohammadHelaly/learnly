@@ -3,7 +3,10 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const api = axios.create({
-	baseURL: process.env.REACT_APP_BACKEND_URL,
+	baseURL:
+		process.env.NODE_ENV === "development"
+			? (process.env.REACT_APP_DEVELOPMENT_BACKEND_URL as string)
+			: (process.env.REACT_APP_BACKEND_URL as string),
 	headers: {
 		"Content-Type": "application/json",
 	},
