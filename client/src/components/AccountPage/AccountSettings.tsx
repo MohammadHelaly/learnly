@@ -257,7 +257,15 @@ const AccountSettings = () => {
 			/>
 			<Popup
 				heading={errorHeading}
-				openPopup={isEmailError || isPasswordError}
+				openPopup={isPasswordError}
+				content={errorMessage}
+				error={true}
+				buttonText="Close"
+				popupFunction={() => {}}
+			/>
+			<Popup
+				heading={errorHeading}
+				openPopup={isEmailError}
 				content={errorMessage}
 				error={true}
 				buttonText="Close"
