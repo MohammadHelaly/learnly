@@ -350,10 +350,11 @@ const UserProfile = () => {
 						popupFunction={() => {}}
 					/>
 					<Popup
-						heading="Error!"
-						content="Something went wrong. Please try again."
+						heading="Something went wrong…"
+						content="A problem occurred while processing your request. Please try again."
 						openPopup={UpdateError}
-						buttonText="ok!"
+						buttonText="Close"
+						error={true}
 						popupFunction={() => {}}
 					/>
 				</Stack>

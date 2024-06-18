@@ -221,9 +221,10 @@ function UpdateSectionContentForm(props: UpdateSectionContentFormProps) {
 			/>
 			<Popup
 				openPopup={isMutateSectionError}
-				heading="Error!"
-				content="Error occurred. Please try again."
-				buttonText="ok!"
+				heading="Something went wrong..."
+				content="A problem occurred while processing your request. Please try again."
+				buttonText="Close"
+				error={true}
 				popupFunction={() => {}}
 			/>
 		</>

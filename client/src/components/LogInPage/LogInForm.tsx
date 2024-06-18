@@ -10,7 +10,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import TextNavLink from "../UI/Links/TextNavLink";
 import Popup from "../Popup/Popup";
-
+import { useState } from "react";
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
 	password: z
@@ -22,6 +22,9 @@ type LogInSchemaType = z.infer<typeof schema>;
 
 const LogInForm = () => {
 	const authContext = useContext(AuthContext);
+
+	const [errorMessage, setErrorMessage] = useState("");
+	const [errorHeading, setErrorHeading] = useState("");
 
 	const navigate = useNavigate();
 
@@ -46,7 +49,17 @@ const LogInForm = () => {
 			navigate("/dashboard");
 		},
 		onError: (error) => {
-			console.error(error);
+			if (error.message === "Request failed with status code 401") {
+				setErrorHeading("Login failed");
+				setErrorMessage(
+					"Incorrect email or password. Please try again."
+				);
+			} else {
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
+				setErrorHeading("Something went wrong...");
+			}
 		},
 	});
 
@@ -171,10 +184,11 @@ const LogInForm = () => {
 				</Button>
 			</form>
 			<Popup
-				heading="Error!"
-				content="Incorrect email or password. Please try again."
+				heading={errorHeading}
+				content={errorMessage}
 				openPopup={isError}
-				buttonText="ok!"
+				error={true}
+				buttonText="Close"
 				popupFunction={() => {}}
 			/>
 		</FormContainer>

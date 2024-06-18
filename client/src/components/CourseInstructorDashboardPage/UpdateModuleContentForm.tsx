@@ -191,10 +191,11 @@ function UpdateModuleContentForm(props: UpdateModuleContentFormProps) {
 					popupFunction={popupFunction}
 				/>
 				<Popup
-					heading="Errpr!"
-					content="An error occurred. Please try again."
+					heading="Something went wrong..."
+					content="A problem occurred while processing your request. Please try again."
 					openPopup={isMutateModuleError}
-					buttonText="ok!"
+					error={true}
+					buttonText="Close"
 					popupFunction={() => {}}
 				/>
 			</Dialog>

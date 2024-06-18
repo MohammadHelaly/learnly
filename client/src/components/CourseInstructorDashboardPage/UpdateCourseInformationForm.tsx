@@ -103,6 +103,7 @@ const UpdateCourseInformationForm = (
 ) => {
 	const { id: courseId, imageCover } = props;
 	const [errorMessage, setErrorMessage] = useState("");
+	const [errorHeading, setErrorHeading] = useState("");
 	const queryClient = useQueryClient();
 
 	const [prerequisite, setPrerequisite] = useState("");
@@ -150,9 +151,15 @@ const UpdateCourseInformationForm = (
 		onSuccess: (response) => {},
 		onError: (error) => {
 			if (error.message === "Request failed with status code 500") {
-				setErrorMessage("Duplicate Course Name. Please try again.");
+				setErrorHeading("Course name already taken");
+				setErrorMessage(
+					"A course with this name already exists.Please choose another course name."
+				);
 			} else {
-				setErrorMessage("An error occurred. Please try again.");
+				setErrorHeading("Something went wrong...");
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
 			}
 		},
 	});
@@ -977,9 +984,10 @@ const UpdateCourseInformationForm = (
 			/>
 			<Popup
 				openPopup={isError}
-				heading="Error!"
+				heading={errorHeading}
 				content={errorMessage}
-				buttonText="OK!"
+				error={true}
+				buttonText="Close"
 				popupFunction={popupFunction}
 			/>
 		</FormContainer>

@@ -35,7 +35,7 @@ const SignUpForm = () => {
 	const authContext = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = useState("");
-
+	const [errorHeading, setErrorHeading] = useState("");
 	const {
 		control,
 		handleSubmit,
@@ -58,9 +58,15 @@ const SignUpForm = () => {
 		},
 		onError: (error) => {
 			if (error.message === "Request failed with status code 500") {
-				setErrorMessage("Duplicate email address.");
+				setErrorHeading("Email already taken");
+				setErrorMessage(
+					"A user with this email already exists. Please choose another email."
+				);
 			} else {
-				setErrorMessage("Something went wrong. Please try again.");
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
+				setErrorHeading("Something went wrong...");
 			}
 		},
 	});
@@ -221,9 +227,10 @@ const SignUpForm = () => {
 				</Button>
 			</form>
 			<Popup
-				heading="Error!"
+				heading={errorHeading}
 				content={errorMessage}
 				openPopup={isError}
+				error={true}
 				buttonText={"Close"}
 				popupFunction={() => {}}
 			/>

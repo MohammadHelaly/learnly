@@ -6,7 +6,7 @@ import api from "../../api";
 import { Button, TextField, Typography } from "@mui/material";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import SucessDialog from "./SuccessDialog";
-
+import Popup from "../Popup/Popup";
 const schema = z.object({
 	email: z.string().email({ message: "Please enter a valid email." }),
 });
@@ -56,7 +56,8 @@ const ForgotPasswordForm = () => {
 					sx={{
 						fontWeight: 300,
 						mt: 2,
-					}}>
+					}}
+				>
 					No worries! Enter your email and we'll send you a link to
 					reset it.
 				</Typography>
@@ -82,7 +83,8 @@ const ForgotPasswordForm = () => {
 									errors.email && (
 										<Typography
 											variant="body2"
-											color="error">
+											color="error"
+										>
 											{errors.email.message}
 										</Typography>
 									)
@@ -98,12 +100,21 @@ const ForgotPasswordForm = () => {
 						size="large"
 						disableElevation
 						disabled={isPending}
-						sx={{ width: "100%", mt: 2 }}>
+						sx={{ width: "100%", mt: 2 }}
+					>
 						Send Email
 					</Button>
 				</form>
 			</FormContainer>
 			<SucessDialog isSuccess={isSuccess} />
+			<Popup
+				heading="Something went wrong..."
+				content="A problem occurred while processing your request. Please try again."
+				buttonText="Close"
+				error={true}
+				openPopup={isError}
+				popupFunction={() => {}}
+			/>
 		</>
 	);
 };

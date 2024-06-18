@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Clear, Done } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
@@ -85,7 +85,10 @@ interface ImageState {
 const CreateCourseForm = () => {
 	const [prerequisite, setPrerequisite] = useState("");
 	const [skill, setSkill] = useState("");
+
 	const [errorMessage, setErrorMessage] = useState("");
+	const [errorHeading, setErrorHeading] = useState("");
+
 	const [image, setImage] = useState<ImageState>({
 		preview: undefined,
 		uploaded: false,
@@ -133,11 +136,16 @@ const CreateCourseForm = () => {
 		},
 		onError: (error) => {
 			if (error.message === "Request failed with status code 500") {
-				setErrorMessage("Duplicate Course Name");
-			} else
+				setErrorHeading("Course name already taken");
 				setErrorMessage(
-					"Something went wrong. Please try again later."
+					"A course with this name already exists.Please choose another course name."
 				);
+			} else {
+				setErrorHeading("Something went wrong...");
+				setErrorMessage(
+					"A problem occurred while processing your request. Please try again."
+				);
+			}
 		},
 	});
 
@@ -929,10 +937,11 @@ const CreateCourseForm = () => {
 				popupFunction={popupFunction}
 			/>
 			<Popup
-				heading="Error!"
+				heading={errorHeading}
 				content={errorMessage}
 				openPopup={isError}
-				buttonText={"ok"}
+				error={true}
+				buttonText={"Close"}
 				popupFunction={() => {}}
 			/>
 		</FormContainer>

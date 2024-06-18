@@ -103,7 +103,7 @@ const Livechat: React.FC = () => {
 						width: "100%",
 						position: "fixed",
 						bottom: 0,
-						left: 1151,
+						left: 1138,
 						backgroundColor: "#f5f5f5",
 						border: 1,
 						borderTop: 1,
