@@ -80,7 +80,7 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 
 	const {
 		mutate: publishCourse,
-		isError: isModuleError,
+		isError: unpublishCourseError,
 		isPending: isPendingModule,
 		isSuccess,
 	} = useMutation({
@@ -182,7 +182,7 @@ function UnpublishCourseForm(props: PublishCourseFormProps) {
 			<Popup
 				heading="Something went wrong..."
 				content="A problem occurred while processing your request. Please try again."
-				openPopup={isError}
+				openPopup={unpublishCourseError}
 				buttonText="Close"
 				error={true}
 				popupFunction={() => {}}

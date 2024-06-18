@@ -132,7 +132,6 @@ const Channel = (props: ChannelProps) => {
 		},
 		onError: (error) => {
 			console.error("Error sending message", error);
-			alert("Error sending message. Please try again later.");
 		},
 	});
 
