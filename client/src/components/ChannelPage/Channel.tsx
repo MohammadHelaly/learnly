@@ -23,6 +23,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
 import CircularProgress from "@mui/material/CircularProgress";
+import Popup from "../Popup/Popup";
 const schema = z.object({
 	content: z
 		.string()
@@ -75,6 +76,7 @@ const Channel = (props: ChannelProps) => {
 	const {
 		data: messages,
 		error: messagesError,
+		isError: ismessagesError,
 		status: messagesLoading,
 		fetchNextPage: fetchNextPageMessages,
 		isFetchingNextPage: isFetchingNextPageMessages,
@@ -381,6 +383,16 @@ const Channel = (props: ChannelProps) => {
 							</Button>
 						</Stack>
 					</form>
+					<Popup
+						heading="Something went wrong..."
+						content="A problem occurred while processing your request. Please try again."
+						error={true}
+						buttonText="Close"
+						openPopup={
+							sendMessageError || channelError || ismessagesError
+						}
+						popupFunction={() => {}}
+					/>
 				</Container>
 			</Box>
 		</PageWrapper>
