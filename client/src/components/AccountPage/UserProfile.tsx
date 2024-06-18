@@ -354,6 +354,7 @@ const UserProfile = () => {
 						content="A problem occurred while processing your request. Please try again."
 						openPopup={UpdateError}
 						buttonText="Close"
+						error={true}
 						popupFunction={() => {}}
 					/>
 				</Stack>
