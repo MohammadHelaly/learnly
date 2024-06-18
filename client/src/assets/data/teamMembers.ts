@@ -1,6 +1,7 @@
 import mohammadHelaly from "../images/mohammad-helaly.jpg";
 import moustafaDaebis from "../images/moustafaDaebis.jpg";
 import Shamarka from "../images/shamarka.jpg";
+import omarShehab from "../images/shehab.jpg";
 const teamMembers: TeamMember[] = [
   {
     name: "Mohammad Helaly",
@@ -33,14 +34,14 @@ const teamMembers: TeamMember[] = [
     github: "https://github.com/Shamarka",
   },
   {
-    name: "Mohammad Helaly",
-    role: "Full Stack Developer",
-    photo: mohammadHelaly,
+    name: "Omar Shehab",
+    role: "Front-End Developer",
+    photo: omarShehab,
     description:
-      "The creative mind behind our platform. He combined his technical frontend and backend expertise to build Learnly and empower students and instructors globally. Passionate about quality education, he's committed to making learning engaging for all.",
-    email: "mohammad.helaly@gmail.com",
-    linkedIn: "https://www.linkedin.com/in/mohammadhelaly/",
-    github: "https://wwww.github.com/MohammadHelaly",
+      "As a front-end specialist, he played a key role in creating an intuitive and engaging online learning environment. With a focus on user experience and responsive design, he developed and implemented interactive features that enhance the educational experience for users.",
+    email: "omar.shehab121@gmail.com",
+    linkedIn: "www.linkedin.com/in/omar-shehab-0872472a3",
+    github: "https://wwww.github.com/omarhshehab7",
   },
   {
     name: "Mohammad Helaly",
