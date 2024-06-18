@@ -1,6 +1,7 @@
 import { Box, Stack, Typography, Container } from "@mui/material";
 import teamMembers from "../../../assets/data/teamMembers";
 import TeamMemberCard from "./TeamMemberCard";
+import TextNavLink from "../../UI/Links/TextNavLink";
 
 const OurTeam = () => {
 	return (
@@ -38,6 +39,34 @@ const OurTeam = () => {
 							/>
 						))}
 					</Stack>
+				</Stack>
+				<Stack
+					spacing={4}
+					sx={{
+						mt: 10,
+					}}>
+					<Typography
+						variant="h4"
+						color="common.black"
+						textAlign="center">
+						Learnly was developed under the supervision of
+					</Typography>
+					<TextNavLink
+						to="https://scholar.google.com.eg/citations?user=nvfuob4AAAAJ"
+						target="_blank"
+						rel="noreferrer"
+						sx={{
+							mt: 10,
+							mb: 4,
+							color: "common.black",
+						}}>
+						<Typography
+							variant="h4"
+							color="common.black"
+							textAlign="center">
+							Prof. Dr. Sahar M. Ghanem
+						</Typography>
+					</TextNavLink>
 				</Stack>
 			</Container>
 		</Box>

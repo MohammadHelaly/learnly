@@ -12,14 +12,14 @@ const Footer = () => {
 			component="footer"
 			sx={{
 				backgroundColor: "rgb(245, 245, 245)",
-				color: "#000000",
+				color: "common.black",
 				padding: "50px 0",
 			}}>
 			<Container maxWidth="lg">
 				<TextNavLink
 					to="/"
 					sx={{
-						color: " #000000",
+						color: "common.black",
 						"&:hover": {
 							textDecoration: "none",
 						},
@@ -41,7 +41,7 @@ const Footer = () => {
 						<li>
 							<TextNavLink
 								sx={{
-									color: " #000000",
+									color: "common.black",
 									fontSize: "1.25rem",
 									fontWeight: "300",
 								}}
@@ -53,7 +53,7 @@ const Footer = () => {
 						<li>
 							<TextNavLink
 								sx={{
-									color: " #000000",
+									color: "common.black",
 									fontSize: "1.25rem",
 									fontWeight: "300",
 								}}
@@ -65,7 +65,7 @@ const Footer = () => {
 						<li>
 							<TextNavLink
 								sx={{
-									color: " #000000",
+									color: "common.black",
 									fontSize: "1.25rem",
 									fontWeight: "300",
 								}}
@@ -85,7 +85,7 @@ const Footer = () => {
 						<li>
 							<TextNavLink
 								sx={{
-									color: " #000000",
+									color: "common.black",
 									fontSize: "1.25rem",
 									fontWeight: "300",
 								}}
@@ -97,7 +97,7 @@ const Footer = () => {
 						<li>
 							<TextNavLink
 								sx={{
-									color: " #000000",
+									color: "common.black",
 									fontSize: "1.25rem",
 									fontWeight: "300",
 								}}
@@ -120,7 +120,7 @@ const Footer = () => {
 						target="_blank">
 						<GitHub
 							sx={{
-								transform: "scale(0.95)",
+								transform: "scale(0.95) translateY(5%)", // translateY(5%) is a hack to center the icon vertically with the other link-less icons
 								transition: "all 0.5s ease",
 								"&:hover": {
 									transform: "translateY(-10%) scale(0.95)",
@@ -129,50 +129,50 @@ const Footer = () => {
 							}}
 						/>
 					</CardNavLink>
-					<CardNavLink
+					{/* <CardNavLink
 						to=""
 						rel="noopener noreferrer"
-						target="_blank">
-						<LinkedIn
-							sx={{
-								transform: "scale(1.1)",
-								transition: "all 0.5s ease",
-								"&:hover": {
-									transform: "translateY(-10%) scale(1.1)",
-									opacity: 0.7,
-								},
-							}}
-						/>
-					</CardNavLink>
-					<CardNavLink
+						target="_blank"> */}
+					<LinkedIn
+						sx={{
+							transform: "scale(1.1)",
+							transition: "all 0.5s ease",
+							"&:hover": {
+								transform: "translateY(-10%) scale(1.1)",
+								opacity: 0.7,
+							},
+						}}
+					/>
+					{/* </CardNavLink> */}
+					{/* <CardNavLink
 						to=""
 						rel="noopener noreferrer"
-						target="_blank">
-						<Facebook
-							sx={{
-								transform: "scale(1.1)",
-								transition: "all 0.5s ease",
-								"&:hover": {
-									transform: "translateY(-10%) scale(1.1)",
-									opacity: 0.7,
-								},
-							}}
-						/>
-					</CardNavLink>
-					<CardNavLink
+						target="_blank"> */}
+					<Facebook
+						sx={{
+							transform: "scale(1.1)",
+							transition: "all 0.5s ease",
+							"&:hover": {
+								transform: "translateY(-10%) scale(1.1)",
+								opacity: 0.7,
+							},
+						}}
+					/>
+					{/* </CardNavLink> */}
+					{/* <CardNavLink
 						to=""
 						rel="noopener noreferrer"
-						target="_blank">
-						<Instagram
-							sx={{
-								transition: "all 0.5s ease",
-								"&:hover": {
-									transform: "translateY(-10%) ",
-									opacity: 0.7,
-								},
-							}}
-						/>
-					</CardNavLink>
+						target="_blank"> */}
+					<Instagram
+						sx={{
+							transition: "all 0.5s ease",
+							"&:hover": {
+								transform: "translateY(-10%) ",
+								opacity: 0.7,
+							},
+						}}
+					/>
+					{/* </CardNavLink> */}
 				</Stack>
 				{/* <Grid item xs={12} sm={4}>
 						<Typography
