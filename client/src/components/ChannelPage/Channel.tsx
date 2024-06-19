@@ -40,8 +40,8 @@ interface ChannelProps {
 
 const ENDPOINT =
 	process.env.NODE_ENV === "development"
-		? (process.env.REACT_APP_DEVELOPMENT_END_POINT as string)
-		: (process.env.REACT_APP_END_POINT as string);
+		? (process.env.REACT_APP_BACKEND_URL_LOCAL as string)
+		: (process.env.REACT_APP_BACKEND_URL as string);
 
 const Channel = (props: ChannelProps) => {
 	const { courseId, channelId } = props;

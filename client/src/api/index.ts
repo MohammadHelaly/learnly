@@ -5,8 +5,8 @@ axios.defaults.withCredentials = true;
 const api = axios.create({
 	baseURL:
 		process.env.NODE_ENV === "development"
-			? (process.env.REACT_APP_DEVELOPMENT_BACKEND_URL as string)
-			: (process.env.REACT_APP_BACKEND_URL as string),
+			? (process.env.REACT_APP_API_URL_LOCAL as string)
+			: (process.env.REACT_APP_API_URL as string),
 	headers: {
 		"Content-Type": "application/json",
 	},

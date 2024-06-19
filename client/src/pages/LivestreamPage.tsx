@@ -43,8 +43,8 @@ const LivestreamPage: React.FC = () => {
 
 	const ENDPOINT =
 		process.env.NODE_ENV === "development"
-			? (process.env.REACT_APP_DEVELOPMENT_END_POINT as string)
-			: (process.env.REACT_APP_END_POINT as string);
+			? (process.env.REACT_APP_BACKEND_URL_LOCAL as string)
+			: (process.env.REACT_APP_BACKEND_URL as string);
 	const roomNumber = useParams().roomId;
 	// const roomNumber = 123;
 	const videoGrid = useRef<HTMLDivElement>(null);
@@ -250,15 +250,13 @@ const LivestreamPage: React.FC = () => {
 					maxHeight: "100vh",
 					mt: 0,
 					mb: 0,
-				}}
-			>
+				}}>
 				<Stack
 					direction="column"
 					spacing={0.1}
 					display="flex"
 					justifyContent="flex-start"
-					sx={{ mt: 8, mb: 0, pb: 0 }}
-				>
+					sx={{ mt: 8, mb: 0, pb: 0 }}>
 					<Box
 						sx={{
 							display: "flex",
@@ -266,8 +264,7 @@ const LivestreamPage: React.FC = () => {
 							justifyContent: "center", // Center the entire grid
 							height: "100%",
 							mt: window.innerWidth > 600 ? 8 : 7,
-						}}
-					>
+						}}>
 						<Box
 							sx={{
 								overflowX: "auto", // Allows horizontal scrolling
@@ -276,8 +273,7 @@ const LivestreamPage: React.FC = () => {
 								display: "flex",
 								justifyContent: "center", // Center grid content
 								height: "100%",
-							}}
-						>
+							}}>
 							<div
 								ref={videoGrid}
 								id="video-grid"
@@ -311,8 +307,7 @@ const LivestreamPage: React.FC = () => {
 							gap: 2,
 							alignContent: "center",
 							justifyItems: "center",
-						}}
-					>
+						}}>
 						{isInitiator && (
 							<>
 								<IconButton
@@ -321,8 +316,7 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}
-								>
+									}}>
 									{muted ? <MicOff /> : <Mic />}
 								</IconButton>
 								<IconButton
@@ -331,8 +325,7 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}
-								>
+									}}>
 									{cameraEnabled ? (
 										<Videocam />
 									) : (
@@ -354,8 +347,7 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}
-								>
+									}}>
 									{recording ? (
 										<Stop />
 									) : (
@@ -370,8 +362,7 @@ const LivestreamPage: React.FC = () => {
 								backgroundColor: "white",
 								borderRadius: "100%",
 							}}
-							onClick={toggleDrawer}
-						>
+							onClick={toggleDrawer}>
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
@@ -383,8 +374,7 @@ const LivestreamPage: React.FC = () => {
 									backgroundColor: "red",
 									color: "white",
 								},
-							}}
-						>
+							}}>
 							<CallEndRoundedIcon />
 						</IconButton>
 					</Box>
