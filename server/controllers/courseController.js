@@ -1,11 +1,10 @@
 const Course = require("../models/courseModel");
-const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const handlerFactory = require("./handlerFactory");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
-const fs = require("fs");
+// const fs = require("fs");
 
 const awsConfig = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -48,20 +47,20 @@ const S3 = new AWS.S3(awsConfig);
 // 	if (!req.files.images && !req.files.imageCover) return next();
 
 // 	// 1) Cover image
-// 	req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`;
+// 	req.body.imageCover = `course-${req.params.id}-${Date.now()}-cover.jpeg`;
 
 // 	// await sharp(req.files.imageCover[0].buffer)
 // 	// 	.resize(2000, 1333)
 // 	// 	.toFormat("jpeg")
 // 	// 	.jpeg({ quality: 90 })
-// 	// 	.toFile(`public/img/tours/${req.body.imageCover}`);
+// 	// 	.toFile(`public/img/courses/${req.body.imageCover}`);
 
 // 	// 2) Images
 // 	req.body.images = [];
 
 // 	await Promise.all(
 // 		req.files.images.map(async (file, i) => {
-// 			const filename = `tour-${req.params.id}-${Date.now()}-${
+// 			const filename = `course-${req.params.id}-${Date.now()}-${
 // 				i + 1
 // 			}.jpeg`;
 
@@ -69,7 +68,7 @@ const S3 = new AWS.S3(awsConfig);
 // 			// 	.resize(2000, 1333)
 // 			// 	.toFormat("jpeg")
 // 			// 	.jpeg({ quality: 90 })
-// 			// 	.toFile(`public/img/tours/${filename}`);
+// 			// 	.toFile(`public/img/courses/${filename}`);
 
 // 			req.body.images.push(filename);
 // 		})
@@ -190,8 +189,6 @@ exports.protectCourse = catchAsync(async (req, res, next) => {
 	}
 });
 
-//after course save ,
-
 exports.getAllCourses = handlerFactory.getAll(Course);
 
 exports.getCourse = handlerFactory.getOne(Course, { path: "reviews" });
@@ -208,7 +205,7 @@ exports.deleteCourse = handlerFactory.deleteOne(Course);
 // 		{
 // 			$group: {
 // 				_id: "$difficulty",
-// 				numTours: { $sum: 1 },
+// 				numCourses: { $sum: 1 },
 // 				numRatings: { $sum: "$ratingsQuantity" },
 // 				avgRating: { $avg: "$ratingsAverage" },
 // 				avgPrice: { $avg: "$price" },
@@ -240,13 +237,13 @@ exports.deleteCourse = handlerFactory.deleteOne(Course);
 // 		{
 // 			$group: {
 // 				_id: { $month: "$startDates" },
-// 				numTourStarts: { $sum: 1 },
-// 				tours: { $push: "$name" },
+// 				numCourseStarts: { $sum: 1 },
+// 				courses: { $push: "$name" },
 // 			},
 // 		},
 // 		{ $addFields: { month: "$_id" } },
 // 		{ $project: { _id: 0 } },
-// 		{ $sort: { numTourStarts: -1 } },
+// 		{ $sort: { numCourseStarts: -1 } },
 // 		{ $limit: 12 },
 // 	]);
 // 	res.status(200).json({

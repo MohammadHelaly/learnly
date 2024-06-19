@@ -17,7 +17,7 @@ module.exports = class Email {
 
 	newTransport() {
 		if (process.env.NODE_ENV === "production") {
-			// postmark
+			// Postmark
 			return nodemailer.createTransport(
 				postmarkTransport({
 					auth: {
@@ -38,7 +38,7 @@ module.exports = class Email {
 	}
 
 	async send(template, subject) {
-		//1) Render HTML based on an ejs template
+		// Render HTML based on an ejs template
 		const html = await ejs.renderFile(
 			`${__dirname}/../views/email/${template}.ejs`,
 			{
@@ -48,7 +48,7 @@ module.exports = class Email {
 			}
 		);
 
-		// 2) Define email options
+		// Define email options
 		const mailOptions = {
 			from: this.from,
 			to: this.to,
@@ -57,7 +57,7 @@ module.exports = class Email {
 			html: html,
 		};
 
-		// 3) Create a transport and send email
+		// Create a transport and send email
 		await this.newTransport().sendMail(mailOptions);
 	}
 

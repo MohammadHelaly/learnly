@@ -18,7 +18,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const cors = require("cors");
-const request = require("request");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -52,7 +51,7 @@ if (process.env.NODE_ENV === "development") {
 	app.use(morgan("dev"));
 }
 
-// Limit requests from same API
+// Limit requests from same IP
 const limiter = rateLimit({
 	max: 1000,
 	windowMs: 60 * 60 * 1000,
@@ -63,13 +62,9 @@ app.use("/api", limiter);
 // Body parser, reading data from body into req.body
 app.use(express.json());
 
-//newsletter backend
-
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
-
-//newsletter backend
 
 // Cookie parser
 app.use(cookieParser());

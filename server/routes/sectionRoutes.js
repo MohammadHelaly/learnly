@@ -37,15 +37,13 @@ router
 		sectionController.deleteModuleVideo
 	);
 
-router
-	.route("/:id/modules/:moduleNumber")
-	//DELETE MODULE HERE
-	.delete(
-		authController.protect,
-		sectionController.protectCourse, //prevent any user from editing other than the course instructor
-		sectionController.deleteModule,
-		sectionController.updateSection
-	);
+// For deleting a module
+router.route("/:id/modules/:moduleNumber").delete(
+	authController.protect,
+	sectionController.protectCourse, //prevent any user from editing other than the course instructor
+	sectionController.deleteModule,
+	sectionController.updateSection
+);
 
 router
 	.route("/:id")
@@ -68,23 +66,5 @@ router
 		// authController.restrictTo("user", "admin"),
 		sectionController.addModule
 	);
-
-// router
-// 	.route("/:id/modules")
-// 	.post(
-// 	 authController.protect,
-// 	 // authController.restrictTo("user", "admin"),
-// 	 sectionController.addModule
-// 	 )
-// 	.delete(
-// 	 authController.protect,
-// 	// authController.restrictTo("user", "admin"),
-// 	 sectionController.deleteModule
-// 	 )
-// 	.patch(
-// 	 authController.protect,
-// 	// authController.restrictTo("user", "admin"),
-// 	 sectionController.updateModule
-// 	 );
 
 module.exports = router;

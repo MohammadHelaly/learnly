@@ -1,10 +1,7 @@
 const Review = require("../models/reviewModel");
 const catchAsync = require("../utils/catchAsync");
-const APIFeatures = require("../utils/apiFeatures");
 const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
-const Course = require("../models/courseModel");
-const User = require("../models/userModel");
 const Enrollment = require("../models/enrollmentModel");
 
 exports.setCourseUserIds = (req, res, next) => {
@@ -23,8 +20,6 @@ exports.protectReview = async (req, res, next) => {
 	}
 	next();
 };
-
-//TODO: check if user is enrolled in course before creating review
 
 exports.checkEnrollment = catchAsync(async (req, res, next) => {
 	const courseId = req.body.course;

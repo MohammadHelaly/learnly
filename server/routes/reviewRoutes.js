@@ -4,13 +4,15 @@ const authController = require("../controllers/authController");
 
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(reviewController.getAllReviews).post(
-	authController.protect,
-	//TODO: Middleware to check if user is enrolled in course before adding review
-	reviewController.checkEnrollment,
-	reviewController.setCourseUserIds,
-	reviewController.createReview
-);
+router
+	.route("/")
+	.get(reviewController.getAllReviews)
+	.post(
+		authController.protect,
+		reviewController.checkEnrollment,
+		reviewController.setCourseUserIds,
+		reviewController.createReview
+	);
 
 router
 	.route("/:id")

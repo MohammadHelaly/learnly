@@ -58,21 +58,10 @@ const userSchema = new mongoose.Schema(
 			default: true,
 			select: false,
 		},
-		// stripeAccountId: "",
-		// stripeSeller: {},
-		// stripeSession: {},
 		wishlist: [{ type: mongoose.Schema.ObjectId, ref: "Course" }],
 		coursesEnrolled: [{ type: mongoose.Schema.ObjectId, ref: "Course" }],
 		coursesCreated: [{ type: mongoose.Schema.ObjectId, ref: "Course" }],
-		// purchases: [{
-		// 	course: { type: mongoose.Schema.ObjectId, ref: "Course" },
-		// 	amount: Number,
-		// 	createdAt: {
-		// 		type: Date,
-		// 		default: Date.now(),
-		// 	},
-		// }]
-		// ,
+		// purchases: [{ type: mongoose.Schema.ObjectId, ref: "Purchase" }],
 		role: {
 			type: String,
 			enum: ["user", "instructor", "admin"],

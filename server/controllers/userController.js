@@ -2,10 +2,10 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const handlerFactory = require("./handlerFactory");
-const multer = require("multer");
+// const multer = require("multer");
 const AWS = require("aws-sdk");
 const uuid = require("uuid").v4;
-const fs = require("fs");
+// const fs = require("fs");
 const request = require("request");
 
 const awsConfig = {
@@ -29,28 +29,20 @@ const S3 = new AWS.S3(awsConfig);
 // 	},
 // });
 
-const multerStorage = multer.memoryStorage();
+// const multerStorage = multer.memoryStorage();
 
-const multerFilter = (req, file, cb) => {
-	if (file.mimetype.startsWith("image")) {
-		cb(null, true);
-	} else {
-		cb(new Error("Not an image! Please upload only images."), false);
-	}
-};
+// const multerFilter = (req, file, cb) => {
+// 	if (file.mimetype.startsWith("image")) {
+// 		cb(null, true);
+// 	} else {
+// 		cb(new Error("Not an image! Please upload only images."), false);
+// 	}
+// };
 
-const upload = multer({
-	storage: multerStorage,
-	fileFilter: multerFilter,
-});
-
-const filterObj = (obj, ...allowedFields) => {
-	const newObj = {};
-	Object.keys(obj).forEach((el) => {
-		if (allowedFields.includes(el)) newObj[el] = obj[el];
-	});
-	return newObj;
-};
+// const upload = multer({
+// 	storage: multerStorage,
+// 	fileFilter: multerFilter,
+// });
 
 // exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
 // 	if (!req.file) return next();
@@ -65,6 +57,14 @@ const filterObj = (obj, ...allowedFields) => {
 
 // 	next();
 // });
+
+const filterObj = (obj, ...allowedFields) => {
+	const newObj = {};
+	Object.keys(obj).forEach((el) => {
+		if (allowedFields.includes(el)) newObj[el] = obj[el];
+	});
+	return newObj;
+};
 
 exports.deleteUserphoto = async (req, res, next) => {
 	const user_id = req.user.id;
@@ -95,6 +95,7 @@ exports.deleteUserphoto = async (req, res, next) => {
 	next();
 };
 
+// exports.uploadUserPhoto = upload.single("photo");
 exports.uploadUserPhoto = async (req, res, next) => {
 	const imageCover = req.body.photo;
 	try {
@@ -134,8 +135,6 @@ exports.uploadUserPhoto = async (req, res, next) => {
 	next();
 };
 
-// exports.uploadUserPhoto = upload.single("photo");
-
 exports.getAllUsers = handlerFactory.getAll(User);
 
 exports.getMe = (req, res, next) => {
@@ -144,7 +143,7 @@ exports.getMe = (req, res, next) => {
 };
 
 exports.updateMe = catchAsync(async (req, res, next) => {
-	// 1) Create error if user POSTs password data
+	// Create error if user POSTs password data
 	if (req.body.password || req.body.passwordConfirm) {
 		return next(
 			new AppError(
@@ -154,17 +153,16 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 		);
 	}
 
-	// 2) Filtered out unwanted fields names that are not allowed to be updated
+	// Filtered out unwanted fields names that are not allowed to be updated
 	const filteredBody = filterObj(req.body, "name", "email", "bio", "photo");
 	// if (req.file) filteredBody.photo = req.file.filename;
 
-	// 3) Update user document
+	// Update user document
 	const user = await User.findByIdAndUpdate(req.user.id, filteredBody, {
 		new: true,
 		runValidators: true,
 	});
 
-	// 4) Send response
 	res.status(200).json({
 		status: "success",
 		data: {
@@ -174,12 +172,11 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
-	// 1) Find user by id and set active to false
+	// Find user by id and set active to false
 	const user = await User.findByIdAndUpdate(req.user.id, {
 		active: false,
 	});
 
-	// 2) Send response
 	res.status(204).json({
 		status: "success",
 		data: null,

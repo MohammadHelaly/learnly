@@ -158,6 +158,7 @@ reviewSchema.statics.calculateAverageRatingsForInstructors = async function (
 
 reviewSchema.post("save", async function (next) {
 	// if (!this.isModified("rating")) return next();
+
 	try {
 		const course = await Course.findById(this.course);
 		await this.constructor.calculateAverageRatings(this.course, null);

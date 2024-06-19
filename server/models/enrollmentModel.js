@@ -39,9 +39,7 @@ enrollmentSchema.pre(/^find/, function (next) {
 	next();
 });
 
-// Middleware:
-// - with every enrollment number of course students should increase
-
+// With every enrollment number of course students should increase
 enrollmentSchema.post("save", async function (req, next) {
 	try {
 		const courseId = req.course;
@@ -65,7 +63,7 @@ enrollmentSchema.post("save", async function (req, next) {
 	}
 });
 
-// - ⁠with every enrollment number of students of every course instructor should increase
+// ⁠With every enrollment number of students of every course instructor should increase
 enrollmentSchema.post("save", async function (req, next) {
 	try {
 		const courseId = req.course;

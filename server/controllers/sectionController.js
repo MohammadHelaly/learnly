@@ -49,7 +49,6 @@ exports.createSection = CatchAsync(async (req, res, next) => {
 		},
 	});
 });
-// exports.createSection = handlerFactory.createOne(Section);
 
 exports.addModule = async (req, res) => {
 	const sectionId = req.params.id;
@@ -103,7 +102,7 @@ exports.uploadModuleVideo = async (req, res) => {
 
 		console.log("Uploading to S3");
 
-		//upload to S3
+		// Upload to AWS S3
 		const stored = await S3.upload(params).promise();
 
 		console.log("Uploaded to S3");
@@ -171,6 +170,8 @@ exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 		};
 
 		console.log("Deleting from S3");
+
+		// Delete from AWS S3
 		S3.deleteObject(params, (err) => {
 			if (err) {
 				console.log(err);
@@ -182,8 +183,6 @@ exports.deleteModuleVideoAndUpdateSection = (req, res, next) => {
 	} catch (err) {
 		console.log(err);
 	}
-
-	// s3 delete
 };
 
 exports.deleteModuleVideo = (req, res) => {
@@ -195,7 +194,10 @@ exports.deleteModuleVideo = (req, res) => {
 			Bucket: process.env.S3_BUCKET_NAME,
 			Key: key,
 		};
+
 		console.log("Deleting from S3");
+
+		// Delete from AWS S3
 		S3.deleteObject(params, (err) => {
 			if (err) {
 				console.log(err);
@@ -206,13 +208,7 @@ exports.deleteModuleVideo = (req, res) => {
 	} catch (err) {
 		console.log(err);
 	}
-
-	// s3 delete
 };
-
-// Assuming you have a Section model imported
-
-//Delete Section
 
 exports.deleteSection = async (req, res) => {
 	const sectionId = req.params.id;
@@ -237,7 +233,6 @@ exports.deleteSection = async (req, res) => {
 	}
 };
 
-//DELETE MODULE
 exports.deleteModule = async (req, res, next) => {
 	const sectionId = req.params.id;
 	const module = req.params.moduleNumber;
@@ -248,6 +243,7 @@ exports.deleteModule = async (req, res, next) => {
 		// 	{ $pull: { modules: { _id: module } } },
 		// 	{ new: true }
 		// );
+
 		const section = await Section.findById(sectionId);
 
 		//const module = req.params
@@ -271,7 +267,6 @@ exports.deleteModule = async (req, res, next) => {
 	}
 };
 
-//protect Course from forbidded editing
 exports.protectCourse = catchAsync(async (req, res, next) => {
 	const instructorId = req.user.id;
 
@@ -295,5 +290,3 @@ exports.getAllSections = handlerFactory.getAll(Section);
 exports.getSection = handlerFactory.getOne(Section);
 
 exports.updateSection = handlerFactory.updateOne(Section);
-
-// exports.deleteSection = handlerFactory.deleteOne(Section);
