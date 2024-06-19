@@ -49,7 +49,7 @@ const OurTeam = () => {
 						variant="h4"
 						color="common.black"
 						textAlign="center">
-						Learnly was developed under the supervision of
+						Learnly was developed under the guidance of
 					</Typography>
 					<TextNavLink
 						to="https://scholar.google.com.eg/citations?user=nvfuob4AAAAJ"
