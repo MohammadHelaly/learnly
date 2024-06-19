@@ -8,6 +8,7 @@
 		"start": "nodemon server.js"
 	},
 	"dependencies": {
+		"@ffprobe-installer/ffprobe": "^2.1.2",
 		"aws-sdk": "^2.1568.0",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.20.2",
