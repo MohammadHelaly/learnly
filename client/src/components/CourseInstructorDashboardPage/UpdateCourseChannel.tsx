@@ -39,8 +39,7 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 		<SectionWrapper>
 			<FormContainer
 				// large
-				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}
-			>
+				sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
 				<SectionWrapper>
 					{data?.length !== 0 ? (
 						<>
@@ -122,8 +121,7 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 							size="large"
 							sx={{ mb: 2 }}
 							component={StyledNavLink}
-							to={`/channels/${data?.[0].id}`}
-						>
+							to={`/channels/${data?.[0].id}`}>
 							Course Channel
 						</Button>
 					</SectionWrapper>
@@ -156,8 +154,7 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 						disableElevation
 						size="large"
 						component={StyledNavLink}
-						to={`/LiveStream/${liveStream}`}
-					>
+						to={`/livestream/${liveStream}`}>
 						Start Live Stream
 					</Button>
 				</SectionWrapper>

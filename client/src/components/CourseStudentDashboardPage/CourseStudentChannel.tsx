@@ -37,8 +37,7 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 			sx={{
 				mx: "auto",
 				px: window.innerWidth < 600 ? 0 : 2,
-			}}
-		>
+			}}>
 			{data?.length !== 0 ? (
 				<SectionWrapper>
 					<SectionHeader
@@ -68,8 +67,7 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 						to={`/channels/${data?.[0].id}`}
 						disableElevation
 						size="large"
-						sx={{ mb: 2 }}
-					>
+						sx={{ mb: 2 }}>
 						Go to Channel
 					</Button>
 				</SectionWrapper>
@@ -125,8 +123,7 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 					disableElevation
 					size="large"
 					component={StyledNavLink}
-					to={`/LiveStream/${liveStream}`}
-				>
+					to={`/livestream/${liveStream}`}>
 					Join Live Stream
 				</Button>
 			</SectionWrapper>
