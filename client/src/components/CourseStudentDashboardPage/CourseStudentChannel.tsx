@@ -8,8 +8,14 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 import { useParams } from "react-router-dom";
 import StyledNavLink from "../UI/Links/StyledNavLink";
-function CourseStudentChannel() {
+
+interface CourseStudentChannelProps {
+	liveStream: string;
+}
+
+function CourseStudentChannel(props: CourseStudentChannelProps) {
 	const { courseId } = useParams();
+	const { liveStream } = props;
 	const {
 		data, //: course,
 		isLoading,
@@ -119,7 +125,7 @@ function CourseStudentChannel() {
 					disableElevation
 					size="large"
 					component={StyledNavLink}
-					to={`/LiveStream`}
+					to={`/LiveStream/${liveStream}`}
 				>
 					Join Live Stream
 				</Button>

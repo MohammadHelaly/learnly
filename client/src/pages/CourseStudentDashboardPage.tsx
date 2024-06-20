@@ -74,12 +74,14 @@ function CourseStudentDashboardPage() {
 									sx={{
 										borderBottom: 1,
 										borderColor: "divider",
-									}}>
+									}}
+								>
 									<TabList
 										onChange={handleChange}
 										aria-label="Dashboard Tabs"
 										// centered={window.innerWidth < 600}
-										variant="scrollable">
+										variant="scrollable"
+									>
 										<Tab
 											label="Course Information"
 											value="0"
@@ -126,7 +128,9 @@ function CourseStudentDashboardPage() {
 									{/* </Container> */}
 								</TabPanel>
 								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
-									<CourseStudentChannel />
+									<CourseStudentChannel
+										liveStream={course?.livestream}
+									/>
 								</TabPanel>
 								<TabPanel
 									value="2"
@@ -136,7 +140,8 @@ function CourseStudentDashboardPage() {
 										// display: "flex",
 										// justifyContent: "center",
 										// alignItems: "center",
-									}}>
+									}}
+								>
 									<StudentCourseReviews
 										courseId={courseId || ""}
 										course={course}

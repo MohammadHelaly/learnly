@@ -54,7 +54,8 @@ const CourseInstructorDashboardPage = () => {
 						sx={{
 							backgroundColor: "#f5f5f5",
 							mt: window.innerWidth > 600 ? 8 : 7,
-						}}>
+						}}
+					>
 						<Container maxWidth="lg">
 							<Stack
 								direction={
@@ -68,7 +69,8 @@ const CourseInstructorDashboardPage = () => {
 								sx={{
 									pb: 10,
 									pt: window.innerWidth > 600 ? 10 : 0,
-								}}>
+								}}
+							>
 								{
 									// isError ? (
 									// 	<ErrorWarning />
@@ -85,7 +87,8 @@ const CourseInstructorDashboardPage = () => {
 												flexDirection: "column",
 												display: "flex",
 												gap: 2,
-											}}>
+											}}
+										>
 											<CourseInformationContent
 												name={course?.name}
 												summary={course?.summary}
@@ -127,7 +130,8 @@ const CourseInstructorDashboardPage = () => {
 													window.innerWidth > 600
 														? 0
 														: 4,
-											}}>
+											}}
+										>
 											<CourseImage
 												imageCover={course?.imageCover}
 												name={course?.name}
@@ -159,13 +163,15 @@ const CourseInstructorDashboardPage = () => {
 										sx={{
 											borderBottom: 1,
 											borderColor: "divider",
-										}}>
+										}}
+									>
 										<TabList
 											onChange={handleChange}
 											aria-label="Dashboard Tabs"
 											// centered={window.innerWidth < 600}
 											// variant={window.innerWidth<600?"fullWidth":"scrollable"}
-											variant="scrollable">
+											variant="scrollable"
+										>
 											<Tab
 												label="Course Information"
 												value="0"
@@ -213,6 +219,7 @@ const CourseInstructorDashboardPage = () => {
 									<TabPanel value="2" sx={{ p: 0, m: 0 }}>
 										<UpdateCourseChannel
 											courseName={course?.name}
+											liveStream={course?.livestream}
 										/>
 									</TabPanel>
 									<TabPanel value="3" sx={{ p: 0, m: 0 }}>

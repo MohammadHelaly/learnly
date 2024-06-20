@@ -12,11 +12,12 @@ import DeleteChannelForm from "./DeleteChannelForm";
 
 interface UpdateCourseChannelProps {
 	courseName: string;
+	liveStream: string;
 }
 
 function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 	const { courseId } = useParams();
-	const { courseName } = props;
+	const { courseName, liveStream } = props;
 	const {
 		data, //: course,
 		isLoading,
@@ -155,7 +156,7 @@ function UpdateCourseChannel(props: UpdateCourseChannelProps) {
 						disableElevation
 						size="large"
 						component={StyledNavLink}
-						to={`/LiveStream`}
+						to={`/LiveStream/${liveStream}`}
 					>
 						Start Live Stream
 					</Button>
