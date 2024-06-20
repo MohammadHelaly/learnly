@@ -29,10 +29,10 @@ import CourseEnrollmentPage from "./pages/CourseEnrollmentPage";
 import LegalPage from "./pages/LegalPage";
 import HelpPage from "./pages/HelpPage";
 import BecomeAnInstructorPage from "./pages/BecomeAnInstructorPage";
-import "./App.css";
 import LivestreamPage from "./pages/LivestreamPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import AccountPage from "./pages/AccountPage";
+import "./App.css";
 
 function App() {
 	const authContext = useContext(AuthContext);
@@ -121,8 +121,7 @@ function App() {
 				<AnimatePresence mode="wait">
 					<Routes
 						key={useLocation().pathname}
-						location={useLocation()}
-					>
+						location={useLocation()}>
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/log-in" element={<LogInPage />} />
 						<Route path="/sign-up" element={<SignUpPage />} />
@@ -157,7 +156,6 @@ function App() {
 							path="/courses/:courseId/reviews"
 							element={<CourseCatalogReviewPage />}
 						/>
-						{/* <Route path="/channels" element={<LandingPage />} /> */}
 						<Route
 							path="/channels/:channelId"
 							element={<ChannelPage />}
@@ -182,16 +180,12 @@ function App() {
 							path="/courses/:courseId/enroll"
 							element={<CourseEnrollmentPage />}
 						/>
-						<Route path="/legal" element={<LegalPage />} />
-						<Route path="*" element={<LandingPage />} />
-						{/* <Route
-							path="/livestream"
-							element={<LivestreamPage />}
-						/> */}
 						<Route
 							path="/livestream/:roomId"
 							element={<LivestreamPage />}
 						/>
+						<Route path="/legal" element={<LegalPage />} />
+						<Route path="*" element={<LandingPage />} />
 					</Routes>
 				</AnimatePresence>
 			</Box>
