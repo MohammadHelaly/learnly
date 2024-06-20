@@ -250,13 +250,15 @@ const LivestreamPage: React.FC = () => {
 					maxHeight: "100vh",
 					mt: 0,
 					mb: 0,
-				}}>
+				}}
+			>
 				<Stack
 					direction="column"
 					spacing={0.1}
 					display="flex"
 					justifyContent="flex-start"
-					sx={{ mt: 8, mb: 0, pb: 0 }}>
+					sx={{ mt: 8, mb: 0, pb: 0 }}
+				>
 					<Box
 						sx={{
 							display: "flex",
@@ -264,7 +266,8 @@ const LivestreamPage: React.FC = () => {
 							justifyContent: "center", // Center the entire grid
 							height: "100%",
 							mt: window.innerWidth > 600 ? 8 : 7,
-						}}>
+						}}
+					>
 						<Box
 							sx={{
 								overflowX: "auto", // Allows horizontal scrolling
@@ -273,7 +276,8 @@ const LivestreamPage: React.FC = () => {
 								display: "flex",
 								justifyContent: "center", // Center grid content
 								height: "100%",
-							}}>
+							}}
+						>
 							<div
 								ref={videoGrid}
 								id="video-grid"
@@ -307,7 +311,8 @@ const LivestreamPage: React.FC = () => {
 							gap: 2,
 							alignContent: "center",
 							justifyItems: "center",
-						}}>
+						}}
+					>
 						{isInitiator && (
 							<>
 								<IconButton
@@ -316,7 +321,8 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}>
+									}}
+								>
 									{muted ? <MicOff /> : <Mic />}
 								</IconButton>
 								<IconButton
@@ -325,7 +331,8 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}>
+									}}
+								>
 									{cameraEnabled ? (
 										<Videocam />
 									) : (
@@ -347,7 +354,8 @@ const LivestreamPage: React.FC = () => {
 									sx={{
 										backgroundColor: "white",
 										borderRadius: "100%",
-									}}>
+									}}
+								>
 									{recording ? (
 										<Stop />
 									) : (
@@ -362,10 +370,13 @@ const LivestreamPage: React.FC = () => {
 								backgroundColor: "white",
 								borderRadius: "100%",
 							}}
-							onClick={toggleDrawer}>
+							onClick={toggleDrawer}
+						>
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
+							component={NavLink}
+							to={`/dashboard`}
 							sx={{
 								color: "white",
 								backgroundColor: "red",
@@ -374,7 +385,8 @@ const LivestreamPage: React.FC = () => {
 									backgroundColor: "red",
 									color: "white",
 								},
-							}}>
+							}}
+						>
 							<CallEndRoundedIcon />
 						</IconButton>
 					</Box>

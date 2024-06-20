@@ -271,6 +271,14 @@ function CourseEnrollmentPage() {
 							buttonText="Great!"
 							popupFunction={popupFunction}
 						/>
+						<Popup
+							heading="Something went wrong…"
+							content="A problem occurred while processing your request. Please try again."
+							openPopup={isMutateError}
+							error={true}
+							buttonText="Close"
+							popupFunction={() => {}}
+						/>
 					</AnimatedPage>
 				</PublishCourseNavigationGuard>
 			</CourseNavigationGuard>
