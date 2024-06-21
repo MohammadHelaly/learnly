@@ -31,6 +31,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import api from "../api";
 import AuthContext from "../store/auth-context";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 interface PeersRecord {
 	[userId: string]: { call: MediaConnection; video: HTMLVideoElement };
@@ -61,7 +62,37 @@ const LivestreamPage: React.FC = () => {
 	});
 	const course = data;
 	const authContext = useContext(AuthContext);
-	// const roomNumber = 123;
+
+	const {
+		mutate: setInstructorLive,
+		isError: setInstructorLiveError,
+		isPending: setInstructorLivePending,
+		isSuccess: setInstructorLiveSuccess,
+	} = useMutation({
+		mutationFn: () => {
+			return api.patch(`/courses/${roomNumber}`, {
+				livestream: true,
+			});
+		},
+		onSuccess: (response) => {},
+		onError: (error) => {},
+	});
+
+	const {
+		mutate: setInstructorOffline,
+		isError: setInstructorOfflineError,
+		isPending: setInstructorOfflinePending,
+		isSuccess: setInstructorOfflineSuccess,
+	} = useMutation({
+		mutationFn: () => {
+			return api.patch(`/courses/${roomNumber}`, {
+				livestream: false,
+			});
+		},
+		onSuccess: (response) => {},
+		onError: (error) => {},
+	});
+
 	const videoGrid = useRef<HTMLDivElement>(null);
 	const myVideo = useRef<HTMLVideoElement>(document.createElement("video"));
 	const [peers, setPeers] = useState<PeersRecord>({});
@@ -128,6 +159,9 @@ const LivestreamPage: React.FC = () => {
 		myPeer.on("open", (id) => {
 			socket.emit("get-room-size", roomNumber, (count: number) => {
 				setIsInitiator(count === 0);
+				if (count === 0) {
+					setInstructorLive();
+				}
 				setRoomCount(count + 1); // Increment count for the joining user
 				console.log("Room count", count);
 				socket.emit("join-room", roomNumber, id);
@@ -157,9 +191,9 @@ const LivestreamPage: React.FC = () => {
 		}
 
 		socket.on("user-disconnected", (userId) => {
-			window.location.href = "/dashboard";
-			//}
-
+			if (!isInitiator) {
+				window.location.href = `/dashboard/learn/courses/${roomNumber}`;
+			}
 			if (peers[userId]) {
 				peers[userId].video.remove();
 				peers[userId].call.close();
@@ -397,8 +431,12 @@ const LivestreamPage: React.FC = () => {
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
-							//component={NavLink}
-							//to={`/dashboard`}
+							// component={NavLink}
+							// to={
+							// 	isInitiator
+							// 		? `/dashboard/teach/courses/${roomNumber}`
+							// 		: `/dashboard/learn/courses/${roomNumber}`
+							// }
 							sx={{
 								color: "white",
 								backgroundColor: "red",
@@ -410,6 +448,13 @@ const LivestreamPage: React.FC = () => {
 							}}
 							onClick={() => {
 								if (isInitiator) {
+									setInstructorOffline();
+									while (setInstructorLivePending) {
+										console.log(
+											"Waiting for instructor to go offline"
+										);
+									}
+
 									window.location.href = `/dashboard/teach/courses/${roomNumber}`;
 								} else {
 									window.location.href = `/dashboard/learn/courses/${roomNumber}`;

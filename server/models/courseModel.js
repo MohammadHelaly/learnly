@@ -205,6 +205,10 @@ const courseSchema = new mongoose.Schema(
 			type: mongoose.Schema.ObjectId,
 			ref: "Channel",
 		},
+		livestream: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

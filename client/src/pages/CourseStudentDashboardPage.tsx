@@ -130,6 +130,7 @@ function CourseStudentDashboardPage() {
 								<TabPanel value="1" sx={{ p: 0, m: 0 }}>
 									<CourseStudentChannel
 										liveStream={course?.id}
+										online={course?.livestream}
 									/>
 								</TabPanel>
 								<TabPanel
