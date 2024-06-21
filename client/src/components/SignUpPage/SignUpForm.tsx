@@ -57,16 +57,30 @@ const SignUpForm = () => {
 			navigate("/catalog");
 		},
 		onError: (error) => {
-			if (error.message === "Request failed with status code 500") {
-				setErrorHeading("Email already taken");
-				setErrorMessage(
-					"A user with this email already exists. Please choose another email."
-				);
+			if (process.env.NODE_ENV === "development") {
+				if (error.message === "Request failed with status code 500") {
+					setErrorHeading("Email already taken");
+					setErrorMessage(
+						"A user with this email already exists. Please choose another email."
+					);
+				} else {
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+					setErrorHeading("Something went wrong...");
+				}
 			} else {
-				setErrorMessage(
-					"A problem occurred while processing your request. Please try again."
-				);
-				setErrorHeading("Something went wrong...");
+				if (error.message === "Request failed with status code 400") {
+					setErrorHeading("Email already taken");
+					setErrorMessage(
+						"A user with this email already exists. Please choose another email."
+					);
+				} else {
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+					setErrorHeading("Something went wrong...");
+				}
 			}
 		},
 	});

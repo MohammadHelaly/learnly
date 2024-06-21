@@ -135,16 +135,30 @@ const CreateCourseForm = () => {
 			// navigate(`/courses/${response.data.data.data.id}`);
 		},
 		onError: (error) => {
-			if (error.message === "Request failed with status code 500") {
-				setErrorHeading("Course name already taken");
-				setErrorMessage(
-					"A course with this name already exists.Please choose another course name."
-				);
+			if (process.env.NODE_ENV === "development") {
+				if (error.message === "Request failed with status code 500") {
+					setErrorHeading("Course name already taken");
+					setErrorMessage(
+						"A course with this name already exists.Please choose another course name."
+					);
+				} else {
+					setErrorHeading("Something went wrong...");
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+				}
 			} else {
-				setErrorHeading("Something went wrong...");
-				setErrorMessage(
-					"A problem occurred while processing your request. Please try again."
-				);
+				if (error.message === "Request failed with status code 400") {
+					setErrorHeading("Course name already taken");
+					setErrorMessage(
+						"A course with this name already exists.Please choose another course name."
+					);
+				} else {
+					setErrorHeading("Something went wrong...");
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+				}
 			}
 		},
 	});

@@ -60,16 +60,30 @@ const AccountSettings = () => {
 			authContext.update(response.data.data.user);
 		},
 		onError: (error) => {
-			if (error.message === "Request failed with status code 500") {
-				setErrorHeading("Email already taken");
-				setErrorMessage(
-					"A user with this email already exists. Please choose another email."
-				);
+			if (process.env.NODE_ENV === "development") {
+				if (error.message === "Request failed with status code 500") {
+					setErrorHeading("Email already taken");
+					setErrorMessage(
+						"A user with this email already exists. Please choose another email."
+					);
+				} else {
+					setErrorHeading("Something went wrong...");
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+				}
 			} else {
-				setErrorHeading("Something went wrong...");
-				setErrorMessage(
-					"A problem occurred while processing your request. Please try again."
-				);
+				if (error.message === "Request failed with status code 400") {
+					setErrorHeading("Email already taken");
+					setErrorMessage(
+						"A user with this email already exists. Please choose another email."
+					);
+				} else {
+					setErrorHeading("Something went wrong...");
+					setErrorMessage(
+						"A problem occurred while processing your request. Please try again."
+					);
+				}
 			}
 		},
 	});
