@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { io } from "socket.io-client";
 import Peer, { MediaConnection } from "peerjs";
 import {
@@ -28,6 +28,9 @@ import { CardMedia } from "@mui/material";
 import CallEndRoundedIcon from "@mui/icons-material/CallEndRounded";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
+import AuthContext from "../store/auth-context";
 
 interface PeersRecord {
 	[userId: string]: { call: MediaConnection; video: HTMLVideoElement };
@@ -46,6 +49,18 @@ const LivestreamPage: React.FC = () => {
 			? (process.env.REACT_APP_BACKEND_URL_LOCAL as string)
 			: (process.env.REACT_APP_BACKEND_URL as string);
 	const roomNumber = useParams().roomId;
+
+	const {
+		data, //: course,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["courses", { roomNumber }],
+		queryFn: async () => await api.get(`/courses/${roomNumber}`),
+		select: (response) => response.data.data.data,
+	});
+	const course = data;
+	const authContext = useContext(AuthContext);
 	// const roomNumber = 123;
 	const videoGrid = useRef<HTMLDivElement>(null);
 	const myVideo = useRef<HTMLVideoElement>(document.createElement("video"));
@@ -142,6 +157,9 @@ const LivestreamPage: React.FC = () => {
 		}
 
 		socket.on("user-disconnected", (userId) => {
+			window.location.href = "/dashboard";
+			//}
+
 			if (peers[userId]) {
 				peers[userId].video.remove();
 				peers[userId].call.close();
@@ -379,8 +397,8 @@ const LivestreamPage: React.FC = () => {
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
-							component={NavLink}
-							to={`/dashboard`}
+							//component={NavLink}
+							//to={`/dashboard`}
 							sx={{
 								color: "white",
 								backgroundColor: "red",
@@ -389,6 +407,13 @@ const LivestreamPage: React.FC = () => {
 									backgroundColor: "red",
 									color: "white",
 								},
+							}}
+							onClick={() => {
+								if (isInitiator) {
+									window.location.href = `/dashboard/teach/courses/${roomNumber}`;
+								} else {
+									window.location.href = `/dashboard/learn/courses/${roomNumber}`;
+								}
 							}}
 						>
 							<CallEndRoundedIcon />
