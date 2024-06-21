@@ -4,7 +4,6 @@ const User = require("./userModel");
 const Section = require("./sectionModel");
 const Module = require("./moduleModel");
 const catchAsync = require("../utils/catchAsync");
-const uuid = require("uuid").v4;
 
 const courseSchema = new mongoose.Schema(
 	{
@@ -205,10 +204,6 @@ const courseSchema = new mongoose.Schema(
 		channel: {
 			type: mongoose.Schema.ObjectId,
 			ref: "Channel",
-		},
-		livestream: {
-			type: String,
-			default: uuid(),
 		},
 	},
 	{ toJSON: { virtuals: true }, toObject: { virtuals: true } }

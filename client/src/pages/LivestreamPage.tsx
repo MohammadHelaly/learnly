@@ -105,69 +105,70 @@ const LivestreamPage: React.FC = () => {
 		const socket = io(ENDPOINT);
 		myVideo.current.muted = true;
 
-		navigator.mediaDevices
-			.getUserMedia({
-				video: true,
-				audio: false,
-			})
-			.then((stream) => {
-				if (videoGrid.current) {
-					addVideoStream(myVideo.current, stream);
-				}
+		const myPeer = new Peer("", {
+			host: "/",
+			port: Number(process.env.REACT_APP_PEERJS_PORT as string),
+		});
 
-				const myPeer = new Peer("", {
-					host: "/",
-					port: Number(process.env.REACT_APP_PEERJS_PORT as string),
-				});
-
-				myPeer.on("open", (id) => {
-					socket.emit(
-						"get-room-size",
-						roomNumber,
-						(count: number) => {
-							setIsInitiator(count === 0);
-							setRoomCount(count + 1); // Increment count for the joining user
-							console.log("Room count", count);
-							socket.emit("join-room", roomNumber, id);
-						}
-					);
-				});
-
-				socket.on("user-connected", (userId) => {
-					if (isInitiator && !peers[userId]) {
-						connectToNewUser(userId, stream, myPeer);
-					}
-					setRoomCount((prev) => prev + 1); // Increment room count
-				});
-
-				socket.on("user-disconnected", (userId) => {
-					if (peers[userId]) {
-						peers[userId].video.remove();
-						peers[userId].call.close();
-						setPeers((prevPeers) => {
-							const newPeers = { ...prevPeers };
-							delete newPeers[userId];
-							return newPeers;
-						});
-					}
-					setRoomCount((prev) => prev - 1); // Decrement room count
-				});
-
-				myPeer.on("call", (call) => {
-					const video = document.createElement("video");
-					call.on("stream", (userVideoStream) => {
-						addVideoStream(video, userVideoStream);
-					});
-
-					call.on("close", () => {
-						video.remove();
-					});
-
-					call.on("error", (error: any) => {
-						console.error("Call error:", error);
-					});
-				});
+		myPeer.on("open", (id) => {
+			socket.emit("get-room-size", roomNumber, (count: number) => {
+				setIsInitiator(count === 0);
+				setRoomCount(count + 1); // Increment count for the joining user
+				console.log("Room count", count);
+				socket.emit("join-room", roomNumber, id);
 			});
+		});
+
+		if (isInitiator) {
+			navigator.mediaDevices
+				.getUserMedia({
+					video: true,
+					audio: true,
+				})
+				.then((stream) => {
+					if (videoGrid.current) {
+						addVideoStream(myVideo.current, stream);
+					}
+
+					socket.on("user-connected", (userId) => {
+						connectToNewUser(userId, stream, myPeer);
+						setRoomCount((prev) => prev + 1); // Increment room count
+					});
+				});
+		} else {
+			socket.on("user-connected", (userId) => {
+				setRoomCount((prev) => prev + 1); // Increment room count
+			});
+		}
+
+		socket.on("user-disconnected", (userId) => {
+			if (peers[userId]) {
+				peers[userId].video.remove();
+				peers[userId].call.close();
+				setPeers((prevPeers) => {
+					const newPeers = { ...prevPeers };
+					delete newPeers[userId];
+					return newPeers;
+				});
+			}
+			setRoomCount((prev) => prev - 1); // Decrement room count
+		});
+
+		myPeer.on("call", (call) => {
+			call.answer(); // Answer the call with an empty stream since non-initiators don't share video
+			const video = document.createElement("video");
+			call.on("stream", (userVideoStream) => {
+				addVideoStream(video, userVideoStream);
+			});
+
+			call.on("close", () => {
+				video.remove();
+			});
+
+			call.on("error", (error: any) => {
+				console.error("Call error:", error);
+			});
+		});
 
 		return () => {
 			socket.close();
@@ -181,12 +182,15 @@ const LivestreamPage: React.FC = () => {
 	function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
 		video.srcObject = stream;
 		video.addEventListener("loadedmetadata", () => {
-			video.play();
+			video.play().catch((error) => {
+				console.error("Failed to play video:", error);
+			});
 		});
-		video.style.width = "100%"; // Ensures video fills the cell
-		video.style.height = "100%"; // Ensures video fills the cell
+		video.style.width = "100%";
+		video.style.height = "100%";
 		video.style.borderRadius = "20px";
 		video.style.objectFit = "cover";
+
 		if (videoGrid.current && videoGrid.current.children.length === 0) {
 			// Only add video if none is displayed
 			videoGrid.current.append(video);
@@ -389,6 +393,28 @@ const LivestreamPage: React.FC = () => {
 						>
 							<CallEndRoundedIcon />
 						</IconButton>
+						{!isInitiator && (
+							<IconButton
+								onClick={() => {
+									if (
+										videoGrid.current &&
+										videoGrid.current.children.length > 0
+									) {
+										(
+											videoGrid.current
+												.children[0] as HTMLVideoElement
+										).play();
+									}
+								}}
+								color="primary"
+								sx={{
+									backgroundColor: "white",
+									borderRadius: "100%",
+								}}
+							>
+								<Videocam />
+							</IconButton>
+						)}
 					</Box>
 				</Stack>
 			</PageWrapper>

@@ -89,7 +89,7 @@ const AccountSettings = () => {
 			resetPassword();
 		},
 		onError: (error) => {
-			if (error.message === "Request failed with status code 500") {
+			if (error.message === "Request failed with status code 401") {
 				setErrorHeading("Incorrect password");
 				setErrorMessage(
 					"The password you entered is incorrect. Please try again."

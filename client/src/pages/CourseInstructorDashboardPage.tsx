@@ -219,7 +219,7 @@ const CourseInstructorDashboardPage = () => {
 									<TabPanel value="2" sx={{ p: 0, m: 0 }}>
 										<UpdateCourseChannel
 											courseName={course?.name}
-											liveStream={course?.livestream}
+											liveStream={course?.id}
 										/>
 									</TabPanel>
 									<TabPanel value="3" sx={{ p: 0, m: 0 }}>
