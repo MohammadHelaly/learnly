@@ -14,6 +14,8 @@ import api from "../../api";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import Popup from "../Popup/Popup";
 import { set } from "react-hook-form";
+import CircularProgress from "@mui/material/CircularProgress";
+
 interface UploadModuleVideosFormProps {
 	courseId: number | string;
 	sectionId: number | string;
@@ -158,13 +160,15 @@ const UploadModuleVideosForm = (props: UploadModuleVideosFormProps) => {
 							endIcon={!isModuleError && <Check />}
 							size="large"
 						>
-							{isModuleError
-								? "Something went wrong..."
-								: isPendingModule
-								? "Uploading..."
-								: isModuleSuccess
-								? "Uploaded!"
-								: "Upload Video"}
+							{isModuleError ? (
+								"Something went wrong..."
+							) : isPendingModule ? (
+								<CircularProgress size={24} />
+							) : isModuleSuccess ? (
+								"Uploaded!"
+							) : (
+								"Upload Video"
+							)}
 						</Button>
 					</Stack>
 				</DialogContent>
