@@ -2,7 +2,7 @@ import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import { Check, Close, People } from "@mui/icons-material";
 import CardNavLink from "../../Links/CardNavLink";
 import formatNumber from "../../../../helpers/formatNumber";
-
+import formatDuration from "../../../../helpers/formatDuration";
 interface InstructorDashboardCourseCardProps
 	extends Pick<
 		Course,
@@ -53,13 +53,15 @@ const InstructorDashboardCourseCard = (
 					boxShadow: "none",
 					px: 0,
 					py: window.innerWidth < 600 ? 0 : 1,
-				}}>
+				}}
+			>
 				<Box
 					sx={{
 						height: 200,
 						minWidth: window.innerWidth > 600 ? 356 : "100%",
 						maxWidth: window.innerWidth > 600 ? 356 : "100%",
-					}}>
+					}}
+				>
 					<img
 						src={imageCover.url}
 						alt="course"
@@ -79,14 +81,16 @@ const InstructorDashboardCourseCard = (
 						px: window.innerWidth > 600 ? 2 : 0,
 						display: "flex",
 						flexDirection: "column",
-					}}>
+					}}
+				>
 					<Typography
 						variant="h6"
 						color="common.black"
 						sx={{
 							fontWeight: 500,
 							width: "100%",
-						}}>
+						}}
+					>
 						{name?.length > 30
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
@@ -97,7 +101,8 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}></Typography>
+						}}
+					></Typography>
 					<Stack direction="row" spacing={1} alignItems="center">
 						<Rating
 							name="read-only"
@@ -113,7 +118,8 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"("}
 							{formatNumber(ratingsQuantity)}
 							{")"}
@@ -123,14 +129,16 @@ const InstructorDashboardCourseCard = (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"Free"}
 						</Typography>
 					) : (
 						<Typography
 							variant="h6"
 							color="common.black"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"$"}
 							{price}
 						</Typography>
@@ -138,9 +146,9 @@ const InstructorDashboardCourseCard = (
 					<Typography
 						variant="body2"
 						color="text.secondary"
-						sx={{ fontWeight: 400 }}>
-						{duration ?? 0}
-						{" Hours"}
+						sx={{ fontWeight: 400 }}
+					>
+						{formatDuration(duration)}
 						{" - "}
 						{difficulty?.charAt(0).toUpperCase() +
 							difficulty?.slice(1)}
@@ -153,7 +161,8 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							width: "100%",
 							gap: 1,
-						}}>
+						}}
+					>
 						<People />
 						<Typography variant="body1">
 							{formatNumber(students as number) + " Student(s)"}
@@ -166,7 +175,8 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							width: "100%",
 							gap: 1,
-						}}>
+						}}
+					>
 						{published ? (
 							<Check
 								sx={{
@@ -188,7 +198,8 @@ const InstructorDashboardCourseCard = (
 								color: published
 									? "secondary.main"
 									: "error.main",
-							}}>
+							}}
+						>
 							{published ? "Published" : "Unpublished"}
 						</Typography>
 					</Stack>
@@ -199,7 +210,8 @@ const InstructorDashboardCourseCard = (
 						sx={{
 							width: "100%",
 							gap: 1,
-						}}>
+						}}
+					>
 						{channel ? (
 							<Check
 								sx={{
@@ -221,7 +233,8 @@ const InstructorDashboardCourseCard = (
 								color: channel
 									? "secondary.main"
 									: "error.main",
-							}}>
+							}}
+						>
 							{channel ? "Channel Live" : "No Channel"}
 						</Typography>
 					</Stack>

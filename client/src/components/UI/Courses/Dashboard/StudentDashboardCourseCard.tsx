@@ -1,7 +1,7 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
 import CardNavLink from "../../Links/CardNavLink";
 import formatNumber from "../../../../helpers/formatNumber";
-
+import formatDuration from "../../../../helpers/formatDuration";
 interface StudentDashboardCourseCardProps
 	extends Pick<
 		Course,
@@ -45,7 +45,8 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 					borderBottom: "1px solid #dddddd",
 					boxShadow: "none",
 					p: 0,
-				}}>
+				}}
+			>
 				<Box sx={{ height: 200, width: "100%" }}>
 					<img
 						src={imageCover.url}
@@ -62,14 +63,16 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 					sx={{
 						transition: "all 0.5s ease",
 						py: 1,
-					}}>
+					}}
+				>
 					<Typography
 						variant="h6"
 						color="common.black"
 						sx={{
 							fontWeight: 500,
 							width: "100%",
-						}}>
+						}}
+					>
 						{name?.length > 30
 							? name?.slice(0, 30) + "..."
 							: name ?? "[Course Name Unavailable]"}
@@ -80,7 +83,8 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						sx={{
 							fontWeight: 400,
 							width: "100%",
-						}}>
+						}}
+					>
 						{instructors &&
 						instructors?.length > 0 &&
 						instructors[0]?.name.length > 30
@@ -103,7 +107,8 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 						<Typography
 							variant="body2"
 							color="text.secondary"
-							sx={{ fontWeight: 400 }}>
+							sx={{ fontWeight: 400 }}
+						>
 							{"("}
 							{formatNumber(ratingsQuantity)}
 							{")"}
@@ -112,9 +117,9 @@ const CourseCard = (props: StudentDashboardCourseCardProps) => {
 					<Typography
 						variant="body2"
 						color="text.secondary"
-						sx={{ fontWeight: 400 }}>
-						{duration}
-						{" Hours"}
+						sx={{ fontWeight: 400 }}
+					>
+						{formatDuration(duration)}
 						{" - "}
 						{difficulty?.charAt(0).toUpperCase() +
 							difficulty?.slice(1)}
