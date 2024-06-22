@@ -5,7 +5,7 @@ import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-
+import formatDuration from "../../helpers/formatDuration";
 interface CourseHighlightsProps extends Pick<Course, "duration"> {
 	isLoading: boolean;
 	isError: boolean;
@@ -37,8 +37,8 @@ const CourseHighlights = (props: CourseHighlightsProps) => {
 							/>
 						) : (
 							<Typography variant="body1" color="text.secondary">
-								{duration}
-								{" hours of on-demand video lectures"}
+								{formatDuration(duration)}
+								{" of on-demand video lectures"}
 							</Typography>
 						)}
 					</Stack>
