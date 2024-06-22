@@ -158,9 +158,15 @@ const LivestreamPage: React.FC = () => {
 
 		myPeer.on("open", (id) => {
 			socket.emit("get-room-size", roomNumber, (count: number) => {
-				setIsInitiator(count === 0);
-				if (count === 0) {
-					setInstructorLive();
+				// setIsInitiator(count === 0);
+				// if (count === 0) {
+				// 	setInstructorLive();
+				// }
+				if (authContext.user?.id) {
+					if (authContext.user?.id === course?.instructors[0]._id) {
+						setIsInitiator(true);
+						setInstructorLive();
+					}
 				}
 				setRoomCount(count + 1); // Increment count for the joining user
 				console.log("Room count", count);
@@ -191,9 +197,6 @@ const LivestreamPage: React.FC = () => {
 		}
 
 		socket.on("user-disconnected", (userId) => {
-			if (!isInitiator) {
-				window.location.href = `/dashboard/learn/courses/${roomNumber}`;
-			}
 			if (peers[userId]) {
 				peers[userId].video.remove();
 				peers[userId].call.close();
@@ -229,7 +232,7 @@ const LivestreamPage: React.FC = () => {
 				peer.video.remove();
 			});
 		};
-	}, [isInitiator]);
+	}, [isInitiator, course, authContext.user?.id]);
 
 	function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
 		video.srcObject = stream;
