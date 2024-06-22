@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { io } from "socket.io-client";
 import Peer, { MediaConnection } from "peerjs";
 import {
@@ -28,6 +28,10 @@ import { CardMedia } from "@mui/material";
 import CallEndRoundedIcon from "@mui/icons-material/CallEndRounded";
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import api from "../api";
+import AuthContext from "../store/auth-context";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 interface PeersRecord {
 	[userId: string]: { call: MediaConnection; video: HTMLVideoElement };
@@ -46,7 +50,49 @@ const LivestreamPage: React.FC = () => {
 			? (process.env.REACT_APP_BACKEND_URL_LOCAL as string)
 			: (process.env.REACT_APP_BACKEND_URL as string);
 	const roomNumber = useParams().roomId;
-	// const roomNumber = 123;
+
+	const {
+		data, //: course,
+		isLoading,
+		isError,
+	} = useQuery({
+		queryKey: ["courses", { roomNumber }],
+		queryFn: async () => await api.get(`/courses/${roomNumber}`),
+		select: (response) => response.data.data.data,
+	});
+	const course = data;
+	const authContext = useContext(AuthContext);
+
+	const {
+		mutate: setInstructorLive,
+		isError: setInstructorLiveError,
+		isPending: setInstructorLivePending,
+		isSuccess: setInstructorLiveSuccess,
+	} = useMutation({
+		mutationFn: () => {
+			return api.patch(`/courses/${roomNumber}`, {
+				livestream: true,
+			});
+		},
+		onSuccess: (response) => {},
+		onError: (error) => {},
+	});
+
+	const {
+		mutate: setInstructorOffline,
+		isError: setInstructorOfflineError,
+		isPending: setInstructorOfflinePending,
+		isSuccess: setInstructorOfflineSuccess,
+	} = useMutation({
+		mutationFn: () => {
+			return api.patch(`/courses/${roomNumber}`, {
+				livestream: false,
+			});
+		},
+		onSuccess: (response) => {},
+		onError: (error) => {},
+	});
+
 	const videoGrid = useRef<HTMLDivElement>(null);
 	const myVideo = useRef<HTMLVideoElement>(document.createElement("video"));
 	const [peers, setPeers] = useState<PeersRecord>({});
@@ -105,69 +151,79 @@ const LivestreamPage: React.FC = () => {
 		const socket = io(ENDPOINT);
 		myVideo.current.muted = true;
 
-		navigator.mediaDevices
-			.getUserMedia({
-				video: true,
-				audio: false,
-			})
-			.then((stream) => {
-				if (videoGrid.current) {
-					addVideoStream(myVideo.current, stream);
+		const myPeer = new Peer("", {
+			host: "/",
+			port: Number(process.env.REACT_APP_PEERJS_PORT as string),
+		});
+
+		myPeer.on("open", (id) => {
+			socket.emit("get-room-size", roomNumber, (count: number) => {
+				// setIsInitiator(count === 0);
+				// if (count === 0) {
+				// 	setInstructorLive();
+				// }
+				if (authContext.user?.id) {
+					if (authContext.user?.id === course?.instructors[0]._id) {
+						setIsInitiator(true);
+						setInstructorLive();
+					}
 				}
-
-				const myPeer = new Peer("", {
-					host: "/",
-					port: Number(process.env.REACT_APP_PEERJS_PORT as string),
-				});
-
-				myPeer.on("open", (id) => {
-					socket.emit(
-						"get-room-size",
-						roomNumber,
-						(count: number) => {
-							setIsInitiator(count === 0);
-							setRoomCount(count + 1); // Increment count for the joining user
-							console.log("Room count", count);
-							socket.emit("join-room", roomNumber, id);
-						}
-					);
-				});
-
-				socket.on("user-connected", (userId) => {
-					if (isInitiator && !peers[userId]) {
-						connectToNewUser(userId, stream, myPeer);
-					}
-					setRoomCount((prev) => prev + 1); // Increment room count
-				});
-
-				socket.on("user-disconnected", (userId) => {
-					if (peers[userId]) {
-						peers[userId].video.remove();
-						peers[userId].call.close();
-						setPeers((prevPeers) => {
-							const newPeers = { ...prevPeers };
-							delete newPeers[userId];
-							return newPeers;
-						});
-					}
-					setRoomCount((prev) => prev - 1); // Decrement room count
-				});
-
-				myPeer.on("call", (call) => {
-					const video = document.createElement("video");
-					call.on("stream", (userVideoStream) => {
-						addVideoStream(video, userVideoStream);
-					});
-
-					call.on("close", () => {
-						video.remove();
-					});
-
-					call.on("error", (error: any) => {
-						console.error("Call error:", error);
-					});
-				});
+				setRoomCount(count + 1); // Increment count for the joining user
+				console.log("Room count", count);
+				socket.emit("join-room", roomNumber, id);
 			});
+		});
+
+		if (isInitiator) {
+			navigator.mediaDevices
+				.getUserMedia({
+					video: true,
+					audio: true,
+				})
+				.then((stream) => {
+					if (videoGrid.current) {
+						addVideoStream(myVideo.current, stream);
+					}
+
+					socket.on("user-connected", (userId) => {
+						connectToNewUser(userId, stream, myPeer);
+						setRoomCount((prev) => prev + 1); // Increment room count
+					});
+				});
+		} else {
+			socket.on("user-connected", (userId) => {
+				setRoomCount((prev) => prev + 1); // Increment room count
+			});
+		}
+
+		socket.on("user-disconnected", (userId) => {
+			if (peers[userId]) {
+				peers[userId].video.remove();
+				peers[userId].call.close();
+				setPeers((prevPeers) => {
+					const newPeers = { ...prevPeers };
+					delete newPeers[userId];
+					return newPeers;
+				});
+			}
+			setRoomCount((prev) => prev - 1); // Decrement room count
+		});
+
+		myPeer.on("call", (call) => {
+			call.answer(); // Answer the call with an empty stream since non-initiators don't share video
+			const video = document.createElement("video");
+			call.on("stream", (userVideoStream) => {
+				addVideoStream(video, userVideoStream);
+			});
+
+			call.on("close", () => {
+				video.remove();
+			});
+
+			call.on("error", (error: any) => {
+				console.error("Call error:", error);
+			});
+		});
 
 		return () => {
 			socket.close();
@@ -176,17 +232,20 @@ const LivestreamPage: React.FC = () => {
 				peer.video.remove();
 			});
 		};
-	}, [isInitiator]);
+	}, [isInitiator, course, authContext.user?.id]);
 
 	function addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
 		video.srcObject = stream;
 		video.addEventListener("loadedmetadata", () => {
-			video.play();
+			video.play().catch((error) => {
+				console.error("Failed to play video:", error);
+			});
 		});
-		video.style.width = "100%"; // Ensures video fills the cell
-		video.style.height = "100%"; // Ensures video fills the cell
+		video.style.width = "100%";
+		video.style.height = "100%";
 		video.style.borderRadius = "20px";
 		video.style.objectFit = "cover";
+
 		if (videoGrid.current && videoGrid.current.children.length === 0) {
 			// Only add video if none is displayed
 			videoGrid.current.append(video);
@@ -375,8 +434,12 @@ const LivestreamPage: React.FC = () => {
 							<ChatRoundedIcon />
 						</IconButton>
 						<IconButton
-							component={NavLink}
-							to={`/dashboard`}
+							// component={NavLink}
+							// to={
+							// 	isInitiator
+							// 		? `/dashboard/teach/courses/${roomNumber}`
+							// 		: `/dashboard/learn/courses/${roomNumber}`
+							// }
 							sx={{
 								color: "white",
 								backgroundColor: "red",
@@ -386,9 +449,45 @@ const LivestreamPage: React.FC = () => {
 									color: "white",
 								},
 							}}
+							onClick={() => {
+								if (isInitiator) {
+									setInstructorOffline();
+									while (setInstructorLivePending) {
+										console.log(
+											"Waiting for instructor to go offline"
+										);
+									}
+
+									window.location.href = `/dashboard/teach/courses/${roomNumber}`;
+								} else {
+									window.location.href = `/dashboard/learn/courses/${roomNumber}`;
+								}
+							}}
 						>
 							<CallEndRoundedIcon />
 						</IconButton>
+						{!isInitiator && (
+							<IconButton
+								onClick={() => {
+									if (
+										videoGrid.current &&
+										videoGrid.current.children.length > 0
+									) {
+										(
+											videoGrid.current
+												.children[0] as HTMLVideoElement
+										).play();
+									}
+								}}
+								color="primary"
+								sx={{
+									backgroundColor: "white",
+									borderRadius: "100%",
+								}}
+							>
+								<Videocam />
+							</IconButton>
+						)}
 					</Box>
 				</Stack>
 			</PageWrapper>

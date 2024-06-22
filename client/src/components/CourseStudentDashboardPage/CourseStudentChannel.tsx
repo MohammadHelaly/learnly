@@ -11,11 +11,12 @@ import StyledNavLink from "../UI/Links/StyledNavLink";
 
 interface CourseStudentChannelProps {
 	liveStream: string;
+	online: boolean;
 }
 
 function CourseStudentChannel(props: CourseStudentChannelProps) {
 	const { courseId } = useParams();
-	const { liveStream } = props;
+	const { liveStream, online } = props;
 	const {
 		data, //: course,
 		isLoading,
@@ -37,7 +38,8 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 			sx={{
 				mx: "auto",
 				px: window.innerWidth < 600 ? 0 : 2,
-			}}>
+			}}
+		>
 			{data?.length !== 0 ? (
 				<SectionWrapper>
 					<SectionHeader
@@ -67,7 +69,8 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 						to={`/channels/${data?.[0].id}`}
 						disableElevation
 						size="large"
-						sx={{ mb: 2 }}>
+						sx={{ mb: 2 }}
+					>
 						Go to Channel
 					</Button>
 				</SectionWrapper>
@@ -95,38 +98,63 @@ function CourseStudentChannel(props: CourseStudentChannelProps) {
 					/>
 				</SectionWrapper>
 			)}
-
-			<SectionWrapper>
-				<SectionHeader
-					heading="Join Live Stream"
-					headingAlignment="left"
-					keepHeadingAlignmentOnSmallScreens
-					headingAnimated={false}
-					sx={{
-						mb: 0,
-					}}
-				/>
-				<SectionHeader
-					isSubHeading
-					variant="h6"
-					heading="Join the instructors' live stream and ask questions in real-time."
-					keepHeadingAlignmentOnSmallScreens
-					headingAlignment="left"
-					headingAnimated={false}
-					sx={{
-						mb: 2,
-					}}
-				/>
-				<Button
-					variant="contained"
-					fullWidth
-					disableElevation
-					size="large"
-					component={StyledNavLink}
-					to={`/livestream/${liveStream}`}>
-					Join Live Stream
-				</Button>
-			</SectionWrapper>
+			{online ? (
+				<SectionWrapper>
+					<SectionHeader
+						heading="Join Live Stream"
+						headingAlignment="left"
+						keepHeadingAlignmentOnSmallScreens
+						headingAnimated={false}
+						sx={{
+							mb: 0,
+						}}
+					/>
+					<SectionHeader
+						isSubHeading
+						variant="h6"
+						heading="Join the instructors' live stream and ask questions in real-time."
+						keepHeadingAlignmentOnSmallScreens
+						headingAlignment="left"
+						headingAnimated={false}
+						sx={{
+							mb: 2,
+						}}
+					/>
+					<Button
+						variant="contained"
+						fullWidth
+						disableElevation
+						size="large"
+						component={StyledNavLink}
+						to={`/livestream/${liveStream}`}
+					>
+						Join Live Stream
+					</Button>
+				</SectionWrapper>
+			) : (
+				<SectionWrapper>
+					<SectionHeader
+						heading="No Live Stream Available"
+						headingAlignment="left"
+						keepHeadingAlignmentOnSmallScreens
+						headingAnimated={false}
+						sx={{
+							mb: 0,
+						}}
+					/>
+					<SectionHeader
+						isSubHeading
+						variant="h6"
+						heading="No live stream currently available for this course."
+						keepHeadingAlignmentOnSmallScreens
+						headingAlignment="left"
+						headingAnimated={false}
+						sx={{
+							mb: 2,
+						}}
+					/>
+				</SectionWrapper>
+			)}
 		</FormContainer>
 	);
 }
