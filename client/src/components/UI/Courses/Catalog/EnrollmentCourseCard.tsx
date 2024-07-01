@@ -1,5 +1,6 @@
 import { Card, Typography, Rating, Stack, Box } from "@mui/material";
-import formatNumber from "../../../../helpers/formatNumber";
+import formatNumber from "../../../../utils/formatNumber";
+import formatDuration from "../../../../utils/formatDuration";
 
 interface EnrollmentCourseCardProps
 	extends Pick<
@@ -127,8 +128,7 @@ const EnrollmentCourseCard = (props: EnrollmentCourseCardProps) => {
 					variant="body2"
 					color="text.secondary"
 					sx={{ fontWeight: 400 }}>
-					{duration ?? 0}
-					{" Hours"}
+					{formatDuration(duration)}
 					{" - "}
 					{difficulty?.charAt(0).toUpperCase() + difficulty?.slice(1)}
 					{" Level"}

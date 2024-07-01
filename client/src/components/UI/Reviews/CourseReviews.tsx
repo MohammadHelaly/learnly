@@ -6,7 +6,7 @@ import BottomTextLink from "../Links/BottomTextLink";
 import dummyCourseReviewsData from "../../../assets/data/dummyCourseReviewsData";
 import SectionHeader from "../PageLayout/SectionHeader";
 import SectionWrapper from "../PageLayout/SectionWrapper";
-import formatNumber from "../../../helpers/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 
 interface CourseReviewsProps
 	extends Pick<Course, "id" | "ratingsAverage" | "ratingsQuantity"> {

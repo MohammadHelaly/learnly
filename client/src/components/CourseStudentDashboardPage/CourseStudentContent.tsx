@@ -103,7 +103,7 @@ const CourseStudentContents = (props: CourseContentsProps) => {
 
 								overflowY: "scroll",
 								overflowX: "hidden",
-								minWidth: "25%",
+								width: window.innerWidth > 600 ? "25%" : "100%",
 							},
 						}}>
 						<Box>

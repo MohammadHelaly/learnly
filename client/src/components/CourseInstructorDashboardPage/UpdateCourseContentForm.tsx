@@ -28,7 +28,7 @@ import UpdateSectionContentForm from "./UpdateSectionContentForm";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateModuleContentForm from "./UpdateModuleContentForm";
 import FormContainer from "../UI/PageLayout/FormContainer";
-import formatDuration from "../../helpers/formatDuration";
+import formatDuration from "../../utils/formatDuration";
 interface UpdateCourseContentFormProps {
 	courseId: number | string;
 }
@@ -161,8 +161,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 	return (
 		<FormContainer
 			large
-			sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}
-		>
+			sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
 			{sectionsContents?.map((section: Section, index: number) => {
 				const { id, title, description, modules, duration } = section;
 
@@ -180,8 +179,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							borderBottom:
 								index === sections.length - 1 ? 1 : "none", // Add bottom border for the last one
 							borderColor: "divider",
-						}}
-					>
+						}}>
 						<AccordionSummary
 							draggable={true}
 							onDragStart={(e) => handleSectionDrag(e, index)}
@@ -194,8 +192,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								backgroundColor: "#f5f5f5",
 								width: "100%",
 								flexDirection: "row-reverse",
-							}}
-						>
+							}}>
 							<Stack
 								direction="row"
 								spacing={1}
@@ -204,8 +201,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								width="100%"
 								sx={{
 									ml: 1,
-								}}
-							>
+								}}>
 								{" "}
 								<UpdateSectionContentForm
 									title={title}
@@ -218,8 +214,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									color="text.secondary"
 									sx={{
 										fontWeight: "400",
-									}}
-								>
+									}}>
 									{`${
 										modules?.length
 									} Modules • ${formatDuration(duration)}`}
@@ -240,8 +235,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 							sx={{
 								borderTop: 1,
 								borderColor: "divider",
-							}}
-						>
+							}}>
 							<Typography variant="h6" color="text.secondary">
 								{description}
 							</Typography>
@@ -254,14 +248,12 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 								onDragStart={(e) =>
 									handleModuleDrag(e, index, id)
 								}
-								onDrop={(e) => handleModuleDrop(e, index, id)}
-							>
+								onDrop={(e) => handleModuleDrop(e, index, id)}>
 								{" "}
 								<Stack
 									direction="row"
 									alignItems="center"
-									justifyContent="space-between"
-								>
+									justifyContent="space-between">
 									{module?.video?.url ? (
 										<Stack direction="row">
 											<UpdateModuleContentForm
@@ -284,8 +276,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 														textDecoration:
 															"underline",
 													},
-												}}
-											>
+												}}>
 												{" "}
 												<PlayCircle fontSize="small" />
 												<Typography variant="body1">
@@ -308,8 +299,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									{module?.video?.url ? (
 										<Stack
 											direction="row"
-											alignItems="center"
-										>
+											alignItems="center">
 											<DeleteModuleVideoForm
 												courseId={courseId}
 												sectionId={id}
@@ -319,8 +309,7 @@ const UpdateCourseContentForm = (props: UpdateCourseContentFormProps) => {
 									) : (
 										<Stack
 											direction="row"
-											alignItems="center"
-										>
+											alignItems="center">
 											<UploadModuleVideosForm
 												courseId={courseId}
 												sectionId={id}

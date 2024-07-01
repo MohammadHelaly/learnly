@@ -5,7 +5,7 @@ import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
 import ErrorWarning from "../UI/Messages/ErrorWarning";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
-import formatDuration from "../../helpers/formatDuration";
+import formatDuration from "../../utils/formatDuration";
 interface CourseHighlightsProps extends Pick<Course, "duration"> {
 	isLoading: boolean;
 	isError: boolean;

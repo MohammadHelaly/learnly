@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { Rating } from "@mui/material";
 import { CastForEducation, People } from "@mui/icons-material";
-import formatNumber from "../../../helpers/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 
 interface InstructorStatsProps {
 	ratingsAverage: number;

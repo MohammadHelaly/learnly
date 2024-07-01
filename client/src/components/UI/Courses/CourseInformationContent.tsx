@@ -1,7 +1,7 @@
 import { Stack, Typography, Skeleton, Rating } from "@mui/material";
 import CourseDurationAndDifficulty from "../../CourseCatalogPage/CourseDurationAndDifficulty";
 import TextNavLink from "../Links/TextNavLink";
-import formatNumber from "../../../helpers/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 
 interface CourseInformationContentProps
 	extends Pick<

@@ -1,6 +1,6 @@
 import { Box, Stack, Typography, Avatar, Rating } from "@mui/material";
 import { People, CastForEducation } from "@mui/icons-material";
-import formatNumber from "../../../helpers/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 
 interface UserInformationContentProps
 	extends Pick<

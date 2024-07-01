@@ -26,7 +26,7 @@ import api from "../../api";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import FormContainer from "../UI/PageLayout/FormContainer";
-import resizeImageFile from "../../helpers/resizeImageFile";
+import resizeImageFile from "../../utils/resizeImageFile";
 import CheckListItem from "../UI/Courses/CheckListItem";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
 import categoriesArray from "../../assets/data/categories";
@@ -295,16 +295,14 @@ const UpdateCourseInformationForm = (
 		// 	<FormContainer large>
 		<FormContainer
 			large
-			sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}
-		>
+			sx={{ mx: "auto", px: window.innerWidth < 600 ? 0 : 2 }}>
 			<form
 				style={{
 					width: "100%",
 				}}
 				onSubmit={handleSubmit(onSubmit)}
 				autoComplete="off"
-				noValidate
-			>
+				noValidate>
 				<Stack spacing={12}>
 					<SectionWrapper>
 						<SectionHeader
@@ -342,8 +340,7 @@ const UpdateCourseInformationForm = (
 											errors.name && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.name.message}
 												</Typography>
 											)
@@ -377,8 +374,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.summary}
-						>
+							error={!!errors.summary}>
 							<Controller
 								name="summary"
 								control={control}
@@ -394,8 +390,7 @@ const UpdateCourseInformationForm = (
 											errors.summary && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.summary.message}
 												</Typography>
 											)
@@ -429,8 +424,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.description}
-						>
+							error={!!errors.description}>
 							<Controller
 								name="description"
 								control={control}
@@ -446,8 +440,7 @@ const UpdateCourseInformationForm = (
 											errors.description && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.description.message}
 												</Typography>
 											)
@@ -481,8 +474,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.categories}
-						>
+							error={!!errors.categories}>
 							<InputLabel id="categories-select-label">
 								Categories
 							</InputLabel>
@@ -498,15 +490,13 @@ const UpdateCourseInformationForm = (
 										label="Categories"
 										renderValue={renderSelectedCategories}
 										variant="outlined"
-										fullWidth
-									>
+										fullWidth>
 										{categoriesArray
 											.sort()
 											.map((category) => (
 												<MenuItem
 													key={category}
-													value={category}
-												>
+													value={category}>
 													<Checkbox
 														checked={isSelected(
 															category
@@ -561,8 +551,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.difficulty}
-						>
+							error={!!errors.difficulty}>
 							<Controller
 								name="difficulty"
 								control={control}
@@ -572,8 +561,7 @@ const UpdateCourseInformationForm = (
 										row={window.innerWidth > 600}
 										aria-label="Difficulty"
 										name="difficulty"
-										defaultValue="Beginner"
-									>
+										defaultValue="Beginner">
 										<FormControlLabel
 											value="Beginner"
 											control={<Radio />}
@@ -623,8 +611,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.prerequisites}
-						>
+							error={!!errors.prerequisites}>
 							<TextField
 								name="prerequisite"
 								value={prerequisite}
@@ -646,8 +633,7 @@ const UpdateCourseInformationForm = (
 								onClick={() => addPrerequisite(prerequisite)}
 								sx={{
 									my: 2,
-								}}
-							>
+								}}>
 								Add Prerequisite
 							</Button>
 						</FormControl>
@@ -662,16 +648,14 @@ const UpdateCourseInformationForm = (
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left"
-							>
+								justifyContent="left">
 								{watch().prerequisites.map(
 									(prerequisite, index) => (
 										<Grid
 											item
 											xs={12}
 											sm={6}
-											key={index + "prerequisite"}
-										>
+											key={index + "prerequisite"}>
 											<CheckListItem
 												item={prerequisite}
 												editable
@@ -730,8 +714,7 @@ const UpdateCourseInformationForm = (
 								onClick={() => addSkill(skill)}
 								sx={{
 									my: 2,
-								}}
-							>
+								}}>
 								Add Skill
 							</Button>
 						</FormControl>
@@ -746,15 +729,13 @@ const UpdateCourseInformationForm = (
 								direction="row"
 								rowSpacing="20px"
 								alignItems="left"
-								justifyContent="left"
-							>
+								justifyContent="left">
 								{watch().skills.map((skill, index) => (
 									<Grid
 										item
 										xs={12}
 										sm={6}
-										key={index + "skill"}
-									>
+										key={index + "skill"}>
 										<CheckListItem
 											item={skill}
 											editable
@@ -789,8 +770,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							component="fieldset"
-							error={!!errors.paid}
-						>
+							error={!!errors.paid}>
 							<Controller
 								name="paid"
 								control={control}
@@ -804,8 +784,7 @@ const UpdateCourseInformationForm = (
 										// onChange={paidChangeHandler}
 										sx={{
 											mb: 2,
-										}}
-									>
+										}}>
 										<FormControlLabel
 											value="false"
 											control={<Radio />}
@@ -877,8 +856,7 @@ const UpdateCourseInformationForm = (
 						<FormControl
 							required
 							fullWidth
-							error={!!errors.imageCover}
-						>
+							error={!!errors.imageCover}>
 							<Button
 								component="label"
 								fullWidth
@@ -888,8 +866,7 @@ const UpdateCourseInformationForm = (
 								disabled={isPending}
 								sx={{
 									mb: 2,
-								}}
-							>
+								}}>
 								{image?.preview
 									? "Change Image"
 									: "Upload Image"}
@@ -916,8 +893,7 @@ const UpdateCourseInformationForm = (
 									width: "100%",
 									borderRadius: 12,
 									position: "relative",
-								}}
-							>
+								}}>
 								<IconButton
 									onClick={removeImage}
 									sx={{
@@ -929,8 +905,7 @@ const UpdateCourseInformationForm = (
 										"&:hover": {
 											backgroundColor: "white",
 										},
-									}}
-								>
+									}}>
 									<Clear />
 								</IconButton>
 								<img
@@ -949,8 +924,7 @@ const UpdateCourseInformationForm = (
 										borderRadius: 12,
 										objectFit: "cover",
 										objectPosition: "center",
-									}}
-								></img>
+									}}></img>
 							</Box>
 						)}
 					</SectionWrapper>
@@ -982,8 +956,7 @@ const UpdateCourseInformationForm = (
 							fullWidth
 							disableElevation
 							size="large"
-							endIcon={<Done />}
-						>
+							endIcon={<Done />}>
 							Update Course
 						</Button>
 					</SectionWrapper>

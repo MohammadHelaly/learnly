@@ -24,7 +24,7 @@ import SectionHeader from "../UI/PageLayout/SectionHeader";
 import FormContainer from "../UI/PageLayout/FormContainer";
 import AuthContext from "../../store/auth-context";
 import api from "../../api";
-import resizeImageFile from "../../helpers/resizeImageFile";
+import resizeImageFile from "../../utils/resizeImageFile";
 import { z } from "zod";
 import { NavLink } from "react-router-dom";
 import Popup from "../Popup/Popup";
@@ -166,14 +166,12 @@ const UserProfile = () => {
 		<FormContainer sx={{ px: window.innerWidth < 600 ? 0 : "" }}>
 			<form
 				style={{ width: "100%", marginBottom: 2 }}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+				onSubmit={handleSubmit(onSubmit)}>
 				<Stack
 					alignItems="center"
 					display="flex"
 					flexDirection="column"
-					spacing={8}
-				>
+					spacing={8}>
 					<SectionWrapper>
 						<SectionHeader
 							heading="Your Photo"
@@ -214,8 +212,7 @@ const UserProfile = () => {
 												backgroundColor: "white",
 											},
 										}}
-										onClick={clearImageSelection}
-									>
+										onClick={clearImageSelection}>
 										<Clear />
 									</IconButton>
 								)}
@@ -226,8 +223,7 @@ const UserProfile = () => {
 								variant="contained"
 								disableElevation
 								size="large"
-								disabled={isPending}
-							>
+								disabled={isPending}>
 								<input
 									ref={fileInputRef}
 									accept="image/*"
@@ -259,13 +255,11 @@ const UserProfile = () => {
 						<Stack
 							spacing="1rem"
 							display="flex"
-							flexDirection="column"
-						>
+							flexDirection="column">
 							<FormControl
 								required
 								fullWidth
-								error={!!errors.name}
-							>
+								error={!!errors.name}>
 								<Controller
 									name="name"
 									control={control}
@@ -279,8 +273,7 @@ const UserProfile = () => {
 												errors.name && (
 													<Typography
 														variant="body2"
-														color="error"
-													>
+														color="error">
 														{errors.name.message}
 													</Typography>
 												)
@@ -321,8 +314,7 @@ const UserProfile = () => {
 											errors.bio && (
 												<Typography
 													variant="body2"
-													color="error"
-												>
+													color="error">
 													{errors.bio.message}
 												</Typography>
 											)
@@ -338,8 +330,7 @@ const UserProfile = () => {
 						variant="contained"
 						disableElevation
 						size="large"
-						disabled={isPending}
-					>
+						disabled={isPending}>
 						Save Changes
 					</Button>
 					<Popup
@@ -380,8 +371,7 @@ const UserProfile = () => {
 						fullWidth
 						variant="contained"
 						size="large"
-						disableElevation
-					>
+						disableElevation>
 						View Profile
 					</Button>
 				</NavLink>

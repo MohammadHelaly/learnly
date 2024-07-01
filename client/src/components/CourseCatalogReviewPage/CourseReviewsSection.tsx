@@ -8,7 +8,7 @@ import Reviews from "../UI/Reviews/Reviews";
 import PageWrapper from "../UI/PageLayout/PageWrapper";
 import SectionWrapper from "../UI/PageLayout/SectionWrapper";
 import SectionHeader from "../UI/PageLayout/SectionHeader";
-import formatNumber from "../../helpers/formatNumber";
+import formatNumber from "../../utils/formatNumber";
 
 interface CourseReviewsSectionProps {
 	courseId: string | number;

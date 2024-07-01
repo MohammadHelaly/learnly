@@ -9,7 +9,7 @@ import SectionHeader from "../PageLayout/SectionHeader";
 import SectionWrapper from "../PageLayout/SectionWrapper";
 import SkeletonCourseContents from "./SkeletonCourseContents";
 import ErrorWarning from "../Messages/ErrorWarning";
-import formatDuration from "../../../helpers/formatDuration";
+import formatDuration from "../../../utils/formatDuration";
 interface CourseContentsProps {
 	isLoading: boolean;
 	isError: boolean;
@@ -43,8 +43,7 @@ const CourseContents = (props: CourseContentsProps) => {
 								borderBottom:
 									index === sections.length - 1 ? 1 : "none", // Add bottom border for the last one
 								borderColor: "divider",
-							}}
-						>
+							}}>
 							<AccordionSummary
 								key={id + "-summary"}
 								expandIcon={<ExpandMoreIcon />}
@@ -54,8 +53,7 @@ const CourseContents = (props: CourseContentsProps) => {
 									backgroundColor: "#f5f5f5",
 									width: "100%",
 									flexDirection: "row-reverse",
-								}}
-							>
+								}}>
 								<Stack
 									direction="row"
 									spacing={1}
@@ -64,14 +62,12 @@ const CourseContents = (props: CourseContentsProps) => {
 									width="100%"
 									sx={{
 										ml: 1,
-									}}
-								>
+									}}>
 									<Typography
 										variant="h5"
 										sx={{
 											fontWeight: "400",
-										}}
-									>
+										}}>
 										{title}
 									</Typography>
 									<Typography
@@ -79,8 +75,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										color="text.secondary"
 										sx={{
 											fontWeight: "400",
-										}}
-									>
+										}}>
 										{`${
 											modules?.length
 										} Modules • ${formatDuration(
@@ -94,8 +89,7 @@ const CourseContents = (props: CourseContentsProps) => {
 								sx={{
 									borderTop: 1,
 									borderColor: "divider",
-								}}
-							>
+								}}>
 								<Typography variant="h6" color="text.secondary">
 									{description}
 								</Typography>
@@ -107,8 +101,7 @@ const CourseContents = (props: CourseContentsProps) => {
 										<Stack
 											direction="row"
 											spacing={1}
-											alignItems="center"
-										>
+											alignItems="center">
 											<PlayCircleIcon fontSize="small" />
 											<Typography variant="body1">
 												{title}

@@ -1,6 +1,6 @@
 import { Card, Stack, Typography, Rating, Avatar } from "@mui/material";
 import TextNavLink from "../Links/TextNavLink";
-import formatNumber from "../../../helpers/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 
 const InstructorCard = (props: Instructor) => {
 	const {

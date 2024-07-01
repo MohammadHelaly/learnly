@@ -13,7 +13,7 @@ import {
 	IconButton,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import formatDate from "../../helpers/formatDate";
+import formatDate from "../../utils/formatDate";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

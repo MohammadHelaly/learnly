@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import dummyCourseSectionsData from "../../assets/data/dummyCourseSectionsData";
 import Checkbox from "@mui/material/Checkbox";
+import formatDuration from "../../utils/formatDuration";
 interface DrawerListProps {
 	sections: Section[];
 	setVideo: (video: string) => void;
@@ -38,8 +39,7 @@ function DrawerList(props: DrawerListProps) {
 							borderBottom:
 								index === sections.length - 1 ? 1 : "none", // Add bottom border for the last one
 							borderColor: "divider",
-						}}
-					>
+						}}>
 						<AccordionSummary
 							key={id + "-summary"}
 							expandIcon={<ExpandMoreIcon />}
@@ -53,8 +53,7 @@ function DrawerList(props: DrawerListProps) {
 								width: "100%",
 								flexDirection: "row-reverse",
 								py: 1,
-							}}
-						>
+							}}>
 							<Stack
 								direction="row"
 								spacing={1}
@@ -63,14 +62,12 @@ function DrawerList(props: DrawerListProps) {
 								width="100%"
 								sx={{
 									ml: 1,
-								}}
-							>
+								}}>
 								<Typography
 									variant="h5"
 									sx={{
 										fontWeight: "400",
-									}}
-								>
+									}}>
 									{title}
 								</Typography>
 								<Typography
@@ -78,11 +75,10 @@ function DrawerList(props: DrawerListProps) {
 									color="text.secondary"
 									sx={{
 										fontWeight: "400",
-									}}
-								>
-									{`${modules?.length} Modules • ${
-										duration ?? 0
-									} Hours`}
+									}}>
+									{`${
+										modules?.length
+									} Modules • ${formatDuration(duration)}`}
 								</Typography>
 							</Stack>
 						</AccordionSummary>
@@ -91,8 +87,7 @@ function DrawerList(props: DrawerListProps) {
 							sx={{
 								borderTop: 1,
 								borderColor: "divider",
-							}}
-						>
+							}}>
 							<Typography variant="h6" color="text.secondary">
 								{description}
 							</Typography>
@@ -108,8 +103,7 @@ function DrawerList(props: DrawerListProps) {
 											section.id === selectedSection
 												? "#f5f5f5"
 												: "#fff",
-									}}
-								>
+									}}>
 									{/* <Checkbox /> */}
 									<Button
 										sx={{ color: "black" }}
@@ -121,13 +115,11 @@ function DrawerList(props: DrawerListProps) {
 											}
 											setSelectedModule(module.title);
 											setSelectedSection(section.id);
-										}}
-									>
+										}}>
 										<Stack
 											direction="row"
 											spacing={1}
-											alignItems="center"
-										>
+											alignItems="center">
 											<PlayCircleIcon fontSize="small" />
 											<Typography variant="body1">
 												{title}

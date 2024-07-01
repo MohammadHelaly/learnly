@@ -1,6 +1,6 @@
 import { Stack, Typography, Skeleton } from "@mui/material";
 import { AccessTime, BarChart } from "@mui/icons-material";
-import formatDuration from "../../helpers/formatDuration";
+import formatDuration from "../../utils/formatDuration";
 interface CourseDurationAndDifficultyProps
 	extends Pick<Course, "duration" | "difficulty"> {
 	isLoading: boolean;
@@ -17,8 +17,7 @@ const CourseDurationAndDifficulty = (
 			flexWrap="wrap"
 			spacing={2}
 			alignItems="center"
-			justifyContent={window.innerWidth > 600 ? "left" : "center"}
-		>
+			justifyContent={window.innerWidth > 600 ? "left" : "center"}>
 			<Typography
 				variant="body2"
 				sx={{
@@ -33,8 +32,7 @@ const CourseDurationAndDifficulty = (
 					alignContent: "center",
 					justifyContent: "center",
 					gap: 1,
-				}}
-			>
+				}}>
 				<AccessTime fontSize="small" />
 				{isLoading ? (
 					<Skeleton animation="wave" width="80px" />
@@ -56,8 +54,7 @@ const CourseDurationAndDifficulty = (
 					alignContent: "center",
 					justifyContent: "center",
 					gap: 1,
-				}}
-			>
+				}}>
 				<BarChart fontSize="small" />
 				{isLoading ? (
 					<Skeleton animation="wave" width="80px" />
