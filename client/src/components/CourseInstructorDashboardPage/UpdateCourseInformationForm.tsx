@@ -72,7 +72,23 @@ const schema = z.object({
 			})
 		)
 		.max(12, { message: "Select up to 12 prerequisites." }),
-	imageCover: z.any(),
+	imageCover: z.any().refine((value) => {
+		if (value === null || value === undefined) {
+			return false;
+		}
+		if (
+			typeof value === "string" &&
+			(value?.includes("data:image/png;base64") ||
+				value?.includes("data:image/jpg;base64") ||
+				value?.includes("data:image/jpeg;base64"))
+		) {
+			return true;
+		}
+		if (typeof value === "object" && "key" in value && "url" in value) {
+			return true;
+		}
+		return false;
+	}),
 });
 
 type CourseInformationSchemaType = z.infer<typeof schema>;
@@ -94,8 +110,8 @@ interface UpdateCourseInformationFormProps
 	> {}
 
 interface ImageState {
-	preview: File | undefined | string;
-	uploaded: string | number | readonly string[] | undefined;
+	preview: undefined | string;
+	uploaded: string | number | readonly string[] | undefined | boolean;
 }
 
 const UpdateCourseInformationForm = (
@@ -110,7 +126,7 @@ const UpdateCourseInformationForm = (
 	const [skill, setSkill] = useState("");
 	const [image, setImage] = useState<ImageState>({
 		preview: imageCover?.url,
-		uploaded: "",
+		uploaded: false,
 	});
 
 	// Reference for the file input
@@ -235,7 +251,7 @@ const UpdateCourseInformationForm = (
 	// };
 
 	const removeImage = () => {
-		setImage({ preview: undefined, uploaded: "" });
+		setImage({ preview: undefined, uploaded: false });
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ""; // Reset the file input value to allow for re-selection
 		}
@@ -244,7 +260,7 @@ const UpdateCourseInformationForm = (
 	const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event?.target?.files?.[0];
 		if (file) {
-			setImage({ preview: URL.createObjectURL(file), uploaded: "" });
+			setImage({ preview: URL.createObjectURL(file), uploaded: true });
 		}
 	};
 
@@ -254,9 +270,23 @@ const UpdateCourseInformationForm = (
 
 	useEffect(() => {
 		const resizeImage = async () => {
-			if (image.preview && typeof image.preview !== "string") {
+			if (image.preview) {
 				const resizedImage = await resizeImageFile(
-					new File([image.preview], "imageCover")
+					new File(
+						[
+							await (
+								await fetch(image.preview, {
+									mode: "no-cors",
+									headers: {
+										"Access-Control-Allow-Origin": "*",
+										"Access-Control-Allow-Credentials":
+											"true",
+									},
+								})
+							).blob(),
+						],
+						"imageCover"
+					)
 				);
 				setValue("imageCover", resizedImage, setValueOptions);
 			} else {
@@ -877,14 +907,14 @@ const UpdateCourseInformationForm = (
 									multiple={false}
 									type="file"
 									hidden
-									value={image.uploaded}
+									// value={image.uploaded}
 									onChange={handleImageChange}
 								/>
 							</Button>
 						</FormControl>
 						{errors.imageCover && (
 							<Typography variant="body2" color="error">
-								"Please upload a valid image for your course."
+								Please upload a valid image for your course.
 							</Typography>
 						)}
 						{image?.preview && (

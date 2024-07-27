@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef } from "react";
+import React, { ChangeEvent, useState, useEffect, useRef } from "react";
 import {
 	Box,
 	Typography,
@@ -72,7 +72,19 @@ const schema = z.object({
 			})
 		)
 		.max(12, { message: "Select up to 12 prerequisites." }),
-	imageCover: z.any(),
+	imageCover: z.any().refine((value) => {
+		if (value === null || value === undefined) {
+			return false;
+		}
+		if (
+			value?.includes("data:image/png;base64") ||
+			value?.includes("data:image/jpg;base64") ||
+			value?.includes("data:image/jpeg;base64")
+		) {
+			return true;
+		}
+		return false;
+	}),
 });
 
 type CourseFormSchemaType = z.infer<typeof schema>;
@@ -212,7 +224,6 @@ const CreateCourseForm = () => {
 	// };
 
 	// const priceChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-	// 	console.log(watch().price);
 	// 	setValue("price", parseFloat(event.target.value));
 	// };
 
@@ -230,17 +241,38 @@ const CreateCourseForm = () => {
 		}
 	};
 
-	const onSubmit = async (data: CourseFormSchemaType) => {
-		const resizedImage = image.preview
-			? await resizeImageFile(
+	useEffect(() => {
+		const handleResize = async () => {
+			if (image.preview) {
+				const resizedImage = await resizeImageFile(
 					new File(
 						[await (await fetch(image.preview)).blob()],
 						"imageCover"
 					)
-			  )
-			: undefined;
+				);
+				setValue("imageCover", resizedImage, {
+					shouldValidate: true,
+					shouldDirty: true,
+				});
+			} else {
+				setValue("imageCover", null);
+			}
+		};
 
-		setValue("imageCover", resizedImage);
+		handleResize();
+	}, [image.preview]);
+
+	const onSubmit = async (data: CourseFormSchemaType) => {
+		// const resizedImage = image.preview
+		// 	? await resizeImageFile(
+		// 			new File(
+		// 				[await (await fetch(image.preview)).blob()],
+		// 				"imageCover"
+		// 			)
+		// 	  )
+		// 	: undefined;
+
+		// setValue("imageCover", resizedImage);
 
 		const body = {
 			name: data.name,
@@ -253,7 +285,7 @@ const CreateCourseForm = () => {
 			categories: data.categories,
 			skills: data.skills,
 			prerequisites: data.prerequisites,
-			imageCover: resizedImage,
+			imageCover: data.imageCover,
 			difficulty: data.difficulty,
 		};
 
@@ -846,7 +878,7 @@ const CreateCourseForm = () => {
 						</FormControl>
 						{errors.imageCover && (
 							<Typography variant="body2" color="error">
-								"Please upload a valid image for your course."
+								Please upload a valid image for your course.
 							</Typography>
 						)}
 						{image.preview && (
