@@ -12,7 +12,7 @@ const teamMembers: TeamMember[] = [
 		photo: mohammadHelaly,
 		description:
 			"The creative mind behind our platform. He combined his technical frontend and backend expertise to build Learnly and empower students and instructors globally. Passionate about quality education, he's committed to making learning engaging for all.",
-		email: "mohammad.helaly@gmail.com",
+		email: "mohammad.helaly@outlook.com",
 		linkedIn: "https://www.linkedin.com/in/mohammadhelaly/",
 		github: "https://wwww.github.com/MohammadHelaly",
 	},
@@ -62,7 +62,7 @@ const teamMembers: TeamMember[] = [
 		photo: abdelrahmanElAttar,
 		description:
 			"An experienced backend developer who contributed to the development of Learnly's platform. He leveraged his technical expertise to build a robust and scalable backend that supports the platform's functionality and performance.",
-		email: "mohammad.helaly@gmail.com",
+		email: "abdelrahmanattar@outlook.com",
 		linkedIn: "https://www.linkedin.com/in/abdelrahmanattar/",
 		github: "https://wwww.github.com/abdelrahmanattar",
 	},
