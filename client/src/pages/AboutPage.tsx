@@ -23,7 +23,7 @@ const AboutPage = () => {
 	return (
 		<AnimatedPage>
 			<HomeSection
-				title="Learn About Learnly!"
+				title="Learn about Learnly!"
 				description="Read about our team, our mission, and our vision."
 				buttonText="Get in Touch with Us"
 				buttonOnClick={scrollToContact}
